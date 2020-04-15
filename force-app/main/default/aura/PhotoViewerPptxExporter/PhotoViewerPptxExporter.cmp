@@ -1,0 +1,9 @@
+<aura:component>
+    <aura:attribute name="photos" type="List" default="[]"/>
+    <aura:attribute name="onMessageFn" type="Object" access="private" />
+    <aura:registerEvent name="pptxExportCompleted" type="c:SimpleComponentEvent" />
+    <aura:handler name="init" value="{!this}" action="{! c.onInit}"/>
+    <aura:handler name="change" value="{!v.photos}" action="{! c.onPhotosChanged }"/>
+    <aura:handler name="destroy" value="{!this}" action="{! c.onComponentUnmount}"/>
+    <iframe id="pptxExporter" class="oh-pptx-exporter" border="0" width="0" height="0" src="{!$Resource.pptxgen + '/index.html'}"/>
+</aura:component>

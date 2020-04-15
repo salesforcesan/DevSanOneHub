@@ -1,0 +1,3 @@
+<apex:page standardController="Project__c" extensions="SubmitProjectExt" sidebar="false" showHeader="false" action="{!init}" docType="html-5.0" standardStylesheets="true" applyHtmlTag="false" applyBodyTag="false">
+    <!--deprecated-->
+</apex:page>

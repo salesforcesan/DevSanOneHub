@@ -1,0 +1,108 @@
+.THIS {
+    position: relative;
+}
+.THIS .oh-show {
+    display: block;
+}
+.THIS .oh-hide {
+    display: none;
+}
+
+.THIS .questionAI::before {
+    content:'Smart';
+    background-color:black;
+    color:grey;
+    padding:.2rem;
+}
+
+.THIS .oh-container {
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 5px; 
+}
+
+.THIS .oh-flex-vertical {
+    display:flex;
+    flex-direction:column;
+    
+}
+
+.THIS .oh-container .oh-title {
+    display: block;
+    font-weight: 600;
+    padding-bottom: 8px;
+    font-size:1.2rem;
+}
+
+.THIS .oh-container .slds-form-element__label {
+    display: none !important;
+}
+
+.THIS .oh-container .oh-show-label .slds-form-element__label {
+    display: inherit !important;
+}
+
+.THIS .oh-container .oh-show-label .slds-checkbox {
+    padding: 8px 0;
+}
+
+.THIS .oh-container .oh-middle-column .oh-dropdown {
+    margin-bottom: 0;
+}
+
+.THIS .oh-container .oh-middle-column .oh-middle-item
+ {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.THIS .oh-container .oh-middle-column .oh-middle-item.no-rpad {
+    padding-right: 0;
+}
+
+.THIS .oh-container .oh-lookup label,
+.THIS .oh-container .oh-datepicker label {
+    display: none !important;
+}
+.THIS .oh-container .oh-datepicker .slds-input[readonly] {
+    border-color: rgb(221, 219, 218) !important;
+    background-color: #ffffff !important;
+    padding-left: 16px;
+}
+
+.THIS .oh-container .oh-show-label label {
+    cursor: pointer !important;
+}
+
+.THIS .oh-container .oh-checkbox .slds-form-element__label {
+    display: inherit !important;
+}
+
+.THIS .oh-container .oh-checkbox .slds-form-element__legend {
+    display: none !important;
+}
+
+.THIS .oh-container .oh-left-pad16 {
+    padding-left: 16px;
+}
+
+.THIS .oh-container .oh-left-pad32 {
+    padding-left: 32px;
+}
+
+.THIS .slds-checkbox_faux {
+    border-color: rgba(0,0,0,0.38);
+}
+
+.THIS .oh-container .oh-flex-box {
+    display: flex;
+    flex-direction:row;
+}
+
+.THIS .oh-container .oh-flex-box .slds-form-element__label {
+    margin-right: 5px;
+}
+
+.THIS .slds-datepicker {
+    top:2rem;
+}

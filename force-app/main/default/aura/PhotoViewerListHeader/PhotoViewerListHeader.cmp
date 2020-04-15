@@ -1,0 +1,46 @@
+<aura:component>
+    <aura:attribute name="projectCount" type="integer" default="0" />
+    <aura:attribute name="photoCount" type="integer" default="0" />
+    <aura:attribute name="hasMore" type="string" default="+" />
+    <aura:attribute name="showCount" type="boolean" default="false" />
+    <aura:attribute name="loading" type="boolean" default="false" />
+    <aura:attribute name="exportImages" type="boolean" default="false" access="private" />
+    <aura:registerEvent name="onGenerateZip" type="c:SimpleComponentEvent" />
+    <aura:registerEvent name="onExportToPPTRequest" type="c:SimpleComponentEvent" />
+    <aura:registerEvent name="onEmailSelected" type="c:SimpleComponentEvent" />
+    <aura:registerEvent name="onBeginExport" type="c:SimpleComponentEvent" />
+    <aura:registerEvent name="onCancelExport" type="c:SimpleComponentEvent" />
+
+    <div class="oh-list-header-container">
+        <div class="oh-content">
+            <div class="oh-left">
+                <aura:if isTrue="{! v.loading }">
+                    <div> Processing...</div>
+                    <aura:set attribute="else">
+                        <aura:if isTrue="{! v.showCount }">
+                            <div>
+                                <span>{! v.photoCount }{! v.hasMore == true ? '+' : ''}</span>
+                                <span> Photos (Most Recent)</span>
+                            </div>
+                        </aura:if>
+                    </aura:set>
+                </aura:if>
+            </div>
+            <div class="oh-right">
+                <aura:if isTrue="{! v.photoCount > 0}">
+                    <aura:if isTrue="{! !v.exportImages }">
+                        <lightning:button variant="brand" onclick="{! c.onExportImages }" iconName="utility:logout"
+                            label="EXPORT IMAGES"></lightning:button>
+                        <aura:set attribute="else">
+                            <lightning:button onclick="{! c.onCancel }" label="Cancel"></lightning:button>
+                            <lightning:button variant="neutral" onclick="{! c.onGenerateZip }" iconName="utility:logout"
+                                label="Export to DOC"></lightning:button>
+                            <lightning:button variant="neutral" onclick="{! c.onExportToPPT}"
+                                iconName="utility:download" label="Export To PPT"></lightning:button>
+                        </aura:set>
+                    </aura:if>
+                </aura:if>
+            </div>
+        </div>
+    </div>
+</aura:component>

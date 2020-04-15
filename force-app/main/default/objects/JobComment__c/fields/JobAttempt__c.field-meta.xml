@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JobAttempt__c</fullName>
+    <externalId>false</externalId>
+    <label>Job Attempt</label>
+    <referenceTo>JobAttempt__c</referenceTo>
+    <relationshipLabel>Job Comments</relationshipLabel>
+    <relationshipName>Job_Comments</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

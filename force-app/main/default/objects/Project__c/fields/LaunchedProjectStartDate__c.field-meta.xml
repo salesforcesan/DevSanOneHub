@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LaunchedProjectStartDate__c</fullName>
+    <description>A field that indicates the Project Start Date when the project was moved to Launched State.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The project start date when the project was launched</inlineHelpText>
+    <label>Launched Project Start Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

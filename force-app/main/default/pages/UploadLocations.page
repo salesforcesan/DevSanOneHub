@@ -1,0 +1,523 @@
+<apex:page standardController="ProjectLocation__c" extensions="UploadLocationsExt" sidebar="false"  >
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+<c:Notify />
+<apex:stylesheet value="{!URLFOR($Resource.TagItCSS)}"/>
+<style>
+    .activeTab {
+        background: #fff;
+        font-size: 12px;
+        padding: 5px 10px;
+        font-weight: bold;
+    }
+    
+    .inactiveTab {
+        background-color: #eee;
+        color: black;
+        background-image: none;
+        cursor: pointer
+    }
+    
+    .rich-tabpanel-content  {
+        font-size:12px;
+    }
+
+    .loading-gif {
+        position: fixed;
+        z-index: 999;
+        margin: auto;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        padding: 12px 55px;
+        background-color: #FFF;
+        box-shadow: 0 0px 3px #ccc;
+        border-radius: 2px;
+    }
+
+    .container
+    {
+      overflow:auto; 
+      width:600px;   
+    }
+    
+    .colsStyle
+    {
+        word-break: break-all;
+    }
+    
+    .selectedTag{
+        color:red;
+    }
+    
+    .unselectedTag{
+        color:blue;
+    }    
+    
+    .pgBlkCss{
+        width:500px;
+    }
+    
+    .float_center {
+      float: right;
+      position: relative;
+      left: -50%; /* or right 50% */
+      text-align: left;
+      width:200px;
+    }
+    
+    .panelRow{
+      width:50px;    
+    }
+    
+    ul.tagit li.tagit-choice-read-only{
+        padding:0 !important;
+        border:none;
+        margin-top:6px;
+    }
+    ul.tagit li.tagit-choice a.tagit-label{
+        background: #e5e5e5 !important;
+        color: #444 !important;
+        font-weight: normal;
+        font-size: 12px;
+        padding:3px 8px !important;
+        border-radius:2px;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    
+    ul.tagit li.tagit-choice a.tagit-label.selectedTag{
+        background: #0089e0 !important;;
+        color: #fff !important;
+    }
+    .tagit.ui-corner-all{
+        border:none;
+        margin:5px 0;
+    }
+
+    .apexp .detailList .list td, .apexp .detailList .list th, .apexp .editPage .bPageBlock .detailList .list tr td, .apexp .editPage .bPageBlock .detailList .list tr th {
+        border-bottom: none;
+        border-left: none;
+    }
+    .apexp .detailList .list .headerRow th{
+    border-bottom-width: 1px;
+    }
+    hr.section{
+        border: 0;height: 1px;background: #eee;
+        margin:10px 0;
+    }
+    input.include{
+        border: none;
+    }
+    input.delete-icon:hover{
+        background-position: left 0;
+        
+    }
+    #location_count{
+        float: right;
+        margin-top: -21px;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    #Err_location_count{
+        float: right;
+        margin-top: -21px;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    .apexp .detailList .list td.grayed{
+        color:#999;
+    }
+    #btnImport{
+        margin-bottom:10px;
+        margin-top:-25px;
+        float: right;
+    }
+    .disableClick{
+    pointer-events: none;
+}
+</style>
+
+<apex:form >
+    <apex:actionStatus id="loadingStatus">
+        <apex:facet name="start">
+        <img class="loading-gif" src="/img/loading24.gif" width="24" height="24"  />
+        </apex:facet>
+    </apex:actionStatus>
+    <apex:sectionHeader title="{!projectName}" subtitle="Add Locations" />
+    <c:Breadcrumb backtoid="{!projectId}"/>
+
+
+    <input type="hidden" id="hdnVal" name ="hdnVal" value="1" class="location-ids"/>
+
+          
+    <apex:tabPanel id="tabpanel"  tabClass="activeTab" inactiveTabClass="inactiveTab" switchType="client" immediate="true">
+        <apex:tab label="Filter Locations" style="background-color:white;">
+        <apex:pageBlock mode="maindetail" >
+            <apex:pageBlockSection collapsible="false" columns="1">
+                <apex:pageBlockSectionItem dataStyle="width:50%" labelStyle="width:50%">               
+                    <apex:panelGrid columns="2" id="grd1" cellspacing="10px" >
+                    
+                        <apex:outputLabel value="Location #" for="LocationNum" style="float: left;width:150px;"/>  
+                        <input type="text" id="LocationNum" class="textBox"/>                            
+                        
+                        <apex:outputLabel value="State" for="State"  style="float: left;width:150px;"/>                                    
+                        <apex:outputPanel >
+                        <select id="State" class="textBox" >
+                            <option value="">--NONE--</option>                        
+                            <option value="AK">AK</option>
+                            <option value="AL">AL</option>
+                            <option value="AR">AR</option>
+                            <option value="AS">AS</option>
+                            <option value="AZ">AZ</option>
+                            <option value="CA">CA</option>
+                            <option value="CO">CO</option>
+                            <option value="CT">CT</option>
+                            <option value="DC">DC</option>
+                            <option value="DE">DE</option>
+                            <option value="FL">FL</option>
+                            <option value="FM">FM</option>
+                            <option value="GA">GA</option>
+                            <option value="GU">GU</option>
+                            <option value="HI">HI</option>
+                            <option value="IA">IA</option>
+                            <option value="ID">ID</option>
+                            <option value="IL">IL</option>
+                            <option value="IN">IN</option>
+                            <option value="KS">KS</option>
+                            <option value="KY">KY</option>
+                            <option value="LA">LA</option>
+                            <option value="MA">MA</option>
+                            <option value="MD">MD</option>
+                            <option value="ME">ME</option>
+                            <option value="MH">MH</option>
+                            <option value="MI">MI</option>
+                            <option value="MN">MN</option>
+                            <option value="MO">MO</option>
+                            <option value="MP">MP</option>
+                            <option value="MS">MS</option>
+                            <option value="MT">MT</option>
+                            <option value="NC">NC</option>
+                            <option value="ND">ND</option>
+                            <option value="NE">NE</option>
+                            <option value="NH">NH</option>
+                            <option value="NJ">NJ</option>
+                            <option value="NM">NM</option>
+                            <option value="NV">NV</option>
+                            <option value="NY">NY</option>
+                            <option value="OH">OH</option>
+                            <option value="OK">OK</option>
+                            <option value="OR">OR</option>
+                            <option value="PA">PA</option>
+                            <option value="PR">PR</option>
+                            <option value="PW">PW</option>
+                            <option value="RI">RI</option>
+                            <option value="SC">SC</option>
+                            <option value="SD">SD</option>
+                            <option value="TN">TN</option>
+                            <option value="TX">TX</option>
+                            <option value="UT">UT</option>
+                            <option value="VA">VA</option>
+                            <option value="VI">VI</option>
+                            <option value="VT">VT</option>
+                            <option value="WA">WA</option>
+                            <option value="WI">WI</option>
+                            <option value="WV">WV</option>
+                            <option value="WY">WY</option>
+                        </select>
+                        </apex:outputPanel>
+                        
+
+
+                    </apex:panelGrid> 
+                                        
+                    <apex:panelGrid columns="2" id="grd2" cellspacing="10px" >
+                        <apex:outputLabel value="City" for="City" style="float: left;width:150px;"/>
+                        <input type="text" id="City" class="textBox"/>    
+                                                
+                        <apex:outputLabel value="Postal Code" for="Zip" style="float: left;width:150px;"/>  
+                        <input type="text" id="Zipcode" class="textBox"/>  
+                        
+                        <apex:outputLabel value="Show Existing Locations" for="IncProjLoc" style="float: left;width:200px;"/>                                          
+                        <input type="checkbox"  id="IncProjLoc" />                            
+                    </apex:panelGrid>                   
+                    
+                </apex:pageBlockSectionItem> 
+                <apex:pageBlockSectionItem labelTitle="Tags" >
+                    <strong>Filter by Tags</strong>
+                    <input name="tags" id="TagField" class="txtStyle"   />   
+                </apex:pageBlockSectionItem>                
+            </apex:pageBlockSection>             
+        </apex:PageBlock>
+        <div id="Err_location_count" style="float: left;padding-left: .5cm;"></div>
+        <apex:PageBlock id="resultDIV" mode="maindetail">    
+            <apex:pageBlockSection columns="1" collapsible="false" > 
+            <br/>                             
+                 <input type="submit" id="btnImport" value="Import Locations" class="btn" /> 
+                 <div id="location_count" style="float: left;padding-left: 2cm;">Locations returned</div> 
+                 <table cellspacing="0" cellpadding="0" border="0" id="searchResults" class="list ">
+                    <colgroup span="2"></colgroup>
+                    <thead class="rich-table-thead">
+                        <tr class="headerRow ">
+                            <th><input type="checkbox" id='chkAll'/></th> 
+                            <th>Location Number</th>
+                            <th>Location Name</th>
+                            <th>Address</th>                             
+                            <th>City</th>  
+                            <th>State</th>
+                            <th>Postal Code</th>                      
+                        </tr>
+                    </thead>
+                </table>                
+            </apex:pageBlockSection>      
+        </apex:PageBlock>
+
+    </apex:tab>
+
+    <apex:tab label="Provide Locations"  style="background:#fff">
+    <apex:pageBlock id="pgBlockUpload" mode="maindetail">
+        <apex:pagemessages />
+        <h2>Enter Location numbers in a single column without punctuation.</h2>
+        <br/>
+        <hr class="section"/>
+        <apex:pageBlockSection columns="3" showHeader="false" collapsible="false">  
+            <apex:pageBlockSectionItem helpText="Key in or Copy & Paste a Location # per row in the box."  > 
+                 Locations :
+                 <apex:inputTextarea value="{!csvFileBody}"  title="CopyAndPaste" rows="10" style="width:400px" /> 
+             </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="6" showHeader="false"   collapsible="false">  
+            <br/>
+            <br/>
+            <apex:pageBlockSectionItem dataStyle="text-align:center;">
+                <apex:commandButton id="importColl" value="Import Locations" action="{!importCSVFile}" status="loadingStatus" reRender="pgBlockUpload" onclick="HideImport()" oncomplete="ShowImport()" />
+            </apex:pageBlockSectionItem>
+            <br/>
+        </apex:pageBlockSection> 
+        <hr class="section"/>
+        <div id="DivSuccess">
+         <apex:outputPanel layout="block"   rendered="{!lstSucc.size>0}">         
+             <div style="margin-bottom: 10px;font-weight:bold">Following locations have been added to the project</div>
+            <apex:pageblocktable value="{!lstSucc}" var="Obj" columnsWidth="30%,70%">
+              <apex:column value="{!Obj.reason}" headerValue="Status"  /> 
+              <apex:column value="{!Obj.locationNumber}" headerValue="Location #" styleclass="colsStyle" /> 
+            </apex:pageblocktable>
+         </apex:outputPanel>
+        </div> 
+        <div id="DivFailed">
+            <apex:outputPanel layout="block"   rendered="{!lstErr.size>0}" >  
+                <div class="errorMsg" style="margin-bottom: 10px;font-weight:bold">Following locations cannot be loaded</div>
+                <apex:pageblocktable value="{!lstErr}" var="obj" columnsWidth="30%,70%" >
+                  <apex:column value="{!Obj.reason}" headerValue="Reason for failure"   /> 
+                  <apex:column value="{!Obj.locationNumber}" headerValue="Location #" styleclass="colsStyle"  />              
+                </apex:pageblocktable>  
+             </apex:outputPanel>                    
+        </div>          
+    </apex:pageBlock>            
+    </apex:tab>
+    </apex:tabPanel>
+    
+    </apex:form>
+    
+    
+    
+<!--    <c:jQueryScripts includejqueryui="true" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>  -->
+
+    <c:jQueryUICSS />
+    <script src="{!$Resource.TagIt}"></script> 
+    
+    <script type="text/javascript">
+        var j$ = jQuery.noConflict();   
+             
+        if(j$('#searchResults >tbody >tr').length==0){
+            j$('#searchResults').hide();
+            j$('[id*="resultDIV"]').hide();
+        }
+        else{
+            j$('#searchResults').show();
+            j$('[id*="resultDIV"]').show();
+        }
+        
+        j$("#chkAll").click(function(){
+            j$('.include').prop('checked', this.checked).trigger("change");
+        });
+        
+        var ProjectTagArr = "{!AvlTags}";
+        var projArr = [] ;
+        projArr = ProjectTagArr.split(',');            
+        j$('#TagField').val(projArr);
+
+        j$('#TagField').tagit({
+            autocomplete: {delay: 0, minLength: 2, source:projArr},
+            caseSensitive : false,
+            removeConfirmation : true,
+            allowSpaces : true,
+            readOnly:true,
+            onTagClicked: function(event, ui) {                 
+                console.log(ui.tag);
+                var val = ui.tagLabel;
+                if(j$('a:contains('+val+')').hasClass('selectedTag'))
+                {
+                    j$('a:contains('+val+')').removeClass('selectedTag');                                              
+                    j$('a:contains('+val+')').css({ 'color': 'blue'});
+                }    
+                else        
+                {
+                    j$('a:contains('+val+')').css({ 'color': 'red'});
+                    j$('a:contains('+val+')').addClass('selectedTag');
+                }
+                ajaxCall(); 
+            }
+        });
+        
+        
+        j$('.textBox, #IncProjLoc').change(function() {
+            ajaxCall();
+        });
+        
+        j$(document).keypress(function(e) {
+            
+            if(e.target.nodeName == "TEXTAREA"){
+                return;
+            }            
+            if(e.which == 13) {
+                //alert(e.target.nodeName);
+                if(e.target.nodeName == "INPUT")   {                 
+                    ajaxCall();
+                    return false;
+                }
+                else if(e.target.nodeName == "BODY"){                 
+                    j$('#btnImport').click();    
+                }
+            }
+            
+        });
+        
+        
+        
+        
+        j$('#btnImport').click(function() {
+                if(j$('.location-ids').val() == '' ){
+                    notif({msg: 'No locations to import',  type: "error",  position: "center", clickable: true});
+                    return false;                    
+                }
+                  
+                //j$('#searchResults td').parent().remove();
+                j$('#searchResults tr:not(".headerRow")').remove();
+                j$('#searchResults').hide();
+                j$('[id*="resultDIV"]').hide();   
+                
+                j$('[id*="loadingStatus.start"]').show();
+                
+                
+                //Adding Visualforce Remoting Function to make it Namespace Safe
+                Visualforce.remoting.timeout = 120000;
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.UploadLocationsExt.Import}',
+                    j$('.location-ids').val(),"{!projectId}", 
+                    function(result, event){   
+                        if (event.status) {   
+                            notif({msg: event.result,  type: (event.result.indexOf("exist") == -1 ? "success" : "warning"),  position: "center", clickable: true});
+                            j$('[id*="loadingStatus.start"]').hide();
+                       }
+                       else{
+                            notif({msg: event.result,  type: "error",  position: "center", clickable: true});
+                            j$('[id*="loadingStatus.start"]').hide();
+                       }    
+                     }
+                );
+                return false;    
+        });
+        
+        
+        j$('body').on('change', '.include', function() {
+            var exlLocation = j$(this).attr('data-id');
+            var locationIds = j$('.location-ids').val();
+            if(!j$(this).is(':checked')){
+                locationIds = locationIds.replace(exlLocation + ',','');
+                j$('.location-ids').val(locationIds);
+            }
+            else{                 
+                 locationIds = locationIds + exlLocation + ',';
+                 j$('.location-ids').val(locationIds);
+            }
+           
+        });
+        
+        function ajaxCall(){
+                j$('[id*="loadingStatus.start"]').show();
+                j$('#searchResults tr:not(".headerRow")').remove();
+                var selectedTags = '';
+                j$('.selectedTag').each(function(){
+                      selectedTags = selectedTags + j$(this).text() + ',' ;
+                });
+
+                j$(".textBox, #IncProjLoc").attr("disabled", "disabled");
+                j$(".tagit-label").addClass("disableClick");
+                //alert(selectedTags);
+                 
+                //Adding Visualforce Remoting Function to make it Namespace Safe
+                Visualforce.remoting.timeout = 120000;
+                Visualforce.remoting.Manager.invokeAction(
+                     '{!$RemoteAction.UploadLocationsExt.getProj}',
+                        selectedTags,j$('[id*="State"]').val(),j$('[id*="City"]').val(),j$('[id*="Zip"]').val(), j$('[id*="IncProjLoc"]').is(':checked'),
+                            "{!projectId}", j$('[id*="LocationNum"]').val(),
+                    function(result, event){                             
+                       var LocID="";                   
+                       if (event.status) {     
+                            if(result.length > 0) {
+                                j$('#searchResults').show();
+                                j$('[id*="resultDIV"]').show();
+                                j$('#location_count').html(result.length + ' location(s) returned');
+                                j$('#Err_location_count').hide();
+                                j$('#chkAll').prop('checked', true)
+                            }
+                            else {
+                                j$('#Err_location_count').show();
+                                j$('#searchResults').hide();
+                                j$('[id*="resultDIV"]').hide();
+                                j$('#Err_location_count').html('No locations returned');
+                            }    
+                           
+                            var rowsHtml ='';
+                            j$.each(event.result, function () { 
+                                rowsHtml += "<tr><td> <input class='include' data-id='" + j$(this).attr('Id') + "'  type='checkbox' checked='true'/></td><td>"
+                                                        + j$(this).attr('{!NAMESPACE}LocationNumber__c') + "</td><td>" 
+                                                        + j$(this).attr('Name')+ "</td><td>"
+                                                        + (j$(this).attr('{!NAMESPACE}Address__c')|| ' ')+ "</td><td>"                                                    
+                                                        + (j$(this).attr('{!NAMESPACE}City__c')|| ' ') + "</td><td>" 
+                                                        + (j$(this).attr('{!NAMESPACE}State__c') || ' ')+ "</td><td>"
+                                                        + (j$(this).attr('{!NAMESPACE}PostalCodeName__c')|| ' ') + "</td>"                                             
+                                LocID = LocID + j$(this).attr('Id') +  ',' ;
+                            }); 
+                        
+                        j$('#searchResults tr:last').after(rowsHtml);
+                            
+                        j$('.location-ids').val(LocID);
+                        j$('[id*="loadingStatus.start"]').hide();
+                         j$(".textBox, #IncProjLoc").removeAttr("disabled");
+                         j$(".tagit-label").removeClass("disableClick");
+                        
+                   }
+                   else{
+                        notif({msg: event.result,  type: "error",  position: "center", clickable: true});
+                         j$('[id*="loadingStatus.start"]').hide();
+                         j$(".textBox, #IncProjLoc").removeAttr("disabled");
+                         j$(".tagit-label").removeClass("disableClick");
+                   }    
+                   
+                });
+        }    
+        
+        function HideImport(){
+            //alert("hide");
+            j$('[id*="importColl"]').hide();
+        }
+        
+        function ShowImport(){
+            //alert("show");
+            j$('[id*="importColl"]').show();
+        }
+    </script>
+</apex:page>

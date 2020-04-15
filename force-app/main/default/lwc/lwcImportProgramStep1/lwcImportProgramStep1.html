@@ -1,0 +1,76 @@
+<template>
+  <div style={custStyle}>
+    <div class="oh-step-header slds-text-align_center">
+      <h2>Select File</h2>
+    </div>
+    <div class="slds-p-around_small">
+      <lightning-layout>
+        <lightning-layout-item size="5">
+          <div class="slds-p-around_small oh-step-section">
+            <lightning-tabset variant="scoped">
+              <lightning-tab label="File">
+                <div class="slds-p-around_xxx-small">
+                  <input type="file" accept=".csv,text/csv" class="slds-hide" name="file" placeholder="select a file"
+                    onchange={handleFileChanged} />
+                  <p class="slds-m-bottom_x-small">Import a file by clicking on the "Select File" button , please note
+                    that the supported date formats
+                    are YYYY-MM-dd and MM/dd/YYYY.</p>
+                  <lightning-button disabled={selectFileDisabled} icon-name="utility:upload" label="Import File"
+                    onclick={handleSelectFile}>
+                  </lightning-button>
+                  <template if:true={showFileInfo}>
+                    <div class="slds-box slds-p-around-small oh-gap slds-m-top_x-small">
+                      <lightning-layout>
+                        <lightning-layout-item flexibility="shrink">
+                          <div class="slds-p-around_x-small">
+                            <lightning-icon icon-name={fileInfo.icon} variant={fileInfo.variant} size="x-small">
+                            </lightning-icon>
+                          </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item flexibility="grow">
+                          <p class="slds-p-left_xxx-small">
+                            <c-lwc-name-value-list placeholder="No File To Show" name-values={fileProps}
+                              variant="inline">
+                            </c-lwc-name-value-list>
+                          </p>
+                        </lightning-layout-item>
+                      </lightning-layout>
+                    </div>
+                    <template if:true={hasError}>
+                      <div class="slds-box oh-has-error oh-gap slds-m-top_x-small">
+                        <span class="slds-text-color_error">
+                          {errorMsg}
+                        </span>
+                      </div>
+                    </template>
+                  </template>
+                </div>
+              </lightning-tab>
+            </lightning-tabset>
+          </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="7">
+          <div class="slds-p-around_small oh-step-section">
+            <lightning-tabset variant="scoped">
+              <lightning-tab label="Field Mapping">
+                <template if:false={results}>
+                  <div class="slds-box slds-p-around_x-small">
+                    The 1st row in the csv file is expected to be the title of the column in your dataset. The titles
+                    are matched to the import file definition in the system. If not matched, the data import will be
+                    disabled.
+                  </div>
+                </template>
+                <template if:true={results}>
+                  <div class="slds-scrollable_y slds-border_bottom" style="height: 250px; overflow-x: none;">
+                    <lightning-datatable key-field="id" columns={schemas} data={results} hide-checkbox-column>
+                    </lightning-datatable>
+                  </div>
+                </template>
+              </lightning-tab>
+            </lightning-tabset>
+          </div>
+        </lightning-layout-item>
+      </lightning-layout>
+    </div>
+  </div>
+</template>

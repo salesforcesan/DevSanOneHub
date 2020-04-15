@@ -1,0 +1,34 @@
+<aura:component >
+  <aura:attribute name="Statues" type="List" default="[]"/>
+   <aura:attribute name="label" type="string" default=""/>
+    <aura:handler event="c:UnCheckAllCheckboxesEvent" action="{!c.handleUnCheckAll}"/>
+   <aura:attribute name="multiStatues" type="List" default="[]" description="selected statues"/>
+<div aura:id="menulist" class="slds-picklist slds-dropdown-trigger slds-dropdown-trigger--click slds-is-hide slds-size--1-of-1">
+  <div class="slds-form-element slds-size--1-of-1">
+    <label class="slds-form-element__label" for="text-input-01">{!v.label}</label>
+    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right slds-picklist__input slds-size--1-of-1">
+      <input type="search" id="searchDrp" aura:id ="searchDrpLst" class="slds-lookup__search-input slds-input" aria-owns="option-list-01" role="combobox" aria-activedescendant="" aria-haspopup="true" aria-expanded="true" readonly="" placeholder =" 0 Selected" />
+      <button class="slds-button slds-input__icon slds-text-color--default" aria-expanded="true" aria-haspopup="true" tabindex="0" title="settings" onclick="{!c.handleClick}" >
+          <i class="fa fa-caret-down fa-lg slds-text-color--weak" aria-hidden="true"></i>
+      <!--<c:svg class="slds-icon" xlinkHref="{!join('',$Resource.slds213, '/assets/icons/utility-sprite/svg/symbols.svg#down')}" ariaHidden="true"/> -->
+        <span class="slds-assistive-text">Expand category options</span>
+      </button>
+    </div>
+  </div>
+  <div class="slds-dropdown slds-dropdown--left slds-is-hide " role="listbox" tabindex="0" >
+    <ul id="option-list-01" class="slds-dropdown__list " role="menu" aria-labelledby="option-list-01" tabindex="0">
+      <aura:iteration items="{!v.Statues}" var="status">
+      <li  class="" id="{!status.id}" role="menuitemcheckbox"  onclick="{!c.statusClick}" tabindex="0">
+        <span class="slds-lookup__item-action slds-lookup__item-action--label" role="option"  >
+            <!--<i class="fa fa-check fa-lg" aria-hidden="true"></i>-->
+         <c:svg class="slds-icon slds-icon--selected slds-icon--x-small slds-icon-text-default slds-m-right--x-small " xlinkHref="{!join('',$Resource.slds213, '/assets/icons/utility-sprite/svg/symbols.svg#check')}" ariaHidden="true"/>
+          <span class="slds-truncate">
+            <span class="slds-assistive-text">Current Selection:</span>{!status.value}</span>
+        </span>
+      </li>
+        </aura:iteration>
+    </ul>
+  </div>
+</div>
+    
+</aura:component>

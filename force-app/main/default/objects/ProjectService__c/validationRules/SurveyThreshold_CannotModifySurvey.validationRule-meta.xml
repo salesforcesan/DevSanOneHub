@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SurveyThreshold_CannotModifySurvey</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(IsSurveyScoreExceedThreshold__c, OR ( UPPER(TEXT(Project__r.Status__c)) == &#39;BOOKED&#39;,UPPER(TEXT(Project__r.Status__c)) == &#39;LAUNCHED&#39;,UPPER(TEXT(Project__r.Status__c)) == &#39;IN PROGRESS&#39; ))</errorConditionFormula>
+    <errorMessage>Survey change not allowed. This change will result in Survey complexity threshold being exceeded.</errorMessage>
+</ValidationRule>

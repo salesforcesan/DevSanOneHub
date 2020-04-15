@@ -1,0 +1,10 @@
+.THIS .left-nav {
+    float: left;
+}
+.THIS .main-content {
+    overflow: auto;
+    margin-left: auto;
+}
+.THIS .spinner {
+    z-index: 10001;
+}

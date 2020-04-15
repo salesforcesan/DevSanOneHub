@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NotRestartReportedJobForInProgressProjec</fullName>
+    <active>true</active>
+    <description>EC can not restart a reported job if the project is in progress.</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(JobStatus__c, &#39;Started&#39;),
+ISPICKVAL(JobStatus__c, &#39;Reported&#39;),
+LOWER(ProjectStatus__c) == &#39;in progress&#39;,
+LOWER(ProjectScheduleOptionCode__c) == &#39;ec&#39;
+)</errorConditionFormula>
+    <errorMessage>EC can not restart a reported job if the project is in progress.</errorMessage>
+</ValidationRule>

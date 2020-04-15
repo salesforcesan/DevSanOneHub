@@ -1,0 +1,36 @@
+<template>
+    <div style={custStyle}>
+        <div class="oh-step-header slds-text-align_center">
+            <h2>Upload File for Processing</h2>
+        </div>
+        <div class="slds-p-around_small">
+            <lightning-layout>
+                <lightning-layout-item flexibility="grow">
+                    <div class="slds-p-around_small oh-step-section">
+                        <lightning-datatable key-field="id" columns={columns} data={results} hide-checkbox-column>
+                        </lightning-datatable>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="shrink">
+                    <div class="slds-p-around_small oh-step-section">
+                        <lightning-tabset variant="scoped">
+                            <lightning-tab label="Import Request">
+                                <div class="slds-p-around_x-small slds-scrollable_y" style="height:250px;">
+                                    <template if:true={hasRequestDef}>
+                                        <c-lwc-name-value-list placeholder="No request created yet."
+                                            name-values={requestDef} variant="horizontal"></c-lwc-name-value-list>
+                                    </template>
+                                    <template if:false={hasRequestDef}>
+                                        <div class="slds-box slds-p-around_x-small">
+                                            No import request created yet.
+                                        </div>
+                                    </template>
+                                </div>
+                            </lightning-tab>
+                        </lightning-tabset>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </div>
+</template>

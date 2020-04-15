@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reported_DateAttempted_And_time_Required</fullName>
+    <active>true</active>
+    <description>A Job cannot be reported without the Time Reported and Attempted Date.</description>
+    <errorConditionFormula>AND(ISPICKVAL(AttemptStatus__c,&#39;Reported&#39;),
+OR((TimeReported__c == null),
+(AttemptedDate__c == null)) 
+)</errorConditionFormula>
+    <errorMessage>A Job cannot be reported without the Time Reported and Attempted Date.</errorMessage>
+</ValidationRule>

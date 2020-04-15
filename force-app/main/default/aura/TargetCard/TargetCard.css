@@ -1,0 +1,58 @@
+.THIS .oh-card-title {
+    font-weight:300; 
+    font-size:1.03rem; 
+    color:#0070D2;
+  }
+
+.THIS .slds-grid .slds-item {
+    width:30%;
+}
+
+   .THIS .oh-circle-check label {
+        display: block;
+        width: 1.7rem;
+        height: 1.7rem;
+        font-size: 1rem;
+        color: #FFF;
+        text-align: center;
+        line-height: 1.7rem;
+        padding: 0rem;
+        border-radius: 50%; 
+        background-color: #54698D;
+    }
+  
+  .THIS .oh-circle-check label:before {
+        font-family: FontAwesome;
+        font-weight:300;
+        content:"\f067";/*\f0c4*/
+      	-webkit-font-smoothing: antialiased;
+  		-moz-osx-font-smoothing: grayscale;
+  }
+  
+    .THIS .oh-circle-check [type="checkbox"]:checked + label,
+    .THIS .oh-circle-check [type="checkbox"]:checked ~ label {
+        background: #4BCA81;
+        color: #FFF;
+    }
+ 
+    .THIS .oh-circle-check [type="checkbox"]:checked + label:before,
+    .THIS .oh-circle-check [type="checkbox"]:checked ~ label:before {
+        content:"\f00c";
+    }
+
+.THIS img {
+    width:100%;
+    height:auto;
+}
+
+.THIS .img-container {
+    vertical-align:middle;
+    text-align:center;
+    font-size:2rem;
+    line-height:1rem;
+    width:50px;
+    max-width:50px;
+    height:25px;
+    max-height:auto;
+    color:grey;
+}

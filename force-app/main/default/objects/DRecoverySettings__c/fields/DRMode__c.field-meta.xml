@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DRMode__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Disaster Recovery Settings By Default it is false</description>
+    <externalId>false</externalId>
+    <label>DRMode</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

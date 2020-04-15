@@ -1,0 +1,43 @@
+<template>
+  <div class="oh-container slds-theme_default slds-is-relative">
+    <!-- header -->
+    <c-dialog-header title={title}></c-dialog-header>
+    <!-- body -->
+    <div class="slds-scrollable_y" style={custStyle}>
+      <div class={step1Class}>
+        <c-lwc-import-program-step1 cust-style={custStyle} results={schemaAnalsyis} onbusy={handleBusy}
+          projects={projects} has-error={hasFileError} oninvalidfile={handleInvalidFile}
+          onfilechanged={handleFileChanged}>
+        </c-lwc-import-program-step1>
+      </div>
+      <div class={step2Class}>
+        <template if:true={datasource}>
+          <c-lwc-import-program-step2 cust-style={custStyle} projects={projects} chunk-size={datasource.chunkSize}
+            helps={datasource.guides} schemas-definition={datasource.schemas} onbusy={handleBusy}
+            onvalidated={endValidteFileData}>
+          </c-lwc-import-program-step2>
+        </template>
+      </div>
+      <div class={step3Class}>
+        <c-lwc-import-program-step3 onbusy={handleBusy} projects={projects} onfileuploaded={handleFileUploaded}
+          cust-style={custStyle}>
+        </c-lwc-import-program-step3>
+      </div>
+    </div>
+    <!-- footer -->
+    <c-dialog-step-footer next-enabled={nextEnabled} step-defs={steps} onnextstep={handleNext}
+      onpreviousstep={handlePrevious} onlaststep={handleLastStep} oncancel={handleCancel}>
+      <template if:true={showSubmitButton}>
+        <lightning-button variant="warning" class="slds-m-right_x-small" title="Cancel" label="Cancel"
+          onclick={handleCancel}></lightning-button>
+        <lightning-button variant="brand" onclick={handleSubmit} title="Next Step" label="Submit"></lightning-button>
+      </template>
+      <template if:true={showClose}>
+        <lightning-button variant="warning" class="slds-m-right_x-small" title="Close" label="Close"
+          onclick={handleClose}></lightning-button>
+      </template>
+    </c-dialog-step-footer>
+    <!-- spinner -->
+    <c-lwc-spinner size="large" visible={isAppBusy} alternative-text={busyAlternativeText}></c-lwc-spinner>
+  </div>
+</template>

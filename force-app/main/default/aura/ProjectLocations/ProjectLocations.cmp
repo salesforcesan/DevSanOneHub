@@ -1,0 +1,150 @@
+<aura:component extends="c:UISecurity" implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <aura:dependency resource="markup://c:ProjectLocationsAdditionOption" />
+    <aura:dependency resource="markup://c:ProjectLocationsPasteList" />
+    <aura:dependency resource="markup://c:ProjectLocationsSearchLocations" />
+    <aura:dependency resource="markup://c:ProjectLocationsScheduleLocations" />
+    <aura:dependency resource="markup://c:BulkImporter" />
+    <aura:dependency resource="markup://c:ProjectLocationsUploadFile" />
+    <aura:dependency resource="markup://c:ProjectLocationsCancelConfirmation" />
+    <aura:dependency resource="markup://c:MessageBox" />
+    <aura:attribute name="projectId" type="Id" default="" />
+    <aura:attribute name="allowReattempt" type="Boolean" default="true" />
+    
+    <aura:attribute name="locationIdToRemove" type="String" default="" access="private" />
+    <aura:attribute name="startDate" type="Date" default="" access="private" />
+    <aura:attribute name="endDate" type="Date" default="" access="private" />
+    <aura:attribute name="searchByOneHubId" type="Boolean" default="true" access="private" />
+    <aura:attribute name="locked" type="Boolean" default="false" access="private" />
+    <aura:attribute name="canSchedule" type="Boolean" default="false" access="private" />
+    <aura:attribute name="hasAccount" type="Boolean" default="false" access="private"/>
+    <aura:attribute name="showSchedule" type="Boolean" default="false" access="private" />
+    <aura:attribute name="showCard" type="Boolean" default="true" access="private" />
+    <aura:attribute name="rowCount" type="Integer" default="0" access="private" />
+    <aura:attribute name="pageCount" type="Integer" default="0" access="private" />
+    <aura:attribute name="cancelReasons" type="List" default="[]" access="private" />
+    <aura:attribute name="canCreateJob" type="Boolean" default="true" access="private" />
+    <aura:attribute name="canAddLocation" type="Boolean" default="true" access="private" />
+    <aura:attribute name="subscribers" type="List" default="[]" access="private" />
+    <aura:attribute name="locationReportUrl" type="String" default="#" access="private" />
+    <aura:attribute name="ProjNumberOfDays" type="Integer" default="0" access="private" />
+    <aura:handler name="selectAddLocationOptionEvent" event="c:SimpleComponentEvent" action="{!c.selectAddLocationOption}" />
+    <aura:registerEvent name="publishRemoteActionRequestAppEvent" type="c:ActionRequestAppEvent" />
+    <aura:handler name="showSpinnerEvent" event="c:SimpleComponentEvent" action="{!c.handleShowSpinnerEvent}" />
+    <aura:handler event="c:ActionResponseSuccessAppEvent" action="{!c.subscribeRemoteActionSuccessAppEvent}" />
+    <aura:handler event="c:ActionResponseErrorAppEvent" action="{!c.subscribeRemoteActionErrorAppEvent}" />
+    <aura:handler name="checkOneLocationEvent" event="c:SimpleComponentEvent" action="{!c.handleCheckOneLocationEvent}" />
+    <aura:handler name="clearFilter" event="c:SimpleComponentEvent" action="{!c.onClickClearFilter}" />
+    <aura:handler name="dataGridLinkCellClick" event="c:SimpleComponentEvent" action="{!c.onDataGridLinkCellClicked}" />
+    <aura:handler name="dataGridRendered" event="c:SimpleComponentEvent" action="{!c.onDataGridRendered}" />
+    <aura:handler name="dataGridSelectRowChanged" event="c:SimpleComponentEvent" action="{!c.onDataGridSelectRowChanged}" />
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+    <aura:handler name="messageBoxEvent" event="c:SimpleComponentEvent" action="{!c.onMessageBoxEvent}" />
+    <aura:handler name="cancelLocationEvent" event="c:SimpleComponentEvent" action="{!c.onCancelLocationEvent}" />
+    <aura:handler name="onRemoteRequest" event="c:RemoteActionRequestEvent" action="{!c.onRemoteRequest}" />
+    <aura:handler name="endImportJob" event="c:SimpleComponentEvent" action="{!c.onEndImportJobs}" />
+    <aura:handler name="endImportData" event="c:SimpleComponentEvent" action="{!c.onEndImportJobs}" />
+    <c:MessageBox aura:id="messageBox" />
+    <div class="container">        
+        <c:RemoteActionGateway aura:id="projectLocationGateway" id="projectLocationGateway" />
+        <c:ModalDialogContainer aura:id="modalDialog" title="Application Dialog" size="medium" />
+       
+        <lightning:layout class="pad-right of-hidden slds-is-relative">
+             <c:Spinner aura:id="busyIndicator" size="medium" type="modal" />
+            <lightning:layoutItem size="12" class="slds-card locations slds-p-around_medium oh-margin-right slds-is-relative">
+                <div class="main-panel">
+                    <!-- header -->
+                    <div class="slds-m-bottom--small">
+                        <c:SectionHeaderProject Title="Manage Locations" iconClass="fa-map" />
+                    </div>
+                    <div class="slds-is-relative slds-grid slds-grid_align-end" style="margin-top:-1rem;">
+                        <c:ProjectLocationsFilter aura:id="locationFilter" projectId="{!v.projectId}" showScheduledCheckbox="{!v.canSchedule}" />
+                    </div>
+                    <div style="margin-bottom:0.2cm;margin-top:.5rem;">
+                        <c:Notification aura:id="notification" />
+                    </div>
+                    <!-- button header -->
+                    <div class="slds-m-bottom_small" style="margin-top:.75rem;">
+                        <section class="slds-clearfix oh-buttons">
+                            <div class="slds-grid slds-grid_align-spread">
+                                <div class="slds-grid slds-wrap">
+                                    <span aura:id="ProjectLocation__c.Delete" class="hide">
+                                        <lightning:button label="Remove Selected" iconName="utility:close" variant="destructive" class="slds-m-right_small slds-m-top_small" onclick="{!c.onClickRemoveSelected}"/>
+                                    </span>
+                                    <span aura:id="ProjectLocation__c.Delete" class="hide">
+                                        <lightning:button label="Remove All" iconName="utility:close" variant="destructive" class="slds-m-right_small slds-m-top_small" onclick="{!c.onClickRemoveAll}"/>
+                                    </span>
+                                    <span aura:id="ProjectLocation__c.Cancel" class="hide">
+                                        <lightning:button label="Cancel Selected" iconName="utility:undo" variant="destructive" class="slds-m-right_small slds-m-top_small" onclick="{!c.onClickCancelSelected}"/>
+                                    </span>
+                                    <!-- <aura:if isTrue="{!v.allowReattempt}"> -->
+                                       
+									 <aura:if isTrue="{!and(v.allowReattempt, v.ProjNumberOfDays==1)}">                                         
+                                        <span aura:id="ProjectLocation__c.ReAttempt" class="hide slds-m-right_small slds-m-top_small">
+                                            <lightning:button label="Re-Attempt Selected" variant="brand" iconName="utility:redo" onclick="{!c.onClickReAttempt}"/>
+                                        </span>
+                                    </aura:if>
+                                    <span aura:id="ProjectLocation__c.Add" class="hide slds-m-right_small slds-m-top_small">
+                                        <aura:if isTrue="{!v.canAddLocation}">
+                                            <lightning:button label="Add Locations" onclick="{!c.onClickAddLocationsButton}" variant="brand" iconName="utility:add"/>
+                                            <aura:set attribute="else">
+                                                <div class="btn-add-location-disabled">
+                                                    <div class="slds-popover slds-theme_error slds-nubbin_top bt-tooltip" role="tooltip">
+                                                        <p>Project dates are not within Location Lead Time.</p>
+                                                    </div>
+                                                    <lightning:button label="Add Locations" disabled="true" variant="brand" iconName="utility:add"/>
+                                                </div>
+                                            </aura:set>
+                                        </aura:if>
+                                    </span>
+                                    <span aura:id="ProjectLocation__c.CreateJob" class="hide">
+                                        <lightning:button aura:id="btnCreateJob" disabled="{!!v.canCreateJob}" label="Create Jobs" iconName="utility:groups" class="slds-m-right_small slds-m-top_small" onclick="{!c.onClickCreateJobs}"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-m-top_small">
+                                <aura:if isTrue="{!!v.locked}">
+                                    <div>
+                                        <a href="{!v.locationReportUrl}" class="slds-m-right_small" target="__blank"><!--<i class="fa fa-file-text-o slds-m-right_x-small"></i>-->Location Report</a>
+                                    </div>
+                                    <aura:if isTrue="{!v.canSchedule}">
+                                        <span aura:id="ProjectLocation__c.SetSchedule" class="hide">
+                                            <div class="slds-m-left_medium slds-m-right_small">
+                                                <a class="slds-m-right_small" onclick="{!c.onClickScheduleLocations}"><i class="fa fa-calendar slds-m-right_x-small"></i>Set Schedule Date</a>
+                                            </div>
+                                        </span>
+                                        <span aura:id="ProjectLocation__c.ImportLocation" class="hide">
+                                            <div class="slds-m-left_medium slds-m-right_small">
+                                                <a class="slds-m-right_small" onclick="{!c.onClickScheduleLocationsInBulk}"><i class="fa fa-calendar slds-m-right_x-small"></i>Import Locations</a>
+                                            </div>
+                                        </span>
+                                    </aura:if>
+                                </aura:if>
+                            </div>
+                        </section>
+                    </div>
+                    <!-- datagrid/card title action bar -->
+                    <div class="slds-m-bottom--small">
+                        <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                            <div class="slds-form--inline">
+                                <lightning:input class="slds-m-right--medium slds-m-left--small" type="checkbox" label="(select all)" aura:id="chkSelectAll" name="chkSelectAll" onchange="{!c.clickSelectAll}" />
+                                <ui:outputText value="{!join(' ',v.pageCount, 'of', v.rowCount)}" class="slds-form-element" />
+                            </div>
+                            <div class="">
+                                <lightning:buttonIcon alternativeText="Refresh" variant="brand" iconName="utility:refresh" onclick="{!c.onClickRefreshJobs}" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- datacard/grid -->
+                    <aura:if isTrue="{!v.showCard}">
+                        <c:ProjectLocationsCard visible="{!v.showCard}" aura:id="locationCard" showSchedule="{!v.showSchedule}" projectId="{!v.projectId}" />
+                        <aura:set attribute="else">
+                            <c:DataGrid visible="{!!v.showCard}" hasBorder="false" selectedFieldId="selected" aura:id="locationGrid" id="locationManager" showSpinner="false" showCheckbox="true" hideCheckboxOnHeader="true" pageSize="100" enablePagination="false" scrollable="false" />
+                        </aura:set>
+                    </aura:if>
+                </div>
+                <!-- end of main panel -->
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+</aura:component>

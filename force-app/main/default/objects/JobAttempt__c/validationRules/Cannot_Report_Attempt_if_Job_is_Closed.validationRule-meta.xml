@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cannot_Report_Attempt_if_Job_is_Closed</fullName>
+    <active>true</active>
+    <description>A job attempt can be reported many times until the job is closed.</description>
+    <errorConditionFormula>AND(
+(ISPICKVAL( Job__r.JobStatus__c , &#39;Closed&#39;)),
+(ISPICKVAL( AttemptStatus__c, &#39;Reported&#39;))
+)</errorConditionFormula>
+    <errorMessage>A job attempt can be reported many times until the job is closed.</errorMessage>
+</ValidationRule>

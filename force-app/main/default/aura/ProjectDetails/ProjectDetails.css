@@ -1,0 +1,80 @@
+.THIS .oh-component-spinner-wrap {
+    min-height:100px;
+}
+.THIS .oh-spinner-size > div {
+	min-height:130vh;
+}
+
+.THIS .slds-size_1-of-1.pad-right {
+    padding-right:12px;
+}
+
+
+.THIS .oh-tooltip {
+  position: absolute;
+  margin-top: -10px;
+  margin-left: -130px;   
+  display: none;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.5s ease-out, transform 0.1s !important;
+}
+
+.THIS .oh-tool-container .circle {
+    border:1px solid orange;
+    border-radius:50%;
+    width:2rem;
+    height:2rem;
+    line-height:2rem;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.THIS .slds-card .slds-grid .oh-tool-container:hover .oh-tooltip {
+  display: inline-block;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.5s ease-in, transform 0.1s !important;
+}
+
+.THIS .orange svg {
+    fill:orange;
+}
+
+.THIS .slds-spinner-container {
+    transition: opacity .4s ease, visibility .2s;
+    transition-delay: 0s, .4s;
+}
+
+.THIS .uiInput--select.select:not([multiple]), .THIS .uiInput--select .select:not([multiple]), .THIS .uiInput--select .uiPopupTrigger a {
+    height: 2.25rem;
+}
+
+.THIS .wordbreak {
+    word-break:normal;
+}
+
+.THIS .oh-cont {
+    display: block;
+    width: 100%;
+}
+
+.THIS .oh-inl {
+	display: inline-block;
+    width:50%;
+}
+
+.THIS .oh-label {
+    display:block;
+  	color: #54698d;
+  	font-size: 0.75rem;
+  	line-height: 1.5;
+  	margin-right: 0.75rem;
+  	margin-bottom: 0.5rem;
+}
+
+@media (max-width: 35em) {
+    .THIS .oh-inl {
+        width:100%;
+    }
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsLongRunning__c</fullName>
+    <externalId>false</externalId>
+    <formula>AND((Now()- StartDateTime__c)*24*60 &gt; 0, TEXT(Status__c) &lt;&gt; &#39;Success&#39;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>IsLongRunning</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

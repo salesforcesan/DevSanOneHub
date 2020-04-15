@@ -1,0 +1,22 @@
+<aura:component extends="c:Remotable" implements="lightning:isUrlAddressable,flexipage:availableForRecordHome,force:hasRecordId,flexipage:availableForAllPageTypes,lightning:hasPageReference" access="global">
+    <aura:attribute name="invoices" type="List" />
+    <aura:attribute name="recordId" type="string" access="global" />
+    <aura:handler event="c:aeEvent" action="{!c.handleApplicationEvent}"/>
+    <aura:method name="getScoreMethod" action="{!c.parentInit}" access="PUBLIC">
+        <aura:attribute name="SearchWrapper" type="List" />
+        <aura:attribute name="Type" type="String" />
+    </aura:method>
+    <div class="slds-card slds-p-around_medium" style="position:relative;height:100%;">        
+        <div class="slds-grid slds-p-bottom_medium" style="align-items:center;position:relative;">
+            <p class="slds-m-right_small"><span style="font-weight:bold;">Account: </span>{!v.invoices[0].AccountName}</p>
+            <p class="slds-m-right_small"><span style="font-weight:bold;">Bill To Contact: </span>{!v.invoices[0].BillToContactName}</p>
+            <p class="slds-m-right_small"><span style="font-weight:bold;">Lawson Code: </span>{!v.invoices[0].LawsonCompanyCode}</p>
+            <p class="slds-m-right_small"><span style="font-weight:bold;">Invoice Type: </span>Must be Post Execution</p>
+            <span class="slds-grid slds-grid_align-end" style="width:100%;">                                
+                <div class="slds-p-around_x-small slds-p-top_medium">
+                    <lightning:button label="Go Back" aura:id="cancelInvoice" onclick="{!c.cancelInvoice}" variant="brand" />                    
+                </div>
+            </span> 
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,48 @@
+.THIS .cmk-label::after {
+    content: ':';
+    color: rgb(112, 110, 107);
+}
+
+/*
+.THIS .cmk-value {
+    padding-right: 10px;
+    padding-left:5px;
+}
+.THIS .oh-width {
+    width:25%;
+    min-width:150px;
+}
+/*
+.THIS .oh-width:nth-child(1) {
+    width:25%;
+    min-width:250px;
+}*/
+
+.THIS .dotted {
+ font-size:1em;
+    font-weight:bold;
+    color:grey;
+  padding-left: 5px;
+  padding-right: 15px;
+}
+
+.THIS .slds-grid.oh-width:last-child .dotted {
+    display:none;
+}
+
+.THIS .pl-card-tooltip {
+  position: absolute;
+  margin-top: -50px;
+  margin-left: 0px;
+  display: none;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.5s ease-out, transform 0.1s !important;
+}
+
+.THIS .slds-grid.oh-width:hover .pl-card-tooltip {
+  display: inline-block;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.5s ease-in, transform 0.1s !important;
+}

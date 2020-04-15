@@ -1,0 +1,44 @@
+<aura:component controller="LightningProjectServiceController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" /> 
+    <aura:attribute name="projectId" type="string" access="global" />
+    <aura:attribute name="services" type="ServiceWrapper[]"/>
+    <aura:attribute name="selectedServiceId" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:registerEvent name="closeDialogEvent" type="c:SimpleComponentEvent"/>
+    <aura:registerEvent name="ProjectServicesChange" type="c:ProjectServicesChangeEvent" />
+    
+        <div class="slds slds-is-relative">
+            <c:Spinner aura:id="addProjectServicesSpinner" type='modal' size="medium">
+            <div class="slds-clearfix">
+                <div class="slds-p-around--small">
+                    <p class="slds-text-align--center slds-text-color--weak">Choose a service by highlighting a row then click add service</p>
+                </div>
+                <hr/>
+                <div class="oh-add-service-container">
+                    <aura:iteration items="{!v.services}" var="service">    
+                        <div class="slds-radio--button">
+                            <div class="oh-add-service" for="{!'service' + service.Id}">
+                              <input type="radio"  name="services" id="{!'service' + service.Id}" onclick="{!c.handleClick}" />
+                              <label for="{!'service' + service.Id}">
+                                <span class="oh-icon-service"></span>
+                                <span class="service-text">
+                                  <span class="service-title">{!service.Name}</span><br/>
+                                  {!service.ServiceDescription} Service description here, but we'd also want this to limit to two lines like this max.
+                                </span>
+                              </label>
+                            </div>
+                        </div>
+                        <hr></hr>
+                    </aura:iteration> 
+                </div>
+                <div class="oh-footer slds-border--top">          
+                    <div class="slds-grid slds-grid--align-end slds-m-right--large">
+                        <lightning:button class="slds-m-around--small" label="Cancel" onclick="{!c.close}"/>
+                        <lightning:button class="slds-m-around--small" label="Add Service" onclick="{! c.addService}" variant="brand"  /> 
+                    </div>
+                </div>
+            </div>
+          </c:Spinner>
+        </div>
+
+</aura:component>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StartDateCalculated__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (UPPER(ProjectScheduleOptionCode__c) == &#39;EC&#39;,ProjectStartDate__c,IF (ISBLANK(JobScheduledDate__c),ProjectStartDate__c,JobScheduledDate__c))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Start Date (Job)</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

@@ -1,0 +1,48 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <aura:dependency resource="markup://force:navigateToURL" type="EVENT"/>
+    <aura:dependency resource="markup://force:navigateToSObject" type="EVENT"/>
+    <aura:attribute name="projectId" type="String" access="global" default="" />
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    
+    <!--ATTRIBUTES DECLARATION -->
+    <aura:attribute name="projectServiceContext" type="String" default="" />
+    
+    <aura:attribute name="menuItems" type="Object[]" access="global" /> 
+    
+    <!--PUBLISHER -->
+    <aura:registerEvent name="changeProjectServiceContext" type="c:SimpleComponentEvent" />
+    <aura:registerEvent name="gobackToProject" type="c:SimpleComponentEvent"/>
+    <!--EVENT LISTENER -->  
+    <aura:handler value="{!this}" name="init" action="{!c.init}"/>
+    
+    <div>
+        <div class="icon-nav navWrap">
+            <a href="javascript:void(0)" class="closebtn" onclick="{!c.closeNav}"></a>
+            <div class="menu-item" onclick="{!c.goBackToProject}">
+                <i class="fa fa-arrow-left"></i>
+                <span class="nav-text">Back to Project</span>
+            </div> 
+            
+            <aura:iteration items="{!v.menuItems}" var="item">
+                
+                <aura:if isTrue="{!v.projectServiceContext == item.menuId}">
+                    <div class="menu-item current-page" onclick="{!c.navTo}" id="{!item.menuId}" aura:id="{!item.menuId}">
+                        <i class="{!'fa '+item.classId}" aria-hidden="true" title="{!item.menuLabel}"></i>
+                        <span class="nav-text">{!item.menuLabel}</span>
+                    </div> 
+                </aura:if>  
+                <aura:if isTrue="{!v.projectServiceContext != item.menuId}">
+                    <div class="menu-item" onclick="{!c.navTo}" id="{!item.menuId}" aura:id="{!item.menuId}">
+                        <i class="{!'fa '+item.classId}" aria-hidden="true" title="{!item.menuLabel}"></i>
+                        <span class="nav-text">{!item.menuLabel}</span>
+                    </div> 
+                </aura:if>
+                
+            </aura:iteration>
+            
+            <div class="menu-item-last">
+            </div>
+        </div>
+    </div>
+</aura:component>

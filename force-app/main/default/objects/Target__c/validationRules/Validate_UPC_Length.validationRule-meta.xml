@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_UPC_Length</fullName>
+    <active>true</active>
+    <errorConditionFormula>LEN(UPC__c) &gt; 0 &amp;&amp; Len(UPC__c)&lt; 12</errorConditionFormula>
+    <errorMessage>UPC should be 12 digits</errorMessage>
+</ValidationRule>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Retailer__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>A search field that indicates the specific Retailer for this Cycle.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Enter the retailer for this cycle.</inlineHelpText>
+    <label>Retailer</label>
+    <referenceTo>Retailer__c</referenceTo>
+    <relationshipLabel>Cycles</relationshipLabel>
+    <relationshipName>Cycles</relationshipName>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

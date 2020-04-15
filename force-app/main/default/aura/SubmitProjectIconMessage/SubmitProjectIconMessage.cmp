@@ -1,0 +1,12 @@
+<aura:component >
+    <aura:attribute name="message" type="String" />
+    <aura:attribute name="icon" type="String" />
+    <aura:attribute name="iconColor" type="String" />
+ 
+    <div>
+        <div class="slds-grid" style="align-items:center;">                             
+            <i class="{! 'fa ' + v.icon + ' fa-lg slds-m-right_x-small ' + v.iconColor}" aria-hidden="true"></i>
+            <p class="{! v.iconColor == 'red' ? 'slds-text-body_small red' : 'slds-text-body_small'}">{!v.message}</p>
+        </div>
+    </div>
+</aura:component>

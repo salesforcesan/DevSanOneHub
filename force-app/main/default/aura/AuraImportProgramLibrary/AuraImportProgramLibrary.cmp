@@ -1,0 +1,3 @@
+<aura:component extensible="true" extends="c:Remotable">
+  {!v.body}
+</aura:component>

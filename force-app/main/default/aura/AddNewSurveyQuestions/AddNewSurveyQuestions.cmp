@@ -1,0 +1,99 @@
+<aura:component controller="LightningSurveyQuestionsController" implements="flexipage:availableForAllPageTypes" access="global">
+	<ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+<aura:attribute name="fromProjectBuilder" type="boolean" default="false"/>
+    <aura:attribute name="addedQuestions" type="List" access="global"/>
+    <aura:attribute name="questions" type="List" access="global" />
+    <aura:attribute name="questionFilters" type="Object" access="global" />
+    <aura:attribute name="projectservice" type="Object" access="global" />
+    <aura:attribute name="recordId" type="string" access="global" />
+    
+    <aura:registerEvent name="addNewQuestion" type="c:EventAddNewQuestion"/>
+    <aura:registerEvent name="hideModal" type="c:EventHideModal"/>
+    
+
+    <aura:handler event="c:EventSurveyQuestionFiltersChanged" action="{!c.handleSurveyQuestionFilterChanged}"/>
+    <aura:attribute name="questiontext" type="string" access="global" />
+    <aura:attribute name="questiontype" type="string" access="global" />
+    <aura:attribute name="targetquestion" type="boolean" access="global" />
+
+
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="slds-grid slds-grid--align-spread" style="border-bottom:1px solid #D8DDE6;">
+         <div class="slds-tile slds-p-around--small slds-p-left--large">
+            <p class="slds-truncate oh-card-title" title="Service Questions">
+              Available Survey Questions
+            </p>
+         </div> 
+         <div class="slds-p-horizontal--small slds-p-bottom--small">
+            <button href="javacript:void(0)" class="slds-button slds-button--neutral" style="height:40px;" onclick="{!c.expandAll}">Expand/Hide Responses</button>
+         </div>
+	</div>  
+    
+   
+        
+  	<div class="pcard-container slds-is-relative">
+         <c:Spinner aura:id="addSurveyQuestion_busyIndicator" type='modal' size="medium">
+        <ui:scrollerWrapper class="question-section">
+            <section class="slds-is-relative" style="width:100%;">
+
+                <div >
+                    <div class="slds-hide" style="min-height:100px" aura:id="spinner">
+                        <lightning:spinner size="medium" variant="brand" />
+                    </div>
+                </div>
+                
+                
+                <aura:iteration items="{!v.questions}" var="question" indexVar="cursor">
+                    <div class="accordion slds-media responses" id="accordion">
+                        <aura:if isTrue="{!question._canAdd}">
+                            <div class="slds-media__figure oh-icon-survey slds-icon slds-icon--circle slds-icon--large">
+                                <i class="{!question._class}" aria-hidden="true"></i>
+                            </div>
+                            <aura:set attribute="else">
+                            <div class="oh-icon-container">
+                            <div class="{! 'slds-popover slds-popover--tooltip ' + (cursor > 0 ? 'slds-nubbin--bottom-left pl-card-tooltip' : 'slds-nubbin--top-left pl-card-tooltip1')}" role="tooltip">
+                            <div class="slds-popover__body">{!question._message}</div>
+                          </div>
+                            <div class="slds-media__figure oh-icon-survey slds-icon slds-icon--circle slds-icon--large oh-icon-disabled">
+                                <i class="{!question._class}" aria-hidden="true"></i>
+                            </div>
+                            </div>
+                            </aura:set>
+                        </aura:if>
+                        <div class="slds-media__body slds-grid-align-spread">
+                            <div class="oh-survey-question slds-grid slds-grid--align-spread slds-has-flexi-truncate slds-grid--vertical-align-center">
+                                <p>{!question.QuestionText}</p>
+                            </div>
+                            <p class="slds-text-body--small">{!question.QuestionTitle}</p>
+                            <p class="slds-text-body--small">{!question.QuestionType}</p>
+                        </div> 
+
+                        <button disabled="{!!question._canAdd}" class="slds-button slds-button--brand slds-grid--align-end" type="button" onclick="{!c.addNewQuestion}" id="{!question.QuestionId}">Add Question</button>
+                        
+                    </div>
+                    <div class="panel">
+                        <aura:if isTrue="{!question.DefinedResponses.length > 0}">
+                            <aura:iteration items="{!question.DefinedResponses}" var="definedResponse">                               
+                                <p><span class="panel-check"><i class="fa fa-check" aria-hidden="true"></i></span>{!definedResponse.DefinedResponseText}</p>
+                                <p>{!definedResponse.ExceptionCode}</p> 
+                                <hr></hr>                      
+                            </aura:iteration>    
+                        </aura:if>
+                    </div>
+                </aura:iteration>
+
+            </section> <!--just playing with an icon --> 
+            <aura:if isTrue="{!v.questions.length == 0}">
+                <article class="slds-card">
+                    <div class="slds-card__body">
+                        There are no results for this search.
+                    </div>
+                </article>
+            </aura:if>
+        </ui:scrollerWrapper>
+                     </c:Spinner>
+    </div>
+
+</aura:component>

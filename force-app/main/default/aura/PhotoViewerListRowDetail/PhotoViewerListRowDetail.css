@@ -1,0 +1,21 @@
+.THIS {
+    background-color: #52678C;
+    color: #eee;
+    position: relative;
+    padding: 16px;
+    color: rgba(255,255,255,0.81);
+    min-height: 400px;
+}
+
+.THIS .oh-detail-close {
+    position: absolute;
+    right: 16px;
+}
+
+.THIS .oh-tabset .oh-tab a {
+    color: rgba(255,255,255,0.81);
+}
+
+.THIS .oh-tabset .oh-tab.slds-active a {
+    color: #A0C8F0;
+}

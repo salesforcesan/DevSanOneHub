@@ -1,0 +1,36 @@
+<aura:component controller="LightningProjectAccountsController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="projectAccount" type="object" access="global" />
+    <aura:attribute name="nameValues" type="List" default="[]" access="private" />
+    <aura:attribute name="canDelete" type="Boolean" access="private" />
+    <aura:attribute name="canSetPrimary" type="Boolean" access="private" />
+    <aura:attribute name="cssClass" type="String" access="private" />
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <aura:registerEvent name="ProjectAccountChange" type="c:ProjectAccountChange" />
+    <aura:handler name="messageBoxEvent" event="c:SimpleComponentEvent" action="{!c.onMessageBoxEvent}" />
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+    <aura:handler name="compactCardTitleClicked" event="c:SimpleComponentEvent" action="{!c.gotoDetail}"/>
+    <c:MessageBox aura:id="messageBox" />
+    <div class="slds-hide" style="min-height:100px" aura:id="projectAccountCardSpinner">
+        <lightning:spinner size="medium" variant="brand" />
+    </div>
+    <article aura:id="col">
+        <div class="{!v.cssClass}">
+            <aura:if isTrue="{!v.projectAccount.isPrimary == true}">
+                <div class="oh-primary-tab slds-m-bottom_x-small"><i class="fa fa-address-card slds-p-right--x-small"></i>Primary Account</div>
+            </aura:if>
+            <div class="slds-m-bottom_small slds-p-horizontal_small">
+                <c:CompactCard id="{!v.projectAccount.id}" title="{!v.projectAccount.title}">
+                    <c:NameValueList nameValues="{!v.nameValues}" />
+                    <aura:set attribute="toolbars">
+                        <aura:if isTrue="{!v.canSetPrimary}">
+                            <a onclick="{!c.makePrimaryClick}" class="slds-m-right--small"><i class="fa fa-address-card-o slds-m-right--x-small"></i>Make Primary</a>
+                        </aura:if>
+                        <aura:if isTrue="{!v.canDelete}">
+                          	<button class="slds-button" onclick="{!c.removeAccountClick}"><i class="oh-icon oh-icon-close" aria-hidden="true" style="color:#c23934;"></i></button>
+                       </aura:if>
+                    </aura:set>
+                </c:CompactCard>
+            </div>
+        </div>
+    </article>
+</aura:component>

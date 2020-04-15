@@ -1,0 +1,44 @@
+.THIS {
+    position: relative; 
+    width: 100%;
+}
+.THIS .oh-row-list {
+    display: flex;
+    flex: 0 0 100%;
+    flex-grow:0;
+    flex-shrink: 1;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.THIS .oh-row-list .oh-row-list-card {
+    padding: 8px;
+}
+
+.THIS .oh-row-list .oh-row-list-card:first-child {
+    padding-left:0;
+}
+
+.THIS .oh-row-list .oh-row-list-card:last-child {
+    padding-right:0;
+}
+
+.THIS .oh-tabset {
+    background-color: inherit !important;
+}
+
+.THIS .oh-arrow {
+    position: absolute;
+    background-color: #52678C;
+    width: 16px;
+    height: 16px;
+    transform: rotate(45deg);
+    margin-top: -6px;
+    transition: all 0.25s ease-in;
+    left:0;
+}
+
+.THIS .hide {
+    display: none;
+    left: 0;
+}

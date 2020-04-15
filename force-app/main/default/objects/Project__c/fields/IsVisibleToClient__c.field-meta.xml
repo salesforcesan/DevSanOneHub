@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsVisibleToClient__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>Controls project visibility on client dashboards and reports.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Select to provide the client visibility to project results, including photos.</inlineHelpText>
+    <label>Visible to Client</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

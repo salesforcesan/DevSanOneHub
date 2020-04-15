@@ -1,0 +1,65 @@
+<aura:component controller="lwcImportProgramController" extends="c:AuraImportProgramLibrary">
+    <!-- public -->
+    <aura:attribute name="custStyle" type="String" default="" />
+    <aura:attribute name="projects" type="Object" default="{}" />
+    <aura:method name="initUploadFile" action="{!c.onInitUploadFile}">
+        <aura:attribute name="aggregateResult" type="List" default="[]" />
+    </aura:method>
+    <aura:method name="uploadFile" action="{!c.onUploadFile}">
+        <aura:attribute name="datasourceId" type="String" default="" />
+        <aura:attribute name="chunkSize" type="Integer" default="1000" />
+        <aura:attribute name="stopImport" type="Integer" default="0" />
+    </aura:method>
+
+    <!-- private -->
+    <aura:attribute name="columns" type="List" default="[]" access="private" />
+    <aura:attribute name="results" type="List" default="[]" access="private" />
+    <aura:attribute name="requestDef" type="List" default="[]" access="private" />
+    <aura:attribute name="uploadData" type="List" default="[]" access="private" />
+    <aura:attribute name="chunkSize" type="Integer" default="1000" access="private" />
+    <aura:attribute name="datasourceId" type="String" default="" access="private" />
+    <aura:attribute name="requestQueue" type="Object" default="" access="private" />
+    <aura:attribute name="currentProject" type="Object" default="null" access="private" />
+    <aura:attribute name="stopImport" type="Integer" default="0" access="private" />
+
+    <!-- event -->
+    <aura:registerEvent name="step3Event" type="c:SimpleComponentEvent" />
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+
+    <!-- template -->
+    <div style="{!v.custStyle}">
+        <div class="oh-step-header slds-text-align_center">
+            <h2>Upload File for Processing</h2>
+        </div>
+        <div class="slds-p-around_small">
+            <lightning:layout>
+                <lightning:layoutItem flexibility="grow">
+                    <div class="slds-p-around_small oh-step-section">
+                        <lightning:datatable keyField="id" columns="{!v.columns}" data="{!v.results}"
+                            hideCheckboxColumn="true">
+                        </lightning:datatable>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="shrink">
+                    <div class="slds-p-around_small oh-step-section">
+                        <lightning:tabset variant="scoped">
+                            <lightning:tab label="Import Request">
+                                <div class="slds-p-around_x-small slds-scrollable_y" style="height:250px;">
+                                    <aura:if isTrue="{!v.requestDef.length > 0}">
+                                        <c:AuraNameValueList placeholder="No request created yet."
+                                            nameValues="{!v.requestDef}" variant="stacked"></c:AuraNameValueList>
+                                        <aura:set attribute="else">
+                                            <div class="slds-box slds-p-around_x-small">
+                                                No import request created yet.
+                                            </div>
+                                        </aura:set>
+                                    </aura:if>
+                                </div>
+                            </lightning:tab>
+                        </lightning:tabset>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+    </div>
+</aura:component>

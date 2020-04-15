@@ -1,0 +1,151 @@
+<aura:component controller="LightningSurveyQuestionsController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />    
+    
+    <!--ATTRIBUTES DECLARATION -->
+    <aura:attribute name="currentQuestion" type="Object" access="global" />
+    <aura:attribute name="currentQuestionQuestionType" type="String" default="" access="global" />
+    <aura:attribute name="error" type="String" default="" access="global" />
+    <aura:attribute name="selectedResponse" type="Object" default="" access="global" />
+    
+    <!-- EVENT LISTENER -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <!-- EVENT REGISTER -->
+    <aura:registerEvent name="EventResponseSelected" type="c:EventResponseSelected"/>
+    
+    <aura:if isTrue="{!v.currentQuestionQuestionType == 'Single-Select List'}">
+        <fieldset class="slds-form-element">
+            <legend class="slds-form-element__legend slds-form-element__label">{!v.currentQuestion.QuestionNumber}. {!v.currentQuestion.QuestionText}</legend>
+            <div class="slds-form-element__control">
+                <aura:iteration items="{!v.currentQuestion.DefinedResponses}" var="response" indexVar="index">
+                    <aura:renderIf isTrue="{!response.Active}">
+                        <span class="slds-radio">
+                            <input type="radio" id="{!response.DefinedResponseId}" onclick="{!c.inputChange}"></input>
+                            <label class="slds-radio__label" for="{!response.DefinedResponseId}">
+                                <span class="slds-radio_faux"></span>
+                                <span class="slds-form-element__label">{!response.DefinedResponseText}</span>
+                            </label>
+                        </span>
+                    </aura:renderIf>
+                </aura:iteration>
+            </div>
+        </fieldset>
+    </aura:if>
+    <aura:if isTrue="{!v.currentQuestionQuestionType == 'Multi-Select List'}">
+        <fieldset class="slds-form-element">
+            <legend class="slds-form-element__legend slds-form-element__label">{!v.currentQuestion.QuestionNumber}. {!v.currentQuestion.QuestionText}</legend>
+            <div class="slds-form-element__control">
+                <aura:iteration items="{!v.currentQuestion.DefinedResponses}" var="response" indexVar="index">
+                    <aura:renderIf isTrue="{!response.Active}">
+                        <span class="slds-checkbox">
+                            <input type="checkbox" id="{!response.DefinedResponseId}" onclick="{!c.inputChange}"></input>
+                            <label class="slds-checkbox__label" for="{!response.DefinedResponseId}">
+                                <span class="slds-checkbox_faux"></span>
+                                <span class="slds-form-element__label">{!response.DefinedResponseText}</span>
+                            </label>
+                        </span>
+                    </aura:renderIf>
+                </aura:iteration>
+            </div> 
+        </fieldset>
+    </aura:if>
+    <aura:if isTrue="{!v.currentQuestionQuestionType == 'Text'}">
+        <fieldset class="slds-form-element">
+            <label class="slds-form-element__label" for="{!v.currentQuestion.QuestionId}">{!v.currentQuestion.QuestionNumber}. {!v.currentQuestion.QuestionText}</label>
+            <div class="slds-form-element__control">
+                <input type="text" id="{!v.currentQuestion.QuestionId}" class="slds-input slds-input__text" placeholder="" oninput="{!c.inputChange}" />
+            </div>
+        </fieldset>
+    </aura:if>
+    <aura:if isTrue="{!v.currentQuestionQuestionType == 'Time'}">
+        <fieldset class="slds-form-element">
+            <label class="slds-form-element__label" for="{!v.currentQuestion.QuestionId}">{!v.currentQuestion.QuestionNumber}. {!v.currentQuestion.QuestionText}</label>
+            <div class="slds-form-element__control">
+                <input type="text" id="{!v.currentQuestion.QuestionId}" class="slds-input slds-input__text" placeholder="" oninput="{!c.inputChange}" />
+            </div>
+        </fieldset>
+    </aura:if>
+    <aura:if isTrue="{!v.currentQuestionQuestionType == 'Date'}">
+        <fieldset class="slds-form-element">
+            <label class="slds-form-element__label" for="{!v.currentQuestion.QuestionId}">{!v.currentQuestion.QuestionNumber}. {!v.currentQuestion.QuestionText}</label>
+            <div class="slds-form-element__control">
+                <input type="text" id="{!v.currentQuestion.QuestionId}" class="slds-input slds-input__text" placeholder="" oninput="{!c.inputChange}" />
+            </div>
+        </fieldset>
+    </aura:if>
+    <aura:if isTrue="{!v.currentQuestionQuestionType == 'Currency'}">
+        <fieldset class="slds-form-element">
+            <label class="slds-form-element__label" for="{!v.currentQuestion.QuestionId}">{!v.currentQuestion.QuestionNumber}. {!v.currentQuestion.QuestionText}</label>
+            <div class="slds-form-element__control">
+                <input type="text" id="{!v.currentQuestion.QuestionId}" class="slds-input slds-input__text" placeholder="" oninput="{!c.inputChange}" />
+            </div>
+        </fieldset>
+    </aura:if>
+    <aura:if isTrue="{!v.currentQuestionQuestionType == 'Number'}">
+        <fieldset class="slds-form-element">
+            <label class="slds-form-element__label" for="{!v.currentQuestion.QuestionId}">{!v.currentQuestion.QuestionNumber}. {!v.currentQuestion.QuestionText}</label>
+            <div class="slds-form-element__control">
+                <input type="text" id="{!v.currentQuestion.QuestionId}" class="slds-input slds-input__text" placeholder="" oninput="{!c.inputChange}" />
+            </div>
+            <div style="{!v.error == 'out_of_range' ? 'display:block;' : 'display:none;'}"
+                 class="slds-form-element__help" id="error-message-unique-id">
+                Please enter a number between {!v.currentQuestion.MinValue} and {!v.currentQuestion.MaxValue}
+            </div>
+        </fieldset>
+    </aura:if>
+    <aura:if isTrue="{!v.currentQuestionQuestionType == 'Yes/No'}">
+        <fieldset class="slds-form-element">
+            <label class="slds-form-element__label" for="{!v.currentQuestion.QuestionId}">{!v.currentQuestion.QuestionNumber}. {!v.currentQuestion.QuestionText}</label>
+            <div class="slds-button-group" role="group">
+                <button class="slds-button slds-button_brand yesno-button"
+                        id="{!v.currentQuestion.QuestionId}"
+                        value="Yes"
+                        onclick="{!c.inputChange}">Yes</button>
+                <button class="slds-button slds-button_neutral yesno-button"
+                        id="{!v.currentQuestion.QuestionId}"
+                        value="No"
+                        onclick="{!c.inputChange}">No</button>
+            </div>
+        </fieldset>
+    </aura:if>
+    <aura:if isTrue="{!(v.currentQuestionQuestionType == 'Photo' || v.currentQuestionQuestionType == 'Signature')}">
+        <fieldset class="slds-form-element">
+            <label class="slds-form-element__label" for="{!v.currentQuestion.QuestionId}">{!v.currentQuestion.QuestionNumber}. {!v.currentQuestion.QuestionText}</label>
+            <div class="slds-form-element__control">
+                <button class="slds-button slds-button_neutral"
+                        id="{!v.currentQuestion.QuestionId}"
+                        value="photo attachment"
+                        onclick="{!c.inputChange}">
+                    <i class="fa fa-camera attachment-icon" aria-hidden="true"></i>
+                </button>    
+                <button class="slds-button slds-button_neutral"
+                        id="{!v.currentQuestion.QuestionId}"
+                        value="file attachment"
+                        onclick="{!c.inputChange}">
+                    <i class="fa fa-paperclip attachment-icon" aria-hidden="true"></i>
+                </button>
+            </div>
+        </fieldset>
+    </aura:if>
+     <aura:if isTrue="{!(v.currentQuestionQuestionType == 'Barcode')}">
+        <fieldset class="slds-form-element">
+            <label class="slds-form-element__label" for="{!v.currentQuestion.QuestionId}">{!v.currentQuestion.QuestionNumber}. {!v.currentQuestion.QuestionText}</label>
+            <div class="slds-form-element__control">
+                <button class="slds-button slds-button_neutral"
+                        id="{!v.currentQuestion.QuestionId}"
+                        value="photo attachment"
+                        onclick="{!c.inputChange}">
+                    <i class="fa fa-barcode attachment-icon" aria-hidden="true"></i>
+                </button>    
+                <button class="slds-button slds-button_neutral"
+                        id="{!v.currentQuestion.QuestionId}"
+                        value="file attachment"
+                        onclick="{!c.inputChange}">
+                    <i class="fa fa-paperclip attachment-icon" aria-hidden="true"></i>
+                </button>
+            </div>
+        </fieldset>
+    </aura:if>
+
+</aura:component>

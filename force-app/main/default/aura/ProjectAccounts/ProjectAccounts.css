@@ -1,0 +1,35 @@
+.THIS .slds-size_1-of-1.pad-right {
+    padding-right:12px;
+}
+
+.THIS .oh-amount-input {
+    max-width:6.5rem; 
+    margin-right:1rem; 
+    font-size:12px;
+    line-height:1.2rem;
+    color: #0070D2;
+    text-align: left;
+  }
+
+.THIS .oh-primary-holder {
+    background:#EAF6FC;
+    padding:1em;
+    border-top:1px solid #0070D2;
+}
+
+.THIS .oh-primary-tab {
+    background:#0070D2;
+    padding:.3em;
+    width:15em;
+    margin-left:12px;
+    margin-top:-1.15em;
+    border-radius:0px 0px 5px 5px;
+    text-align:center;
+    color:#fff;
+    font-weight:400;
+    font-size:.75rem;
+}
+
+.THIS .add-account-lookup {
+    padding-top: 3px;
+}

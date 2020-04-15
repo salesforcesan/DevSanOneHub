@@ -1,0 +1,63 @@
+<aura:component extends="c:AuraImportProgramLibrary">
+  <!-- public -->
+  <aura:attribute name="marginGap" type="String" default="" />
+  <aura:attribute name="stepDefs" type="List" default="[]" />
+  <aura:attribute name="hideSteps" type="Boolean" default="false" />
+  <aura:attribute name="nextEnabled" type="Boolean" default="false" />
+  <aura:attribute name="style" type="String" default="" />
+
+  <!-- private -->
+  <aura:attribute name="hasGap" type="Boolean" default="false" />
+  <aura:attribute name="hasSteps" type="Boolean" default="false" />
+  <aura:attribute name="hasError" type="Boolean" default="false" />
+  <aura:attribute name="currentStep" type="integer" default="0" access="private" />
+  <aura:attribute name="steps" type="List" default="[]" access="private" />
+  <aura:attribute name="prevDisabled" type="Boolean" default="false" access="private" />
+  <aura:attribute name="nextDisabled" type="Boolean" default="false" access="private" />
+  <aura:attribute name="isNextDead" type="Boolean" default="true" access="private" />
+
+
+  <!-- events-->
+  <aura:registerEvent name="stepFooterEvent" type="c:SimpleComponentEvent" />
+  <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+  <aura:handler name="change" value="{!v.nextEnabled}" action="{!c.onNextEnabledChanged}" />
+  <aura:handler name="change" value="{!v.stepDefs}" action="{! c.onStepDefsChanged}" />
+
+  <!-- template-->
+  <div class="oh-footer">
+    <aura:if isTrue="{!v.hasGap}">
+      <hr class="slds-m-vertical_x-small h-m-gap-small" style="{!v.style}" />
+    </aura:if>
+    <aura:if isTrue="{! false==v.hasGap}">
+      <hr class="slds-m-vertical_x-small" />
+    </aura:if>
+    <div class="slds-p-horizontal_x-small slds-p-top_none slds-p-bottom_x-small">
+      <lightning:layout verticalAlign="center">
+        <lightning:layoutItem flexibility="grow">
+          <aura:if isTrue="{!v.hasSteps}">
+            <div class="slds-p-horizontal_x-small" tabindex="-1">
+              <lightning:progressIndicator currentStep="{!v.currentStep}" type="base" hasError="{!v.hasError}"
+                variant="base">
+                <aura:iteration items="{!v.steps}" var="step">
+                  <lightning:progressStep label="{!step.label}" value="{!step.id}">
+                  </lightning:progressStep>
+                </aura:iteration>
+              </lightning:progressIndicator>
+            </div>
+          </aura:if>
+        </lightning:layoutItem>
+        <lightning:layoutItem flexibility="shrink">
+          <aura:if isTrue="{!!v.hideSteps}">
+            <lightning:button variant="warning" class="slds-m-right_x-small" title="Cancel" label="Cancel"
+              onclick="{! c.onCancelClicked}"></lightning:button>
+            <lightning:button class="slds-m-right_x-small" disabled="{!v.prevDisabled}" title="Previous"
+              label="Previous" onclick="{! c.onPrevClicked}"></lightning:button>
+            <lightning:button variant="brand" onclick="{! c.onNextClicked}" title="Next Step" label=" Next "
+              disabled="{!v.isNextDead}"></lightning:button>
+          </aura:if>
+          {!v.body}
+        </lightning:layoutItem>
+      </lightning:layout>
+    </div>
+  </div>
+</aura:component>

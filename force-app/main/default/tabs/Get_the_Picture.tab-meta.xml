@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <frameHeight>1000</frameHeight>
+    <hasSidebar>false</hasSidebar>
+    <label>Get the Picture</label>
+    <motif>Custom38: Camera</motif>
+    <url>https://crossmarkconnect.sharepoint.com/sites/resources/_layouts/15/appredirect.aspx?instance_id={EE0B9B70-3F60-431A-8CAE-E67BCD23D38F}</url>
+    <urlEncodingKey>UTF-8</urlEncodingKey>
+</CustomTab>

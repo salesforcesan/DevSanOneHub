@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsUserFavorite__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>The external user favorite indicator</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The external user favorite indicator</inlineHelpText>
+    <label>Is User Favorite</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,48 @@
+<aura:component controller="LightningJobsController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="jobIds" type="Object" default="[1,50,21,3,44]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />        
+	<aura:handler event="c:EventConfirmModal" action="{!c.ConfirmCancelJobs}"/>
+    <aura:attribute name="errormessage" type="Object" default=""/> 
+    
+    <aura:registerEvent name="refreshJobs" type="c:EventJobsRefresh"/>
+    
+    
+    <div class="slds-form--horizontal slds-m-around--medium">	
+      <div style="margin-bottom:0.1cm;">
+			<c:Notification aura:id="notification1" class="no-flow"/>
+      </div>   
+        <div class="slds-is-relative">
+		    <div style="min-height:100px;" aura:id="displaySpinner">
+        		<lightning:spinner size="medium" variant="brand" />
+    		</div>
+		</div>
+       <div class="slds-form-element">
+            <label class="slds-form-element__label">Selected Jobs</label>
+            <div class="slds-form-element__control">
+                <label class="slds-form-element__label"><b>{!v.jobIds.length}</b></label>
+            </div>
+        </div>
+        <div>
+            <center><abbr class="slds-required" title="required">{!v.errormessage}</abbr></center>           
+        </div>        
+        <div class="slds-form-element">
+            <label class="slds-form-element__label"><abbr class="slds-required" title="required">*</abbr>Cancel Reason</label>
+            <div class="slds-form-element__control">
+                <div>
+                    <ui:inputSelect required="true" class="dynamic" aura:id="jobCancelReason"/>                    
+                </div>
+            </div>            
+        </div>
+        <div class="slds-form-element">
+            <label class="slds-form-element__label">Cancel Reason Comment</label>
+            <div class="slds-form-element__control">
+                <ui:inputTextArea aura:id="cancelReasonComment" maxlength="255" placeholder="Enter comments" class="slds-textarea" rows="5"/>
+            </div>
+        </div>     
+        <hr style="margin:1rem -1rem 1rem -1rem;"></hr>
+        <div class="slds-grid slds-grid--align-end slds-m-bottom--medium">            	
+             <span class="slds-p-right--medium"><c:ModalConfirmButton project="{!v.jobIds}" buttonLabel="Cancel Selected Job(s)"/></span>
+             <c:ModalCancelButton buttonLabel="Do not Cancel"/>
+        </div>
+    </div>
+</aura:component>

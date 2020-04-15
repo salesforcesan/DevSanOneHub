@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CycleEndDate__c</fullName>
+    <description>The end date of the cycle (the Project End Date is auto-populated based upon this field).</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The end date of the cycle</inlineHelpText>
+    <label>Cycle End Date</label>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

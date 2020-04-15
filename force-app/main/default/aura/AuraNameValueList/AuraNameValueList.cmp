@@ -1,0 +1,26 @@
+<aura:component>
+  <!-- public -->
+  <aura:attribute name="placeholder" type="string" default="No data to show" />
+  <aura:attribute name="nameValues" type="List" default="[]" />
+  <aura:attribute name="variant" type="String" default="horizontal" />
+
+  <!-- private -->
+  <aura:attribute name="className" type="String" default="slds-list_inline slds-wrap slds-p-around_xx-small"
+    access="private" />
+
+  <!-- event -->
+  <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+  <aura:handler name="change" value="{!v.variant}" action="{!c.onVariantChanged}" />
+
+  <aura:if isTrue="{!v.nameValues.length > 0}">
+    <dl class="{!v.className}">
+      <aura:iteration items="{!v.nameValues}" var="nvp">
+        <dt class="slds-item_label slds-text-color_weak slds-truncate" title="{!nvp.name}">{!nvp.name}:</dt>
+        <dt class="slds-item_detail" title="{!nvp.value}">{!nvp.value}</dt>
+      </aura:iteration>
+    </dl>
+    <aura:set attribute="else">
+      <div>{!v.placeholder}</div>
+    </aura:set>
+  </aura:if>
+</aura:component>

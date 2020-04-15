@@ -1,0 +1,34 @@
+<aura:component >
+  <aura:attribute name="dialogId" type="String" default=""/>
+  <aura:attribute name="projectId" type="String" default=""/>
+  <aura:attribute name="reasons" type="List" default="[]"/>
+  <aura:registerEvent name="cancelLocationEvent" type="c:SimpleComponentEvent"/>
+  <aura:registerEvent name="closeDialogEvent" type="c:SimpleComponentEvent"/>
+   <div style="margin-bottom:35px;padding-bottom:25px;padding-top:5px;">
+         <c:Notification aura:id="notificationPopup" class="no-flow" message="Are you sure you want to cancel the Locations? The cancel action selected may not result in all jobs/tickets being canceled due to configured lead times not being met. Continue with this action to cancel all jobs/tickets that can be canceled." hideCloseButton="True" visible="true" type="warning"/>
+   </div>
+  
+  <article class="cancel-confirmation-container">
+     
+      <c:Notification aura:id="notification" class="no-flow"/>
+      <br></br>
+     
+      <c:Spinner aura:id="busyIndicator" type="modal" size="medium">
+        <div>
+         <div class="cancel-confirmation-body">
+           <ui:inputSelect label="Reason" multiple="false" aura:id="reason" class="mg-bt-small">
+            <ui:inputSelectOption text="" label="-- None --" value="true"/>
+            <aura:iteration items="{!v.reasons}" var="item">
+              <ui:inputSelectOption text="{!item.id}" label="{!item.value}"/>
+            </aura:iteration>
+          </ui:inputSelect>
+            <lightning:textarea name="comment" label="Comment" placeholder="any comment for the selected reason." class="textarea" aura:id="comment"/>
+          </div>
+          <footer>
+            <lightning:button label="Cancel" name="btnCancel" variant="neutral" onclick="{!c.onCancel}"/>
+            <lightning:button label="Submit" name="btnSubmit" variant="brand" onclick="{!c.onSubmit}"/>
+          </footer>
+      </div>
+    </c:Spinner>
+  </article>
+</aura:component>

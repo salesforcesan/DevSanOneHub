@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsNumberOfWorkersRequired__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>It can be used when there is team service on a project</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Enter number of workers required for this team service</inlineHelpText>
+    <label>Allow Multiple Workers</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

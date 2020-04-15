@@ -1,0 +1,8 @@
+.THIS slds-list_stacked dd {
+  margin-bottom: 10px;
+}
+
+.THIS slds-list_horizontal dt,
+.THIS slds-list_horizontal dd {
+  margin-bottom: 10px;
+}

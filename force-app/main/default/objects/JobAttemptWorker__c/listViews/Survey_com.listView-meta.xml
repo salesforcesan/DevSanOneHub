@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Survey_com</fullName>
+    <columns>FirstName__c</columns>
+    <columns>LastName__c</columns>
+    <columns>ThirdPartyAgencyStatus__c</columns>
+    <columns>NAME</columns>
+    <columns>ECWorkerId__c</columns>
+    <columns>ProjectTitle__c</columns>
+    <columns>EstimatedMinutes__c</columns>
+    <columns>LocationAddress__c</columns>
+    <columns>LocationNumber__c</columns>
+    <columns>LocationName__c</columns>
+    <columns>LocationCity__c</columns>
+    <columns>LocationState__c</columns>
+    <columns>StartTime__c</columns>
+    <columns>ECWorkerTime__c</columns>
+    <columns>ProjectNumber__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>ThirdPartyAgencyStatus__c</field>
+        <operation>equals</operation>
+        <value>Committed,Accepted</value>
+    </filters>
+    <filters>
+        <field>My3PLWork__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>L&#39;Oreal Usa,Inc</label>
+</ListView>

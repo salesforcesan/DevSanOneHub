@@ -1,0 +1,6 @@
+<aura:documentation>
+	<aura:description>
+    	<p>This component is called from <code>Timeline</code> parent component. It is receiving <code>TimelineEntryList</code>, iterating through each TimelineEntry event present in the list and displaying the events in chronological order.
+        </p>
+    </aura:description>
+</aura:documentation>

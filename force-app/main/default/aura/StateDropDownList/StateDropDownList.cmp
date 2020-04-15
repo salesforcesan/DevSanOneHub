@@ -1,0 +1,22 @@
+<aura:component controller="StateDropDownController"  extends="c:Remotable">
+  <aura:attribute name="states" type="List" default="[]" description="a list of US states"/>
+  <aura:attribute name="label" type="String" default="State"/>
+  <aura:attribute name="class" type="String" default=""/>
+  <aura:attribute name="defaultValue" type="String" default="-1"/>
+  <aura:attribute name="defaultLabel" type="String" default=""/>
+  <aura:attribute name="value" type="String" default=""/>
+  <aura:attribute name="multiple" type="Boolean" default="false"/>
+  <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+  <aura:registerEvent name="onStateChanged" type="c:SimpleComponentEvent"/>
+  <ui:inputSelect label="{!v.label}" change="{! c.onChanged }"
+    multiple="{!v.multiple}" value="{!v.value}" 
+    aura:id="selState" class="{! v.class != '' ? 'slds-m-bottom--x-small ' + v.class : 'slds-m-bottom--x-small'}">
+    <aura:if isTrue="{!v.defaultValue != '-1'}">
+      <ui:inputSelectOption text="{!v.defaultValue}" label="{!v.defaultLabel}" value="true"/>
+    </aura:if>
+    <aura:iteration items="{!v.states}" var="state">
+        <ui:inputSelectOption text="{!state.DeveloperName}" label="{!state.MasterLabel}"/>
+     
+    </aura:iteration>
+  </ui:inputSelect>
+</aura:component>

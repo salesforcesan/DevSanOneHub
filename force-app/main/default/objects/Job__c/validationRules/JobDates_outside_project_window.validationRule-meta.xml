@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JobDates_outside_project_window</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(StartDateCalculated__c &lt;  ProjectStartDate__c, StartDateCalculated__c &gt;  ProjectEndDate__c, EndDateCalculated__c  &lt; ProjectStartDate__c, EndDateCalculated__c  &gt; ProjectEndDate__c, JobScheduledDate__c &lt;  ProjectStartDate__c, JobScheduledDate__c &gt;  ProjectEndDate__c)</errorConditionFormula>
+    <errorMessage>One or more job dates (Start/End/Scheduled) are outside project window.</errorMessage>
+</ValidationRule>

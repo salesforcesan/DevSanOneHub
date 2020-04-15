@@ -1,0 +1,21 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+
+    <!-- ATTRIBUTES DECLARATION -->
+    <aura:attribute name="message" default="" type="String"/>
+    
+    <!-- PUBLISHER -->
+    
+    <!-- EVENT LISTENER -->
+    
+    <div>
+        <div class="slds-modal__content slds-p-around--medium">
+            <div>
+                <p class="slds-text-align--center"><aura:unescapedHtml value="{!v.message}" /></p>
+            </div>
+        </div>
+        <div class="slds-modal__footer">
+            <c:ModalCancelButton buttonLabel="Close" />
+        </div>
+    </div>
+	
+</aura:component>

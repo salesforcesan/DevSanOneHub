@@ -1,0 +1,38 @@
+.THIS.datepicker {
+  position: relative;
+  z-index: 7000;
+  min-width: 6rem;
+  max-width: 20rem;
+  margin-top: 0.125rem;
+  border: 1px solid #d8dde6;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0;
+  font-size: 0.75rem;
+  background: white;
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.16);
+}
+
+.THIS.datepicker .no-label-container .slds-form-element__label {
+  display: none;
+}
+
+.THIS.datepicker .slds-datepicker__month tbody>tr>td>a {
+  color: rgb(22, 50, 92);
+}
+
+.THIS.datepicker .slds-datepicker__month tbody>tr>td.slds-disabled-text > a {
+  color: #d8dde6;
+  cursor: default;
+}
+
+.THIS.datepicker .slds-datepicker__month tbody>tr>td>a:hover,
+.THIS.datepicker .slds-datepicker__month tbody>tr>td>a:visited,
+.THIS.datepicker .slds-datepicker__month tbody>tr>td>a:link,
+.THIS.datepicker .slds-datepicker__month tbody>tr>td>a:active {
+  text-decoration: none;
+}
+
+.THIS.datepicker td.slds-is-selected-multi+.slds-is-selected-multi>.slds-day:before {
+  left: -60%;
+  width: 2.8rem;
+}

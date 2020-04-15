@@ -1,0 +1,51 @@
+<aura:component >
+  <aura:attribute name="type" type="String" 
+                    description="ALERT, CONFIRM" required="true" default="ALERT" />
+    <aura:attribute name="title" type="String" 
+                    description="Dialog title" required="true" />
+    <aura:attribute name="content" type="String" 
+                    description="Model Dialog content text" required="true"  />
+    <aura:attribute name="context" type="Object" 
+                    description="Object callback" required="false"  />
+    <aura:attribute name="showDialog" type="Boolean" 
+                    description="Shows the dialog" required="true"  />
+     <aura:registerEvent name="onClose" type="c:OnehubModalDialogCloseEvt"/>
+    <div class="slds">
+            <div id="oneHubModal" aura:id="oneHubModal" tabindex="-1" aria-labelledby="header43" class="{!'slds-modal '+((v.showDialog)?'slds-fade-in-open':'slds-fade-in-hide')}" aria-hidden="true" role="dialog">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <button class="slds-button slds-button--icon-inverse slds-modal__close" onclick="{!c.closeModalDialog}" >
+                        <c:svg class="slds-button__icon slds-button__icon--large"
+                               xlinkHref="{!$Resource.SLDS1 + '/assets/icons/action-sprite/svg/symbols.svg#close'}"
+                               ariaHidden="true"
+                               />
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    
+                    <h2 class="slds-text-heading--medium">{!v.title}</h2>
+                </div>
+                <aura:renderIf isTrue="{!not(empty(v.content))}">
+                    
+                    <div class="slds-modal__content slds-p-around--medium">
+                        <div>
+                            <p><aura:unescapedHtml value="{!v.content}" /></p>
+                        </div>
+                    </div>
+ 
+                    <div class="slds-modal__footer">
+                        <aura:renderIf isTrue="{!v.type == 'ALERT'}">
+                            <span />
+                           <button class="slds-button slds-button--neutral " onclick="{!c.closeModalDialog}">Close</button>
+                        </aura:renderIf>
+                        <aura:renderIf isTrue="{!v.type == 'CONFIRM'}">
+                          <button class="slds-button slds-button--brand " onclick="{!c.closeModalDialogYes}">Yes</button>
+                          <button class="slds-button slds-button--neutral " onclick="{!c.closeModalDialog }">No</button>
+							
+                        </aura:renderIf>
+                    </div>
+                </aura:renderIf>
+            </div>
+        </div>
+      <div aura:id="Modelbackground" class="{!'slds-backdrop '+((v.showDialog)?'slds-backdrop--open':'slds-backdrop--hide')}"></div>  
+	</div>
+</aura:component>

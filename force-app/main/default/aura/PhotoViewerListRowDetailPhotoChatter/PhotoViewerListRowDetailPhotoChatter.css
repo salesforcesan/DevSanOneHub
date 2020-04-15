@@ -1,0 +1,7 @@
+.THIS.oh-chatter-container .oh-content {
+    min-height: 350px;
+}
+
+.THIS.oh-chatter-container .oh-busy {
+    background-color: inherit;
+}

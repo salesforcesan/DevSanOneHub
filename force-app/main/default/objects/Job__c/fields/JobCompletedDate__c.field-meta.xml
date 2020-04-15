@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JobCompletedDate__c</fullName>
+    <description>The field that indicates the date the Job was completed.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The date the job was completed</inlineHelpText>
+    <label>Completed Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

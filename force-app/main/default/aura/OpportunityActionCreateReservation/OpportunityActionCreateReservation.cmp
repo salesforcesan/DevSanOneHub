@@ -1,0 +1,42 @@
+<aura:component extends="c:Remotable" controller="LightningProjectController" implements="force:LightningQuickActionWithoutHeader,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="sObjectName" type="String" />
+    <aura:attribute name="opportunityList" type="OpportunityWrapper[]"/>
+    <aura:attribute type="String" name="callbackresult" default="NONE"></aura:attribute>
+    <aura:attribute type="String" name="ReservationId" ></aura:attribute>
+    <aura:attribute type="String" name="callbackmessage" default="" />
+    
+    <aura:dependency resource="markup://force:navigateToSObject" type="EVENT"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+   <aura:if isTrue="{!v.ReservationId ==''}">
+     <div class="slds-is-relative" id="mainDiv">
+        <div class="modal-header slds-modal__header">
+            <h2 class="title slds-text-heading--medium" >Create Reservation</h2>
+        </div>
+        <div  class="scrollable slds-modal__content">
+            <div class="slds-p-around--medium">
+                <aura:if isTrue="{!v.callbackresult == 'SUCCESS' }">
+                    <c:Notification aura:id="notification" class="no-flow" message="{!v.callbackmessage}" visible="true" hideCloseButton="True" type="success"/>
+                </aura:if>
+                <aura:if isTrue="{!v.callbackresult == 'ERROR' }">
+                    <c:Notification aura:id="notification" class="no-flow" message="{!v.callbackmessage}" visible="true" hideCloseButton="True" type="error"/>
+                </aura:if>
+                <aura:if isTrue="{!v.callbackresult == 'NONE' }">
+                    <div style="margin-left:-2rem;margin-right:-2rem;">
+                        <c:Notification aura:id="notification" class="no-flow" message="Are you sure you want to create a new reservation?" hideCloseButton="True" visible="true" type="warning"/>
+                    </div>  
+                </aura:if> 
+            </div>
+            <div class="slds-hide"  aura:id="loadingSpinner" >
+                <lightning:spinner size="medium" variant="brand" />
+            </div> 
+        </div>
+        <div class="modal-footer slds-modal__footer">
+            <lightning:button label="Cancel" onclick="{! c.cancel}" /> 
+            <lightning:button label="Yes, Create Reservation" onclick="{! c.createReservationButtonClicked}" variant="brand"  /> 
+        </div>
+    </div>
+    </aura:if>
+    
+</aura:component>

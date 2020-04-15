@@ -1,0 +1,25 @@
+<aura:component controller='lwcAlertController' extends="c:Remotable" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+	<aura:attribute name="isShown" type="boolean" access="global" />
+  <aura:attribute name="iconName" type="String" access="global"/>
+  <aura:attribute name="iconTitle" type="String" access="global"/>
+  <aura:attribute name="alertMessage" type="String" access="global"/>
+  <aura:attribute name="object" type="String"  access="global"/>
+  <aura:attribute name="rule" type="String"  access="global"/>
+	<aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+
+	  <aura:if isTrue="{!v.isShown}">
+	  <div class="slds-box slds-box_xx-small" style="background: #ffb75d;">
+      <lightning:layout verticalAlign="center">
+        <lightning:layoutItem flexibility="shrink">
+          <div class="slds-var-p-around_x-small">
+            <lightning:icon size="small" iconName="{!v.iconName}" alternativeText="{!v.iconTitle}">
+            </lightning:icon>
+          </div>
+        </lightning:layoutItem>
+        <lightning:layoutItem flexibility="auto">
+          <span class="slds-var-p-around_x-small">{! v.alertMessage}</span>
+        </lightning:layoutItem>
+      </lightning:layout>
+    </div>
+  </aura:if>
+</aura:component>

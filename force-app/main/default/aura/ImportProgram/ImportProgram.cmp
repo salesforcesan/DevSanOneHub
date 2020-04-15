@@ -1,0 +1,14 @@
+<aura:component
+  implements="force:lightningQuickActionWithoutHeader,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+  access="global">
+  <!-- public-->
+  <aura:attribute name="style" default="" type="String"></aura:attribute>
+  <aura:handler name="init" value="{!this}" action="{!c.init}"></aura:handler>
+
+  <!-- event -->
+  <aura:handler name="closeEvent" event="c:SimpleComponentEvent" action="{!c.onClose}" />
+
+  <!-- template-->
+  <aura:unescapedHtml value="{!v.style}"></aura:unescapedHtml>
+  <c:AuraImportProgram recordId="{!v.recordId}"></c:AuraImportProgram>
+</aura:component>

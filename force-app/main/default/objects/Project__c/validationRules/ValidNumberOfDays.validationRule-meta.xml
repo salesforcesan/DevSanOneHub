@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ValidNumberOfDays</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(NumberOfDays__c &lt; 1, NumberOfDays__c &gt; ((EndDate__c - StartDate__c) + 1))</errorConditionFormula>
+    <errorDisplayField>NumberOfDays__c</errorDisplayField>
+    <errorMessage>Please enter a valid number of days within the project window</errorMessage>
+</ValidationRule>

@@ -1,0 +1,51 @@
+<aura:component controller="LightningJobAttemptWorkerController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="jobattemptWorkers" type="List" default="" />
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="selectedjaw" type="List" />
+    <aura:attribute name="sortedBy" type="String" default="Name"/>
+    <aura:attribute name="sortedDirection" type="String" default="asc"/>
+    <aura:attribute name="selectedCount" type="integer" default="0"/>
+    <c:ModalDialogContainer aura:id="modalDialog" title="Application Dialog" size="medium" />
+    <aura:handler name="init" value="{!this}" action="{!c.loadJaworkerList}"/>
+    <aura:handler event="force:refreshView" action="{!c.loadJaworkerList}" />
+     <aura:handler name="rejectionworkerEvent" event="c:SimpleComponentEvent" action="{!c.onRejectionworkerEvent}" />
+<div class="thirdparty-list-container" >  
+    <div class="oh-body" aura:id="ohBody">
+         <aura:if isTrue="{!v.jobattemptWorkers.length > 0}">
+        <div >
+            
+            <div  class="slds-grid slds-grid--align-end">
+                <lightning:button label="Approve"  aura:id="approve"  iconName="utility:approve" class=" slds-button slds-button_success slds-m-right_small slds-m-top_small" onclick="{!c.approvalbuttonClicked}" />
+                 <lightning:button label="Reject" aura:id="reject" variant="brand" iconName="utility:reject"  class="slds-button slds-button_destructive slds-m-right_small slds-m-top_small" onclick="{!c.RejectbuttonClicked}" />
+                
+            </div>
+        </div>
+        
+        <div style="margin-bottom:10px">
+        </div>
+        
+        <div class="slds-grid" style="width:100%;" aura:id="dataTableContainer">
+            
+            <lightning:datatable aura:id="dataTable" 
+                                 data="{!v.jobattemptWorkers }" 
+                                 columns="{!v.columns}" 
+                                 keyField="Id"
+                                 rowNumberOffset="0"
+                                 sortedBy="{!v.sortedBy }"
+                                 sortedDirection="{!v.sortedDirection }"                     
+                                 onsort="{!c.updateColumnSorting}"
+                                 onrowselection="{!c.selectedJaworkers }"
+                                 class="normal" />
+        </div>
+        <aura:set attribute="else">
+            
+             <div class="oh-not-show-count">
+                               There are no pending Requests to Approve.
+                            </div>
+           
+        </aura:set>
+        
+    </aura:if> 
+    </div>
+    </div>
+</aura:component>

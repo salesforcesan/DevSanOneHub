@@ -1,0 +1,33 @@
+<aura:component >
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <aura:attribute name="account" type="AccountWrapper" />
+    
+    <article class="slds-box slds-p-around--small slds-grid slds-clearfix">
+         <div class="slds-checkbox--button slds-m-horizontal--x-small" >
+              <div class="slds-align-start oh-circle-check slds-grid slds-grid--vertical-align-center" for="{!v.account.Id + 'checked'}">
+                  <input name="checkbox" type="checkbox" id="{!v.account.Id + 'checked'}" onclick="{!c.onCheck}"/>
+                  <label class="oh-label-color" for="{!v.account.Id + 'checked'}">
+                     <span class="slds-p-top--small slds-p-bottom--x-small">  
+                     </span>
+                  </label>
+              </div>
+         </div> 
+        
+        <div class="slds-media__body">
+            <div class="slds-media slds-p-horizontal--small slds-p-top--small">
+                <div class="slds-media slds-has-flexi-truncate">
+                    <h2 class="slds-text-heading--medium slds-truncate oh-card-title">
+                        {!v.account.Name}
+                    </h2>
+                </div>                
+            </div>       
+            <div class="slds-media slds-no-space slds-grow slds-p-horizontal--small">
+                <div class="slds-text-body--small">
+                    <ul class="slds-list--horizontal slds-wrap;">
+                        <li class="slds-item">Contact Name: {!v.account.OwnerName} </li>                 
+                    </ul>
+                </div>          
+            </div>
+        </div>
+    </article>
+</aura:component>

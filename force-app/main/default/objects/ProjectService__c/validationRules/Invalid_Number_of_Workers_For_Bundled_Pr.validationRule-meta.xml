@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Invalid_Number_of_Workers_For_Bundled_Pr</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(Project__r.BundleServices__c == true,  NumberOfWorkers__c &gt; 1)</errorConditionFormula>
+    <errorDisplayField>NumberOfWorkers__c</errorDisplayField>
+    <errorMessage>Number of Workers cannot be more than 1 for a bundled project.</errorMessage>
+</ValidationRule>

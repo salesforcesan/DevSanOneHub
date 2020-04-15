@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PendingApproval</fullName>
+    <active>true</active>
+    <description>Pending Approval</description>
+    <label>Pending Approval</label>
+    <picklistValues>
+        <picklist>CancelReason__c</picklist>
+        <values>
+            <fullName>Insufficient Funds</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reduced Budget</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>RequestStatus__c</picklist>
+        <values>
+            <fullName>Pending Cancellation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending Expiration</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending Reservation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending UnReserve</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status__c</picklist>
+        <values>
+            <fullName>Approved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Canceled</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Draft</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Expired</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending Approval</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reserved</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

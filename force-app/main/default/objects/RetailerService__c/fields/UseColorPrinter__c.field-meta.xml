@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UseColorPrinter__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>this field is used to indicate if this retailer&#39;s service event manual should use what type of printer: color or white/black</description>
+    <externalId>false</externalId>
+    <label>Use Color Printer</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

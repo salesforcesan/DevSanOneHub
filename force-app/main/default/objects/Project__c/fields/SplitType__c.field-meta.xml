@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SplitType__c</fullName>
+    <description>A picklist that indicates if the project is to be a solo or split across multiple accounts.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Select the split type for the project.</inlineHelpText>
+    <label>Project Split Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Solo</fullName>
+                <default>false</default>
+                <label>Solo</label>
+            </value>
+            <value>
+                <fullName>Percentage (%)</fullName>
+                <default>false</default>
+                <label>Percentage (%)</label>
+            </value>
+            <value>
+                <fullName>Amount ($)</fullName>
+                <default>false</default>
+                <label>Amount ($)</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

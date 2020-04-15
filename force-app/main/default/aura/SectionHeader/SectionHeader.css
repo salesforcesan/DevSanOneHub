@@ -1,0 +1,51 @@
+.THIS .services-bar {
+    width: 100%;
+    background-color: #EAF6FC;
+    border-top: 1px solid #0070D2;
+    border-bottom: 1px solid #0070D2;
+}
+    
+.THIS i {
+        font-size: 1.3rem;
+    }
+    
+.THIS .services-bar-icon {
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        margin: .08rem .75rem;
+        font-size: 1.3rem;
+        line-height: 1.3rem;
+        color: #0070D2;
+        text-align: left;
+        
+    }
+
+.THIS .services-bar-title {
+       -ms-flex: 1;
+        flex: 1;
+        min-width: 0; 
+        margin: 0;
+        text-align: left;
+        line-height: 3rem;
+        color: #0070D2;
+        font-size: 1.0625rem;
+        font-weight: regular;
+        vertical-align: middle;
+    }
+    
+.THIS .page-title {
+        line-height: 130%;
+        color: #0070D2;
+        font-size:  1.4rem;
+        font-weight: 300;
+        margin: 0;
+    }
+ 
+    
+.THIS .page-subtitle {
+        line-height: 125%;
+        color: #54698D;
+        font-size: 0.875rem;
+        font-weight: regular;
+        margin: .2rem 0;
+    }

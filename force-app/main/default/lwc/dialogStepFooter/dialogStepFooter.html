@@ -1,0 +1,37 @@
+<template>
+  <div class="oh-footer">
+    <template if:true={hasGap}>
+      <hr class="slds-m-vertical_x-small h-m-gap-small" style={style}>
+    </template>
+    <template if:false={hasGap}>
+      <hr class="slds-m-vertical_x-small">
+    </template>
+    <div class="slds-p-horizontal_x-small slds-p-top_none slds-p-bottom_x-small">
+      <lightning-layout vertical-align="center">
+        <lightning-layout-item flexibility="grow">
+          <template if:true={hasSteps}>
+            <div class="slds-p-horizontal_x-small" tabindex="-1">
+              <lightning-progress-indicator current-step={currentStep} type="base" has-error={hasError} variant="base">
+                <template for:each={steps} for:item="step">
+                  <lightning-progress-step key={step.id} label={step.label} value={step.id}>
+                  </lightning-progress-step>
+                </template>
+              </lightning-progress-indicator>
+            </div>
+          </template>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="shrink">
+          <template if:false={hideSteps}>
+            <lightning-button variant="warning" class="slds-m-right_x-small" title="Cancel" label="Cancel"
+              onclick={handleCancel}></lightning-button>
+            <lightning-button class="slds-m-right_x-small" disabled={prevDisabled} title="Previous" label="Previous"
+              onclick={handlePrev}></lightning-button>
+            <lightning-button variant="brand" onclick={handleNext} title="Next Step" label=" Next "
+              disabled={isNextDead}></lightning-button>
+          </template>
+          <slot></slot>
+        </lightning-layout-item>
+      </lightning-layout>
+    </div>
+  </div>
+</template>

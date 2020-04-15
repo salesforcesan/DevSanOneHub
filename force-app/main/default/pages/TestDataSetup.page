@@ -1,0 +1,138 @@
+<apex:page standardController="Project__c" extensions="TestDataSetupExt" >
+
+<apex:form id="Form" >
+    
+        <apex:pageBlock id="pb">
+        <apex:pageMessages escape="true"  />
+        <apex:pageBlockButtons >
+            <apex:commandButton id="projectsave" value="Create Project(s)" action="{!save}"  />
+        </apex:pageBlockButtons>
+        
+        <apex:pageBlockSection id="Options" title="Options"  columns="1">
+            Set Default Value <input type="checkbox"  id="defaultValue"/><br/>
+           <!-- Override Service / Location <input type="checkbox"  id="Override"/>-->
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection id="projectInfo" title="Project Information"  columns="2">
+            <apex:inputField value="{!Project__c.Name}" styleClass="Name"/>
+            <apex:pageblockSectionItem >
+                # of projects
+                <apex:inputText id="projCount" value="{!projCount}"/> 
+            </apex:pageblockSectionItem>  
+            
+             <apex:inputfield id="sd" value="{!Project__c.StartDate__c}"/>
+             <apex:inputfield id="ed" value="{!Project__c.EndDate__c}"/> 
+             <!--<apex:inputField id="so" value="{!Project__c.ProjectScheduleOption__c}"/> -->
+             <apex:inputField value="{!Project__c.IsLocked__c}"/> 
+             <apex:inputField value="{!Project__c.ProjectLaunchDate__c}"/> 
+             
+             <apex:pageblockSectionItem >
+             Status
+             <apex:selectList id="ddlprojService" value="{!selectedStatus}" size="1" multiselect="false" >
+                <apex:selectOptions value="{!AllStatus}"   />
+             </apex:selectList>
+             </apex:pageblockSectionItem> 
+        </apex:pageBlockSection>  
+        <apex:pageBlockSection title="Service/Location" >
+
+            <apex:pageblockSectionItem >
+                <apex:outputPanel id="projServCount">
+                # of services
+                <apex:inputText id="psc" value="{!projServCount}"/> 
+                </apex:outputPanel>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageblockSectionItem >
+                <apex:outputPanel id="projLocCount">
+                # of locations
+                <apex:inputText id="plc" value="{!projLocCount}"/> 
+                </apex:outputPanel>
+            </apex:pageblockSectionItem>
+            
+            <c:MultiselectService leftLabel="Available Services"
+                leftOption="{!AllServicesList}"
+                rightLabel="Selected Services"
+                rightOption="{!SelectedServicesList}"
+                size="14"
+            width="150px"/> 
+            
+            <apex:pageblockSectionItem >
+                <apex:outputPanel id="LocNumber">
+                    Location Number
+                    <apex:inputTextarea id="ln" value="{!LocNumber}" rows="15"/>                 
+                </apex:outputPanel>
+            </apex:pageblockSectionItem>
+            
+        </apex:pageBlockSection>     
+        </apex:pageBlock>
+</apex:form>
+
+<c:jQueryScripts includejqueryui="true" />
+
+<script type="text/javascript">
+    var j$ = jQuery.noConflict();
+    
+    function getCleanName(theName)
+    {
+        return '#' + theName.replace(/:/gi,"\\:");
+    }
+                    
+     j$(document).ready(function() {
+
+         //alert(j$("#Form").html());
+           //alert(j$("#Form:contains('Successfully inserted !!!')").length > 0);\
+           
+           var content = document.body.textContent || document.body.innerText;
+           var hasText = content.indexOf("Successfully inserted")!==-1;
+           //alert(hasText);
+
+         
+         //j$('[id*="multiselectPanel"]').hide();
+         //j$('[id*="LocNumber"]').hide();
+         
+         j$('#defaultValue').change(function() {
+              if (j$(this).is(':checked'))
+              {
+                  j$(".Name").val('Test Project ');
+                  j$('[id*="projCount"]').val('1');
+                  //j$('[id*="so"]').val('a0N50000007Xstz');
+                  j$('[id*="sd"]').val('8/31/2016');
+                  j$('[id*="ed"]').val('8/31/2016');
+                  j$('[id*="psc"]').val('2');
+                  j$('[id*="plc"]').val('2');
+                  
+                  //var Order= getCleanName('{!$Component.Form.pb.projectInfo.so}');
+                  //j$(Order).val('Project Builder will Schedule');
+                  //j$(Order+ "_lkid").val('a0N50000007Xstz');
+          
+                  
+              }
+         });
+         
+         
+     });
+     
+     
+     /*
+     j$('#Override123').change(function() {
+             
+              if (j$(this).is(':checked'))
+              {
+                  j$('[id*="multiselectPanel"]').show(); 
+                  j$('[id*="LocNumber"]').show();
+                  
+                  j$('[id*="projServCount"]').hide();
+                  j$('[id*="projLocCount"]').hide();
+              }
+              else{
+                  j$('[id*="projServCount"]').show();
+                  j$('[id*="projLocCount"]').show();
+                  
+                 j$('[id*="multiselectPanel"]').hide();
+                 j$('[id*="LocNumber"]').hide();               
+              }
+         });
+         */
+         
+</script>  
+</apex:page>

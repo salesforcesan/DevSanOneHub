@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Shift summary of hours worked for team member</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>Worker Summary Email Template</name>
+    <style>none</style>
+    <subject>My Shift Summary</subject>
+    <textOnly>Email Communication
+
+{!JobAttemptWorker__c.ContactFirstName__c} {!JobAttemptWorker__c.ContactLastName__c} -- {!JobAttemptWorker__c.IsVerified__c}
+(ID# {!JobAttempt__c.AssignedEmployeeId__c})    {!JobAttemptWorker__c.ScheduleDate__c}
+{!JobAttempt__c.AttemptResponsibleExecutionCompany__c}
+
+Check-In    {!JobAttemptWorker__c.CheckinTime__c}
+
+Check-Out    {!JobAttemptWorker__c.CheckoutTime__c}
+
+Total Time Worked
+{!JobAttemptWorker__c.TotalInStoreBillableTime__c}
+
+Non-paid Break    {!JobAttemptWorker__c.TotalInStoreNonBillableTime__c}
+
+Total Time In-Store    {!JobAttemptWorker__c.TotalInStoreTime__c}
+
+
+Copyright © 2018 CROSSMARK, inc All rights reserved.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

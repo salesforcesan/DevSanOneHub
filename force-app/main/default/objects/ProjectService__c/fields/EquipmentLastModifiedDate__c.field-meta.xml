@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EquipmentLastModifiedDate__c</fullName>
+    <externalId>false</externalId>
+    <label>Equipment Last Modified Date</label>
+    <summarizedField>ProjectServiceEquipment__c.LastModifiedDate</summarizedField>
+    <summaryForeignKey>ProjectServiceEquipment__c.ProjectService__c</summaryForeignKey>
+    <summaryOperation>max</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>attempted_date_not_before_scheduled_date</fullName>
+    <active>true</active>
+    <description>A Job with a Scheduling Option of User or System cannot have a Date Attempted that occurs before the Attempt Schedule Date where a job attempt is reported.</description>
+    <errorConditionFormula>AND(ISPICKVAL(AttemptStatus__c,&#39;Reported&#39;), OR( (Job__r.ProjectScheduleOptionName__c == &#39;USER&#39;), (Job__r.ProjectScheduleOptionName__c == &#39;SYSTEM&#39;))
+,AttemptedDate__c &lt; AttemptScheduleDate__c)</errorConditionFormula>
+    <errorDisplayField>AssignedContact__c</errorDisplayField>
+    <errorMessage>A Job with a Scheduling Option of User or System cannot have a Date Attempted that occurs before the Attempt Schedule Date.</errorMessage>
+</ValidationRule>

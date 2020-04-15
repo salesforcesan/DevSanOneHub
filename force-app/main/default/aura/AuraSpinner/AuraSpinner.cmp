@@ -1,0 +1,12 @@
+<aura:component>
+    <!-- public -->
+    <aura:attribute name="alternativeText" type="string" default="processing..." />
+    <aura:attribute name="size" type="string" default="medium" />
+    <aura:attribute name="variant" type="string" default="brand" />
+    <aura:attribute name="visible" type="boolean" default="false" />
+
+    <!-- template -->
+    <aura:if isTrue="{!v.visible}">
+        <lightning:spinner variant="{!v.variant}" alternativeText="{!v.alternativeText}" size="{!v.size}" />
+    </aura:if>
+</aura:component>

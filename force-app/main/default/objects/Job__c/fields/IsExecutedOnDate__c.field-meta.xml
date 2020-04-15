@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsExecutedOnDate__c</fullName>
+    <description>The checkbox that indicates whether or not the Job was executed on date.</description>
+    <externalId>false</externalId>
+    <formula>IsExecuted__c = True &amp;&amp; JobExecutedDate__c== JobCommittedDate__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>If selected,the job was executed on date.</inlineHelpText>
+    <label>Executed On Date</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>This will store record type settings for OH screens.</description>
+    <enableFeeds>false</enableFeeds>
+    <label>UI Configuration</label>
+    <visibility>Public</visibility>
+</CustomObject>

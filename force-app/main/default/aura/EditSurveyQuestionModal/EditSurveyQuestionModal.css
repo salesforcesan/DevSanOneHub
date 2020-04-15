@@ -1,0 +1,92 @@
+.THIS hr {
+    border: 0;
+    background-color: #D8DDE6;
+    margin: .2rem 0;
+}
+
+.THIS .oh-labels {
+    background-color:#EAF6FC;
+    margin:0;
+    padding:0;
+}
+
+.THIS .oh-survey-question {
+    display:flex;
+    color: #16325C;
+    font-size: 1.2rem;
+}
+    
+.THIS .oh-icon-survey i {
+    color: #FFF;        
+}
+     
+.THIS .oh-icon-survey {
+    background-color: #54698D;
+    width: 2.5rem;
+    height: 2.5rem;
+    line-height: 1.4rem;
+    text-align: center;
+}
+
+.THIS .question-section {
+    min-height:250px;
+    max-height:280px;
+}
+.THIS .slds-card {
+    height: 156px;
+    position: relative;
+}
+.THIS .slds-card__body {
+    width: 50%;
+    height: 50%;
+    overflow: auto;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    font-size: 1.6em;
+}
+
+.THIS .oh-picklist {
+    border:1px solid #D8DDE6;
+    background-color:#FFF;
+    color:#54698D;
+    padding:1rem .2rem;
+}
+
+.THIS .oh-picklist-option {
+    border:1px solid #D8DDE6;
+    background-color:#FFF;
+    color:#0070D2;
+    margin:.2rem;
+}
+
+.THIS .slds-text-heading--large {
+    color:#0070D2;
+}
+
+.THIS .oh-picklist-disabled .slds-checkbox--toggle [type=checkbox][disabled]+.slds-checkbox--faux, 
+.THIS .slds-checkbox--toggle [type=checkbox][disabled]~.slds-checkbox--faux, 
+.THIS .slds-checkbox--toggle [type=checkbox][disabled]+.slds-checkbox--faux_container .slds-checkbox--faux {
+    background-color:lightgrey;/*#4BCA81*/
+    border:1px solid #DDD;
+}
+
+.THIS .slds-checkbox--toggle [type=checkbox][disabled]:checked+.slds-checkbox--faux_container .slds-checkbox--faux:before {
+    background-color:#4BCA81;
+    display:none;
+}
+
+.THIS .slds-checkbox_toggle [type=checkbox][disabled]+.slds-checkbox_faux:after, 
+.THIS .slds-checkbox_toggle [type=checkbox][disabled]+.slds-checkbox--faux:after, 
+.THIS .slds-checkbox_toggle [type=checkbox][disabled]~.slds-checkbox_faux:after, 
+.THIS .slds-checkbox_toggle [type=checkbox][disabled]~.slds-checkbox--faux:after, 
+.THIS .slds-checkbox_toggle [type=checkbox][disabled]+.slds-checkbox_faux_container .slds-checkbox_faux:after, 
+.THIS .slds-checkbox_toggle [type=checkbox][disabled]+.slds-checkbox--faux_container .slds-checkbox--faux:after, 
+.THIS .slds-checkbox--toggle [type=checkbox][disabled]+.slds-checkbox_faux:after, 
+.THIS .slds-checkbox--toggle [type=checkbox][disabled]+.slds-checkbox--faux:after, 
+.THIS .slds-checkbox--toggle [type=checkbox][disabled]~.slds-checkbox_faux:after, 
+.THIS .slds-checkbox--toggle [type=checkbox][disabled]~.slds-checkbox--faux:after, 
+.THIS .slds-checkbox--toggle [type=checkbox][disabled]+.slds-checkbox_faux_container .slds-checkbox_faux:after, 
+.THIS .slds-checkbox--toggle [type=checkbox][disabled]+.slds-checkbox--faux_container .slds-checkbox--faux:after {
+    background-color: rgba(221, 219, 218,.1);    
+}

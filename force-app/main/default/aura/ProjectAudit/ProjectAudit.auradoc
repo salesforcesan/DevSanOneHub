@@ -1,0 +1,6 @@
+<aura:documentation>
+    <aura:description>
+        <p>This component is receiving record Id of custom object "Project" as a parameter. We have implemented <code>force:hasRecordId</code> interface to accept this record Id. We are then calling <code>Timeline</code> component by passing <code>TimelineEntryList</code> and <code>TimelineTitle</code>.
+        </p>
+    </aura:description>
+</aura:documentation>

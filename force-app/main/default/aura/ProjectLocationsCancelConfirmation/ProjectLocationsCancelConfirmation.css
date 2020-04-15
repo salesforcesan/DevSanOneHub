@@ -1,0 +1,46 @@
+.THIS {
+  padding: 0;
+  margin: 0;
+  transform: translate3d(0, 0, 0);
+}
+
+.THIS.cancel-confirmation-container header {
+  text-align: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.THIS .no-flow {
+  position: absolute !important;
+  z-index: 2;
+}
+
+.THIS.cancel-confirmation-container .cancel-confirmation-body {
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.THIS.cancel-confirmation-container textarea {
+  width: 100%;
+  height: 100px;
+}
+
+.THIS.cancel-confirmation-container .locations-result {
+  padding: 10px;
+  color: rgba(0, 0, 0, 0.38);
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.THIS.cancel-confirmation-container footer {
+  text-align: right;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background-color: #f4f6f9;
+}
+
+.THIS .mg-bt-small {
+  margin-bottom: 10px;
+}

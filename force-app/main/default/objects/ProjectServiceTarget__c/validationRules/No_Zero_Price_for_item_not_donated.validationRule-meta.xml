@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_Zero_Price_for_item_not_donated</fullName>
+    <active>true</active>
+    <errorConditionFormula>Price__c &gt; 0.0 &amp;&amp;  TEXT(TargetAcquired__c) = &#39;Donated&#39;</errorConditionFormula>
+    <errorDisplayField>Target__c</errorDisplayField>
+    <errorMessage>Price needs to be zero (0) for donated items</errorMessage>
+</ValidationRule>

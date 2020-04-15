@@ -1,0 +1,54 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+<ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <aura:handler value="{!this}" name="init" action="{!c.init}"/>
+    <aura:attribute name="projectContext" type="String" />
+    <aura:attribute name="projectStatus" type="String" default=""/>
+    <aura:attribute name="showPhotoViewer" type="Boolean" default="false"/>
+    <aura:handler name="change" value="{! v.projectStatus }" action="{! c.onStatusChanged }"/>
+
+    <div>
+        <div class="icon-nav navWrap">
+            <a href="javascript:void(0)" class="closebtn" onclick="{!c.toggleNav}"></a>
+            <!--<div class="menu-item current-page" onclick="{!c.navTo}" id="overview" aura:id="overview">
+                <i class="fa fa-bar-chart" title="Project Overview"></i>
+                <span class="nav-text">Overview</span>
+            </div> -->
+            <div class="menu-item" onclick="{!c.navTo}" id="detail" aura:id="detail">
+                <i class="fa  fa-file-text-o" aria-hidden="true" title="Project Details"></i>
+                <span class="nav-text">Project Details</span>
+            </div>
+            <div class="menu-item" onclick="{!c.navTo}" id="accounts" aura:id="accounts">
+                <i class="fa fa-building" aria-hidden="true" title="Accounts"></i>
+                <span class="nav-text">Accounts</span>
+            </div>
+            <div class="menu-item" onclick="{!c.navTo}" id="services" aura:id="services">
+                <i class="fa fa-handshake-o" aria-hidden="true" title="Services"></i>
+                <span class="nav-text">Services</span>
+            </div>
+            <div class="menu-item" onclick="{!c.navTo}" id="locations" aura:id="locations">
+                <i class="fa fa-map" aria-hidden="true" title="Locations"></i>
+                <span class="nav-text">Locations</span>
+            </div>
+            <div class="menu-item" onclick="{!c.navTo}" id="jobs" aura:id="jobs">
+                <i class="fa fa-users" aria-hidden="true" title="Manage Jobs"></i>
+                <span class="nav-text">Jobs</span>
+            </div>
+            <div class="menu-item" onclick="{!c.navTo}" id="materials" aura:id="materials">
+                <i class="fa fa-cubes" aria-hidden="true" title="Materials"></i>
+                <span class="nav-text">Materials</span>
+            </div>
+            <aura:if isTrue="{! v.showPhotoViewer }">
+              <div class="menu-item" onclick="{!c.navTo}" id="photos" aura:id="photos">
+                  <i class="fa fa-camera" aria-hidden="true" title="Photo Viewer"></i>
+                  <span class="nav-text">Photo Viewer</span>
+              </div>
+          </aura:if>
+            <div class="menu-item" onclick="{!c.navTo}" id="audit" aura:id="audit">
+                <i class="fa fa-history" aria-hidden="true" title="Audit History"></i>
+                <span class="nav-text">Audit History</span>
+            </div>
+            <div class="menu-item-last">
+            </div>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,15 @@
+<apex:page standardController="Project__c" extensions="BirstReportExt" sidebar="false"  >
+    <apex:messages />
+   <!--<apex:iframe src="{!urlValue} scrolling="true" id="theIframe"/>
+    
+    <iframe height="600px" id="theIframe" name="theIframe" src="{!urlValue}"  width="100%"></iframe> 
+       <apex:iframe src="{!urlValue}" scrolling="true" id="theIframe"/> 
+           
+       
+    <apex:outputText value="{!DashBoardName}"/>
+    <apex:outputText value="{!collectionName}"/>  -->
+<apex:iframe src="https://login.bws.birst.com/AppExchangeSSO.aspx?serverurl={!$Api.Partner_Server_URL_250}&sessionid={!$Api.Session_ID}&birst.useSFDCEmailForBirstUsername=true&birst.spaceId={!SpaceID}&birst.hideDashboardNavigation=false&birst.hideDashboardPrompts=false&birst.module=newDashboards&birst.page={!DashBoardName}&birst.dashboard={!collectionName}" scrolling="true" id="theIframe"/>    
+    <!-- working
+    <apex:iframe src="https://login.bws.birst.com/AppExchangeSSO.aspx?serverurl={!$Api.Partner_Server_URL_250}&sessionid={!$Api.Session_ID}&birst.useSFDCEmailForBirstUsername=true&birst.spaceId=8b30316a-61c9-4695-8c46-08a72aa9b421&birst.hideDashboardNavigation=false&birst.hideDashboardPrompts=false&birst.module=newDashboards&birst.page=Execution%20Dashboard&birst.dashboard=Corporate%20Manager" scrolling="true" id="theIframe"/>
+    -->
+</apex:page>

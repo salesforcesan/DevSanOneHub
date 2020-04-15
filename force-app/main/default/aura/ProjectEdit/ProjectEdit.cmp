@@ -1,0 +1,36 @@
+<aura:component extends="c:UISecurity" controller="LightningProjectController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="projectId" type="String"  access="global"/>   
+    <aura:attribute name="project" type="Object" access="global" />
+    <aura:attribute name="securityelements" type="String" access="global" />
+    <aura:registerEvent name="refreshProjectevent" type="c:EventProjectRefresh"/>
+    <div class="slds slds-is-relative">
+        <div class="" aura:id="editProjectSpinner" > 
+            <lightning:spinner size="medium" variant="brand" />
+        </div>
+        <div class="slds-grid slds-wrap slds-grid--pull-padded slds-p-around--large">
+            <div aura:id="Project__c.Name" class="readonly slds-p-horizontal--medium slds-p-bottom--medium slds-size--1-of-1">
+                <lightning:input type="text" name="projecTitle" aura:id="projecTitle" label="Title" value="{!v.project.Name}" />
+            </div>
+            <div aura:id="Project__c.StartDate__c" class="readonly slds-p-horizontal--medium slds-p-bottom--medium slds-size--1-of-2">
+                <ui:inputDate aura:id="startDate" format="MM/dd/YYYY" label="Start Date"  displayDatePicker="true" value="{!v.project.StartDate}"/>
+            </div>
+            <div aura:id="Project__c.EndDate__c" class="readonly slds-p-horizontal--medium slds-p-bottom--medium slds-size--1-of-2">
+                <ui:inputDate aura:id="endDate" format="MM/dd/YYYY" label="End Date" displayDatePicker="true" value="{!v.project.EndDate}"/>
+            </div>
+            <div aura:id="Project__c.ProjectLaunchDate__c" class="readonly slds-p-horizontal--medium slds-p-bottom--medium slds-size--1-of-2">
+                <ui:inputDate aura:id="launchDate" format="MM/dd/YYYY" label="Launch Date" displayDatePicker="true" value="{!v.project.ProjectLaunchDate}" />
+            </div>
+            <div aura:id="Project__c.ProjectInstructions__c" class="readonly slds-p-horizontal--medium slds-p-bottom--medium slds-size--2-of-2">
+                <lightning:textarea name="projectInstructions" aura:id="projectInstructions" label="Project Instructions" value="{!v.project.ProjectInstructions}" maxlength="10000" />
+            </div>
+            
+        </div>
+        <div class="oh-footer slds-border--top">          
+            <div class="slds-grid slds-grid--align-end slds-m-right--large">
+                <lightning:button class="slds-m-around--small" label="Cancel" onclick="{!c.close}"/>
+                <lightning:button class="slds-m-around--small" label="Save Project" onclick="{! c.saveProject}" variant="brand"  /> 
+            </div>
+        </div>
+    </div>
+</aura:component>

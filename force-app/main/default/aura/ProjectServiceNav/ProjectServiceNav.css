@@ -1,0 +1,116 @@
+.THIS .icon-nav {
+    height: 100%;
+    width: 100%;
+    text-align: left;
+    background-color: #F4F6F9;
+    border-radius:4px;
+    border:1px solid rgb(216, 221, 230);
+}
+.THIS a {
+        text-decoration: none;
+    }
+
+.THIS .icon-nav .menu-item {
+    font-family: sans-serif;
+    text-decoration: none;
+    padding: 16px;
+    display: block;
+    border-top: 1px solid #F4F6F9;
+    border-bottom: 1px solid #F4F6F9;
+    color: #54698D;
+    font-size: .925rem;
+    font-weight: 300;
+    
+    transition: all .4s ease;
+}
+.THIS .icon-nav .menu-item:hover {
+    background-color: #E0E5EE;
+    color: #0070D2;
+    opacity:1;
+    cursor: pointer;
+    border-top: 1px solid #F4F6F9;
+    border-bottom: 1px solid #F4F6F9;
+    transition: all .4s ease;
+}
+.THIS .icon-nav .current-page {
+    z-index:100;
+    background-color: #FFF;
+    border-top: 1px solid #0070D2;
+    border-bottom: 1px solid #0070D2;
+    color: #0070D2 !important;
+}
+
+.THIS .icon-nav .current-page:hover {
+    z-index:100;
+    background-color: #FFF;
+    border-top: 1px solid #0070D2;
+    border-bottom: 1px solid #0070D2;
+    color: #0070D2 !important;
+}
+
+.THIS .navWrap {
+  width: 100%;
+  background-color:#F4F6F9;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+  
+  height: 100%;
+    
+  transition: all .4s ease-in-out; 
+}
+
+.THIS i {
+    width: 30px;
+    text-align: center;
+   }
+
+.THIS .navWrap.small {
+  width: 60px;
+  height: 100%;
+  text-overflow: clip;
+}
+        
+.THIS .nav-text {
+  opacity: 1;
+  transition: all .4s ease-in-out;
+  max-width: 100%;
+  
+}
+
+.THIS .nav-text.gone {
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+  width: 0px;
+  opacity: 0;
+        
+  transition-delay: .4s ease;
+        
+    }
+
+.THIS .menu-item-last {
+    height: 5em;
+}
+
+.THIS .closebtn {
+    width: 100%;
+    margin-top: 5px;
+    color: grey;
+    font-size: 1.2rem;
+}
+    
+.THIS .closebtn:after {
+    text-decoration: none;
+    content: '\2039';
+    font-size: 1.4rem;
+    color: #777;
+    margin-left: 90%;
+    transition: margin-left .5s ease-out;
+}
+
+.THIS .closebtn.change:after {
+    content: "\203A";
+    margin-left: 80%;
+    }
+    /*margin: -24px 0px 0px -36px;*/

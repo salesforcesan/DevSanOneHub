@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TotalInvoiceAmount__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>𝑻𝒐𝒕𝒂𝒍 𝑰𝒏𝒗𝒐𝒊𝒄𝒆= 𝑳𝒂𝒃𝒐𝒓+ 𝑷𝒓𝒐𝒅𝒖𝒄𝒕+ 𝑺𝒂𝒍𝒆𝒔 𝑻𝒂𝒙 −𝑷𝒓𝒆𝒑𝒂𝒚 𝑰𝒏𝒗𝒐𝒊𝒄𝒆</inlineHelpText>
+    <label>Total Invoice Amount</label>
+    <summarizedField>ProjectInvoiceLineItem__c.Amount__c</summarizedField>
+    <summaryFilterItems>
+        <field>ProjectInvoiceLineItem__c.Status__c</field>
+        <operation>notEqual</operation>
+        <value>Canceled</value>
+    </summaryFilterItems>
+    <summaryForeignKey>ProjectInvoiceLineItem__c.ProjectInvoice__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

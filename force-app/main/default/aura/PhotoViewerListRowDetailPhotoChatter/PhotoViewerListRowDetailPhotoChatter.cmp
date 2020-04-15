@@ -1,0 +1,23 @@
+<aura:component extends="c:Remotable">
+<aura:attribute name="id" type="String" default=""/>
+<aura:attribute name="usage" type="String" default=""/>
+<aura:attribute name="showBusy" type="boolean" default="true" access="private"/>
+<aura:attribute name="isSuperuser" type="boolean" default="false" access="private"/>
+<aura:attribute name="chatterBody" type="Aura.Component[]"/>
+
+<aura:handler name="init" value="{! this }" action="{! c.onInit }"/>
+<aura:handler name="change" value="{! v.id }" action="{! c.onIdChanged }"/>
+
+<div class="oh-chatter-container">
+     <aura:if isTrue="{! v.showBusy }">
+        <!-- if true -->
+        <div class="oh-content">
+
+            <lightning:spinner variant="inverse" alternativeText="loading..." class="oh-busy" size="large"/>
+        </div>
+    <aura:set attribute="else">
+        {! v.chatterBody }
+    </aura:set>
+    </aura:if>
+</div>
+</aura:component>

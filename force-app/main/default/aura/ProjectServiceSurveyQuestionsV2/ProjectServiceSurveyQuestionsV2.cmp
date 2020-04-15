@@ -1,0 +1,143 @@
+<aura:component controller="LightningSurveyQuestionsControllerv2" implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />    
+    <aura:attribute name="questions" type="List" access="global" />
+    <aura:attribute name="notflattenquestions" type="List" access="global" />
+    <aura:attribute name="service" type="Object" access="global" />
+    <aura:attribute name="servicename" type="string" access="global" />
+    <aura:attribute name="servicetitle" type="string" access="global" />
+    <aura:attribute name="serviceId" type="Id" />
+    <aura:attribute name="projectId" type="Id" />
+    <aura:attribute name="questionId" type="String"/>
+    <aura:attribute name="question" type="Object"/>
+    <aura:attribute name="sqrule" type="Object"/>
+    <aura:attribute name="serviceQuestion" type="String"/>
+    <aura:attribute name="bodyText" type="String"/>
+    <aura:attribute name="isLoaded" type="Boolean" default="false"/>
+    <aura:attribute name="draggable" type="Boolean" default="true"/>
+    <aura:attribute name="editable" type="Boolean" default="true"/>
+    <aura:attribute name="disable" type="Boolean" default="true"/>
+    <aura:attribute name="levels" type="List"/>
+    <aura:attribute name="projectservice" type="Object" access="global" />
+    <aura:attribute name="targets" type="List" default="[]"/> 
+    <aura:attribute name="hiddenEls" type="Map" access="global" default="{}" />
+    <aura:attribute name="editableEls" type="Map" access="global" default="{}" />
+    <aura:attribute name="enableMultiSelect" type="Boolean" access="global"/>
+    <!-- new ones-->
+    <aura:attribute name="showResponses" type="Boolean" access="global" />
+    <aura:attribute name="responses" type="List" access="global" />
+    <aura:attribute name="questionTitle" type="String" access="global" />
+    <aura:attribute name="serviceQuestionId" type="String"/>
+    <aura:attribute name="pserviceQuestionId" type="String"/>
+    <aura:attribute name="operator" type="String"/>
+    <aura:attribute name="definedResponses" type="String"/>
+    
+    <aura:handler name="SurveyQuestionrule" event="c:EventSurveyQuestionRules" action="{!c.handleServiceQuestionRule}"/>
+    <aura:handler name="addNewQuestion" event="c:EventAddNewQuestion" action="{!c.handleAddNewQuestion}"/>    
+    <aura:handler name="DefinedResponsesPopover" event="c:DefinedResponsesPopover" action="{!c.handleDefinedResponses}"></aura:handler>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="force:refreshView" action="{!c.doInit}" />
+    <aura:handler name="dragChange" event="c:dragChange" action="{!c.onDragChanged}"></aura:handler>
+    <aura:handler name="dialogModalCloseComponentEvent" event="c:SimpleComponentEvent" action="{!c.handleClose}"/>        
+    <aura:handler name="refreshQuestionsEvent" event="c:SimpleComponentEvent" action="{!c.onRefreshQuestionsEvent}" />
+    <aura:handler name="editSurveyQuestion1" event="c:EventEditSurveyQuestion" action="{!c.handleEditServiceQuestion}" phase="capture"/>    
+    <aura:handler name="EventSurveyQuestionCard" event="c:EventSurveyQuestionCard" action="{!c.handleOpenModalsFromCard}"/>
+    <aura:handler name="messageBoxEvent" event="c:SimpleComponentEvent" action="{!c.onMessageBoxEvent}" />
+    
+    <aura:handler name="targetEvent" event="c:UploadMultiSelectTargetEvent" action="{!c.onAddTargetEvent}" />
+    
+    <aura:registerEvent name="ServiceQuestionSortableEvent" type="c:ServiceQuestionSortableEvent"/>       
+    <aura:registerEvent name="SurveyQuestionrule" type="c:EventSurveyQuestionRules" />
+    <aura:registerEvent name="showAddQuestionInModal" type="c:EventDisplayModal" />
+    
+    <c:Notification aura:id="notification" class="no-flow"/>
+    <c:MessageBox aura:id="messageBox"/>
+    <c:ModalDialogContainer aura:id="modalDialog"/>
+    
+    <div class="slds-is-relative">
+        <div class="spinner slds-hide" style="min-height:100px" aura:id="displaySpinner">
+            <lightning:spinner size="medium" alternativeText="Processing..." variant="brand" />
+        </div>
+    </div>
+    
+    <section class="slds-p-around_small">
+        <div class="slds-media">
+            <p class="slds-media__body">
+                Access editing capabilities on a question via the far right icon of each question '&bull;&bull;&bull;'
+                To reorder questions, drag and drop on top of another question (to reparent when possible) or on a drop to order image to place next to the question.
+            </p>
+        </div>
+        <div class="slds-is-relative">
+            <aura:if isTrue="{!v.isLoaded}">
+                <aura:if isTrue="{!v.editable}">
+                    <div class="button-container">
+                        <button data-uielement="" class="slds-button slds-button_brand slds-m-vertical_large" onclick="{!c.showAddQuestionModal}"><i class="fa fa-plus slds-m-right_x-small" aria-hidden="true"></i>Add Question</button>
+                    </div>
+                </aura:if>
+                <div class="button-container">
+                    <button data-uielement="" disabled="{!empty(v.notflattenquestions)}" class="slds-button slds-button_neutral slds-m-vertical_large" onclick="{!c.showPreviewSurveyModal}"><i class="fa fa-external-link" aria-hidden="true"></i>&nbsp;&nbsp;Test Survey</button>
+                </div>
+                <div class="button-container">
+                    <button data-uielement="" disabled="{!empty(v.notflattenquestions)}" class="slds-button slds-button_neutral slds-m-vertical_large" onclick="{!c.exportSurvey}"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;&nbsp;Export Survey</button>
+                </div> 
+            </aura:if>
+        </div>
+    </section>
+    <span>
+        <section class="slds-grid slds-border_bottom slds-border_top" style="width:100%;">
+            <div class="slds-tile survey-title slds-p-around_medium">
+                <p class="slds-truncate" title="Service Questions">
+                    Service Questions Added
+                </p>
+                <p class="slds-text-body_small">
+                    Survey Question
+                </p>
+            </div>        
+            <div>
+                <div class="slds-hide spinner" style="min-height:100px" aura:id="spinner">
+                    <lightning:spinner size="medium" variant="brand" />
+                </div>
+            </div>        
+        </section>
+    </span>
+    <section style="display:flex;height:100%;">
+        <aura:if isTrue="{!v.showResponses}">
+            <div aura:id="responses" 
+                 class="{!join(' ','slds-box ', 'respCont ', 'slds-m-top_medium ', v.showResponses ? 'slds-size_1-of-3' : 'slds-size_1-of-1')}"
+                 style="width:30%;">
+                <div style="cursor:pointer;position:absolute;right:0;top:0;padding:.5rem;" onclick="{!c.closeResponses}">
+                    <lightning:icon iconName="utility:close" size="x-small" variant="brand" />
+                </div>
+                <h2 style="color:grey;">
+                    Question: {!v.questionTitle}
+                    <br/>
+                    <span style="color:rgba(0,110,210,.5);">Defined Responses</span>
+                </h2>      
+                <hr/>
+                <aura:iteration items="{!v.responses}" var="item">
+                    <span class="panel-check">
+                        <aura:if isTrue="{!item.Active}">
+                            <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+                            <aura:set attribute="else">
+                                <i class="fa fa-minus fa-fw" aria-hidden="true" style="color:red;"></i>
+                            </aura:set>
+                        </aura:if>
+                    </span> 
+                    <span style="font-size:.75rem;">{!item.DefinedResponseText}</span>
+                    <hr class="slds-m-vertical_x-small"></hr>
+                </aura:iteration>
+            </div>
+        </aura:if>
+        <div class="{!join(' ', v.showResponses ? 'slds-size_2-of-3' : 'slds-size_1-of-1')}">           
+            <c:SurveyQuestionDraggable question="{!v.questions}"  
+                                       draggable="{!v.draggable}" 
+                                       editable="{!v.editable}"
+                                       enableMultiSelect="{!v.enableMultiSelect}"
+                                       disable="{!v.disable}"
+                                       aura:id="mySurveyQuestionDraggable" 
+                                       surveyType="ProjectServiceQuestion"/>
+        </div>
+    </section>
+    <div>          
+        <lightning:overlayLibrary aura:id="overlayLib"/>        
+    </div>
+</aura:component>

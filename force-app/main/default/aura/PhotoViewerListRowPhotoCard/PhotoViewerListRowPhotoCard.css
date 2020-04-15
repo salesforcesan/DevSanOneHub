@@ -1,0 +1,219 @@
+.THIS.oh-photo-card {
+    position: relative;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.THIS.oh-photo-card > a {
+    display: flex;
+    padding: 0;
+    flex-grow: 1;
+    flex: 0 0  100%;
+    border-radius: 4px;
+    border: 1px solid #eee;
+    overflow: hidden;
+}
+
+.THIS.oh-photo-card > a.oh-photo-has-error {
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ea8288;
+}
+
+.THIS.oh-duplicated > a {
+    border: 1px solid #c23934;
+}
+
+.THIS.oh-photo-card > a:hover {
+    border: 1px solid rgba(255,255,255,0.64);
+    border-radius: 4px;
+    background-color: #000;
+}
+.THIS.oh-photo-card > a.oh-photo-has-error:hover {
+    background-color: rgba(255,255,255, 0.9);
+     border: 1px solid #c23934;
+}
+.THIS.oh-duplicated > a:hover {
+    border: 1px solid #a61a14;
+}
+
+.THIS.oh-photo-card > a .oh-photo-image {
+    object-position: 50% 50%;
+    object-fit: cover;
+    transition: all 0.5s ease-out;
+}
+.THIS.oh-photo-card:hover > a .oh-photo-image {
+    transform: scale(1.25);
+    transition: all 0.25s ease-in;
+}
+
+.THIS.oh-photo-card > a .oh-photo-image-async {
+    width: 0;
+    height: 0;
+    opacity: 0;
+    display: none;
+}
+.THIS.oh-photo-card > a .oh-photo-image-has-error {
+    width: 30px;
+}
+
+.THIS.oh-photo-card > a .oh-overlay {
+    position: absolute;
+    display: flex;
+    flex-grow: 1;
+    height: 100%;
+    color: #fff;
+    width: 0;
+    opacity: 0;
+    transition: all 0.5s ease-out;
+}
+
+.THIS.oh-photo-card > a .oh-favorite {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 32px;
+    height: 32px;
+    background-color: rgba(0,0,0,0.42);
+    color: #fff;
+}
+
+.THIS.oh-photo-card > a .oh-overlay.shown {
+    width: 100%;
+    opacity: 0.6;
+    background-color: #52678C;
+    color: #fff;
+    z-index: 2;
+    transition: all 0.25s ease-in;
+}
+
+.THIS.oh-photo-card > a .oh-overlay .oh-icon {
+    color: #fff;
+    display: flex;
+    flex: 0 0 100%;
+    opacity: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.THIS .oh-checked {
+    background-color: #4bca81;
+}
+
+.THIS.oh-photo-card > a .oh-overlay.oh-green {
+    background-color: #04844b;
+}
+
+.THIS.oh-photo-card > .oh-user-favorite-link,
+.THIS.oh-photo-card > .oh-favorite-link,
+.THIS.oh-photo-card > .oh-qc-link,
+.THIS.oh-photo-card > .oh-favorite-span,
+.THIS.oh-photo-card > .oh-qc-span,
+.THIS.oh-photo-card > .oh-user-favorite-span
+{
+    position: absolute;
+    display: flex;
+    flex: 0 0 100%;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: 0;
+    opacity: 0;
+    bottom: 4px;
+    transition: all 0.5s ease-out;
+}
+
+.THIS.oh-photo-card > .oh-user-favorite-link,
+.THIS.oh-photo-card > .oh-favorite-span,
+.THIS.oh-photo-card > .oh-user-favorite-span,
+.THIS.oh-photo-card > .oh-qc-span {
+    display: inline-block;
+}
+
+.THIS.oh-photo-card > .oh-favorite-link,
+.THIS.oh-photo-card > .oh-favorite-span {
+    right: 8px;
+}
+
+.THIS.oh-photo-card > .oh-qc-link,
+.THIS.oh-photo-card > .oh-qc-span
+{
+    right: 32px;
+}
+
+.THIS.oh-photo-card > .oh-user-favorite-link {
+    right: 32px;
+}
+
+.THIS.oh-photo-card > .oh-user-favorite-span {
+    right: 56px;
+}
+
+.THIS.oh-photo-card:hover > .oh-user-favorite-link,
+.THIS.oh-photo-card:hover > .oh-favorite-link,
+.THIS.oh-photo-card:hover > .oh-qc-link {
+   width: 24px;
+   height: 24px;
+   opacity: 1;
+   transition: all 0.25s ease-in;
+}
+
+
+.THIS.oh-photo-card > .oh-user-favorite-link .oh-icon svg,
+.THIS.oh-photo-card > .oh-favorite-link .oh-icon svg,
+.THIS.oh-photo-card > .oh-qc-link .oh-icon svg,
+.THIS.oh-photo-card > .oh-favorite-span .oh-icon svg,
+.THIS.oh-photo-card > .oh-user-favorite-span .oh-icon svg,
+.THIS.oh-photo-card > .oh-qc-span .oh-icon svg  {
+    fill: #fff;
+}
+
+.THIS.oh-photo-card > .oh-qc-link.checked .oh-icon svg,
+.THIS.oh-photo-card > .oh-favorite-link.checked .oh-icon svg,
+.THIS.oh-photo-card > .oh-qc-span.checked .oh-icon svg,
+.THIS.oh-photo-card > .oh-favorite-span.checked .oh-icon svg
+{
+    fill: #FFDE00;
+}
+
+.THIS.oh-photo-card > .oh-user-favorite-link.checked .oh-icon svg,
+.THIS.oh-photo-card > .oh-user-favorite-span.checked .oh-icon svg {
+    fill: #ffb75d;
+}
+
+.THIS.oh-photo-card > .oh-user-favorite-link.checked,
+.THIS.oh-photo-card > .oh-favorite-link.checked,
+.THIS.oh-photo-card > .oh-qc-link.checked,
+.THIS.oh-photo-card > .oh-favorite-span.checked,
+.THIS.oh-photo-card > .oh-qc-span.checked,
+.THIS.oh-photo-card > .oh-user-favorite-span.checked {
+   width: 24px;
+   height: 24px;
+   opacity: 1;
+   transition: all 0.25s ease-in;
+}
+
+
+.THIS.oh-photo-card > a .oh-actionbars-overlay {
+    height: 0;
+    width: 100%;
+    position: absolute;
+    bottom:0;
+    left:0;
+    opacity: 0;
+    background-color: rgba(0,0,0,0.5);
+    transition: all 0.5s ease-out;
+}
+
+.THIS.oh-photo-card:hover > a .oh-actionbars-overlay {
+    height: 32px;
+    opacity: 1;
+    transition: all 0.25s ease-in;
+}
+
+.THIS.oh-photo-card:hover > a .oh-overlay.shown .oh-actionbars-overlay {
+    height: 0;
+}

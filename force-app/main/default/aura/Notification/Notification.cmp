@@ -1,0 +1,29 @@
+<aura:component access="global">
+    <aura:attribute name="class" type="String" default="" description="The class attribute applies to the outmost container."/>
+    <aura:attribute name="message" type="string" default="" description="The message to show"/>
+    <aura:attribute name="error" type="string" default="" description="deprecated. do not use it"/>
+    <aura:attribute name="position" type="String" default="relative" description="relative, absolute"/>
+    <aura:attribute name="autoHide" type="Boolean" default="false"/>
+    <aura:attribute name="hideCloseButton" type="Boolean" default="false"/>
+    <aura:attribute name="type" type="string" default="info" description="The accepted value is info,warning,error,success."/>
+    <aura:attribute name="visible" type="Boolean" default="false"/>
+    <aura:attribute name="leftAlign" type="Boolean" default="false"/>
+    <aura:attribute name="duration" type="Integer" default="3000"/>
+    <aura:handler name="change" value="{!v.visible}" action="{!c.onChangeVisible}"/>
+    <aura:method name="show" action="{!c.onShow}">
+        <aura:attribute name="message" type="String"/>
+        <aura:attribute name="messageType" type="String" default="info"/>
+        <aura:attribute name="autoHide" type="Boolean" default="false"/>
+        <aura:attribute name="duration" type="Integer" default="3000"/>
+    </aura:method>
+    <aura:method name="close" action="{!c.onClose}"/>
+    <div class="{!join(' ','notification-container', v.class, v.position, v.visible ? 'notify-show' : 'notify-hide', ' slds-text-align_left')}" aura:id="notification">
+        <div class="{!join(' ', v.leftAlign ?' slds-text-align_left' : '','slds-notify slds-notify--alert slds-theme--' + v.type)}" role="{!v.type}">
+            <aura:if isTrue="{!!v.hideCloseButton}">
+                <lightning:buttonIcon onclick="{!c.onClose}" iconName="utility:close" variant="bare" class="slds-button slds-notify__close slds-button--icon-inverse notify-close-icon" alternativeText="close" size="medium"/>
+            </aura:if>
+            <span class="slds-assistive-text">Close</span>
+            <h2><aura:unescapedHtml value="{!v.message}" /></h2>
+        </div>
+    </div>
+</aura:component>

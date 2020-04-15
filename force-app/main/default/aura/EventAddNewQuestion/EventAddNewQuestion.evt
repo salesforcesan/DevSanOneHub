@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="Event template">
+    <aura:attribute name="questionId" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="itemQuestion" type="Boolean"/>
+</aura:event>

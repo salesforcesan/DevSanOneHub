@@ -1,0 +1,997 @@
+<apex:page standardController="ProjectService__c" extensions="ProjectServiceAddEditViewExt" sidebar="true" standardStylesheets="false" docType="HTML-5.0" tabStyle="Upload_Products__tab" cache="false">
+    <c:jQueryUICSS />
+    <apex:stylesheet value="{!URLFOR($Resource.fontawesome, '/css/font-awesome.min.css')}" />
+    <script src="//cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
+    <style type="text/css">
+        .borderClass {
+            border-color: red;
+            border-width: 2px;
+            border-style: solid;
+        }
+    
+    .errorLabel {
+        color: red;
+        display:none;
+    }
+    
+    .ui-datepicker .ui-datepicker-calendar .ui-state-highlight a {
+        background: #0073ea none;
+        color: white;
+        padding: 4px 6px;
+    }
+    
+    table.ui-datepicker-calendar {
+        border-collapse: separate;
+    }
+    .ui-datepicker-calendar td{
+        padding:0;
+    }
+    .ui-datepicker-calendar td a{
+        padding: 4px 7px;
+        border: none;
+    }
+    
+    #calendar a:hover {
+    color: #fff !important;
+    }
+    
+    #cal-options {
+    float: left;
+    }
+    
+    #cal-legend {
+    float: right;
+    }
+    
+    #cal-legend ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    }
+    
+    #cal-legend ul li {
+    margin: 0;
+    padding: 5px;
+    float: left;
+    }
+    
+    #cal-legend ul li span {
+    display: block;
+    height: 16px;
+    width: 16px;
+    margin-right: 4px;
+    float: left;
+    border-radius: 4px;
+    }
+    
+    #calendar {
+    width: 462px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    }
+    
+    #calendar a:hover {
+    color: #fff !important;
+    }
+    
+    .fc-event-inner {
+        padding: 3px;
+    }
+    
+    .fc-event {
+        border-radius: 2em !important;
+        width: 2em !important;
+        margin: 18px auto !important;
+    }
+    
+    .fc-event .fc-title {
+        height: 2em;
+        line-height: 2em;
+        font-weight: bold;
+        color: white;
+        font-size: 11px;
+        text-align: center;
+        display: block;
+    }
+    
+    td.fc-day {
+        cursor: pointer;
+    }
+    
+    td.fc-onCloseFunction {
+        opacity: .3;
+        filter: alpha(opacity=30);
+    }
+    
+    td.fc-day-number.fc-other-month:not(.fc-disabled) {
+        opacity: 1;
+        filter: alpha(opacity=100);
+    }
+    
+    .priority-input {
+        width: 30px;
+        height: 25px;
+        margin: 16px 17px;
+        border: 1px solid rgb(204, 204, 204);
+        text-align: center;
+        border: none;
+        outline: none;
+        font-weight: bold;
+        font-size: 12px;
+    }
+    
+    .priority-label {
+        margin: 14px 17px;
+        height: 30px;
+        line-height: 30px;
+        color: white;
+        text-align: center;
+        border-radius: 30px;
+        background-color: #1A91CB;
+        font-weight: bold;
+        width: 30px;
+        font-size: 11px;
+    }
+    .blackout-priority-label{
+        background-color: #ccc;
+        cursor:not-allowed;
+    }
+    .remove-priority {
+    }
+    
+    .TootTipClass{
+        color:red;
+        font-size: 9px;
+    }
+    .cm-container {
+        padding: 20px;
+    }
+    .cm-container > p {
+        margin-bottom: 20px !important;
+    }
+    
+    .cm-dlg-modal {
+        display: none;
+        width: 1000px;
+        opacity: 0;
+        position: absolute;
+        z-index: 1000001;
+    }
+    
+    .cm-dlg-modal-overlay {
+        position: absolute;
+        background-color: #000;
+        opacity: 0.5;
+        top:0;
+        left:0;
+        right:0;
+        bottom: 0;
+        z-index: 1000000;
+    }
+    
+    .cm-dlg-container {
+        width: 100%;
+        font-size: 0.9rem;
+        background-color: #fff;
+        box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
+    }
+    
+    .cm-dlg-container > header {
+        background-color: #ccc;
+        padding:10px;
+    }
+    
+    .cm-dlg-container > header h2 {
+        font-size: 1.1rem;
+        padding: 0;
+        margin: 0;
+        color: #444;
+        width: 100%;
+    }
+    
+    .cm-dlg-container .cm-badge {
+        color: #fff;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border-radius: 20px;
+        padding: 2px 5px;
+    }
+    
+    .cm-dlg-container .cm-bg {
+        background-color: #444;
+        color: #fff !important;
+    }
+    
+    .cm-dlg-container .cm-bg-blue {
+        background-color: blue;
+    }
+    
+    .cm-dlg-container .cm-bg-dark {
+        background-color: #444;
+        color: #fff !important;
+    }
+    .cm-dlg-container .cm-bg-red {
+        background-color: red;
+        color: #fff !important;
+    }
+    
+    .cm-dlg-container > header > div {
+        display: inline-block;
+        line-height: 30px
+    }
+    
+    .cm-dlg-container > header > div:first-child {
+        width: 70%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .cm-dlg-container > header > div:last-child {
+        width: 25%;
+        float: right;
+        vertical-align: middle;
+    }
+    
+    .cm-dlg-container .cm-dlg-close-btn {
+        float: right;
+        color: #666 !important;
+        padding: 4px
+        line-height: 1;
+        font-size: 32px;
+        font-weight: 300;
+        margin-right: -5px;
+        text-decoration: none !important;
+    }
+    
+    .cm-dlg-container .cm-dlg-close-btn:hover {
+        text-decoration: none;
+        color: rgba(0, 0, 0, 0.81) !important;
+    }
+    
+    .cm-dlg-container .cm-dlg-article-body {
+        height: auto;
+        overflow-y: auto;
+    }
+    .cm-dlg-container .cm-dlg-artical-body-header {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        line-height: 1.35rem;
+    }
+    
+    .cm-dlg-container .cm-dlg-article-body img {
+        width: 46px;
+        height: 46px;
+        background-color: #fcb95b;
+    }
+    
+    .cm-dlg-container .cm-dlg-article-body-row {
+        padding: 10px;
+        vertical-align: middle;
+        line-height: 1.35rem;
+        clear:both;
+    }
+    
+    .cm-dlg-container .cm-dlg-article-body-row:last-child {
+        border-bottom: 0;
+    }
+    
+    .cm-dlg-container .cm-dlg-article-body-row > div.cm-left {
+        width: 66.666%;
+        min-height: 400px;
+        vertical-align: top;
+        float: left;
+    }
+    
+    .cm-dlg-container .cm-dlg-article-body-row > div.cm-right {
+        display: inline-block;
+        width: 33.333%;
+    }
+    
+    .cm-dlg-container .cm-dlg-article-body-row > div.cm-right label, .cm-dlg-container .cm-dlg-artical-body-header label {
+        color: #999;
+        padding-right: 0.5rem;
+    }
+    
+    .cm-dlg-container .cm-dlg-article-body-row > div:cm-right span, .cm-dlg-container .cm-dlg-artical-body-header span {
+        color: #666;
+    }
+    .cm-dlg-container .cm-dlg-article-body-row > div.cm-right > div {
+        margin-bottom: 10px;
+    }
+    .cm-dlg-container .cm-canvas-container {
+        border: 1px solid #ddd;
+        background-color: #eee;
+        width: 600px;
+        height: 400px;
+        text-align: center;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    .cm-dlg-container .cm-divider {
+        border-top: 1px solid #eee;
+    }
+    .cm-dlg-container .cm-block { display: block; }
+    .cm-dlg-container .cm-msg-err {
+        color: red;
+    }
+    .cm-dlg-container .cm-pad-10 {
+        padding: 10px;
+    }
+    .cm-dlg-container .cm-button {
+        padding: 10px;
+        width: 80px;
+    }
+    .input-start-time, .input-end-time {
+        width: 80px;
+    }
+    .table-start-time > thead >tr >th {
+        font-weight: 300 !important;
+        color: rgba(0,0,0,0.54);
+    }
+    .cm-day-cell {
+        display: inline-block;
+        margin:0;
+        padding: 5px;
+        line-height: 40px;
+        text-align: center;
+    }
+    .cm-day-cell > a {
+        text-decoration: none;
+        display: block;
+        width: 80px;
+        height: 40px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .cm-afternoon-time {
+        background-color: #eee;
+    }
+    .cm-day-cell > a:hover {
+        background-color: #00396B;
+        color: #fff;
+        text-decoration: none;
+    }
+    .cm-day-cell-sel {
+        background-color: #0c8eff;
+        color: #fff;
+    }
+    .cm-hide-input {
+        display: none;
+        visibility: hidden;
+        position: absolute;
+        top: -9999px;
+        width: 0;
+        height: 0;
+        left: -9999px;
+    }
+    .btn.btn-disabled{
+        color: #ccc;
+        border: 1px solid #ccc;
+    }
+    </style>
+    <apex:stylesheet value="{!URLFOR($Resource.JqueryTimepicker, '/timepicker.css')}" />
+        <apex:actionStatus id="loadingStatus">
+            <apex:facet name="start">
+                <img class="loading-gif" src="/img/loading24.gif" width="24" height="24" />
+                    </apex:facet>
+                </apex:actionStatus>
+                <div style="display: none;">
+                    <apex:form id="formSelectService">
+                        <input type="hidden" id="selectedServiceId" name="selectedServiceId" value="" />
+                            <input type="hidden" id="projectid" name="projectid" value="{!projectid}"/>
+                                <apex:commandButton action="{!readServiceData}" value="Save" id="btnSelectService"/>
+                                    </apex:form>
+                                </div>
+                                <apex:form >
+                                    <input type="hidden" id="isServiceSelected" name="isServiceSelected" value="{!selectedServ}" />
+                                        <apex:sectionHeader title="Service Edit" subtitle="{!IF(ISBLANK(serviceid), 'New Project Service', ps.Name+': ' + ps.Service__r.Name)}" />
+                                            <c:Breadcrumb backtoid="{!projectid}" />
+                                                <apex:pageMessages escape="false" showDetail="false"/>
+                                                    
+                                                    <apex:pageBlock title="Project Service Edit" mode="edit">
+                                                        <apex:pageBlockButtons >
+                                                            <apex:commandButton id="btnSave" action="{!save}" value="Save" status="loadingStatus" rendered="{!selectedServ != 'None' && selectedServ != null}" html-formnovalidate="formnovalidate"/>
+                                                                <apex:commandButton id="btnDelete" action="{!delete}" value="Delete" rendered="{!showDelete}" onclick="if(!confirm('Are you sure?')){return false};"  />
+                                                                    <apex:commandButton id="btnCancel" action="{!cancel}" value="Cancel" immediate="true" html-formnovalidate="formnovalidate" rendered="{!selectedServ != 'None' && selectedServ != null}" /> 
+                                                                        </apex:pageBlockButtons>
+                                                                    
+                                                                    
+                                                                    <apex:pageBlockSection title="Project Information" columns="2" collapsible="false">
+                                                                        <apex:outputField value="{!Project.Name}" />
+                                                                            <apex:outputField value="{!Project.ProjectNumber__c}" />
+                                                                                <apex:outputField value="{!Project.StartDate__c}" />
+                                                                                    <apex:outputField value="{!Project.Retailer__c}" />
+                                                                                        <apex:outputField value="{!Project.EndDate__c}" />
+                                                                                            <apex:outputField value="{!Project.NumberOfDays__c}" rendered="{!Project.ProjectType__r.AllowMultidays__c}"/>
+                                                                                                
+                                                                                                
+                                                                                                </apex:pageBlockSection>
+                                                                                            <apex:outputPanel id="sectionpinfo">
+                                                                                                <apex:pageBlockSection title="Service Information" columns="1" collapsible="false" >
+                                                                                                    
+                                                                                                    <!--<apex:pageBlockSectionItem >
+                                                                                                        <apex:outputLabel value="Language"></apex:outputLabel>
+                                                                                                        <apex:outputPanel >
+                                                                                                            <apex:selectList id="ddllanguage" value="{!selectedLang}" size="1" multiselect="false" required="true" rendered="{!mode='add'}">
+                                                                                                                <apex:selectOptions value="{!AvlLanguages}" rendered="{!mode='add'}"  />
+                                                                                                                    </apex:selectList> 
+                                                                                                                <apex:outputText value="{!ps.VariantLanguage__c}" rendered="{!mode='edit'}" />
+                                                                                                                    <label id="ddlLanguage_err" class="errorLabel" for="Please select a Language">Please select a Language.</label>
+                                                                                                                        </apex:outputPanel>
+                                                                                                                        </apex:pageBlockSectionItem>-->
+                                                                                                                        
+                                                                                                                        <apex:pageBlockSectionItem >
+                                                                                                                        <apex:outputLabel value="Service"></apex:outputLabel>
+                                                                                                                        <apex:outputPanel >
+                                                                                                                        <apex:selectList id="ddlprojService" value="{!selectedServ}" size="1" multiselect="false" required="true" rendered="{!mode='add'}">
+                                                                                                                        <apex:selectOptions value="{!AvlServices}" rendered="{!mode='add'}"  />
+                                                                                                                        <apex:actionSupport event="onchange" onsubmit="return serviceChanged()" action="{!readServiceData}"></apex:actionSupport>
+                                                                                                                        </apex:selectList>
+                                                                                                                        <apex:outputText value="{!ps.Service__r.Name}" rendered="{!mode='edit'}" />
+                                                                                                                        <label id="ddlprojServ_err" class="errorLabel" for="Please select a Service">Please select a Service.</label>
+                                                                                                                        </apex:outputPanel>
+                                                                                                                        </apex:pageBlockSectionItem>
+                                                                                                                        <apex:pageBlockSectionItem rendered="{!selectedServ != 'None' && selectedServ != null && editableMap['ProjectService__c.ServiceTitle__c']}">
+                                                                                                                        <apex:outputLabel value="Service Title"></apex:outputLabel>  
+                                                                                                                        <apex:inputField id="Serv" value="{!ps.ServiceTitle__c}" required="true"/>
+                                                                                                                        </apex:pageBlockSectionItem>
+                                                                                                                        <apex:pageBlockSectionItem id="jobManualSection" rendered="{!selectedServ != 'None' && selectedServ != null}" helpText="{!$ObjectType.ProjectService__c.fields.JobManualTemplate__c.inlineHelpText}">
+                                                                                                                        <apex:outputLabel value="{!$ObjectType.ProjectService__c.fields.JobManualTemplate__c.label}"></apex:outputLabel>
+                                                                                                                        <apex:outputPanel id="OP_Manual" layout="block">
+                                                                                                                        <div class="requiredInput" style="display: inline">                           
+                                                                                                                        <div class="requiredBlock" style="height: 17px;top: -1px;"></div>
+                                                                                                                        <apex:actionRegion >
+                                                                                                                        <apex:selectList id="jobManualTemplate" value="{!ps.JobManualTemplate__c}" size="1" required="true" style="min-width: 173px;">
+                                                                                                                        <apex:actionSupport event="onchange" rerender="OP_Manual"  />
+                                                                                                                        <apex:selectOptions value="{!EventManualTemplates}"/>
+                                                                                                                        </apex:selectList>
+                                                                                                                        </apex:actionRegion>
+                                                                                                                        <span id="jobManualError" class="errorLabel">Please select a Job Manual Template</span>
+                                                                                                                        </div>
+                                                                                                                        <apex:inputFile id="customTemp" accept="pdf" value="{!customManual}" filename="{!fileName}" contentType="{!contentType}" rendered="{!IF(ps.JobManualTemplate__c=='Custom Template' ,true,false)}" />
+                                                                                                                        <br/>
+                                                                                                                        <apex:outputLink id="opLink" styleClass="opLink" value="{!ps.JobManualURL__c}" style="display:inline-block;margin:5px 0;" rendered="{!IF(ps.JobManualTemplate__c=='Custom Template' && (ISBLANK(ps.JobManualURL__c) == false) && (ISBLANK(ps.JobManualFileName__c) == false) ,true,false)}" target="_blank">"{!ps.JobManualFileName__c}" </apex:outputLink>
+                                                                                                                        </apex:outputPanel>
+                                                                                                                        </apex:pageBlockSectionItem>
+                                                                                                                        <apex:pageBlockSectionItem rendered="{!selectedServ != 'None' && selectedServ != null && Project.ProjectType__r.AllowMultidays__c}">
+                                                                                                                        <apex:outputLabel value="{!$ObjectType.ProjectService__c.fields.NumberOfDays__c.label}" for="ddlNumberOfDays" />
+                                                                                                                        <apex:outputPanel >
+                                                                                                                        <apex:selectList id="ddlNumberOfDays" size="1" multiselect="false" required="true" value="{!ps.NumberOfDays__c}" style="width:75px">
+                                                                                                                        <apex:selectOptions value="{!numberOfDaysList}" />
+                                                                                                                        </apex:selectList>
+                                                                                                                        </apex:outputPanel>
+                                                                                                                        </apex:pageBlockSectionItem>
+                                                                                                                        <apex:pageBlockSectionItem rendered="{!selectedServ != 'None' && selectedServ != null && Project.ProjectType__r.AllowMultidays__c}">
+                                                                                                                        <apex:outputLabel value="{!$ObjectType.ProjectService__c.fields.StartDayNumber__c.label}" for="ddlDayNumber" />
+                                                                                                                        <apex:outputPanel >
+                                                                                                                        <select id="ddlDayNumber" style="width:75px"></select>
+                                                                                                                        <span id="ddlDayNumberError" class="errorLabel">Please select number of days</span>
+                                                                                                                        </apex:outputPanel>
+                                                                                                                        </apex:pageBlockSectionItem>
+                                                                                                                        <apex:inputHidden id="startDayNumber" value="{!ps.StartDayNumber__c}" />
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        <!--<apex:pageBlockSectionItem rendered="{!selectedServ != 'None' && selectedServ != null}">
+                                                                                                                        <apex:outputLabel value="Purchase Amount"></apex:outputLabel>
+                                                                                                                        <apex:outputField value="{!ps.PurchaseAmount__c}"/>
+                                                                                                                        </apex:pageBlockSectionItem>-->
+                                                                                                                        
+                                                                                                                        <apex:pageBlockSectionItem rendered="{!selectedServ != 'None' && selectedServ != null}">
+                                                                                                                        <apex:outputLabel value="Start Time"></apex:outputLabel>
+                                                                                                                        <apex:outputPanel layout="block">
+                                                                                                                        <apex:inputField id="StartTime" value="{!ps.StartTime__c}" style="width:72px" />
+                                                                                                                        </apex:outputPanel>
+                                                                                                                        </apex:pageBlockSectionItem>
+                                                                                                                        <apex:pageBlockSectionItem rendered="{!selectedServ != 'None' && selectedServ != null}">
+                                                                                                                        <apex:outputLabel value="Estimated Minutes"></apex:outputLabel>
+                                                                                                                        <apex:outputPanel layout="block">
+                                                                                                                        <div class="requiredInput" style="display: inline">
+                                                                                                                        <div class="requiredBlock"></div>
+                                                                                                                        <apex:inputField id="EstDur" value="{!ps.EstimatedMinutes__c}" required="true" type="number" html-min="5" html-max="1445" html-step="15" />
+                                                                                                                        </div>
+                                                                                                                        </apex:outputPanel>
+                                                                                                                        </apex:pageBlockSectionItem>
+                                                                                                                        
+                                                                                                                        <apex:pageBlockSectionItem rendered="{!selectedServ != 'None' && selectedServ != null}">
+                                                                                                                        <apex:outputLabel value="{!$ObjectType.ProjectService__c.fields.EndTime__c.label}" for="DisplayTime" />
+                                                                                                                        <apex:inputText id="DisplayTime" style="width:72px" />
+                                                                                                                        </apex:pageBlockSectionItem>
+                                                                                                                        <apex:inputCheckbox id="chkBxpopulateTargetQuestions" rendered="{!selectedServ != 'None' && selectedServ != null}" value="{!ps.PopulateTargetQuestions__c}" style="margin-left:0"/>
+                                                                                                                        <apex:pageBlockSectionItem rendered="{!selectedServ != 'None' && selectedServ != null}">
+                                                                                                                        <apex:outputLabel value="Responsible For Execution"></apex:outputLabel>
+                                                                                                                        <apex:outputPanel layout="block">
+                                                                                                                        <apex:selectList id="ResponsibleForExecution" value="{!ps.ResponsibleForExecution__c}" size="1" required="true"  style="min-width: 173px;">
+                                                                                                                        <apex:selectOptions value="{!ECValuesOption}"/>
+                                                                                                                        </apex:selectList>
+                                                                                                                        </apex:outputPanel>
+                                                                                                                        </apex:pageBlockSectionItem>
+                                                                                                                        
+                                                                                                                        <apex:pageBlockSectionItem rendered="{!selectedServ != 'None' && selectedServ != null}">
+                                                                                                                        <apex:outputLabel value="Shipping Preference"></apex:outputLabel>
+                                                                                                                        <apex:outputPanel layout="block">
+                                                                                                                        <div class="requiredInput" style="display: inline">
+                                                                                                                        <div class="requiredBlock"></div>
+                                                                                                                        <apex:selectList id="ddlShippingPreference" value="{!ps.ShippingPreference__c}" size="1" required="true" style="width:160px;" rendered="{!selectedServ != 'None' && selectedServ != null}">
+                                                                                                                        <apex:selectOptions value="{!ShippingPreference}"/>
+                                                                                                                        </apex:selectList>                                
+                                                                                                                        </div>
+                                                                                                                        </apex:outputPanel>
+                                                                                                                        </apex:pageBlockSectionItem>
+                                                                                                                        <apex:pageBlockSectionItem rendered="{!selectedServ != 'None' && selectedServ != null && (isDistRequired || ps.Service__r.AllowDistribution__c) }">
+                                                                                                                        <apex:outputLabel value="Check Distribution"></apex:outputLabel>
+                                                                                                                        <apex:inputCheckbox id="chkBxCheckDistribution" value="{!ps.CheckDistribution__c}" style="margin-left:0"/>
+                                                                                                                        </apex:pageBlockSectionItem>
+                                                                                                                        <apex:inputField value="{!ps.NumberOfWorkers__c}" style="width:50px" rendered="{!isNoOfWorkersRequired && selectedServ != 'None' && selectedServ != null}" />
+                                                                                                                        <!--
+                                                                                                                        <apex:pageBlockSectionItem rendered="{!selectedServ != 'None' && selectedServ != null}">
+                                                                                                                        <apex:outputLabel value="Estimated duration per day"></apex:outputLabel>
+                                                                                                                        <apex:outputPanel layout="block">
+                                                                                                                        <div class="requiredInput" style="display: inline">
+                                                                                                                        <div class="requiredBlock"></div>
+                                                                                                                        <apex:inputField id="EstDur" value="{!ps.Estduration__c}" style="width:160px" required="true" />
+                                                                                                                        <span id="EstDurError" class="errorLabel">Please select Estimated duration per day</span>
+                                                                                                                        </div>
+                                                                                                                        
+                                                                                                                        </apex:outputPanel>
+                                                                                                                        </apex:pageBlockSectionItem>
+                                                                                                                        -->
+                                                                                                                        
+                                                                                                                        <apex:inputHidden id="EndTime" value="{!ps.EndTime__c}" />
+                                                                                                                        
+                                                                                                                        </apex:pageBlockSection>
+                                                                                                                        
+                                                                                                                        </apex:outputPanel>
+                                                                                                                        
+                                                                                                                        <apex:outputPanel id="sectionATList">
+                                                                                                                        <div id="qList">
+                                                                                                                        
+                                                                                                                        <apex:repeat value="{!allAttributes}" var="sr" id="srQ">
+                                                                                                                        
+                                                                                                                        <div id="{!sr.id}" style="padding:0 20px;margin-bottom:10px;display:{!if(sr.isVisible,'block','none')}">
+                                                                                                                        
+                                                                                                                        <h1 style="line-height:1.8em">
+                                                                                                                        <!--<span> {!sr.ordernumber}</span>-->
+                                                                                                                    {!sr.attributeName}  <apex:outputText styleClass="TootTipClass" rendered="{!sr.renderFile == 'true' && sr.showChooseFile == true}" value="   * Only non pdf attachments will be displayed in the Job Manual "></apex:outputText>
+                                                                                                                        </h1>
+                                                                                                                        <div id="text">
+                                                                                                                        <apex:inputTextArea cols="50" rows="10" rendered="{!IF((sr.renderFreeText == 'true') && (Project.IsExternalProject__c != true), true, false)}" value="{!sr.attributeValue}"  richtext="true" />
+                                                                                                                        <apex:outputText rendered="{!Project.IsExternalProject__c == true}" value="{!sr.attributeValue}" style="display: none; width:0; height:0; opacity:0;" />
+                                                                                                                        </div>
+                                                                                                                        <div id="number">
+                                                                                                                        <apex:inputText rendered="{!sr.renderNumber}" value="{!sr.attributeValue}" />
+                                                                                                                        </div>
+                                                                                                                        <div id="file" class="cm-file">
+                                                                                                                        <apex:image url="/servlet/servlet.FileDownload?file={!sr.attachmentId}" rendered="{!(sr.renderFile=='true' && sr.isImage == true)}" width="160px" style="display:block;"/>
+                                                                                                                        
+                                                                                                                        <a href="/servlet/servlet.FileDownload?file={!sr.attachmentId}">{!sr.imageName}</a>   
+                                                                                                                        
+                                                                                                                        <apex:commandLink value="" action="{!deleteAttachment}" rendered="{!(sr.renderFile=='true' && sr.showChooseFile == false)}" style="border:none;width:12px;height: 20px; background-image:url('/img/func_icons/remove12_on.gif');background-repeat:no-repeat;background-position: right 0;display: inline-block;margin-bottom: -6px;margin-left: 6px;">
+                                                                                                                        <apex:param name="attachmentId" value="{!sr.attachmentId}" assignTo="{!attachmentId}"/>
+                                                                                                                        <apex:param name="attachmentQstnId" value="{!sr.id}" assignTo="{!attachmentQstnId}"/>
+                                                                                                                        </apex:commandLink>
+                                                                                                                        <apex:inputFile style="width:100%" value="{!sr.imageBody}" filename="{!sr.imageName}" rendered="{! (sr.renderFile=='true' && sr.showChooseFile == true)}" />
+                                                                                                                        <apex:inputHidden value="{!sr.imageFlag}"/>
+                                                                                                                        </div>
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        </div>
+                                                                                                                        <!-- qPreview.id -->
+                                                                                                                        
+                                                                                                                        </apex:repeat>
+                                                                                                                        <!-- callouts -->
+                                                                                                                        
+                                                                                                                        </div>
+                                                                                                                        
+                                                                                                                        <!-- qList -->
+                                                                                                                        </apex:outputPanel>
+                                                                                                                        </apex:pageBlock>
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        <input type="hidden" name="hiddenField" />
+                                                                                                                        <input type="hidden" id="hdnProjectType" value="{!Project.ProjectType__r.name}" />
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        </apex:form>
+                                                                                                                        <c:jQueryScripts includejQueryUI="true" />
+                                                                                                                        <c:Notify />
+                                                                                                                        <script src="{!$Resource.momentJS}"></script>
+    <script src="{!$Resource.multidatespickerJS}"></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.JqueryTimepicker, '/timepicker.js')}"></script>
+    <script src="{!$Resource.fullCalendarMinJS}"></script>    
+    
+    
+    <script type="text/template" id="tmplImageResizerDialog">
+        <div class="cm-dlg-modal-overlay"></div>
+        <div class="cm-dlg-modal">
+            <article class="cm-dlg-container">
+                <header>
+                <div>
+                <h2>Image Attachment Error Dialog</h2>
+                </div>
+                <div>
+                    <a href="#" class="cm-dlg-close-btn">&times;</a>
+                    </div>
+                    </header>
+                    <div class="cm-dlg-article-body">
+                        <div class="cm-dlg-artical-body-header">
+                            <p class="cm-msg-err">The system can't handle the image attachment with the file size bigger than {{maxSize}} KB.
+                            Please use external image editor to resize and compress the image and attach it again.</p>
+                            </div>
+                            <div class="cm-dlg-article-body-row">
+                                <div class="cm-left"><div class="cm-canvas-container"><canvas class="cm-canvas"/></div></div>
+                                    <div class="cm-right">
+                                        <div>
+                                        <label class="cm-block">File</label><span class="cm-badge cm-bg cm-file">{{file}}</span>
+                                            </div>
+                                        <div>
+                                            <label class="cm-block">File Size</label>
+                                            <span class="cm-badge cm-bg-red cm-file-size">{{size}} KB</span>
+                                            </div>
+                                            <div>
+                                                <label class="cm-block">Width</label>
+                                                <span class="cm-badge cm-bg cm-img-width"></span>
+                                                </div>
+                                                <div>
+                                                    <label class="cm-block">Height</label>
+                                                    <span class="cm-badge cm-bg cm-img-height"></span>
+                                                    </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="cm-dlg-article-body-row">
+                                                        <div class="cm-divider cm-pad-10" style="text-align: right;">
+                                                            <button class="cm-button">Ok</button>
+                                                            </div>
+                                                            </div>
+                                                            </div>
+                                                            </article>
+                                                            </div>
+                                                            </script>
+    <script type="text/template" id="tmplTimePickerDialog">
+    <div class="cm-dlg-modal" style="width:580px;" id="timePickerDialog">
+        <article class="cm-dlg-container">
+            <header>
+            <div>
+            <h2>Start Time Selection Dialog</h2>
+            </div>
+            <div>
+                <a href="#" class="cm-dlg-close-btn">&times;</a>
+                </div>
+                </header>
+                <div class="cm-dlg-article-body">
+                    <div class="cm-dlg-article-body-row">
+                        {body}
+                         </div>
+                         </div>
+                         </article>
+                         </div>
+                         </script>
+    <script>
+    var j$ = jQuery.noConflict()
+    var isExternalProject = {!isExternalProject};
+    var mode= "{!mode}"; 
+    var disableFields  = {!disableFields};
+    var EndTime = "{!ps.EndTime__c}";
+    
+    
+    var today = new Date();
+    var projectDays = "{!Project.NumberOfDays__c}";
+    var allowMultidays = {!Project.ProjectType__r.AllowMultidays__c};
+    
+    var SUPPORTED_IMAGE_MIMETYPE  = ['image/gif','image/png','image/jpeg','image/jpg'];
+    var IMAGE_ATTACH_MAX_SIZE = 512000; // 500kb
+    var IMAGE_MAX_WIDTH = 980;
+    var IMAGE_MAX_HEIGHT = 600;
+    var targetFileInputRef = undefined;
+    var CANVAS_ORIGIN_WIDTH = 600;
+    var CANVAS_MAX_WIDTH = 600;
+    var CANVAS_ORIGIN_HEIGHT = 400;
+    
+    function loadImage(img){
+        var canvas = j$('div.cm-dlg-modal .cm-canvas')[0];
+        var ctx = canvas.getContext('2d');
+        
+        canvas.width = img.width;
+        canvas.height = img.height;
+        CANVAS_ORIGIN_WIDTH = img.width;
+        CANVAS_ORIGIN_HEIGHT = img.height;
+        j$('div.cm-dlg-modal span.cm-img-height').html(img.height + ' px');
+        j$('div.cm-dlg-modal span.cm-img-width').html(img.width + ' px');
+        var ratio = img.width / img.height;
+        if (img.width > CANVAS_MAX_WIDTH) {              
+            img.height = img.height / img.width  * CANVAS_MAX_WIDTH;
+            img.width = CANVAS_MAX_WIDTH;              
+        }
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+        ctx.drawImage(img,0,0, img.width, img.height);           
+    }
+    
+    function resizeImage(img, percentage) {
+        var canvas = j$('div.cm-dlg-modal .cm-canvas')[0];
+        var ctx = canvas.getContext('2d');
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+        if (!ctx) {
+            return;
+        }
+        img.width = CANVAS_ORIGIN_WIDTH * percentage;
+        img.height = CANVAS_ORIGIN_HEIGHT * percentage;
+        canvas.width = CANVAS_ORIGIN_WIDTH * percentage;
+        canvas.height = CANVAS_ORIGIN_HEIGHT * percentage;
+        ctx.drawImage(img,0,0, img.width, img.height);
+    }
+    
+    function captureImageSize(evt, file) {
+        var img = new Image();
+        img.src = URL.createObjectURL(file);
+        img.onload = function(){
+            var attr = j$(evt.target).next();
+            attr.val((img.width > IMAGE_MAX_WIDTH || img.height > IMAGE_MAX_HEIGHT) ? '1' : '0');
+        };
+    }
+    
+    function handleAttachment(evt) {
+        var file = evt.target.files[0];
+        if (!file || file.name.indexOf('.pdf') !== -1 || file.name.indexOf('.PDF') !== -1) { return;}
+        if (file.size <= IMAGE_ATTACH_MAX_SIZE) {
+            if (SUPPORTED_IMAGE_MIMETYPE.indexOf(file.type) !== -1) { 
+                captureImageSize(evt, file);    
+            }
+            return; 
+        }
+        targetFileInputRef = evt.target;
+        var html = j$('script#tmplImageResizerDialog').html();
+        html = html.replace('{{file}}', file.name);
+        html = html.replace('{{size}}', Math.round(file.size / 1024));
+        html = html.replace('{{maxSize}}', IMAGE_ATTACH_MAX_SIZE / 1024);
+        
+        if (!!j$('div.cm-dlg-modal').html()) {
+            j$('div.cm-dlg-modal').remove();
+            j$('.cm-dlg-modal-overlay').remove();
+        }
+        
+        var offset = j$(targetFileInputRef).offset();                 
+        var height = j$('body').append(html).height();
+        if (offset.top > 600) {
+            offset.top -= 600;
+        } else {
+            offset.top = 10;
+        }
+        
+        window.setTimeout(function(){
+            j$('div.cm-dlg-modal-overlay').css('bottom', '-' +  height + 'px');
+            j$('div.cm-dlg-modal')
+            .css('left', offset.left)
+            .css('top', offset.top)
+            .css('display', 'block')
+            .animate({
+                opacity: 1
+            }, 500);
+            var img = new Image();
+            img.src = URL.createObjectURL(file);
+            img.onload = function(){
+                loadImage(img);
+            };
+        }, 5);
+    }
+    
+    
+    function closeDialog() {
+        if (!!targetFileInputRef) {
+            j$(targetFileInputRef).val('');
+        }
+        j$('.cm-dlg-modal').animate({
+            opacity: 0
+        }, 250, function() {
+            j$('body').css('overflow', 'auto');
+            j$(this).remove();
+            j$('.cm-dlg-modal-overlay').remove();
+        });
+    }
+    
+    function registerFileAttachmentChangeEvents(){
+        j$('.cm-file > input[type="file"]').on('change', handleAttachment);
+        j$('body').on('click', 'div.cm-dlg-modal a.cm-dlg-close-btn', function(evt){
+            evt.preventDefault();
+            closeDialog();
+        });
+        j$('body').on('click','div.cm-dlg-modal .cm-button', function(e){
+            e.preventDefault();
+            closeDialog();
+        })
+    }
+    
+    j$(window).load(function() {
+        if(j$("[id*=DisplayTime]").val()=='' && j$("[id*=EstDur]").val()!='' && j$("[id*=StartTime]").val()!=''){              
+            j$('[id*=StartTime]').trigger("change");
+        }           
+    });
+    
+    j$(document).ready(function() {
+        
+        j$('[id*=ddlprojService]').change(function() {
+            var startTime = j$("[id*=StartTime]").timepicker('getTime');                    
+            var estDuration = j$("[id*=EstDur]").val();
+            if (!!startTime){
+                var endTime = new Date(startTime.getTime() + (EstimatedMinutes * 60000));
+                j$("[id*=DisplayTime]").val(showTime(endTime));
+                j$("[id*=EndTime]").val(showTime(endTime));
+            }
+        });
+        
+        if(allowMultidays){
+            populatelDayNumbers();
+        }
+        registerFileAttachmentChangeEvents();
+        
+        j$("[id*=btnSave]").click(function(event) {
+            j$(this).css('visibility', 'hidden');
+            var returnVal = true;
+            
+            if (j$("[id*=ddlprojService]").length > 0) {
+                if (j$("[id*=ddlprojService]").val().toLowerCase() == 'none') {
+                    j$("[id*=ddlprojServ_err]").show();
+                    j$("[id*=ddlprojService]").addClass('borderClass');
+                    returnVal = false;
+                } else {
+                    j$("[id*=ddlprojService]").removeClass('borderClass');
+                    j$("[id*=ddlprojServ_err]").hide();
+                }
+            }
+            
+            if (j$("[id*=jobManualTemplate] option:selected").val() == "") {
+                j$("[id$=jobManualError]").show();
+                j$("[id$=jobManualTemplate]").addClass('borderClass');
+                returnVal = false;
+            }
+            else {
+                j$("[id$=jobManualTemplate]").removeClass('borderClass');
+                j$("[id$=jobManualError]").hide();
+            }
+            if (allowMultidays && j$("#ddlDayNumber :selected").text() == "") {
+                j$("#ddlDayNumberError").show();
+                returnVal = false;
+            } else {
+                j$("#ddlDayNumberError").hide();
+            }
+            if(j$("[id$=jobManualTemplate]").val()=="Custom Template")
+            {
+                if(j$("[id$=customTemp]").get(0).files.length<1 && j$("[id*=opLink]").text()==''){
+                    returnVal=false;
+                    //alert("Please attach a Custom Template.");
+                    notif({msg: 'Please attach a Custom Template.',  type: "error",  position: "center", clickable: false});
+                }
+                var ext = j$("[id$=customTemp]").val().split('.').pop().toLowerCase();
+                if(ext != '' && j$.inArray(ext, ['pdf']) == -1) {
+                    returnVal = false;
+                    notif({msg: 'Only PDF files are allowed.',  type: "error",  position: "center", clickable: false});
+                }
+            }
+            
+            if(returnVal==false){
+                j$(this).css("visibility", "visible");
+                
+            }
+            return returnVal;
+        });
+        
+        
+        j$("[id*=DisplayTime]").prop('disabled', true);
+        j$('input[id$=DisplayTime]').val(EndTime);
+        
+        
+        j$("[id*=StartTime]").timepicker({ 'step': 15 });
+        
+        
+        j$("[id*=StartTime]").change(function() {
+            
+            var startTime = j$(this).timepicker('getTime');
+            var EstimatedMinutes = j$("[id*=EstDur]").val();
+            if (EstimatedMinutes != "" && startTime != null) {
+                var endTime = new Date(startTime.getTime() + (EstimatedMinutes * 60000));
+                j$("[id*=DisplayTime]").val(showTime(endTime));
+                j$("[id*=EndTime]").val(showTime(endTime));
+            }
+            if (startTime == null) {
+                j$("[id*=EndTime]").val('');
+                j$("[id*=DisplayTime]").val('');
+            }
+            
+        });
+        
+        j$("[id*=EstDur]").change(function() {
+            if (j$(this).val() != "" && j$("[id*=StartTime]").val() != "") {
+                var startTime = j$("[id*=StartTime]").timepicker('getTime');
+                var EstimatedMinutes = j$(this).val();
+                var endTime = new Date(startTime.getTime() + (EstimatedMinutes * 60000));
+                j$("[id*=DisplayTime]").val(showTime(endTime));
+                j$("[id*=EndTime]").val(showTime(endTime));
+            } else {
+                j$("[id*=DisplayTime]").val("");
+                j$("[id*=EndTime]").val("");
+            }
+        });
+        if (j$("[id*=StartTime]").val() == "") {
+            var startTime = j$("[id*=StartTime]").timepicker('getTime');
+            console.log(startTime);
+            var EstimatedMinutes = j$("[id*=EstDur]").val();
+            
+            if (EstimatedMinutes != "" && startTime != null) {
+                var endTime = new Date(startTime.getTime() + (EstimatedMinutes * 60000));
+                j$("[id*=DisplayTime]").val(showTime(endTime));
+                j$("[id*=EndTime]").val(showTime(endTime));
+            }
+        }
+        
+        function showTime(dateParam) {
+            var hours = dateParam.getHours();
+            var minutes = dateParam.getMinutes();
+            var timeString = "" + ((hours > 12) ? hours - 12 : hours);
+            timeString += ((minutes < 10) ? ":0" : ":") + minutes;
+            timeString += (hours >= 12) ? "pm" : "am";
+            return timeString; 
+        }
+        
+        function durationInMinutes(duration) {
+            var durationArray = duration.split(' ');
+            var totalMinutes = 0;
+            if (duration.toLowerCase().indexOf("hr") > 1 && duration.toLowerCase().indexOf("min") > 1) {
+                totalMinutes = parseInt(durationArray[0]) * 60 + parseInt(durationArray[2]);
+            } else if (duration.toLowerCase().indexOf("min") > 1) {
+                totalMinutes = parseInt(durationArray[0]);
+            } else if (duration.toLowerCase().indexOf("hr") > 1) {
+                totalMinutes = parseInt(durationArray[0]) * 60;
+            }
+            
+            return totalMinutes;
+        }
+        
+    });
+    
+    j$("[id*=ddlNumberOfDays]").change(function(){
+        populatelDayNumbers();
+        //j$("[id*=psNumberOfDays]").val(j$(this).val());
+    });
+    function populatelDayNumbers(){
+        var numDays = j$("[id*=ddlNumberOfDays]").val();
+        var numOptions = [];
+        var projectDays = "{!Project.NumberOfDays__c}";
+        if(projectDays == ""){
+            projectDays = 1;
+        }
+        
+        for(var i = 1; i <= (projectDays - numDays) + 1; i++){
+            if((projectDays - numDays) == 0 ){
+                j$("[id*=startDayNumber]").val("1");
+                numOptions.push('<option value="' + i +'" selected="selected">Day ' + i + '</option>');
+            }
+            else{
+                numOptions.push('<option value="' + i +'">Day ' + i + '</option>');
+            }
+        }
+        j$("#ddlDayNumber").html(numOptions.join(''));
+        if(j$("[id*=startDayNumber]").val() && j$("[id*=startDayNumber]").val() != "0"){
+            j$("#ddlDayNumber").val(j$("[id*=startDayNumber]").val());
+        }
+        if(j$("[id*=startDayNumber]").val() == "0" || j$("[id*=startDayNumber]").val() == ""){
+            j$("[id*=startDayNumber]").val("1");
+        }
+    }
+    j$("#ddlDayNumber").change(function(){
+        j$("[id*=startDayNumber]").val(j$(this).val());
+        if(j$("[id*=startDayNumber]").val() == "0"){
+            j$("[id*=startDayNumber]").val("1");
+        }
+        //alert(j$("[id*=startDayNumber]").val());
+    });
+    
+    function serviceChanged () {
+        var action, ver, val = j$('[id*=ddlprojService]').val();
+        j$('input#selectedServiceId').val(val);
+        j$('input[id*=btnSelectService]').click();
+        return false;
+    }
+    
+    </script>
+</apex:page>

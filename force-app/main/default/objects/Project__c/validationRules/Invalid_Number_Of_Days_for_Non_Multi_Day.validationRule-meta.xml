@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Invalid_Number_Of_Days_for_Non_Multi_Day</fullName>
+    <active>true</active>
+    <description>Number of Days cannot be more than 1 for a non multi day project type.</description>
+    <errorConditionFormula>AND(ProjectType__r.AllowMultidays__c == false,  NumberOfDays__c &gt; 1)</errorConditionFormula>
+    <errorDisplayField>NumberOfDays__c</errorDisplayField>
+    <errorMessage>Number of Days cannot be more than 1 for a non multi day project type.</errorMessage>
+</ValidationRule>

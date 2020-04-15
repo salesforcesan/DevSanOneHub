@@ -1,0 +1,49 @@
+<aura:component controller="LightningProjectController"  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <div>
+        <!-- Header: Status filters-->
+        <c:ProjectCounts />        
+    </div>
+    <div>
+        <div class="slds-grid slds-wrap slds-grid_pull-padded">
+            <div class="projects slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_9-of-12 slds-large-size_9-of-12 slds-align-center"> 
+                <!-- <div class="projects">
+             Project cards -->
+                <c:ProjectCards />            
+            </div>
+            <div class="filters slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_3-of-12 slds-large-size_3-of-12 slds-grid slds-grid_align-end slds-align-top">
+                <!--  <div class="filters">            
+            Project filters  -->
+                <c:ProjectFilters />
+            </div>
+        </div>
+        <div>
+            <c:Modal />
+        </div>
+        <div>
+            <style>
+                div:focus {
+                outline: 0;    
+                border: 0;
+                }
+                .spinner {
+                position:fixed;
+                padding:0;
+                margin:0;
+                
+                top:0;
+                left:0;
+                
+                width: 100%;
+                height: 100%;
+                background:rgba(255,255,255,0.2);
+                z-index: 1000 !important;
+                }
+                
+                .slds-brand-band:before {
+                }
+                
+                
+            </style>
+        </div>
+    </div>    
+</aura:component>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cannot_Cancel_Worker_Insuff_LeadTime</fullName>
+    <active>true</active>
+    <description>Cannot cancel workers for a job that does not have sufficient lead time. Will follow rules for job cancellation.</description>
+    <errorConditionFormula>AND(ISCHANGED(Status__c),UPPER(TEXT(Status__c)) == &#39;CANCELED&#39;,IsCancellable__c == False)</errorConditionFormula>
+    <errorMessage>Cannot cancel worker. Insufficient lead time.</errorMessage>
+</ValidationRule>

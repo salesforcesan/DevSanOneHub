@@ -1,0 +1,56 @@
+.THIS .attachment-icon {
+	font-size: 2.3em;
+	padding: 30px 40px 30px 40px;
+    color: #54698D;
+}
+.THIS .yesno-button {
+	width: 145px;
+    height: 50px;
+    font-size: 1.3em;    
+}
+.THIS .slds-form-element__label {
+    font-size: 1.2em;
+}
+.THIS .slds-input__text {
+    font-size: 1.2em;
+    height: 30px;
+}
+.THIS .slds-radio {
+    padding-bottom: .5rem;
+}
+.THIS .slds-form-element__help {
+    color: red;
+}
+
+.THIS .oh-button {
+    max-width:40px;
+    max-height:40px;
+    height:40px;
+}
+.THIS .oh-submit {
+    max-height:40px;
+    height:40px;
+}
+
+.THIS .answer-button {
+    width:5rem;
+    height:5rem;
+}
+
+.THIS .answer-button .slds-button__icon {
+    width:1.2rem;
+    height:1.2rem;
+}
+
+.THIS .number-box {
+    background: #54698d;
+    padding: .15rem;
+    vertical-align: middle;
+    text-align: center;
+    color: #fff;
+    font-size:.7rem;
+    min-width: 1.5rem;
+    border-radius: .25rem;
+    margin: 0 .3rem 0 0;
+    width: 2rem;
+}

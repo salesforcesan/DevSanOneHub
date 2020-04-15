@@ -1,0 +1,11 @@
+<aura:component >
+  <aura:attribute name="field" type="object" default=""/>
+  <aura:registerEvent name="systemDataGridCheckboxCellClick" type="c:SimpleComponentEvent"/>
+  <td role="gridcell" class="slds-text-align--center" >
+    <lightning:input type="checkbox" value="{!v.field.__value}" 
+      checked="{!v.field.__selected}" 
+      onchange="{!c.onCheckOne}" 
+      label="Select a row" 
+      name="{!join('_','gridCheckbox',v.field.__extend.id)}" class="card-checkbox"/>
+  </td>
+</aura:component>

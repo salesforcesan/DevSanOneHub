@@ -1,0 +1,33 @@
+.THIS {
+    background-color: #fff;
+}
+
+.THIS .cmk-card-title {
+    font-weight: 300;
+    font-size: 1.1rem;
+    color: #0070D2;
+}
+
+.THIS .cmk-footer {
+    border-top: 1px solid #dddbda;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.THIS .cmk-body .slds-item_label::after {
+    content: ':';
+    color: rgb(112, 110, 107);
+}
+
+.THIS h2.cmk-card-title {
+    line-height:1rem;
+}
+
+.THIS .oh-lineH {
+    line-height:100%;
+    margin-bottom:0;
+    padding-bottom:0;
+    margin-top:-.55rem;
+}

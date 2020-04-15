@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_NoOfDays_BasedOnProjectWindow</fullName>
+    <active>true</active>
+    <description>Service Number Of Days should be within the Project Window</description>
+    <errorConditionFormula>AND(ISCHANGED(NumberOfDays__c), OR(NumberOfDays__c&gt;Project__r.NumberOfDays__c,NumberOfDays__c &lt; 1))</errorConditionFormula>
+    <errorMessage>Number of Days Should be within the Project Window</errorMessage>
+</ValidationRule>

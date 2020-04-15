@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disallow_fieldchange_after_launched</fullName>
+    <active>true</active>
+    <description>NumberOfDays/NumberOfWorkers cannot be changed for a non-OH Mobile project after it is Launched.</description>
+    <errorConditionFormula>AND(!Project__r.IsOneHubMobile__c,OR(ISCHANGED( NumberOfDays__c ), ISCHANGED( DayNumbers__c ), ISCHANGED( NumberOfWorkers__c )),UPPER(TEXT(Project__r.Status__c)) != &#39;PLANNING&#39;, UPPER(TEXT(Project__r.Status__c)) != &#39;BOOKED&#39;)</errorConditionFormula>
+    <errorMessage>Number of Days / Number of Workers cannot be changed after a project is Launched.</errorMessage>
+</ValidationRule>

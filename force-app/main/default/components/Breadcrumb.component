@@ -1,0 +1,6 @@
+<apex:component >
+    <apex:attribute name="backtoid" type="String" required="false" description="Id of the back to page" />
+    <div class="bPageTitle" style="padding-top: 0;">
+        <div class="ptBreadcrumb">&nbsp;«&nbsp;<a href="/{!backtoid}">Back to Project</a></div>
+    </div>
+</apex:component>

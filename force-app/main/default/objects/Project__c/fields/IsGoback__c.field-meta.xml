@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsGoback__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>A checkbox that indicates that the Project is a &#39;go-back&#39;.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>If selected, the project is a &#39;go-back&#39;.</inlineHelpText>
+    <label>Is Go back</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

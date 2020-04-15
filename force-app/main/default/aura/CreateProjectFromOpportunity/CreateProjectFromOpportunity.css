@@ -1,0 +1,33 @@
+.THIS .create-button {
+   	right:-12px;
+    top:-2px
+}
+
+.THIS .cNotification {
+    transform:none;
+}
+
+.THIS .cNotification .notify-close-icon {
+    display:none;
+}
+
+.THIS.cNotification.notify-hide {
+  height: 0;
+  width: 100%;
+  margin-bottom: 0 !important;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0.5;
+  transform: scale(0.9);
+  transition: height 1s ease-in, opacity 0.25s ease-out, transform 0.1s !important;
+}
+
+.THIS .cNotification.notify-show {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  max-height: 200px;
+  opacity: 1;
+  transform: none;
+  transition: none !important;
+}

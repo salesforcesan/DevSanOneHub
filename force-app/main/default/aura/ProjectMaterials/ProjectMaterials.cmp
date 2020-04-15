@@ -1,0 +1,45 @@
+<aura:component extends="c:UISecurity"  controller="LightningProjectMaterialController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <aura:dependency resource="markup://c:MaterialSearch"/>
+    <aura:attribute name="projectId" type="Id" />
+    <aura:attribute name="materials" type="Object" access="global" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler action="{!c.doInit}" event="c:ProjectMaterialChange" />
+    <c:ModalDialogContainer size="medium" aura:id="modalDialog"/>
+	<div>
+    <div class="slds-is-relative slds-size_1-of-1 slds-grid" style="overflow:hidden;">
+        
+        <div class="slds-card slds-size_1-of-1 slds-p-around_medium" style="">
+            <div class=""  aura:id="projectMaterialSpinner" >
+                <lightning:spinner size="medium" variant="brand" />
+            </div>
+            <c:Notification aura:id="projectMaterialNotification" class="no-flow"/>
+    
+            <div class="slds-p-bottom_large">
+                <c:SectionHeaderProject Title="Materials" iconClass="fa-cubes" />
+                <div class="slds-media slds-p-around_small">
+                    <p class="slds-media__body">
+                        Add and manage the materials required for this project.
+                    </p>
+                </div>
+            </div>
+
+            <div aura:id="ProjectMaterial__Add" class="hide">
+                    <button class="oh-plus-button" onclick="{!c.openAddMaterialModal}">
+                        <span class="slds-media slds-p-horizontal_small" >
+                            <span class="slds-grid slds-grid_align-center oh-plus-text">+</span>
+                        </span>
+                    </button>
+            </div> 
+            <hr class="slds-m-vertical_small" />
+            <aura:iteration items="{!v.materials}" var="material">
+                <div class="slds-p-top_small">
+                    <c:ProjectMaterialsCard projectServiceMaterial="{!material}"  />
+                </div>
+            </aura:iteration>     
+    	</div>
+              
+    </div>
+    </div>
+    
+</aura:component>

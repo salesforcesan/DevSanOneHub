@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PcardLeadtime</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( PurchaseAmount__c &gt; 0, Today()  &lt; Project__r.StartDate__c  -  $Setup.PcardLeadTimeDuration__c.PcardLeadTime__c )</errorConditionFormula>
+    <errorMessage>Pcard lead time must be 5 days or greater than start date.</errorMessage>
+</ValidationRule>

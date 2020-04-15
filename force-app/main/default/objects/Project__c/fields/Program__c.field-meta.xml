@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Program__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>A search field that indicates the Program relating to the Project.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Used to logically group projects for client reporting</inlineHelpText>
+    <label>Program</label>
+    <referenceTo>Program__c</referenceTo>
+    <relationshipLabel>Projects</relationshipLabel>
+    <relationshipName>Projects</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JobStartDateNotLaterThanEndDate</fullName>
+    <active>true</active>
+    <description>Job Start Date can not be later than Job End Date</description>
+    <errorConditionFormula>JobStartDate__c &gt; JobEndDate__c</errorConditionFormula>
+    <errorMessage>Job Start Date can not be later than Job End Date</errorMessage>
+</ValidationRule>

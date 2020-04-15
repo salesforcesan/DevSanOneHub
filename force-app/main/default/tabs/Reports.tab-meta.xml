@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <frameHeight>1000</frameHeight>
+    <hasSidebar>false</hasSidebar>
+    <label>Reports</label>
+    <motif>Custom47: Chess piece</motif>
+    <url>https://login.bws.birst.com/AppExchangeSSO.aspx?serverurl={!API.Partner_Server_URL_250}&amp;sessionid={!API.Session_ID}&amp;birst.useSFDCEmailForBirstUsername=true&amp;birst.spaceId=18380f1a-6da9-418f-a610-72c143337ce2&amp;birst.hideDashboardNavigation=false&amp;birst.hideDashboardPrompts=false&amp;birst.module=dashboard&amp;birst.dashboard=Collection&amp;birst.page=Planning Solution POC</url>
+    <urlEncodingKey>UTF-8</urlEncodingKey>
+</CustomTab>

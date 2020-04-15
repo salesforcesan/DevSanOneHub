@@ -1,0 +1,29 @@
+<aura:component>
+<aura:attribute name="disabled" type="Boolean" default="false"></aura:attribute>
+<aura:attribute name="class" type="string" default=""></aura:attribute>
+<aura:attribute name="label" type="String" default=""></aura:attribute>
+<aura:attribute name="options" type="List" default= "[]"></aura:attribute>
+<aura:attribute name="value" type="String" default=""></aura:attribute>
+<aura:attribute name="tooltip" type="String" default=""></aura:attribute>
+<!-- root -->
+<div>
+	<ul class="slds-list_horizontal">
+		<aura:if isTrue="{! v.tooltip != ''}">
+			<li class="slds-p-right_xx-small">
+				<lightning:helptext content="{! v.tooltip }" />
+			</li>
+		</aura:if>
+		<li>
+			<lightning:radioGroup name="radioGroupId"
+		    	aura:id="radioGroupId"
+		      	class="{! v.class }"
+		      	label="{! v.label }"
+		      	disabled="{! v.disabled }"
+		      	options="{! v.options }"
+		      	value="{! v.value }"
+		      	onchange="{! c.onChange }"
+		      	type="radio"/>
+	  	</li>
+	</ul>
+</div>
+</aura:component>

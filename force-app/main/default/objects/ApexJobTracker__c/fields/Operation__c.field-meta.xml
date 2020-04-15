@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Operation__c</fullName>
+    <externalId>false</externalId>
+    <label>Operation</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>Apply PB Credit</fullName>
+                <default>false</default>
+                <label>Apply PB Credit</label>
+            </value>
+            <value>
+                <fullName>Cancel Job</fullName>
+                <default>false</default>
+                <label>Cancel Job</label>
+            </value>
+            <value>
+                <fullName>Cancel Project</fullName>
+                <default>false</default>
+                <label>Cancel Project</label>
+            </value>
+            <value>
+                <fullName>Cancel ProjectLocation</fullName>
+                <default>false</default>
+                <label>Cancel ProjectLocation</label>
+            </value>
+            <value>
+                <fullName>Cancel ProjectService</fullName>
+                <default>false</default>
+                <label>Cancel ProjectService</label>
+            </value>
+            <value>
+                <fullName>Close Project</fullName>
+                <default>false</default>
+                <label>Close Project</label>
+            </value>
+            <value>
+                <fullName>Create Attempt</fullName>
+                <default>false</default>
+                <label>Create Attempt</label>
+            </value>
+            <value>
+                <fullName>Create Job Materials</fullName>
+                <default>false</default>
+                <label>Create Job Materials</label>
+            </value>
+            <value>
+                <fullName>Create Jobs</fullName>
+                <default>false</default>
+                <label>Create Jobs</label>
+            </value>
+            <value>
+                <fullName>Create Labor Invoice</fullName>
+                <default>false</default>
+                <label>Create Labor Invoice</label>
+            </value>
+            <value>
+                <fullName>Create Product Invoice</fullName>
+                <default>false</default>
+                <label>Create Product Invoice</label>
+            </value>
+            <value>
+                <fullName>Create SalesTax Invoice</fullName>
+                <default>false</default>
+                <label>Create SalesTax Invoice</label>
+            </value>
+            <value>
+                <fullName>Delete AllProjectJobs</fullName>
+                <default>false</default>
+                <label>Delete AllProjectJobs</label>
+            </value>
+            <value>
+                <fullName>Delete Job</fullName>
+                <default>false</default>
+                <label>Delete Job</label>
+            </value>
+            <value>
+                <fullName>Delete Project</fullName>
+                <default>false</default>
+                <label>Delete Project</label>
+            </value>
+            <value>
+                <fullName>Delete ProjectLocation</fullName>
+                <default>false</default>
+                <label>Delete ProjectLocation</label>
+            </value>
+            <value>
+                <fullName>Delete ProjectService</fullName>
+                <default>false</default>
+                <label>Delete ProjectService</label>
+            </value>
+            <value>
+                <fullName>Import JobAttemptWorkers</fullName>
+                <default>false</default>
+                <label>Import JobAttemptWorkers</label>
+            </value>
+            <value>
+                <fullName>Import Jobs</fullName>
+                <default>false</default>
+                <label>Import Jobs</label>
+            </value>
+            <value>
+                <fullName>Import ProjectLocations</fullName>
+                <default>false</default>
+                <label>Import ProjectLocations</label>
+            </value>
+            <value>
+                <fullName>Launch Project</fullName>
+                <default>false</default>
+                <label>Launch Project</label>
+            </value>
+            <value>
+                <fullName>Schedule ProjectLocation</fullName>
+                <default>false</default>
+                <label>Schedule ProjectLocation</label>
+            </value>
+            <value>
+                <fullName>Schedule ProjectService</fullName>
+                <default>false</default>
+                <label>Schedule ProjectService</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

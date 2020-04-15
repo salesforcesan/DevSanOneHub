@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsSurveyScoreWarning__c</fullName>
+    <externalId>false</externalId>
+    <formula>AND (SurveyComplexityScore__c &gt;= $Setup.SurveyScoreSettings__c.SurveyScoreWarning__c, SurveyComplexityScore__c 
+ &lt; $Setup.SurveyScoreSettings__c.SurveyScoreThreshold__c )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Is Survey Score Warning</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

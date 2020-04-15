@@ -1,0 +1,57 @@
+<aura:component >
+    <aura:dependency resource="markup://force:navigateToSObject" type="EVENT"/>
+    <aura:dependency resource="markup://force:navigateToURL" type="EVENT"/>
+    <aura:attribute name="project" type="Object" access="global" />
+    <aura:attribute name="projectState" type="String" access="global" />
+    <aura:attribute name="stateStyle" type="String" access="global" />
+    <aura:attribute name="alertState" type="Boolean" access="global" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <div>
+    <article class="slds-card oh-margin-bottom" onclick="{!c.navigateToRecord}">
+        <div class="pcard-container">
+            
+            <div class="pcard-statusbar-container" style="{!v.stateStyle}">
+            </div>
+            
+            <div class="slds-grid slds-wrap pcard-maincontent">
+                <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-12 pcard-icons-container">
+                    <div class="p-card-icon" style="{!v.stateStyle}">
+                        <aura:if isTrue="{!v.project.StatusDisplay == 'Planning'}"><i class="fa fa-list-ul" aria-hidden="true"></i></aura:if>
+                        <aura:if isTrue="{!v.project.StatusDisplay == 'Pending'}"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></aura:if>
+                        <aura:if isTrue="{!v.project.StatusDisplay == 'Booked'}"><i class="fa fa-check" aria-hidden="true"></i></aura:if>
+                        <aura:if isTrue="{!v.project.StatusDisplay == 'Launched'}"><i class="fa fa-rocket" aria-hidden="true"></i></aura:if>
+                        <aura:if isTrue="{!v.project.StatusDisplay == 'In Progress'}"><i class="fa fa-clock-o" aria-hidden="true"></i></aura:if>
+                        <aura:if isTrue="{!v.project.StatusDisplay == 'Finished'}"><i class="fa fa-flag-checkered" aria-hidden="true"></i></aura:if>
+                        <aura:if isTrue="{!v.project.StatusDisplay == 'Canceled'}"><i class="fa fa-times" aria-hidden="true"></i></aura:if>
+                        <aura:if isTrue="{!v.project.StatusDisplay == 'Ended'}"><i class="fa fa-flag-checkered" aria-hidden="true"></i></aura:if>
+                        <aura:if isTrue="{!v.project.StatusDisplay == 'Closed'}"><i class="fa fa-lock" aria-hidden="true"></i></aura:if>
+                    </div>
+                    <div class="p-card-status">
+                        {!v.project.StatusDisplay}
+                    </div> 
+                    <div class="p-card-exceptions">
+                        <aura:if isTrue="{!v.alertState}">
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        </aura:if>
+                    </div> 
+                </div>
+                <div class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_8-of-12 pcard-info-container">
+                    <span class="title">{!v.project.Name}{! v.project.OperationsTitle ? ' ('+v.project.OperationsTitle+')' : '' }</span>
+                    <br/>
+                    <span class="label">Project Number: </span> {!v.project.ProjectNumber} 
+                    <span class="label">  &middot;  Type: </span> {!v.project.ProjectTypeName} 
+                    <span class="label">  &middot;  Locations: </span> {!v.project.LocationTotalCount} 
+                    <!--<span class="label"> &middot; Jobs: </span> {!v.project.NumberOfJobs}-->
+                    <br/>                    
+                    <span class="label">Launch: </span> {!v.project.ProjectLaunchDate} 
+                    <span class="label">  &middot;  Execution: </span> {!v.project.StartDate} - {!v.project.EndDate}
+                    <span class="label">  &middot;  Owner: </span> {!v.project.OwnerName} 
+                    <span class="label">  &middot;  Services: </span> {!v.project.ServiceCount}
+                </div>
+            </div>
+            
+        </div>
+    </article>
+    </div>
+</aura:component>

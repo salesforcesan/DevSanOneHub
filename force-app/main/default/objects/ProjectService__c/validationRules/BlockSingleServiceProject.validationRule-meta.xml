@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BlockSingleServiceProject</fullName>
+    <active>true</active>
+    <errorConditionFormula>IF( 
+    Project__r.IsSingleServiceProject__c, 
+    ( 
+       if(Service__r.IsSingleService__c, 
+           if(Project__r.ServiceCount__c&gt;0,true,false ), 
+          true)
+    ),
+    false
+)
+&amp;&amp; ISNEW()</errorConditionFormula>
+    <errorMessage>Multiple Services not allowed for a Single Service Project</errorMessage>
+</ValidationRule>

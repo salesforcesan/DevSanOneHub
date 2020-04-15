@@ -1,0 +1,51 @@
+<aura:component controller="LightningProjectController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+      
+    <!--ATTRIBUTES DECLARATION -->
+    <aura:attribute name="statuses" type="List" access="global" />
+    <aura:attribute name="filters" type="Object" access="global" />
+    <aura:attribute name="ns" type="String" />
+    
+    <!--PUBLISHER -->
+    <aura:registerEvent name="statusFiltersChanged" type="c:ProjectStatusFiltersChanged"/>
+    
+    <!--EVENT LISTENER -->
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="aura:locationChange" action="{!c.update}"/>
+    
+    <c:Notification aura:id="notification" class="no-flow"/>
+    <c:ModalDialogContainer aura:id="modalDialog"/>    
+    
+    
+    <div class="psbar-panel">
+        <div class="slds-grid slds-wrap slds-grid_pull-padded">
+            <div class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_9-of-12 slds-large-size_9-of-12 slds-align-center">
+            	<aura:iteration items="{!v.statuses}" var="status">
+                    <aura:if isTrue="{!status.Label == 'My Projects'}">
+                        <button type="button" onclick="{!c.toggleFilter}" id="{!status.Label}" aura:id="{!status.Label}" class="slds-button slds-button--neutral psbar-button psbar-button_on" aria-live="assertive">
+                            <div class="psbar-button_contents">
+                                {!status.Label}<br/>
+                                <span class="psbar-count">{!status.Count || 0}</span>
+                            </div>
+                        </button>
+                    </aura:if>
+                    <aura:if isTrue="{!status.Label != 'My Projects'}">
+                        <button type="button" onclick="{!c.toggleFilter}" id="{!status.Label}" aura:id="{!status.Label}" class="slds-button slds-button--neutral psbar-button" aria-live="assertive">
+                            <div class="psbar-button_contents">
+                                {!status.Label}<br/>
+                                <span class="psbar-count">{!status.Count || 0}</span>
+                            </div>
+                        </button>
+                    </aura:if>
+                    
+                </aura:iteration>
+            </div>
+            <div class="slds-text-align_center slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_3-of-12 slds-large-size_3-of-12 slds-grid slds-grid_align-end slds-align-top">     
+             	<div class="slds-card slds-p-around_medium slds-size_1-of-1 slds-grid slds-grid_align-center">
+                	<button aura:id="newProject" type="button" onclick="{!c.createNewProject}" class="slds-button slds-button_brand " aria-live="assertive"><i class="fa fa-plus slds-text-color_inverse slds-m-right_x-small" aria-hidden="true"></i>New Project</button>        
+            	</div>
+            </div>
+        </div>           
+    </div>
+    
+    
+</aura:component>

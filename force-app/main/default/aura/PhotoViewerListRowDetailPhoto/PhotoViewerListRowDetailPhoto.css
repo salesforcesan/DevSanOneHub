@@ -1,0 +1,142 @@
+.THIS.photo-container .oh-content {
+    min-height: 350px;
+}
+
+.THIS.photo-container .oh-busy {
+    background-color: inherit;
+}
+
+.THIS.photo-container .oh-form {
+    padding: 0 48px;
+}
+
+.THIS.photo-container .oh-narrow-form {
+    padding: 0 16px;
+}
+
+.THIS.photo-container .oh-left {
+    border-right: 1px solid rgba(255,255,255,0.64);
+}
+
+.THIS.photo-container .oh-left .oh-content {
+    display: flex;
+    flex: 0 0 100%;
+    flex-direction: row;
+    position: relative;
+}
+.THIS.photo-container .oh-left .oh-image-container {
+    display: flex;
+    justify-content: center;
+}
+
+.THIS.photo-container .oh-left .oh-image-content  {
+    height: 350px;
+    width: 350px;
+    border: 1px solid rgba(255,255,255,0.38);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.THIS.photo-container .oh-left .oh-image-container img {
+    object-position: 50% 50%;
+    object-fit: scale-down;
+}
+
+.THIS.photo-container .oh-left .oh-content .oh-image-container {
+    width: 90%;
+    min-height: 300px;
+    flex-grow: 1;
+    align-self: center;
+}
+.THIS.photo-container .oh-left .oh-image-actionbar {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.THIS.photo-container .oh-left .oh-image-actionbar .oh-button {
+    color: rgba(255,255,255,0.84);
+    line-height: 1.25rem;
+}
+.THIS.photo-container .oh-left .oh-image-actionbar .oh-button:hover {
+    color: rgba(255,255,255,1);
+}
+
+.THIS.photo-container .oh-left .oh-image-actionbar .oh-button.oh-warn {
+    color: #ff9a3c;
+}
+
+.THIS.photo-container .oh-right .oh-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255,255,255,0.64);
+}
+
+.THIS.photo-container .oh-right .oh-title1 {
+    color: rgba(255,255,255,0.81) !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.THIS.photo-container .oh-right .oh-title1 svg {
+    width: 0.8rem;
+    height: 0.8rem;
+}
+
+.THIS.photo-container .oh-right .oh-title1:hover {
+    color: #ffffff;
+}
+
+.THIS.photo-container .oh-right  .oh-form-body .oh-label,
+.THIS.photo-container .oh-right  .oh-form-body .oh-value {
+    display: block;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
+
+.THIS.photo-container .oh-right .oh-form-body .oh-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.THIS.photo-container .oh-right .oh-form-footer .oh-h-scroller {
+    width: 100%;
+    overflow:auto;
+    overflow-x: hidden;
+    height: 80px;
+}
+.THIS.photo-container .oh-right .oh-form-footer .oh-h-scroller .oh-loc-image {
+    display: inline-flex;
+    width: 80px;
+    height: 80px;
+    padding: 4px;
+}
+
+.THIS.photo-container .oh-right .oh-form-footer .oh-h-scroller .oh-loc-image img {
+    transition: all 0.5s ease-out;
+}
+
+.THIS.photo-container .oh-right .oh-form-footer .oh-h-scroller .oh-loc-image img:hover {
+    transform: scale(1.15);
+    transition: all 0.25s ease-in;
+}
+
+.THIS.photo-container .oh-left .oh-narrow-form .slds-grid {
+    flex-direction: column;
+} 
+
+.THIS.photo-container .oh-left .oh-narrow-form .slds-grid .slds-col {
+    width: 100% !important;
+}
+
+.THIS.photo-container .oh-left .oh-narrow-form .oh-image-actionbar {
+    padding-top: 16px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.THIS.photo-container .hide {
+    visibility: hidden;
+    display: none;
+}

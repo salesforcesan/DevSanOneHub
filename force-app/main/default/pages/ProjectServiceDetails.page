@@ -1,0 +1,212 @@
+<apex:page standardController="ProjectService__c" extensions="ProjectServiceDetailsExt" sidebar="false" tabStyle="Project__c" >
+    <style>
+        .cm-align-left {
+        text-align: left !important;
+        }
+        
+        .cm-align-center {
+        text-align: center !important;
+        }
+        
+        .cm-col-small {
+        width: 40px;
+        }
+        
+        .cm-medium {
+        width: 80px;
+        }
+        
+        .cm-panel-container {
+        border-bottom: 1px solid #ddd;            
+        min-width: 910px;
+        }
+        .cm-hide {
+        display: none !important;
+        visibility: hidden !important;
+        }
+        .cm-panel {
+        margin: 10px 20px;
+        padding: 10px;
+        border: 1px solid #eee;
+        background-color: #fff;
+        }
+        .cm-panel-body .cm-input, .cm-panel-body .cm-label {
+        display: inline-block;
+        margin-right: 10px;
+        }        
+        .cm-panel-body .cm-label {
+        font-weight: 600;
+        font-size: 91%;
+        }
+        .cm-mg-rt-none {
+        margin-right: 0 !important;
+        }
+        .cm-mg-rt-20 {
+        margin-right: 20px;
+        }
+        .cm-bt-pad-10 {
+        padding-bottom: 10px;
+        }
+        .cm-panel-body .cm-required {
+        border-left: 3px solid #c00;
+        display: inline-block;
+        padding-left:1px;
+        }
+        .cm-panel-error .message {
+        margin-bottom: 20px !important;
+        }
+        .cm-panel-close {
+        float: right;
+        text-decoration: none;
+        margin-top: -15px;
+        margin-right: -30px;
+        font-size: 1.25rem;
+        color: #aaa !important;
+        border: 1px solid #ccc;
+        padding: 2px 4px;
+        }
+        .cm-panel-close:hover {
+        color: #444 !important;
+        text-decoration: none;
+        border-color: #444;
+        }
+        
+        .apexp .detailList .list td,
+        .apexp .detailList .list th,
+        .apexp .editPage .bPageBlock .detailList .list tr td,
+        .apexp .editPage .bPageBlock .detailList .list tr th {
+        border-color: #e5e5e5;
+        }
+        
+        .cm-material-table {
+        background-color: #fff !important; 
+        margin: 0 20px; 
+        border:1px solid #ddd; 
+        padding: 5px;
+        min-width: 1030px !important;        
+        }
+        
+        .cm-label {
+        margin-right: 10px;
+        }
+        .cm-input {
+        margin-right: 20px;
+        display: inline-block;
+        }
+        .cm-w50{
+        width: 50px;
+        }
+        
+        @media(max-width: 1480px) {
+        .cm-label {
+        margin-right: 4px;
+        }      
+        .cm-input {
+        margin-right: 4px;        
+        } 
+        }
+        @media(max-width: 1100px) {
+        .cm-panel-body .cm-input, .cm-panel-body .cm-label {          
+        margin-right: 0px !important;
+        }   
+        }
+    </style>
+    <apex:sectionHeader title="Project Service" subtitle="{!ps.Name}: {!ps.Title__c}" />
+    <c:Breadcrumb backtoid="{!ps.Project__c}" />
+    <apex:outputPanel rendered="{!succmsg!=null}">
+        <div class="message confirmM3">
+            <table class="messageTable" style="padding:0px;margin:0px;" border="0" cellpadding="0" cellspacing="0">
+                <tbody><tr valign="top">
+                    <td>
+                        <img alt="CONFIRM" class="msgIcon" src="/s.gif" title="CONFIRM"/>
+                    </td>
+                    <td class="messageCell">
+                        <div class="messageText">
+                            <span><h4>Success:</h4></span>
+                            <apex:outputText value="{!succmsg}" ></apex:outputText>                     
+                        </div>
+                    </td>
+                    </tr>
+                </tbody></table>
+        </div> 
+    </apex:outputPanel>
+    <apex:pageMessages escape="false" />
+    <apex:form >
+        <div style="margin: 10px 250px 0 0;text-align:center;">
+            <apex:commandbutton value="Edit" action="{!URLFOR($Action.Projectservice__c.Edit,ps.id)}" rendered="{!!hiddenMap['ProjectService__c.Edit']}" />
+            <input type="button" value="Preview Manual" title="Preview Manual" class="btn" onclick="window.open('{!eventManualUrl}','_blank')" />
+        </div>
+    </apex:form>
+    <apex:pageBlock title="Project Service Information" mode="maindetail">
+        <apex:pageBlockSection columns="2" collapsible="false" showHeader="false">
+            <apex:outputField value="{!ps.Project__c}" />
+            <apex:outputField value="{!ps.JobManual__c}" />
+            <apex:outputField value="{!ps.ProjectNumber__c}" />
+            <apex:outputField value="{!ps.ServiceTitle__c}" />
+            <apex:outputField value="{!ps.Service__c}" />
+            <apex:outputField value="{!ps.Status__c}" />
+            <apex:outputField value="{!ps.StartTime__c}" />
+            <apex:outputField value="{!ps.ResponsibleForExecution__c}" />
+            <apex:outputField value="{!ps.EstimatedMinutes__c}" />
+            <apex:outputField value="{!ps.NumberOfDays__c}" rendered="{!ps.Project__r.ProjectType__r.AllowMultidays__c}"/>
+            <apex:outputField value="{!ps.PopulateTargetQuestions__c}"/>
+            <apex:outputField value="{!ps.StartDayNumber__c}" rendered="{!ps.Project__r.ProjectType__r.AllowMultidays__c}"/>
+            <apex:outputFIeld value="{!ps.NumberOfWorkers__c}"/>
+            <apex:outputFIeld value="{!ps.ShippingPreference__c}" rendered="{!ps.Service__r.IsNumberOfWorkersRequired__c}"/>
+            <apex:outputField value="{!ps.CheckDistribution__c}" rendered="{!ps.Service__r.AllowDistribution__c}"/>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+    <br/>
+    <apex:pageBlock title="Service Details" mode="maindetail">
+        <apex:repeat value="{!pscas}" var="at" id="srQ">
+            <apex:pageBlockSection collapsible="false" columns="1">
+                <br/>
+                <h1>{!at.name}</h1>
+                <br/>
+                <apex:outputPanel rendered="{!at.type != 'Photo'}">
+                    <apex:outputText value="{!at.value}" escape="false" />
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!at.isFile == true}">
+                    <apex:image url="/servlet/servlet.FileDownload?file={!at.attachmentId}" rendered="{!at.isImage == true}" width="160px" />
+                    <br/>
+                    <apex:outputLink value="{!URLFOR($Action.Attachment.Download, at.attachmentId)}" style="display:inline-block;margin:5px 0;" rendered="{!at.isFile == true}" target="_blank">{!at.attachmentName} </apex:outputLink>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+        </apex:repeat>
+    </apex:pageBlock>
+    <br/>
+    <div id="psEquipmentPage">
+        <apex:include pageName="ProjectServiceEquipmentEdit" />
+    </div>
+    <br/>
+    <div id="psCertifications">
+        <apex:include pageName="ProjectServiceCertificationsEdit" />
+    </div>
+    <br/>
+    <div id="psServeyQuestions">
+        <apex:include pageName="SurveyQuestionsProjectService" />
+    </div>
+    <br/>
+    <div id="psTargets">
+        <apex:include pageName="ProjectServiceTargetsAdd"  />
+    </div>
+    <br/>
+    <div id="psMaterials">
+        <apex:include pageName="ProjectServiceMaterialsAdd" rendered="{!proj.Retailer__r.isMaterialReqd__c}"/>
+    </div>
+    <script type="text/javascript">
+    function setFocusOnLoad() {}
+    (function(j$){
+        j$(function(){
+            j$('body').on('keydown', 'input[type="text"]', function(event){
+                if (event.keyCode == 13){
+                    event.preventDefault();
+                    j$(this).blur();
+                }
+            });
+        });
+    })(jQuery);
+    </script>   
+    
+</apex:page>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsErrored__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>an error flag to indicate that the photo can not be hashed</description>
+    <externalId>false</externalId>
+    <label>Is Errored</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

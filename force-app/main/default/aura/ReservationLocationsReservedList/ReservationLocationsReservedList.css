@@ -1,0 +1,24 @@
+.THIS {
+}
+
+.THIS .cancelButton.slds-button {
+    min-width:158px;
+}
+
+.THIS progress {
+    width:100%;
+    height:1em !important;
+}
+
+.THIS progress[value] {
+  height: 15px;
+
+}
+
+.THIS .zeroBG {
+	background:#ffcb4e;    
+}
+
+.THIS .spm-bar-header {
+    display:none;
+}

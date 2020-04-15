@@ -1,0 +1,10 @@
+<aura:component controller="LightningGatewayController">
+  <aura:attribute name="id" type="String" default="" description="The gateway identifier which is uniquely identifying your gateway"/>
+  <aura:registerEvent name="publishSuccessAppEvent" type="c:ActionResponseSuccessAppEvent"/>
+  <aura:registerEvent name="publishErrorAppEvent" type="c:ActionResponseErrorAppEvent"/>
+  <aura:method name="onRemoteRequest">
+    <aura:attribute name="id" type="String" description="event identifier" default="" />
+    <aura:attribute name="route" type="String" description="class name and method name" default="" />
+    <aura:attribute name="parameters" type="Map" description="aura method arguments" default="" />
+  </aura:method>
+</aura:component>

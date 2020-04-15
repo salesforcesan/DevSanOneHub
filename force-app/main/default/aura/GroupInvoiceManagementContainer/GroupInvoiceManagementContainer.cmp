@@ -1,0 +1,28 @@
+<aura:component implements="lightning:isUrlAddressable,flexipage:availableForRecordHome,force:hasRecordId,flexipage:availableForAllPageTypes,lightning:hasPageReference" access="global">	
+    <!--- Filter Attributes  -->
+    <aura:attribute name="SearchWrapper" type="List" access="global" />   
+    <aura:attribute name="testSearchWrapper" type="Object" access="global" />
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="Account" type="String" />
+    <aura:attribute name="LawsonCompnanyCode" type="String" />
+    <aura:attribute name="FilterDateRange" type="String" />
+    <aura:attribute name="ToDate" type="String" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />       
+    <div class="c-container">
+        <lightning:layout pullToBoundary="medium" multipleRows="true" >
+            <lightning:layoutItem padding="around-small" size="12">
+                <div class="page-section page-header">
+                    <c:InvoiceBaseSearchCriteria aura:id="invoiceBaseSearchCriteriaCmp" />              
+                </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem flexibility="auto" padding="horizontal-medium" size="8">
+                <c:InvoiceGroupingManager aura:id="invoiceGroupingManagerCmp" />                
+            </lightning:layoutItem>
+            <lightning:layoutItem flexibility="auto" padding="horizontal-medium" size="4">
+                <c:GroupedInvoiceContainer aura:id="croupedInvoiceContainerCmp" />
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+</aura:component>

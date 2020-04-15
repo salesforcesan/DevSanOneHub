@@ -1,0 +1,7 @@
+<aura:event type="COMPONENT" description="Event template" >
+    <aura:attribute name="ServiceQuestionId" type="String"/>
+    <aura:attribute name="parentServiceQuestionId" type="String"/>
+    <aura:attribute name="operator" type="String"/>
+ 	<aura:attribute name="definedReponses" type="String"/>
+  
+</aura:event>

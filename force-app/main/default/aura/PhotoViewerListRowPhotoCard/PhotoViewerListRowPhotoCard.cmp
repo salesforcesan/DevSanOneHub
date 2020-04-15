@@ -1,0 +1,103 @@
+<aura:component controller="LightningGatewayController" extends="c:Remotable" >
+    <!-- attributes -->
+    <aura:attribute name="photo" type="Map" default="{}"/>
+    <aura:attribute name="usage" type="String" default=""/>
+    <aura:attribute name="isSuperUser" type="boolean" default="false"/>
+    <aura:attribute name="markTarget" type="Map"/>
+    <aura:attribute name="width" type="integer" default="100"/>
+    <aura:attribute name="height" type="integer" default="100"/>
+    <aura:attribute name="showBusy" type="boolean" default="false" access="private"/>
+    <aura:attribute name="qcTitle" type="String" access="private"/>
+    <aura:attribute name="userFavoriteTitle" type="String" access="private"/>
+    <aura:attribute name="favoriteTitle" type="String" access="private"/>
+    <aura:attribute name="qcClass" type="String" default="" access="private"/>
+    <aura:attribute name="dupClass" type="String" default="" access="private"/>
+    <aura:attribute name="favoriteClass" type="String" default="" access="private"/>
+    <aura:attribute name="invalidPhoto" type="string" default="" access="private"/>
+    <aura:attribute name="userFavoriteClass" type="String" default="" access="private"/>
+    <aura:attribute name="isInit" type="boolean" default="true" access="private" />
+
+    <!-- event handlers -->
+    <aura:registerEvent name="onPhotoClick" type="c:SimpleComponentEvent"/>
+    <aura:registerEvent name="onShowPhotoDetail"
+        type="c:SimpleComponentEvent"/>
+    <aura:handler name="change" value="{! v.photo }" action="{! c.onPhotoChanged }"/>
+    <aura:handler name="change" value="{! v.markTarget }" action="{! c.onMarkTarget }"/>
+    <aura:handler name="init" value="{! this }" action="{! c.onInit}" />
+    <aura:handler name="render" value="{! this}" action="{! c.onRender}" />
+
+    <!-- html template -->
+    <div aura:id="photoContainer" class="{!'oh-photo-card ' + v.dupClass}"
+        style="{! 'width:' + v.width + 'px; height:' + v.height + 'px;'}">
+        <aura:if isTrue="{! v.showBusy }">
+            <lightning:spinner aura:id="spinner" variant="brand" size="medium" alternativeText="processing..."></lightning:spinner>
+        </aura:if>
+        <aura:if isTrue="{! v.photo.id != '-1'}">
+            <a href="javascript:void(0)"
+                aura:id="photoCard"
+                title="{! v.photo.title }"
+                onclick="{!c.onPhotoClicked}"
+                class="{! v.photo.error == '1' ? 'oh-photo-has-error' : ''}"
+                >
+                <aura:if isTrue="{! v.photo.error == '1'}">
+                    <img class="oh-photo-image oh-photo-image-has-error" src="{! v.invalidPhoto}" />
+                    <aura:set attribute="else">
+                        <img aura:id="photoImage" class="oh-photo-image" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" />
+                        <img class="oh-photo-image-async" decoding="async" onload = '{! c.onImageLoaded }' src="{! v.photo.url }"/>
+                    </aura:set>
+                </aura:if>
+                <div class="oh-overlay" aura:id="overLayDiv">
+                    <aura:if isTrue="{! (v.photo.export + v.photo.selected) == 2 }">
+                        <lightning:icon size="medium"
+                            class="oh-icon"
+                            variant="inverse"
+                            title="selected photo"
+                            alternativeText="Selected Photo"
+                            iconName="utility:check"></lightning:icon>
+                        <aura:set attribute="else">
+                            <aura:if isTrue="{! v.photo.export == 1 }">
+                                <lightning:icon size="medium"
+                                    class="oh-icon"
+                                    variant="inverse"
+                                    title="select photo"
+                                    alternativeText="Select Photo"
+                                    iconName="utility:add"></lightning:icon>
+                            </aura:if>
+                        </aura:set>
+                    </aura:if>
+                </div>
+                <div class="oh-actionbars-overlay"></div>
+            </a>
+            <aura:if isTrue="{!v.isSuperUser}">
+                <aura:if isTrue="{! v.userFavoriteClass == 'checked'}">
+                    <span class="{! 'oh-user-favorite-span ' + v.userFavoriteClass }"><lightning:icon class="oh-icon" variant="base"
+                        title="{! v.userFavoriteTitle }"
+                        size="x-small" iconName="utility:like"></lightning:icon>D
+                    </span>
+                </aura:if>                
+                <a href="javascript:void(0)" class="{! 'oh-qc-link ' + v.qcClass }" onclick="{! c.onQC }" title="{! v.qcTitle}">
+                    <lightning:icon class="oh-icon" variant="base" size="x-small" iconName="utility:priority"></lightning:icon>
+                </a>
+                <a href="javascript:void(0)" class="{! 'oh-favorite-link ' + v.favoriteClass }" onclick="{! c.onMarkFavorite }" title="{! v.favoriteTitle}">
+                    <lightning:icon class="oh-icon" variant="base" size="x-small" iconName="utility:favorite"></lightning:icon>
+                </a>
+            <aura:set attribute="else">
+                <a href="javascript:void(0)" class="{! 'oh-user-favorite-link ' + v.userFavoriteClass }" onclick="{! c.onMarkUserFavorite }" title="{! v.userFavoriteTitle}">
+                    <lightning:icon class="oh-icon" variant="base" size="x-small" iconName="utility:like"></lightning:icon>
+                </a>
+                <aura:if isTrue="{! v.qcClass == 'checked' }">
+                    <span class="{! 'oh-qc-span ' + v.qcClass }"><lightning:icon class="oh-icon" variant="base" size="x-small"
+                    title="{! v.qcTitle}"
+                    iconName="utility:priority"></lightning:icon></span>
+                </aura:if>
+                <aura:if isTrue="{! v.favoriteClass == 'checked'}">
+                    <span class="{! 'oh-favorite-span ' + v.favoriteClass }"><lightning:icon class="oh-icon" variant="base"
+                        title="{! v.favoriteTitle }"
+                        size="x-small" iconName="utility:favorite"></lightning:icon>
+                    </span>
+                </aura:if>
+            </aura:set>
+            </aura:if>
+        </aura:if>
+    </div>
+</aura:component>

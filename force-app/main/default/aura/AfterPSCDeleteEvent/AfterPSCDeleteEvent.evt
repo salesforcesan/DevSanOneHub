@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT">    
+    <!--<aura:attribute name="message" type="String"/>-->
+    <aura:attribute name="isSuccessful" type="boolean"/>
+</aura:event>

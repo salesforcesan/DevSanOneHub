@@ -1,0 +1,10 @@
+<aura:component controller="LightningJobsController">
+  <aura:registerEvent name="success" type="c:ActionResponseSuccessAppEvent"/>
+  <aura:registerEvent name="error" type="c:ActionResponseErrorAppEvent"/>
+  <aura:handler event="c:ActionRequestAppEvent" action="{!c.onRequest}"/>
+  <aura:method name="onRemoteRequest" action="{!c.onRemoteRequest}">
+    <aura:attribute name="id" type="String" description="request identifier"/>
+    <aura:attribute name="action" type="String" description="controller aura method name"/>
+    <aura:attribute name="parameters" type="Map" description="parameters passed to the aura method"/>
+  </aura:method>
+</aura:component>

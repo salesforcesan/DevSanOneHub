@@ -1,0 +1,37 @@
+<aura:component access="global">
+<aura:attribute name="negativeLabel" type="String" default="Cancel" access="private"/>
+<aura:attribute name="positiveLabel" type="String" default="Ok" access="private"/>
+<aura:attribute name="title" type="String" default="Prompt Dialog" access="private"/>
+<aura:attribute name="body" type="string" default="No content is specified." access="private"/>
+<aura:attribute name="themeClass" type="String" default="slds-theme--error" access="private"/>
+<aura:attribute name="id" type="string" default="" access="private"/>
+<aura:attribute name="negativeButtonClass" type="string" default="" access="private"/>
+<aura:attribute name="style" type="String" access="private" default=""/>
+<aura:method name="show" action="{!c.onShow}" access="public">
+  <aura:attribute name="option" type="Object"/>
+</aura:method>
+<aura:method name="close" action="{!c.onClose}" access="public"/>
+<aura:registerEvent name="messageBoxEvent" type="c:SimpleComponentEvent"/>
+<div aura:id="dialog" class="slds-modal slds-modal--prompt" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper">
+  <div class="slds-modal__container">
+    <div class="{!join(' ', 'slds-modal__header',v.themeClass,'slds-theme--alert-texture')}">
+      <lightning:buttonIcon onclick="{!c.onClose}"
+        iconName="utility:close"
+        alternativeText="Close"
+        variant="bare"
+        class="slds-modal__close slds-button--icon-inverse"
+        />
+      <h2 class="slds-text-heading--medium">{!v.title}</h2>
+    </div>
+    <div class="slds-modal__content slds-p-around--medium slds-text-align--center">
+      <aura:unescapedHtml value="{!v.body}"/>
+    </div>
+    <div class="slds-modal__footer slds-theme--default">
+      <lightning:button variant="neutral" class="{!v.negativeButtonClass}" label="{!v.negativeLabel}" onclick="{!c.onNegative}" tabindex="-1"/>
+      <lightning:button variant="brand" label="{!v.positiveLabel}" onclick="{!c.onPositive}" tabindex="-1"/>
+    </div>
+  </div>
+</div>
+<div aura:id="dialogBackdrop" class="slds-backdrop"></div>
+<aura:unescapedHtml value="{!v.style}"/>
+</aura:component>

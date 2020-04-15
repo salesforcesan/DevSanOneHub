@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProjectType__c</fullName>
+    <description>Project Type</description>
+    <externalId>false</externalId>
+    <label>Project Type</label>
+    <referenceTo>ProjectType__c</referenceTo>
+    <relationshipLabel>Project Type by EC</relationshipLabel>
+    <relationshipName>Project_Type_by_EC</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

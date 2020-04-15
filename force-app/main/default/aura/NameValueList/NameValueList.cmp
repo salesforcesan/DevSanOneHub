@@ -1,0 +1,15 @@
+<aura:component >
+    <aura:attribute name="nameValues" type="List" default="[]" />
+    <div class="slds-grid slds-wrap">
+        <aura:iteration items="{!v.nameValues}" var="nvp">
+                <div class="slds-grid oh-width slds-m-bottom_x-small slds-text-body_small">
+                    <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left pl-card-tooltip" role="tooltip" title="{!nvp.name}">
+                        <div class="slds-popover__body">{!nvp.name}</div>
+                    </div>
+                    <!--<span class="cmk-label slds-truncate slds-text-color_weak" title="{!nvp.name}">{!nvp.name}</span>-->
+                    <span class="cmk-value slds-truncate slds-item" title="{!nvp.value}">{!nvp.value}</span>  
+                    <div class="dotted">&middot;</div>
+                </div>
+        </aura:iteration>
+    </div>
+</aura:component>

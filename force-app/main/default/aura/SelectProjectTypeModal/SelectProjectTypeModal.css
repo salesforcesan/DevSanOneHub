@@ -1,0 +1,100 @@
+.THIS label {
+  position: relative;
+  cursor: pointer;
+  padding: 0 .2rem;
+  display: block;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  text-align: left;
+}
+
+.THIS .oh-add-service-container {
+  min-height: 285px;
+  height: 285px;
+  max-height: 285px;
+  overflow-y: auto;
+}
+
+.THIS .oh-footer {
+  margin-top: -5px;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  background-color: white;
+  width: 100%;
+  padding: .5rem;
+  border-radius: 0 0 .25rem .25rem;
+}
+
+.THIS .oh-add-service [type="radio"] + label:before,
+.THIS .oh-add-service [type="radio"] ~ label:before {
+  position: absolute;
+  top: 25%;
+  margin-left: 1rem;
+  font-family: FontAwesome;
+  display: inline-block;
+  height: 2.5rem;
+  width: 2.5rem;
+  color: #FFF;
+  font-size: 1.25rem;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 2.5rem;
+  border-radius: 50%;
+  background-color: #54698D;
+  font-weight: 300;
+  content: "\f067";
+  /*f2b5*/
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/*
+.THIS input[type=radio] {
+  display: none;
+}*/
+
+.THIS .oh-add-service [type="radio"]:checked + label,
+.THIS .oh-add-service [type="radio"]:checked ~ label {
+  background-color: #EAF6FC;
+}
+
+.THIS .oh-add-service [type="radio"] + label:hover,
+.THIS .oh-add-service [type="radio"] ~ label:hover {
+  background-color: #EAF6FC;
+}
+
+.THIS .oh-add-service [type="radio"]:checked + label:before,
+.THIS .oh-add-service [type="radio"]:checked ~ label:before {
+  background-color: #4BCA81;
+  font-weight: 300;
+  content: "\f00c";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.THIS .oh-icon-service {
+  margin-right: 4rem;
+}
+
+.THIS .oh-add-service {
+  width: 100%;
+}
+
+.THIS label .service-text {
+  display: inline-block;
+  width: 80%;
+  text-align: left;
+  padding: 1rem .5rem 1rem .5rem;
+}
+
+.THIS label .service-text .service-title {
+  font-size: 1rem;
+  color: #0070D2;
+}
+
+.THIS hr {
+  border: 0;
+  background-color: #D8DDE6;
+  margin: 0;
+}

@@ -1,0 +1,22 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+                 access="global">
+    <aura:registerEvent name="cmpEvent" type="c:EventProjectTypeSelected"/>
+	 <aura:handler name="pEvent" event="c:EventProjectTypeSelected" action="{!c.hideModal}"/>
+    
+    <aura:attribute name="ptype" type="ProjectType__c" />    
+                <div class="slds-modal__content slds-p-around--medium oh-service-modal">                                            
+                            <div>
+                            <div aura:id="pselected" onclick="{!c.fireSelectedEvent}" text="{!v.ptype.Id}" class="slds-media oh-service-description-title slds-media--center">  
+                                <div class="slds-media__figure oh-icon-modal slds-icon slds-icon--circle slds-icon--large slds-grid--vertical-align-center">
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                </div>
+                                <div class="slds-media__body slds-grid-align-spread slds-grid--vertical-align-center">
+                                    <div class="oh-survey-question slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                                        <h3  style="color:#0070D2; font-weight:300; font-size:1rem;">{!v.ptype.Name}</h3>
+                                    </div>
+                                    <p class="slds-text-body--small modal-service-description">{!v.ptype.ProjectTypeDescription__c}</p>
+                                </div>
+                            </div>
+                            </div>
+                </div>                        
+</aura:component>

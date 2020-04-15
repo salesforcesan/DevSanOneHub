@@ -1,0 +1,12 @@
+.oh-step-header h2 {
+  font-size: 1rem;
+}
+.oh-step-section {
+  border: 1px solid transparent;
+}
+.oh-has-error {
+  border-color: red;
+}
+.oh-gap {
+  padding: 10px;
+}

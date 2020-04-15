@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BookedProjectStartDate__c</fullName>
+    <description>A field that indicates the Project Start Date when the project was moved to Booked State.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The date available to start execution</inlineHelpText>
+    <label>Booked Project Start Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

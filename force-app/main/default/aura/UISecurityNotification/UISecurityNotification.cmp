@@ -1,0 +1,23 @@
+<aura:component extends="c:UISecurity" implements="force:hasRecordId,flexipage:availableForRecordHome"  access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="openPendingChanges" type="Boolean" access="global" />  
+    <aura:attribute name="openOOCFChanges" type="Boolean" access="global" />  
+    <aura:attribute name="projectId" type="String" access="global" />  
+    <aura:attribute name="isPendingchanges" type="Boolean" default="false"/>
+    <aura:attribute name="isOOCFChanges" type="Boolean" default="false"/>
+    <aura:attribute name="isCloseButtonVisible" type="Boolean" default="true"/>
+    
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <!--EVENT LISTENER -->
+    <aura:handler event="c:EventProjectRefresh" action="{!c.refreshProject}"/>  
+    <aura:handler event="c:EventPendingProjectChanges" action="{!c.handlePendingProjectChanges}"/>
+    <aura:handler event="c:EventPendingOOCF" action="{!c.handlePendingOOCFChanges}"/>
+    <aura:handler name="changepc" value="{!v.pendingchanges}" action="{!c.handlependingchangesValueChange}"/>    
+    <aura:handler name="changeoocf" value="{!v.oocfchanges}" action="{!c.handleoocfchangesValueChange}"/>       
+    <aura:handler name="uisecuritymessage" value="{!v.uisecuritymessage}" action="{!c.handleuisecuritymessageChange}"/>
+    <span>
+        <c:ProjectPendingChanges isOpen="{!v.openPendingChanges}" projectId="{!v.projectId}"/>
+        <c:ProjectOOCFChanges isOpen="{!v.openOOCFChanges}" projectId="{!v.projectId}"/>
+        <c:ProjectNotification aura:id="warningNotification" isPendingchanges="{!v.isPendingchanges}" isOOCFChanges="{!v.isOOCFChanges}" class="no-flow" type="warning" recId="{!v.recordId}" hideCloseButton="{!v.isCloseButtonVisible}"/>
+    </span>
+</aura:component>

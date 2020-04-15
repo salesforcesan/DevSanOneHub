@@ -1,0 +1,11 @@
+/* Salesforce Design System v0.3.5 */
+@include mq-small-max {
+
+  .media--responsive {
+    display: block;
+
+    .media__figure {
+      margin-right: 0;
+    }
+  }
+}

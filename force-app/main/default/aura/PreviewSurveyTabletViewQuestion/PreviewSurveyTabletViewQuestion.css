@@ -1,0 +1,24 @@
+.THIS .attachment-icon {
+	font-size: 2.3em;
+	padding: 30px 40px 30px 40px;
+    color: #54698D;
+}
+.THIS .yesno-button {
+	width: 145px;
+    height: 50px;
+    font-size: 1.3em;    
+}
+.THIS .slds-form-element__label {
+    font-size: 1.2em;
+    margin-bottom: 47px;
+}
+.THIS .slds-input__text {
+    font-size: 1.2em;
+    height: 52px;
+}
+.THIS .slds-radio {
+    padding-bottom: 30px;
+}
+.THIS .slds-form-element__help {
+    color: red;
+}

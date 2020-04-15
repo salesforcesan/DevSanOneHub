@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>SetEntityChangeTypeUniqueKey</fullName>
+        <field>UniqueKey__c</field>
+        <formula>TEXT(Entity__c) +  &#39;-&#39; + Field__c + &#39;-&#39; + Value__c</formula>
+        <name>Set Entity Change Type Unique Key</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <rules>
+        <fullName>Set Entity Change Type Unique Key</fullName>
+        <actions>
+            <name>SetEntityChangeTypeUniqueKey</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>EntityChangeType__c.Name</field>
+            <operation>notEqual</operation>
+            <value>null</value>
+        </criteriaItems>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+</Workflow>

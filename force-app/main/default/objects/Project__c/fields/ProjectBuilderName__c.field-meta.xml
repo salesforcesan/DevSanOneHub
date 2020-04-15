@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProjectBuilderName__c</fullName>
+    <description>Project  Builder Name</description>
+    <externalId>false</externalId>
+    <formula>ProjectBuilderId__r.FirstName + &#39; &#39; + ProjectBuilderId__r.LastName</formula>
+    <inlineHelpText>the user who is in charge of the project&#39;s definition</inlineHelpText>
+    <label>Builder Name</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

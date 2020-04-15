@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="Fires when any change occurs to the project target list" >
+	<aura:attribute name="state" type="String"/>
+    <aura:attribute name="message" type="String"/>
+</aura:event>

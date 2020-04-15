@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Service__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The service that is being reserved.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The service that is being reserved.</inlineHelpText>
+    <label>Service</label>
+    <lookupFilter>
+        <active>true</active>
+        <errorMessage>Choose a product that has a valid OH Service template mapped.</errorMessage>
+        <filterItems>
+            <field>Product2.Service__c</field>
+            <operation>notEqual</operation>
+            <value/>
+        </filterItems>
+        <filterItems>
+            <field>Product2.IsActive</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Product2</referenceTo>
+    <relationshipLabel>Reservations</relationshipLabel>
+    <relationshipName>Reservations</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION">
+    <aura:attribute name="modalProperties" type="Object"/>
+	<aura:attribute name="modalComponentName" type="String"/>
+    <aura:attribute name="modalComponentProperties" type="Object"/>
+</aura:event>

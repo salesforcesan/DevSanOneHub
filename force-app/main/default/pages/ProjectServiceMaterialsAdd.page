@@ -1,0 +1,152 @@
+<apex:page standardController="ProjectService__c"  extensions="ProjectServiceMaterialsAddExt" tabStyle="Project__c" docType="HTML-5.0"> 
+<c:jQueryScripts includejQueryUI="true" />
+
+<style>
+    .loading-gif {
+        position: fixed;
+        z-index: 999;
+        margin: auto;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        padding: 12px 55px;
+        background-color: #FFF;
+        box-shadow: 0 0px 3px #ccc;
+        border-radius: 2px;
+    }    
+    .requiredLegend {
+        display: none;
+    }    
+    .hr {
+        margin: 0;
+        border: 0;
+        height: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    th{
+        /*text-transform: uppercase;*/
+        text-align: left;
+    }   
+     
+    .hidden, .hideHeader{
+    
+        display: none;
+    }   
+    
+    .htmlDetailElementTable td{
+        border:none !important;
+    }
+    body input.delete-icon{
+        border: none;
+        height: 22px;
+        width: 12px;
+        background-image: url('/img/func_icons/remove12_on.gif') !important;
+        background-position: left 0;
+        background-color: transparent;
+    }
+    body input.delete-icon:hover{
+        background-position: left 0;
+    }
+    .apexp .detailList .list .headerRow th{
+        border-bottom-width:1px;
+    }   
+    .cm-required {
+        border-left: 3px solid #c00;
+        padding-left:1px;
+    } 
+            .titleCl{
+            font-size:14.1833px;
+            font-family: Arial,Helvetica,sans-serif;
+            font-weight: bold;
+            color:rgb(0, 0, 0);
+    }
+    .cm-col {
+        width: 120px;
+    }
+    .cm-col-large {
+        width: 300px;
+    }
+    .cm-hide {
+        display: none;
+        visibility: hidden;
+    }
+    	color:yellow;
+    }
+</style>
+<apex:actionStatus id="loadingStatus">
+    <apex:facet name="start">
+        <img class="loading-gif" src="/img/loading24.gif" width="24" height="24" />
+    </apex:facet>
+</apex:actionStatus>
+<apex:form id="formAddMessage"> 
+<apex:pageBlock title="Materials" mode="edit">
+ <apex:facet name="header">
+        <apex:outputPanel layout="block" style="clear:both; border-bottom: 1px solid #ddd; height: 40px;">
+            <apex:outputPanel layout="block" style="width: 50%; float:left; display:inline-block; padding: 10px;">
+                <h2 class="titleCl">Materials</h2>
+            </apex:outputPanel>
+            <apex:outputPanel layout="block" style="float:center; padding: 10px;">
+            <apex:commandButton action="{!SaveAllChanges}" value="Save" id="saveButton"  reRender="pbMessages" rendered="{!showMaterialButtons}" />
+            </apex:outputPanel>
+            </apex:outputPanel>
+</apex:facet>	  
+    <apex:outputPanel id="out" rendered="{!!IsLeadTimeAvailabe}" style="font-weight:bold;color:red!important">
+        Any changes made today or later may not be fulfilled or may be fulfilled with expedited charges.
+    </apex:outputPanel>
+   <apex:pageBlockSection collapsible="true" showHeader="false" id="pbMessages" columns="2" rendered="{!showMaterialButtons}"> 
+        <apex:pageMessages escape="false" id="messagesForAddMaterial"/>                   	
+    </apex:pageBlockSection>
+    <apex:pageBlockSection html-class="cm-material-table" showHeader="false" id="sectionActions" collapsible="false" columns="1" rendered="{!showMaterialButtons}">
+       <apex:outputPanel >
+        <label for="MaterialInp" class="cm-label"><span class="assistiveText">*</span>Material</label>
+        <apex:inputField id="MaterialInp" value="{!psm.Material__c}" label="" styleClass="cm-input"/>
+        <label for="Quantity" class="cm-label"><span class="assistiveText">*</span>Quantity</label> 
+        <div class="cm-input cm-required">
+        <apex:inputField id="Quantity" value="{!psm.Quantity__c}" label="" styleClass="cm-input cm-w50"/>
+        </div>
+        <label for="InvoiceType" class="cm-label" ><span class="assistiveText">*</span>Invoice Type</label> 
+        <div class="cm-input">
+        <apex:inputField id="InvoiceType" value="{!psm.InvoiceType__c}" label="" styleClass="cm-input" />
+        </div>
+        <apex:commandButton id="btnAddMaterial" action="{!AddMaterial}" value="Add Material" status="loadingStatus"  reRender="sectionMaterial, sectionActions, messagesForAddMaterial, MaterialInp, Quantity,pbMessages" rendered="{!showMaterialButtons}" />
+        </apex:outputPanel>
+  
+    </apex:pageBlockSection>
+
+    <apex:pageBlockSection id="sectionMaterial" columns="1" collapsible="false" showheader="false" > 
+    <apex:pageblocktable value="{!materials}" var="a" id="pbTable" rendered="{!materials.size>0}" columnsWidth="10%,15%, 13%, 20%, 10%,10%,10%,10%,2%"  rowClasses="odd">          
+        <apex:column value="{!a.MaterialName__c}" headerValue="Material" headerClass="even" styleClass="cm-align-left" /> 
+        <apex:column value="{!a.MaterialDescription__c}" HeaderValue="Material Description" headerClass="even"/>
+    
+        <apex:column HeaderValue="Custom Description" headerClass="even">
+            <apex:inputText value="{!a.CustomDescription__c}"  rendered="{!a.Kit__c == false}" />
+        </apex:column>
+        <apex:column value="{!a.InvoiceType__c}" headerValue="Invoice Type" headerClass="even"/>
+        <apex:column value="{!a.CostPerUnit__c}" headerValue="Cost/Unit" headerClass="even" rendered="false"/>
+        <apex:column HeaderValue="Quantity" headerClass="even">
+            <apex:inputField value="{!a.Quantity__c}" required="true" styleClass="cm-col-small" rendered="{!showMaterialButtons}"/>
+            <apex:outputField value="{!a.Quantity__c}" styleClass="cm-col-small" rendered="{!!showMaterialButtons}"/>
+        </apex:column>
+        <apex:column value="{!a.TotalPrice__c}" headerValue="Total Cost" headerClass="even" rendered="false" />
+        <apex:column headerClass="even" rendered="{!showMaterialButtons}">                   
+            <apex:commandButton id="delete" value=" "  action="{!DeleteMaterials}" styleClass="delete-icon" rerender="sectionMaterial, pbMessages" status="loadingStatus" onclick="if(!confirm('Are you sure?')){return false};">  
+                <apex:param name="psmParamDEL"  value="{!a.id}"/>
+            </apex:commandButton>            
+        </apex:column>               
+    </apex:pageblocktable>
+    <apex:outputpanel layout="block" rendered="{!materials.size=0}">
+        No records to display
+    </apex:outputpanel>
+    </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:form> 
+<script type="text/javascript">
+    var j$ = jQuery.noConflict();
+    function AfterMaterialAdded() {
+        j$('[id*=MaterialInp]').val('');
+    }
+    
+</script>
+</apex:page>

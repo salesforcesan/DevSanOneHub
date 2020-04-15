@@ -1,0 +1,51 @@
+.THIS {
+    
+}
+
+.THIS .oh-ul{
+  overflow:hidden;
+  font-size: .65rem;
+  height: 2em;
+  width: 100%;
+ 
+}
+.THIS .oh-li{
+ display:inline-block; 
+}
+
+  
+.THIS .oh-icon-survey i {
+    color: #FFF;        
+}
+
+.THIS .slds-form-element__label {
+    color:grey;
+}
+     
+.THIS .oh-icon-survey {
+    background-color: #54698D;
+    width: 2.5rem;
+    height: 2.5rem;
+    text-align: center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+
+.THIS .oh-tool-box label {
+    display: block;
+    width: 4em;
+    max-width: 4em;
+    font-size: 1.3rem;
+    color: #54698D;
+    text-align: center;
+    line-height: .875rem;
+    margin: .4em;
+    height: 4em;
+    max-height: 4em;
+    padding: .5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #d8dde6; 
+    background-color: #FFF;
+}

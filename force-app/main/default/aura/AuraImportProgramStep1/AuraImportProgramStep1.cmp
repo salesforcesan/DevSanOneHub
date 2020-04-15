@@ -1,0 +1,101 @@
+<aura:component extends="c:AuraImportProgramLibrary">
+  <!-- public -->
+  <aura:attribute name="custStyle" type="String" default="" />
+  <aura:attribute name="projects" type="List" default="{}" />
+  <aura:attribute name="results" type="List" default="[]" />
+  <aura:attribute name="error" type="String" default="" />
+
+  <!-- private -->
+  <aura:attribute name="schemas" type="List" default="[]" access="private" />
+  <aura:attribute name="fileInfo" type="object" default="{}" access="private" />
+  <aura:attribute name="showFileInfo" type="Boolean" default="false" access="private" />
+  <aura:attribute name="errorMsg" type="String" default="" access="private" />
+  <aura:attribute name="hasError" type="Boolean" default="false" access="private" />
+  <aura:attribute name="fileProps" type="List" default="[]" access="private" />
+  <aura:attribute name="hasResults" type="boolean" default="false" access="private" />
+
+  <!-- event -->
+  <aura:registerEvent name="step1Event" type="c:SimpleComponentEvent" />
+  <aura:handler name="init" value="{!this}" action="{! c.onInit}" />
+  <aura:handler name="change" value="{!v.error}" action="{!c.onErrorChanged}" />
+  <aura:handler name="change" value="{!v.results}" action="{!c.onResultsChanged}" />
+
+
+  <!-- template -->
+  <div style="{!v.custStyle}">
+    <div class="oh-step-header slds-text-align_center">
+      <h2>Select File</h2>
+    </div>
+    <div class="slds-p-around_small">
+      <lightning:layout>
+        <lightning:layoutItem size="5">
+          <div class="slds-p-around_small oh-step-section">
+            <lightning:tabset variant="scoped">
+              <lightning:tab label="File">
+                <div class="slds-p-around_xxx-small">
+                  <input aura:id="inputFile" type="file" accept=".csv,text/csv" class="slds-hide" name="file"
+                    placeholder="select a file" onchange="{! c.onFileChanged}" />
+                  <p class="slds-m-bottom_x-small">Import a file by clicking on the "Select File" button , please note
+                    that the supported date formats
+                    are YYYY-MM-dd and MM/dd/YYYY.</p>
+                  <lightning:button disabled="{!v.selectFileDisabled}" iconName="utility:upload" label="Import File"
+                    onclick="{! c.onFileSelected}">
+                  </lightning:button>
+                  <aura:if isTrue="{! v.showFileInfo}">
+                    <div class="slds-box slds-p-around-small oh-gap slds-m-top_x-small">
+                      <lightning:layout>
+                        <lightning:layoutItem flexibility="shrink">
+                          <div class="slds-p-around_x-small">
+                            <lightning:icon iconName="{! v.fileInfo.icon}" variant="{!v.fileInfo.variant}"
+                              size="x-small">
+                            </lightning:icon>
+                          </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem flexibility="grow">
+                          <p class="slds-p-left_xxx-small">
+                            <c:AuraNameValueList placeholder="No File To Show" nameValues="{!v.fileProps}"
+                              variant="inline">
+                            </c:AuraNameValueList>
+                          </p>
+                        </lightning:layoutItem>
+                      </lightning:layout>
+                    </div>
+                    <aura:if isTrue="{!v.hasError}">
+                      <div class="slds-box oh-has-error oh-gap slds-m-top_x-small">
+                        <span class="slds-text-color_error">
+                          {!v.errorMsg}
+                        </span>
+                      </div>
+                    </aura:if>
+                  </aura:if>
+                </div>
+              </lightning:tab>
+            </lightning:tabset>
+          </div>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="7">
+          <div class="slds-p-around_small oh-step-section">
+            <lightning:tabset variant="scoped">
+              <lightning:tab label="Field Mapping">
+                <aura:if isTrue="{!v.hasResults}">
+                  <div class="slds-scrollable_y slds-border_bottom" style="height: 250px; overflow-x: none;">
+                    <lightning:datatable keyField="id" columns="{!v.schemas}" data="{!v.results}"
+                      hideCheckboxColumn="true">
+                    </lightning:datatable>
+                  </div>
+                  <aura:set attribute="else">
+                    <div class="slds-box slds-p-around_x-small">
+                      The 1st row in the csv file is expected to be the title of the column in your dataset. The titles
+                      are matched to the import file definition in the system. If not matched, the data import will be
+                      disabled.
+                    </div>
+                  </aura:set>
+                </aura:if>
+              </lightning:tab>
+            </lightning:tabset>
+          </div>
+        </lightning:layoutItem>
+      </lightning:layout>
+    </div>
+  </div>
+</aura:component>

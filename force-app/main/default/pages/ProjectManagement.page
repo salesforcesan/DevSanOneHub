@@ -1,0 +1,583 @@
+<apex:page controller="ProjectManagementController" showHeader="false" sidebar="false" standardStylesheets="false" cache="false" expires="0" docType="html-5.0" applyHtmlTag="false">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <title>Prototype</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <apex:stylesheet value="{!URLFOR($Resource.slds_203, 'assets/styles/salesforce-lightning-design-system.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.ProjectManagement, 'vendor.min.css')}"/>
+        <apex:stylesheet value="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.css"/>
+        <style>
+            html {
+                -webkit-font-smoothing: antialiased;
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                text-size-adjust: 100%;
+                text-rendering: optimizeLegibility;
+            }
+
+            .slds-page-header__detail-block {
+              padding: 1rem 2rem !important;
+            }
+
+            .slds-page-header__detail-row {
+                text-align: center;
+            }
+
+            .slds-page-header__detail-block.active {
+              background-color: #f5fafd;
+            }
+
+            .service {
+              position: relative;
+            }
+
+            .service a {
+              position: relative;
+              display: inline-block;
+              border-bottom: 1px dotted black;
+            }
+
+            .service a:hover {
+              text-decoration: none;
+            }
+
+            .service .slds-popover {
+              visibility: hidden;
+              position: absolute;
+              z-index: 1;
+              top: -5px;
+              left: 100%;
+              min-width: 150px;
+              max-width: 70px;
+            }
+
+            .service:hover .slds-popover {
+              visibility: visible;
+            }
+
+            .service .slds-popover__body {
+              white-space: normal;
+            }
+
+            .slds-nubbin--left:after,
+            .slds-nubbin--left:before {
+              top: 20px;
+            }
+
+            .filter .inputgroup--left {
+              border-radius: 0 0.25rem 0.25rem 0;
+            }
+
+            .filter .inputgroup--right {
+              border-radius: 0.25rem 0 0 0.25rem !important;
+              border-right: 1px solid transparent;
+            }
+
+            .filter .slds-dropdown-trigger .slds-dropdown {
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .filter .slds-dropdown-trigger.slds-is-open .slds-dropdown {
+                opacity: 1;
+                display: block;
+                visibility: visible;
+            }
+
+            .filter .slds-input {
+              font-size: 0.5rem;
+            }
+
+            .filter::-webkit-input-placeholder {
+              font-size: 0.7rem;
+            }
+
+            .filter:-moz-placeholder {
+              /* Firefox 18- */
+              font-size: 0.7rem;
+            }
+
+            .filter::-moz-placeholder {
+              /* Firefox 19+ */
+              font-size: 0.7rem;
+            }
+
+            .filter:-ms-input-placeholder {
+              font-size: 0.7rem;
+            }
+
+            .operator .slds-dropdown {
+              min-width: 30px;
+              font-size: 1rem;
+            }
+
+            .operator .slds-button {
+              font-size: 1rem;
+            }
+
+            .divider--left {
+              border-left: 1px solid #ccc;
+            }
+
+            .divider--right {
+              border-right: 1px solid #ccc;
+            }
+
+            .ui-datepicker {
+                min-width: 6rem;
+                max-width: 20rem;
+                position: absolute;
+                top: -999em;
+                border: 1px solid #d8dde6;
+                border-radius: .25rem;
+                padding: .25rem 0;
+                font-size: .75rem;
+                background: #fff;
+                box-shadow: 0 2px 3px 0 rgba(0,0,0,.16);
+                text-align: center;
+                transform: translateX(-50%);
+            }
+
+            .ui-datepicker th {
+                color: #54698d;
+                font-weight: 400;
+                padding: .5rem;
+                text-align: center;
+            }
+
+            .ui-datepicker td {
+                font-size: .75rem;
+                padding: .25rem;
+                text-align: center;
+            }
+
+            .ui-datepicker td a {
+                width: 2rem;
+                height: 2rem;
+                display: block;
+                position: relative;
+                min-width: 2rem;
+                line-height: 2rem;
+                border-radius: 50%;
+                margin: auto;
+            }
+
+            .ui-datepicker td .ui-state-highlight,
+            .ui-datepicker .ui-state-active,
+            .ui-datepicker td:hover a {
+                background: #f4f6f9;
+                cursor: pointer;
+            }
+
+            .ui-datepicker a {
+                color: #16325c;
+            }
+
+            .ui-datepicker a:hover {
+                color: #16325c;
+                text-decoration: none;
+            }
+
+            .ui-datepicker-header {
+                position: relative;
+            }
+
+            .ui-datepicker-title {
+                position: absolute;
+                top: 0.5rem;
+                width: 100%;
+                z-index: 1;
+            }
+
+            .ui-datepicker-header:after {
+                content: " ";
+                display: block;
+                clear: both;
+            }
+
+            .ui-datepicker .ui-datepicker-prev,
+            .ui-datepicker .ui-datepicker-next {
+                color: #54698d;
+                padding: 0.5rem 0.75rem;
+                position: relative;
+                z-index: 2;
+            }
+
+            .ui-datepicker .ui-datepicker-prev:hover,
+            .ui-datepicker .ui-datepicker-next:hover {
+                color: #005fb2;
+            }
+
+            .ui-datepicker .ui-datepicker-prev {
+                float: left;
+            }
+
+            .ui-datepicker .ui-datepicker-next {
+                float: right;
+            }
+
+            .slds-table--cell-buffer .filter-header {
+                /*border-bottom: 1px solid #d8dde6;*/
+            }
+        </style>
+    </head>
+
+    <body class="slds">
+
+        <div class="slds-page-header" role="banner">
+            <div class="slds-grid">
+                <div class="slds-col slds-has-flexi-truncate">
+                    <div class="slds-media slds-media--center slds-no-space slds-grow">
+
+                        <div class="slds-media__body">
+                            <h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" title="Project Dashboard">Project Dashboard</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-no-flex slds-grid slds-align-bottom">
+                    <div class="slds-button-group" role="group">
+                        <button class="slds-button slds-button--neutral">Apply Filters</button>
+                        <button class="slds-button slds-button--neutral">New Project</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="project-summary"></div>
+        </div>
+
+        <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-no-row-hover">
+            <thead>
+                <tr class="filter-header" id="project-filters"></tr>
+            </thead>
+            <tbody id="project-rows">
+            </tbody>
+        </table>
+
+        <!-- configsettings -->
+    	<script type="text/javascript">
+    		window.configSettings = {
+    			remoteActions: {
+                    getFilters: '{!$RemoteAction.ProjectManagementController.getFilters}',
+                    filterProjects: '{!$RemoteAction.ProjectManagementController.filterProjects}',
+                    getProjectSummary: '{!$RemoteAction.ProjectManagementController.getProjectSummary}'
+                }
+    		};
+    	</script>
+
+        <!-- js dependencies -->
+        <script type="text/javascript" src="{!URLFOR($Resource.ProjectManagement, 'vendor.min.js')}"></script>
+    	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.js"></script>
+
+        <!-- project summary template -->
+        <script id="template-project-summary" type="text/x-handlebars-template">
+            <ul class="slds-grid slds-page-header__detail-row">
+                {{#each summary}}
+                    <li class="slds-page-header__detail-block">
+                        <p class="slds-text-heading--label-normal slds-truncate slds-m-bottom--xx-small">{{label}}</p>
+                        <a href="/" class="slds-text-heading--large slds-truncate">{{count}}</a>
+                    </li>
+                {{/each}}
+            </ul>
+        </script>
+
+        <!-- dynamic filters template -->
+    	<script id="template-filters" type="text/x-handlebars-template">
+        	{{#each filters}}
+            	<th scope="col">
+            		<div class="slds-form-element">
+            			<label class="slds-form-element__label slds-text-heading--label" for="filter-{{@index}}">{{label}}</label>
+        				{{#if_eq type 'text'}}
+                            <div class="slds-form-element__control">
+            				    <input id="filter-{{@index}}" class="slds-input project-filter" data-filter="{{label}}" type="text"/>
+                            </div>
+        				{{/if_eq}}
+                        {{#if_eq type 'text-operator'}}
+                            <div class="slds-button-group filter" role="group">
+                                <div class="slds-dropdown-trigger operator" aria-expanded="false">
+                                    <button class="slds-button slds-button--icon-border-filled inputgroup--right" aria-haspopup="true">
+                                        <span class="selected-operator">=</span>
+                                    </button>
+                                    <div class="slds-dropdown slds-dropdown--left">
+                                        <ul class="dropdown__list" role="menu">
+                                            <li class="slds-dropdown__item">
+                                                <a class="operator-menu-item" href="#" role="menuitem" data-operator=">">
+                                                    <p class="slds-truncate">&gt;</p>
+                                                </a>
+                                            </li>
+                                            <li class="slds-dropdown__item">
+                                                <a class="operator-menu-item" href="#" role="menuitem" data-operator="<">
+                                                    <p class="slds-truncate">&lt;</p>
+                                                </a>
+                                            </li>
+                                            <li class="slds-dropdown__item">
+                                                <a class="operator-menu-item" href="#" role="menuitem" data-operator="=">
+                                                    <p class="slds-truncate">=</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__control">
+                                    <input id="filter-{{@index}}" class="slds-input inputgroup--left" type="text" max="5" />
+                                </div>
+                            </div>
+        				{{/if_eq}}
+        				{{#if_eq type 'date-operator'}}
+                            <div class="slds-button-group filter" role="group">
+                                <div class="slds-dropdown-trigger operator" aria-expanded="false">
+                                    <button class="slds-button slds-button--icon-border-filled inputgroup--right" aria-haspopup="true">
+                                        <span class="selected-operator">=</span>
+                                    </button>
+                                    <div class="slds-dropdown slds-dropdown--left">
+                                        <ul class="dropdown__list" role="menu">
+                                            <li class="slds-dropdown__item">
+                                                <a class="operator-menu-item" href="#" role="menuitem" data-operator=">">
+                                                    <p class="slds-truncate">&gt;</p>
+                                                </a>
+                                            </li>
+                                            <li class="slds-dropdown__item">
+                                                <a class="operator-menu-item" href="#" role="menuitem" data-operator="<">
+                                                    <p class="slds-truncate">&lt;</p>
+                                                </a>
+                                            </li>
+                                            <li class="slds-dropdown__item">
+                                                <a class="operator-menu-item" href="#" role="menuitem" data-operator="=">
+                                                    <p class="slds-truncate">=</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">
+                                        <svg aria-hidden="true" class="slds-input__icon slds-icon-text-default">
+                                            <use href="{!URLFOR($Resource.slds_203, '/assets/icons/utility-sprite/svg/symbols.svg#event')}"></use>
+                                        </svg>
+                                        <input id="filter-{{@index}}" class="slds-input datepicker inputgroup--left" type="text" placeholder="mm/dd/yyyy" />
+                                    </div>
+                                </div>
+                            </div>
+        				{{/if_eq}}
+        				{{#if_eq type 'picklist'}}
+                            <div class="slds-form-element__control">
+                                <div class="slds-select_container">
+                					<select id="filter-{{@index}}" class="slds-select project-filter" data-filter="{{label}}">
+                						{{#each options}}
+                    						<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+                						{{/each}}
+                					</select>
+                				</div>
+                            </div>
+        				{{/if_eq}}
+        				{{#if_eq type 'multiselect'}}
+                            <div class="slds-form-element__control">
+                                <div class="slds-select_container">
+                					<select id="filter-{{@index}}" class="slds-select multiselect project-filter" data-filter="{{label}}" multiple="multiple">
+                						{{#each options}}
+                    						<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+                						{{/each}}
+                						<option value="null" >Null Value (blanks)</option>
+                					</select>
+                				</div>
+                            </div>
+        				{{/if_eq}}
+            		</div>
+            	</th>
+        	{{/each}}
+    	</script>
+
+        <script id="template-project-rows" type="text/x-handlebars-template">
+            {{#each projects}}
+                <tr>
+                    <td>
+                        <a href="/{{id}}" target="_blank">{{projectNumber}}</a>
+                    </td>
+                    <td>{{title}}</td>
+                    <td>&nbsp;</td>
+                    <td class="service"><a href="#">{{services.length}} Service(s)</a>
+                        <div class="slds-popover slds-nubbin--left" role="dialog">
+                            <div class="slds-popover__body">
+                                <ul>
+                                    {{#each services}}
+                                        <li>{{this}}</li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="slds-text-align--right">{{numberOfLocations}}</td>
+                    <td class="slds-text-align--right">{{numberOfJobs}}</td>
+                    <td class="slds-text-align--right">{{startDate}}</td>
+                    <td class="slds-text-align--right">{{endDate}}</td>
+                    <td class="slds-text-align--right">{{launchDate}}</td>
+                    <td>{{owner}}</td>
+                    <td>{{status}}</td>
+                    <td>{{projectException}}</td>
+                </tr>
+            {{/each}}
+        </script>
+
+        <script>
+            (function () {
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": true,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+
+                Handlebars.registerHelper('if_eq', function(a, b, opts) {
+            	    if (a == b) {
+            	        return opts.fn(this);
+            	    } else {
+            	        return opts.inverse(this);
+            	    }
+            	});
+
+                // compile handlebars templates
+            	var projectSummaryTemplate = Handlebars.compile($("#template-project-summary").html()),
+                    filtersTemplate = Handlebars.compile($("#template-filters").html()),
+                    projectRowsTemplate = Handlebars.compile($('#template-project-rows').html());
+
+                getFilters();
+                getProjectSummary();
+                filterProjects();
+
+                function toggleDropdown() {
+                    var $self = $(this);
+
+                    if ($self.hasClass('slds-is-open')) {
+                        $self.removeClass('slds-is-open');
+                    } else {
+                        $self.addClass('slds-is-open');
+                    }
+                }
+
+                function updateDropdownLabel() {
+                    var $self = $(this);
+                    var $selectedOperator = $self.parent().parent().parent().parent().find('.selected-operator');
+                    var val = $self.attr('data-operator');
+
+                    // update data attribute on button
+                    $selectedOperator.attr('data-operator', val);
+
+                    // update textNode
+                    $selectedOperator.html(val);
+                }
+
+                function getFilters() {
+                    return $.jsr({
+                        method: '{!$RemoteAction.ProjectManagementController.getFilters}',
+            			args: [] // TODO: need to pass parameter
+                    }).then(function (filters) {
+                        console.log('filters', filters);
+
+                        var html = filtersTemplate({
+            				filters: filters
+            			});
+
+                        var $datepicker;
+
+            			$('#project-filters').append(html);
+
+                        // initialize datepickers
+            			$('input.datepicker').datepicker({
+            				numberOfMonths: 1
+            			});
+
+                        $('.slds-input__icon').click(function () {
+                            $datepicker = $(this).parent().find('.datepicker');
+                            $datepicker.datepicker('show');
+                        });
+
+                        // slds dropdown menu
+                        var $dropdowns = $('.slds-dropdown-trigger');
+                        var $operatorItems = $('.operator-menu-item');
+
+                        $dropdowns.on('click', toggleDropdown);
+                        $operatorItems.on('click', updateDropdownLabel);
+                    }).catch(function (error) {
+                        toastr.error(error.message);
+                    });
+                }
+
+                function filterProjects() {
+                    var filterSelections = getFilterSelections();
+                    console.log('filterSelections before', filterSelections);
+
+                    console.log('base64 encoded filter selections', window.location.pathname + '?fs=' +serialize(filterSelections));
+
+                    return $.jsr({
+                        method: '{!$RemoteAction.ProjectManagementController.filterProjects}',
+            			args: [filterSelections]
+                    }).then(function (projects) {
+                        console.log('projects', projects);
+
+                        var context = {projects: projects};
+        				var rows = projectRowsTemplate(context);
+
+                        $('#project-rows').append(rows);
+                    }).catch(function (error) {
+                        toastr.error(error.message);
+                    });
+                }
+
+                function getProjectSummary() {
+                    return $.jsr({
+                        method: '{!$RemoteAction.ProjectManagementController.getProjectSummary}',
+                        args: []
+                    }).then(function (summary) {
+                        console.log('summary', summary);
+
+                        var html = projectSummaryTemplate({
+            				summary: summary
+            			});
+
+                        $('#project-summary').append(html);
+                    }).catch(function (error) {
+                        toastr.error(error.message);
+                    });
+                }
+
+                function getFilterSelections() {
+            		var filterSelections = {};
+
+            		$('.project-filter').each(function () {
+            			var value = $(this).val();
+
+            			if ((typeof value === 'string' && value)) {
+            				filterSelections[$(this).data('filter')] = value;
+            			} else if ((typeof value === 'object'  && value.length)) {
+            				filterSelections[$(this).data('filter')] = value.join(',');
+            			}
+            		});
+
+                    console.log('filterSelections function', filterSelections);
+            		return filterSelections;
+            	}
+
+                function serialize(obj) {
+            		return btoa(JSON.stringify(obj));
+            	}
+
+            	function deserialize(base64) {
+            		return JSON.parse(atob(base64));
+            	}
+            }());
+        </script>
+    </body>
+</apex:page>

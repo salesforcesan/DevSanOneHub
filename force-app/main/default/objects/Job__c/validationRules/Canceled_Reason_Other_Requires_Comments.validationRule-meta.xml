@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Canceled_Reason_Other_Requires_Comments</fullName>
+    <active>true</active>
+    <errorConditionFormula>LOWER(TEXT(JobStatus__c)) == &#39;canceled&#39; &amp;&amp; LOWER(TEXT(JobCanceledReason__c)) == &#39;other&#39; &amp;&amp; TRIM(JobCanceledComments__c) == &#39;&#39;</errorConditionFormula>
+    <errorMessage>Please provide cancel comments when cancel reason is Other.</errorMessage>
+</ValidationRule>

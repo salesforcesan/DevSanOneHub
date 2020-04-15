@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MultiDayProjectCannotbeExecutedByEC</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(SkipValidationRules__c &lt;&gt; true, ProjectScheduleOptionCode__c == &#39;EC&#39;,  NumberOfDays__c &gt; 1)</errorConditionFormula>
+    <errorMessage>A project cannot be both multi-day (‘Number of Days’&gt;1) and have a ‘Project Schedule Option’ set to ‘Execution Company will Schedule’. Please update the &#39;Number of Days&#39; or the ‘Project Schedule Option’ to continue.</errorMessage>
+</ValidationRule>

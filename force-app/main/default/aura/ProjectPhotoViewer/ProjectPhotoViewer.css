@@ -1,0 +1,51 @@
+.THIS.photo-viewer-container {
+    position: relative;
+    display:flex;
+    flex:1 auto;
+}
+
+.THIS.photo-viewer-container-pb {
+    position: relative;
+    display:flex;
+    flex:1 auto;
+    flex-direction:column;
+}
+
+.THIS .flex-direction-column {
+    flex-direction:column;
+}
+
+.THIS .flex-direction-row {
+    flex-direction:row;
+}
+
+.THIS .oh-filters {
+    width:20%;
+}
+
+.THIS .oh-photos {
+    width:80%;
+}
+.THIS .oh-filters-pb {
+    width:100%;
+}
+
+.THIS .oh-photos-pb {
+    width:100%;
+}
+.THIS .filter-order {
+    order:1;
+    padding-right:.5rem;
+}
+
+.THIS .photos-order {
+    order:2;
+}
+
+.THIS .filter-order-pb {
+    order:1;
+}
+
+.THIS .photos-order-pb {
+    order:2;
+}

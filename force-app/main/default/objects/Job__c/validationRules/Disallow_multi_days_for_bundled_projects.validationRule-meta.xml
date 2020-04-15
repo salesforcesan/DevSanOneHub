@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disallow_multi_days_for_bundled_projects</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( NumberOfDays__c &gt; 1,   Project__r.BundleServices__c )</errorConditionFormula>
+    <errorDisplayField>NumberOfDays__c</errorDisplayField>
+    <errorMessage>Number of days cannot be more than 1 for bundled projects.</errorMessage>
+</ValidationRule>

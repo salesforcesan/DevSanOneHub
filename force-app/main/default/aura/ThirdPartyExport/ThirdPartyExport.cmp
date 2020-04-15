@@ -1,0 +1,28 @@
+<aura:component  controller="LightningJobAttemptWorkerController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+   <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+   <aura:dependency resource="markup://c:BulkImporter" />
+   <aura:dependency resource="markup://c:MessageBox" />
+  <aura:attribute name="thirdPartyReportURL" type="String" />
+   <aura:attribute name="Accounts" type="List" />
+    <aura:attribute name="ParentId" type="String" />
+    
+      <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+      <aura:handler name="endImportData" event="c:SimpleComponentEvent" action="{!c.onEndImportJobs}" />
+     <c:MessageBox aura:id="messageBox" />
+  
+     <div class="container">
+        <c:ModalDialogContainer aura:id="modalDialog" title="Application Dialog" size="medium" />
+        
+       <div style="margin-bottom:0.2cm;margin-top:.5rem;">
+        <c:Notification aura:id="notification" />
+       </div>
+         
+      <div style="text-align:right;" >
+        <ui:button label="Export" press="{!c.openActionWindow}"/>
+          <lightning:button  label="Import" title="Import" onclick="{!c.onClickImport3PlWorkers }"/>
+         
+       
+    </div>
+    </div>
+    
+</aura:component>

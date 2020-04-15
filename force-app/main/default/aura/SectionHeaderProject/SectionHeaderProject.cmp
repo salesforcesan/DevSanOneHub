@@ -1,0 +1,15 @@
+<aura:component controller="LightningProjectController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+	<ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <aura:attribute name="Title" default="Project Details" type="string" access="global" /> 
+    <aura:attribute name="iconClass" default="fa-bar-chart" type="string" access="global" />
+    <aura:attribute name="subTitle" type="string" default=""/>
+    <section class="project-bar">
+        <div class="slds-media">
+                <div class="project-bar-icon">
+                    <i class="{!'fa ' + v.iconClass}" aria-hidden="true"></i>
+                </div>
+                <h3 class="project-bar-title slds-grid--align-spread">{!v.Title}</h3>
+                <div class="project-subtitle green">{!v.subTitle}</div>
+        </div>
+	</section>   
+</aura:component>

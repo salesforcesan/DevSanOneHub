@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_2_active_defined_responses</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND (ISCHANGED(Active__c ),Active__c == false, ProjectServiceQuestion__r.DefinedResponseCount__c &lt;= 2 )</errorConditionFormula>
+    <errorMessage>There should be at least two (2) active Defined Responses for this question.</errorMessage>
+</ValidationRule>

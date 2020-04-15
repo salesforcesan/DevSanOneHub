@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TotalJobAttempts__c</fullName>
+    <description>The field that displays a summary of total job attempts.</description>
+    <externalId>false</externalId>
+    <label>Total Job Attempts</label>
+    <summaryForeignKey>JobAttempt__c.Job__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

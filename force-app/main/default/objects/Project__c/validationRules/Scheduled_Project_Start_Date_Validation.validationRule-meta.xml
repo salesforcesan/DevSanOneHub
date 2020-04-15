@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Scheduled_Project_Start_Date_Validation</fullName>
+    <active>true</active>
+    <errorConditionFormula>NOT(ISPICKVAL(Status__c, &quot;Planning&quot;)) &amp;&amp; IsExternalProject__c &lt;&gt; true &amp;&amp; StartDate__c &gt; PRIORVALUE(StartDate__c)</errorConditionFormula>
+    <errorDisplayField>StartDate__c</errorDisplayField>
+    <errorMessage>You do not have the required access needed to make this project date change.  Please reach out to your Client Operations Manager for assistance.  Thank you!</errorMessage>
+</ValidationRule>

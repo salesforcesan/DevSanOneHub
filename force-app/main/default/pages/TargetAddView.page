@@ -1,0 +1,121 @@
+<apex:page standardController="Target__c" extensions="TargetAddViewExt" sidebar="false" docType="html-5.0" > 
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<style>
+    .activeTab {
+        background-image: none;
+        font-size: 12px;
+        padding: 5px 10px;
+        font-weight: bold;
+    }
+    
+    .inactiveTab {
+        background-color: lightgrey;
+        color: black;
+        background-image: none;
+        cursor: pointer
+    }
+    
+    .loading-gif {
+        position: fixed;
+        z-index: 999;
+        margin: auto;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        padding: 12px 55px;
+        background-color: #FFF;
+        box-shadow: 0 0px 3px #ccc;
+        border-radius: 2px;
+    }
+    .rich-tabpanel-content  {
+        font-size:12px;
+    }
+</style>
+    
+ <apex:form >
+     <script>
+        $(document).ready(function() { 
+             var grd= "{!isGridVisible}"                 
+             if(grd=='true')
+             {
+                 $('#DivSuccess').show();
+                 $('#DivFailed').show();                                     
+             }
+             else
+             {
+                $('#DivSuccess').hide();
+                $('#DivFailed').hide();
+             }             
+        });
+     </script>
+
+     <apex:pagemessages />
+     
+     <apex:actionStatus id="loadingStatus">
+        <apex:facet name="start">
+        <img class="loading-gif" src="/img/loading24.gif" width="24" height="24"  />
+        </apex:facet>
+     </apex:actionStatus>
+           
+    <apex:pageBlock >                            
+        <apex:pageBlockSection Title="Upload Products" columns="2"  collapsible="false">  
+            <apex:inputFile value="{!csvFileBody}"  title="Browse document"  filename="{!csvAsString}"/>
+<!--           <a href="/sfc/servlet.shepherd/version/download/068j0000000jcf1?asPdf=false">Download Template</a>
+ <a href="https://retailersolution-dev-ed.my.salesforce.com/sfc/p/j0000001uLTs/a/j00000004k2I/NbM6RUuppPx0QiP70WQoQmyIZvyyc8PWJqXJJFueD3c">Download Template</a>  
+            <a href="/sfc/p/j0000001uLTs/a/j00000004lCO/teK9szZiPUEn7ZnwSYRj1h_2a4M8_DH.564FFVNfQcg">Download Template</a> -->
+            
+             <apex:outputLink value="/servlet/servlet.FileDownload?file={!docid}">Download Template</apex:outputLink>
+            
+         <!--   <apex:outputLink value="/sfc/servlet.shepherd/version/download/069j0000000jIGY" target="_document">testdoc</apex:outputLink>
+            
+            <apex:outputlink value="{!ContentURL}">File</apex:outputlink>
+            
+            <apex:outputLink value="{!ContentURL}" target="_document">testdoc</apex:outputLink>
+            
+            <a href="/sfc/servlet.shepherd/version/download/068j0000000sgpiAAA?asPdf=false">Download Template</a>
+            
+            <a href="/servlet/servlet.FileDownload?file={!temp}" >test dwnl</a>  -->
+            
+            
+            <apex:commandButton id="importColl" value="Import Products" action="{!importCSVFile}" />
+        </apex:pageBlockSection>
+    
+        <div id="DivSuccess">
+        <apex:pageBlockSection title="Successfully Added Products" columns="1"  collapsible="false"> 
+            <apex:pageblocktable value="{!CollList}" var="Obj">
+            <apex:column value="{!Obj.name}"  />
+            <apex:column value="{!Obj.StockCode__c }"/> 
+            <apex:column value="{!Obj.UPC__c }" />
+            <apex:column value="{!Obj.AccountInfo__c}" />
+            <apex:column value="{!Obj.BrandInfo__c}" /> 
+            <apex:column value="{!Obj.CategoryInfo__c}" />
+            <apex:column value="{!Obj.TargetType__c}" />
+            <apex:column value="{!Obj.Description__c}" />
+            <apex:column value="{!Obj.PackageSizeQty__c}" />
+            <apex:column value="{!Obj.PackageSizeUnits__c}" />
+            </apex:pageblocktable> 
+        </apex:pageBlockSection>
+        </div> 
+    
+        <div id="DivFailed">
+        <apex:pageBlockSection title="Failed Products" columns="1"  collapsible="false">
+            <apex:pageblocktable value="{!failedColl}" var="obj" columnsWidth="10%,10%,10%,70%">
+            <apex:column value="{!obj.Name}" />
+            <apex:column value="{!Obj.StockCode__c }"  /> 
+            <apex:column value="{!Obj.UPC__c }" />       
+            <apex:column value="{!obj.Description__c }"  />
+            </apex:pageblocktable>          
+        </apex:pageBlockSection>
+        </div>                     
+    </apex:pageBlock>            
+     
+     
+     
+      <!--<apex:commandButton value="Cancel" action="{!URLFOR($Action.Project__c.Edit)}" style="margin: 10px 0;" title="Cancel"/>   
+      <apex:commandButton value="Return to Project Details" action="{!URLFOR($Action.Project__c.View,projID )}"/>   -->
+
+   </apex:form>
+</apex:page>

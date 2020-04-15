@@ -1,0 +1,7 @@
+.slds-list_stacked dd {
+  margin-bottom: 10px;
+}
+
+.slds-list_horizontal dt, .slds-list_horizontal dd {
+  margin-bottom: 10px;
+}

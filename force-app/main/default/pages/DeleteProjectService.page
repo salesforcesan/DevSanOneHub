@@ -1,0 +1,51 @@
+<apex:page standardController="ProjectService__c" recordSetVar="Projservs"  extensions="DeleteProjectServiceExt" sidebar="true" showHeader="true" tabStyle="ProjectDashboard__tab">
+
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script> 
+         $(document).ready(function() {               
+             $("[id*=btnDelete]").click(function(){                 
+                 return(confirm(" Do you want to Delete the selected Service(s)?"));
+             });
+         });
+</script> 
+<style>
+    .loading-gif {
+        position: fixed;
+        z-index: 999;
+        margin: auto;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        padding: 12px 55px;
+        background-color: #FFF;
+        box-shadow: 0 0px 3px #ccc;
+        border-radius: 2px;
+    }
+}
+</style>
+<apex:sectionHeader title="Delete Project Service(s)" subtitle="{!projObj.Name}" />
+<c:Breadcrumb backtoid="{!projObj.Id}" />
+<apex:pageMessages showDetail="false" escape="false" />
+<apex:pageMessage rendered="{!errorMessage<>null}"  summary="{!errorMessage}" severity="FATAL" strength="2" /> 
+    <apex:form >
+    <apex:actionStatus id="loadingStatus">
+            <apex:facet name="start">
+                <img class="loading-gif" src="/img/loading24.gif" width="24" height="24"  />
+            </apex:facet>
+    </apex:actionStatus>
+    <apex:pageBlock id="pdb">      
+        <apex:pageBlockButtons >
+            <apex:commandButton id="btnDelete" status="loadingStatus" action="{!DeleteService}" value="Delete Service(s)" rendered="{!selectedProjectServices.size>0}"/>
+            <apex:commandButton action="{!cancelDelete}" immediate="true"  value="Cancel" /> 
+        </apex:pageBlockButtons>    
+        <apex:pageBlockSection title="Information" collapsible="false" columns="1">  
+            <apex:outputField value="{!projObj.Name}" label="Project Name" />
+            <apex:outputField value="{!projObj.Status__c}" /> 
+            <apex:inputTextarea label="Selected Services" value="{!psNames}" disabled="true" cols="150" />  
+        </apex:pageBlockSection>       
+    </apex:pageBlock> 
+</apex:form>
+   
+</apex:page>

@@ -1,0 +1,62 @@
+<aura:component controller="LightningProjectController" implements="flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <aura:attribute name="project" type="Object" access="global" />
+
+    <!-- Handles the aura:valueChange event -->
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />    
+    <!--<aura:handler name="change" value="{!v.project}" action="{!c.doInit}"/>-->
+    
+    <div>
+            <div class="project-timeline" >
+              <!--<div class="slds-button toggleBtn" onclick="{!c.toggleTimeline}"></div>-->
+              <div class="timeOut timeline">
+                <ul class="timeline-list">                
+                    <li class="timeline-group" aura:id="planning">
+                        <span class="timeline-circle" aura:id="planningCircle" >
+                            <i class="fa fa-list-ul" aria-hidden="true"></i>
+                        </span>
+                        <span aura:id="planningText" class="timeline-text">Planning</span>
+                    </li>                
+                    <li class="timeline-group" aura:id="pending">
+                        <div class="timeline-circle">
+                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        </div>
+                        <span class="timeline-text">Pending</span>
+                    </li>
+                    <li class="timeline-group" aura:id="booked">
+                        <span class="timeline-circle">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </span>
+                        <span class="timeline-text">Booked</span>
+                    </li>
+                    <li class="timeline-group" aura:id="launched">
+                        <span class="timeline-circle">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                        </span>
+                        <span class="timeline-text">Launch</span>
+                        <time datetime="2016-02-7">{!v.project.ProjectLaunchDate}</time>
+                    </li>
+                    <li class="timeline-group" aura:id="started">
+                        <span class="timeline-circle">
+                            <i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                        <span class="timeline-text">Start</span>
+                        <time datetime="2016-12-7">{!v.project.StartDate  }</time>
+                    </li>
+                    <li class="timeline-group" aura:id="ended">
+                        <span class="timeline-circle"><i class="fa fa-flag-checkered" aria-hidden="true"></i></span>
+                        <span class="timeline-text">End</span>
+                        <time datetime="2016-12-23">{!v.project.EndDate}</time>
+                    </li>
+                    <li class="timeline-group" aura:id="closed">
+                        <span class="timeline-circle"><i class="fa fa-lock" aria-hidden="true"></i></span>
+                        <span class="timeline-text">Close</span>
+                        <time datetime="2016-12-25">{!v.project.ProjectCloseDate}</time>
+                    </li>
+                </ul>
+                <span class="timeline-bar">
+                    <span class="timeline-bar-activated" aura:id="timeline"></span>
+                </span>
+              </div>
+            </div>
+    </div>
+</aura:component>

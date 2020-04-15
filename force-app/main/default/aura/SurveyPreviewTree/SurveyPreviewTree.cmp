@@ -1,0 +1,40 @@
+<aura:component implements="force:appHostable" access="global">
+	<ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />    
+    
+	<aura:attribute name="treeHeader" type="String" default="Survey Hierarchy"/>
+    <aura:attribute name="questions" type="List"/>
+    <aura:attribute name="treeConfig" type="Map" default="{'labelProperties': ['QuestionText','DefinedResponseText'], 'expandProperties': ['DefinedResponses','FollowUpQuestions'], 'isSelectable': true, 'isNodeSelectionEnabled': true, 'expandLevel': 1}" />
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <!--aura:handler name="treeSelectionEvent" event="TreeSelectionEvent" action="{!c.handleTreeSelection}"/-->
+    
+    
+    <div> 
+        <div class="drawer drawer-hide" aura:id="panel">
+            
+            <div class="drawer-tab-container" >
+                <div class="drawer-tab-spacer"></div>
+                <div class="drawer-tab" onclick="{!c.togglePreview}">
+                    <div class="drawer-tab-text">
+                        Preview
+                    </div>
+                </div>
+            </div>
+            <div class="drawer-content slds-p-bottom--medium" aura:id="content">
+                <div class="drawer-title">
+                    <button class="slds-button" onclick="{!c.togglePreview}">
+                        <i class="oh-icon oh-icon-close drawer-title-close" aria-hidden="true"></i>
+                    </button>
+                    <span class="drawer-title-text">
+                        Survey Hierarchy
+                    </span>
+                </div>
+                <div class="slds-m-around--large">
+					<c:Tree header="{!v.treeHeader}" items="{!v.questions}" config="{!v.treeConfig}" />
+				</div>
+            </div>            
+        </div>
+    </div>
+    
+</aura:component>

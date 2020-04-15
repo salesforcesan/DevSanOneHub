@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ServiceAttribute__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Service Attribute</label>
+    <referenceTo>ServiceAttribute__c</referenceTo>
+    <relationshipLabel>Project Service Attributes</relationshipLabel>
+    <relationshipName>Project_Service_Attributes</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

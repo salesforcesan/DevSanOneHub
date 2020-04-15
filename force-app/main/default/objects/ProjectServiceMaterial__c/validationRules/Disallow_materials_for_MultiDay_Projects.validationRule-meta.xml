@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disallow_materials_for_MultiDay_Projects</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISNEW() ,ProjectService__r.Project__r.ProjectType__r.AllowMultidays__c == True)</errorConditionFormula>
+    <errorMessage>Materials cannot be added to a multi day project.</errorMessage>
+</ValidationRule>

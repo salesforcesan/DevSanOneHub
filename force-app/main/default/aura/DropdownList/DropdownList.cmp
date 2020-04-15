@@ -1,0 +1,23 @@
+<aura:component >
+  <aura:attribute name="id" type="String" default=""/>
+  <aura:attribute name="options" type="List" default="[]" description="a list of options"/>
+  <aura:attribute name="label" type="String" default="State"/>
+  <aura:attribute name="class" type="String" default=""/>
+  <aura:attribute name="defaultValue" type="String" default="-1"/>
+  <aura:attribute name="defaultLabel" type="String" default=""/>
+  <aura:attribute name="value" type="String" default=""/>
+  <aura:attribute name="multiple" type="Boolean" default="false"/>
+  <aura:registerEvent name="onDropdownListOptionChanged" 
+    type="c:SimpleComponentEvent"/>
+  <ui:inputSelect label="{!v.label}" 
+        change="{! c.onChanged }"
+        multiple="{!v.multiple}" value="{!v.value}" 
+        aura:id="optionControl" class="{! v.class != '' ? 'slds-m-bottom_x-small ' + v.class : 'slds-m-bottom_x-small'}">
+        <aura:if isTrue="{!v.defaultValue != '-1'}">
+          <ui:inputSelectOption text="{!v.defaultValue}" label="{!v.defaultLabel}" value="true"/>
+        </aura:if>
+        <aura:iteration items="{!v.options}" var="opt">
+               <ui:inputSelectOption text="{! opt.key }" label="{! opt.value }" />
+        </aura:iteration>
+  </ui:inputSelect>
+</aura:component>

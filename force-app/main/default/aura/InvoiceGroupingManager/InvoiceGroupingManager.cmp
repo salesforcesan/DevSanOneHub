@@ -1,0 +1,200 @@
+<aura:component extends="c:Remotable" controller="LightningProjectInvoiceController" 
+                implements="flexipage:availableForRecordHome,force:hasRecordId,flexipage:availableForAllPageTypes,lightning:hasPageReference,lightning:actionOverride" 
+                access="global">    
+    <aura:attribute name="urlParam" type="string"/>
+    <aura:attribute name="fullData" type="Object" />
+    <aura:attribute name="invoices" type="List" />
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="sortedBy" type="String" default="Name"/>
+    <aura:attribute name="sortedDirection" type="String" default="asc"/>
+    <aura:attribute name="selectedRowsDetails" type="Object" />
+    <aura:attribute name="selectedGroup" type="String" />
+    <aura:attribute name="selectedInvoices" type="List" />
+    <aura:attribute name="selectedRows" type="List" />
+    <aura:attribute name="selectedRowsCount" type="Integer" default="0" />
+    <aura:attribute name="toBeGroupedInvoices" type="List" />
+    <aura:attribute name="toBeRemovedInvoices" type="List" />
+    <aura:attribute name="recordId" type="string" access="global" />
+    <aura:attribute name="pageReference" type="Object"/>    
+    
+    <aura:attribute name="hasInvoices" type="Boolean" />
+    <aura:attribute name="ns" type="String" default="" />
+    <aura:attribute name="availableGroupedInvoices" type="List" />
+    <aura:attribute name="initialGroupedCount" type="Integer" default="0" />
+    <aura:attribute name="groupedInvoiceSelected" type="String" />
+    <aura:attribute name="filter" type="String" default=""/>
+    
+    <aura:attribute name="recordActionType" type="String" default=""/>
+    
+    
+    <aura:handler event="force:refreshView" action="{!c.doInit}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <!--- enableInfiniteLoading  -->
+    <aura:attribute name="enableInfiniteLoading" type="Boolean" default="true"/>
+    <aura:attribute name="initialRows" type="Integer" default="50"/>
+    <aura:attribute name="rowsToLoad" type="Integer" default="10"/>
+    <aura:attribute name="totalNumberOfRows" type="Integer" default="50"/>
+    <aura:attribute name="loadMoreStatus" type="String" default="Loading .... "/>
+    <aura:attribute name="showRowNumberColumn" type="Boolean" default="false"/>
+    <aura:attribute name="rowNumberOffset" type="Integer" default="0"/>
+    <aura:attribute name="rowsToAdd" type="Integer" default="10"/>
+    <aura:attribute name="loading" type="Boolean" default="false" />
+    <aura:attribute name="currentCount" type="Integer" default="10"/>
+    
+    <aura:registerEvent name="cmpEvent" type="c:SelectedInvoiceForGrouping"/> 
+    <aura:registerEvent name="appEvent" type="c:aeEvent"/>
+    <aura:handler event="c:aeEvent" action="{!c.handleApplicationEvent}"/>
+    
+    <!--- Filter Attributes  -->
+    <aura:attribute name="SearchWrapper" type="List"  access="global" />
+    <aura:attribute name="testSearchWrapper" type="Object" access="global" />
+    
+    <ltng:require styles="{!$Resource.oh_tools + '/oh-tools-style.css'}" />
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    
+    <aura:attribute name="options" type="List" default="[{'label': 'Invoice&nbsp;Created&nbsp;Date', 'value': 'CreatedDate'},
+                                                        {'label': 'Project&nbsp;Start', 'value': 'ProjectStartDate'},
+                                                        {'label': '1H&nbsp;Due&nbsp;Date', 'value': 'DueDate'},
+                                                        ]"/>
+    <aura:attribute name="optionValue" type="String"/>   
+
+    <aura:method name="getScoreMethod" action="{!c.parentInit}" access="PUBLIC">
+        <aura:attribute name="SearchWrapper" type="List" />
+        <aura:attribute name="type" type="List" />        
+    </aura:method>
+    
+    <div class="slds-card slds-p-around_medium" style="position:relative;height:100%;min-height:800px;">
+        <div aura:id="lilspin">
+            <lightning:spinner  size="medium" variant="brand"/>
+        </div>
+        
+        <aura:if isTrue="{! (v.recordActionType != 'New')}" >
+        <div class="slds-grid slds-p-bottom_medium" style="align-items:center;position:relative;">
+            <p class="slds-m-right_small"><span style="font-weight:bold;">Account: </span>{!v.invoices[0].AccountName}</p>
+            <p class="slds-m-right_small"><span style="font-weight:bold;">Bill To Contact: </span>{!v.invoices[0].BillToContactName}</p>
+            <p class="slds-m-right_small"><span style="font-weight:bold;">Lawson Code: </span>{!v.invoices[0].LawsonCompanyCode}</p>
+            <p class="slds-m-right_small"><span style="font-weight:bold;">Invoice Type: </span>{!v.invoices[0].Type}</p>
+        </div>
+         </aura:if>
+        
+        <!-- FIlters -->
+        <h3 class="slds-section__title" style="background: rgb(243, 242, 242);order:3;" onclick="{!c.toggleFilter}"> <!--showAdvancedFilter-->
+            <button class="slds-button slds-section__title-action">
+                <span aura:id="arrowDownTop" class="toggleArrow" style="margin:0;padding:0;margin-right:.5rem;">
+                    <lightning:icon iconName="utility:chevrondown" size="xx-small" class="arrowDown" />
+                </span>
+                <span class="test-id__section-header-title slds-truncate">Filters</span>
+            </button>
+        </h3>        
+        <div class="slds-section toggleSection slds-is-open" style="order:4;" aura:id="filters" >                                          
+            <div class="slds-section__content">
+                <div style="width:100%;" class="slds-p-bottom_small slds-border_bottom">
+                    
+                    <div class="slds-grid slds-grow slds-grid_align-center" style="width:100%;flex-direction:column;">
+                        <div class="slds-grid slds-grow" style="width:100%;">
+                            <div class="slds-grid slds-grid_vertical-align-start slds-grid_vertical-stretch" style="width:100%;">
+                               
+                                <div class="slds-grid slds-grid_vertical-align-start slds-grid_vertical-stretch" style="width:100%;">
+                                    <div class="slds-p-around_small slds-xs-around_medium">
+                                        <lightning:select name="colorId" label="Select Date Range:" aura:id="FilterDateRange" value="{!v.optionValue}" >
+                                            <aura:iteration items="{!v.options}" var="option">
+                                                <option text="{!option.label}" value="{!option.value}" selected="{!option.selected}"/>
+                                            </aura:iteration>
+                                        </lightning:select>
+                                        
+                                    </div>
+                                    <div class="slds-p-around_small slds-xs-around_medium">
+                                        
+                                        <lightning:input type="date" label="From Date"  aura:id="FromDate"/>                 
+                                    </div>
+                                    
+                                    <div class="slds-p-around_small slds-xs-around_medium">
+                                        <lightning:input type="date" label="To Date" aura:id="ToDate" />                 
+                                    </div>                                    
+                                </div>
+                            </div>
+                        </div>                            
+                    </div>
+                    <div class="slds-grid slds-grow slds-grid_align-center" style="width:100%;flex-direction:column;">
+                        <div class="slds-grid slds-grow" style="width:100%;">
+                            <div class="slds-hide"  aura:id="uploadSpinner" >
+                                <lightning:spinner size="medium" variant="brand" />
+                            </div>
+                            <div class="slds-grid slds-grid_vertical-align-start slds-grid_vertical-stretch" style="width:100%;">
+                                <div class="slds-p-around_small slds-xs-around_medium" style="position:relative;width:200px;align-items:center">
+                                    <lightning:input label="PO&nbsp;Number(s)" aura:id="poNumbers" />                                        
+                                </div>
+                                <div class="slds-p-around_small slds-xs-around_medium" style="width:200px;align-items:center;">                                        
+                                    <lightning:input label="Project&nbsp;Number(s)" aura:id="projectNumbers" />
+                                </div>	
+                                <div class="slds-grid slds-grid_vertical slds-xs-around_small dashed-border slds-m-around_medium" style="width:200px;align-items:center;">
+                                    <lightning:input label="Project&nbsp;Name"  aura:id="projectName" />
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-grow" style="width:100%;margin-bottom:2rem;" >
+                        <span class="slds-grid slds-grid_align-end" style="width:100%;">                                
+                            <div class="slds-p-around_x-small slds-p-top_medium">
+                                <lightning:button label="Clear" aura:id="clearFilter" onclick="{!c.clearFilter}" variant="brand" />
+                                <lightning:button label="Filter Invoices" aura:id="filterInvoice" onclick="{!c.searchInvoices}" variant="brand" />
+                            </div>
+                        </span> 
+                    </div>                    
+                </div>
+            </div>
+        </div>
+        <aura:if isTrue="{!v.invoices.length > 0}">  
+            <div class="slds-box">                
+                <div class="slds-grid slds-wrap" style="width:100%;margin-bottom:2rem;">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+                        <p>rows selected: {!v.selectedRowsCount}</p>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12">
+                        <span class="slds-grid slds-grid_align-end" style="width:100%;">
+                                <lightning:button
+                                                  label="Add to group invoice"
+                                                  onclick="{!c.addToGroup}" variant="brand" />                               
+                           </span>
+                    </div>
+                </div>                
+                <lightning:datatable 
+                                     data="{! v.invoices }" 
+                                     columns="{! v.columns }" 
+                                     keyField="Id"
+                                     selectedRows="{! v.selectedRows }"
+                                     onrowselection="{! c.updateSelectedInvoices }"
+                                     sortedBy="{! v.sortedBy }"
+                                     sortedDirection="{! v.sortedDirection }"                     
+                                     onsort="{!c.updateColumnSorting}"
+                                     enableInfiniteLoading="false"
+                                     />
+                <div class="slds-grid slds-grow" style="width:100%;margin-bottom:2rem;" >
+                    <span class="slds-grid slds-grid_align-end" style="width:100%;">                                
+                        <div class="slds-p-around_x-small slds-p-top_medium">
+                            
+                            <lightning:button
+                                              label="Add to group invoice"
+                                              onclick="{!c.addToGroup}" variant="brand" />
+                            <!--<lightning:button
+                                              label="Add to group invoice Server"
+                                              onclick="{!c.addToGroupServer}" variant="brand" />-->
+                        </div></span></div>
+            </div>       
+            <aura:set attribute="else">
+                <lightning:badge label="No Record Found " />
+                <aura:if isTrue="{!not(empty(v.selectedGroup))}">
+                    <div>
+                        <lightning:badge label="There are no available invoices to be grouped based on the selection." />
+                    </div>
+                    <aura:set attribute="else">
+                        <div>
+                            
+                        </div>
+                    </aura:set>
+                </aura:if>
+            </aura:set>
+        </aura:if>
+    </div> 
+</aura:component>

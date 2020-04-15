@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disallow_negative_numbers</fullName>
+    <active>true</active>
+    <description>Do not allow negative numbers for certain fields.</description>
+    <errorConditionFormula>OR( NumberOfDays__c &lt; 0,  NumberOfWorkers__c &lt; 0,  EstimatedMinutes__c &lt; 0)</errorConditionFormula>
+    <errorMessage>Negative numbers are not allowed, please correct them.</errorMessage>
+</ValidationRule>

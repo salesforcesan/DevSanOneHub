@@ -1,0 +1,214 @@
+<apex:page controller="PhotoViewerWordExporterController" showHeader="true" sidebar="true" readOnly="true"
+           contentType="application/msWord#PhotoViewerExport.doc">
+    <!-- contentType="application/msWord#PhotoViewerExport.doc" -->
+    <html xmlns:w="urn:schemas-microsoft-com:office:word">
+        <head>
+            <meta content="text/html; charset=utf-8" />
+            <style type="text/css">
+
+                body {
+                font-family: Helvetica, Arial, sans-serif;
+                width:100% !important;
+                min-width:100% !important;
+                }
+
+                .container{
+                max-width:600px !important;
+                width:100% !important;
+                }
+
+                .column {
+                width: 50%;
+                min-width:50%;
+                max-width:50%;
+                }
+                .grid {
+                width: 100%;
+                margin-left:0;
+                padding-left:0;
+                }
+
+                .column-data {
+                width:100%;
+                padding-bottom:12px;
+                }
+
+                .column-data-fifty {
+                width:50%;
+                padding-bottom:12px;
+                }
+                .labelClass {
+                color:#888;
+                font-size:12px;
+                line-height:110%;
+                padding-bottom:4px;
+                font-weight:200;
+                }
+
+                .valueClass {
+                width:100%;
+                margin-bottom:.5em;
+                color:#16325C;
+                line-height:110%;
+                font-size:10px;
+                font-weight:500;
+                }
+
+                table {
+                border:0;
+                border-collapse:collapse;
+                }
+                img{-ms-interpolation-mode:bicubic;}
+                img{border:0;line-height:100%; outline:none; text-decoration:none;}
+
+				.img-size {
+                	width:250px;
+                    height:auto !important;
+                    max-height:400px;
+                    max-width:300px !important;
+                }
+
+                td {
+                }
+
+                .grid:nth-child(even) {
+                break-after:always;
+                }
+
+                br:last-child {
+                display:none;
+                }
+
+                table, td{mso-table-lspace:0pt; mso-table-rspace:0pt;}
+            </style>
+        </head>
+        <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+            <center>
+                <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" valign="top" style="padding-bottom:20px;">
+                    <apex:repeat value="{! photos }" var="photo">
+
+                        <tr>
+                            <td align="center" valign="top" id="bodyCell" style="page-break-inside:avoid;">
+                                <table border="0" cellpadding="0" cellspacing="0" class="container">
+                                    <tr>
+                                        <td align="center" valign="top" style="margin:auto;padding:10px;border-top:1px solid #DDDDDD;border-left:1px solid #DDDDDD;border-right:1px solid #DDDDDD;border-bottom:1px solid #DDDDDD;max-width:600px;" width="100%">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="100%" id="header">
+                                                <tr>
+                                                    <td valign="top" class="headerImage" align="center" style="width:300px;padding:10px;text-align:center;">
+                                                       <table border="0" cellpadding="0" cellspacing="0" width="250" id="header">
+                                                        <tr>
+                                                            <td valign="top" class="headerImage" align="center" style="padding:10px;text-align:center;">
+                                                           <!-- <apex:image value="{! photo['imageUrl']}"
+                                                                    width="250"
+                                                                    height="160"
+                                                                    alt=""
+                                                                    style="width:300px !important;
+                                                                           height:auto !important;
+                                                                           max-height:400px;"
+                                                                    /> <!--{!URLFOR($Resource.testTall,'test.jpg')}-->
+                                                                <img src="{! photo['imageUrl']}"
+                                                     				class="img-size"
+                                                                    alt="" />
+                                                            </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td align="center" valign="top" style="border-left:1px solid #DDDDDD;max-width:600px;width:50%;" width="50%">
+                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" id="header">
+                                                            <tr>
+                                                                <td align="center" valign="top" style="padding:20px;width:100%;border-bottom:4px solid #f6f6f6;">
+                                                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" >
+                                                                        <tr>
+                                                                            <td class="column-data">
+                                                                                <div class="labelClass">Project</div>
+                                                                                <apex:outputText value="{! photo['projectTitle']}" styleClass="valueClass" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="column-data">
+                                                                                <div class="labelClass">Service</div>
+                                                                                <apex:outputText value="{! photo['serviceTitle'] }" label="Service" styleClass="valueClass" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="column-data">
+                                                                                <div class="labelClass">Target</div>
+                                                                                <apex:outputText value="{! photo['targetName'] }" label="Target" styleClass="valueClass" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="column-data">
+                                                                                <div class="labelClass">Survey Question</div>
+                                                                                <apex:outputText value="{! photo['questionText'] }" styleClass="valueClass" />
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="center" valign="top" style="padding:20px;width:100%;">
+                                                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" >
+                                                                         <tr>
+                                                                            <td class="column-data-fifty">
+                                                                                <div class="labelClass">Banner</div>
+                                                                                <apex:outputText value="{! photo['banner'] }" label="Banner" styleClass="valueClass" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="column-data-fifty">
+                                                                                <div class="labelClass">Location #</div>
+                                                                                <apex:outputText value="{! photo['locationNumber'] }" label="Location" styleClass="valueClass" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="column-data-fifty">
+                                                                                <div class="labelClass">Location Name</div>
+                                                                                <apex:outputText value="{! photo['locationName'] }" label="Location" styleClass="valueClass" />
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td class="column-data-fifty">
+                                                                                <div class="labelClass">Reported Date</div>
+                                                                                <apex:outputText value="{! photo['reportDate'] }" styleClass="valueClass" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="column-data-fifty">
+                                                                                <div class="labelClass">City/State</div>
+                                                                                <apex:outputText value="{! photo['city_state'] }" label="City_State" styleClass="valueClass" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="column-data-fifty">
+                                                                                <div class="labelClass">Project Start Date</div>
+                                                                                <apex:outputText value="{! photo['startDate'] }" label="Project Start Date" styleClass="valueClass" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="column-data-fifty">
+                                                                                <div class="labelClass">Project End Date</div>
+                                                                                <apex:outputText value="{! photo['endDate'] }" label="Project End Date" styleClass="valueClass" />
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </td>
+                        </tr>
+                        <br clear="all" style="mso-special-character:line-break;page-break-before:always !important;" />
+                    </apex:repeat>
+                </table>
+            </center>
+        </body>
+    </html>
+</apex:page>

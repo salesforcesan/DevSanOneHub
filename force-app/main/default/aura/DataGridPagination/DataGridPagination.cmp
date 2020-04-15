@@ -1,0 +1,35 @@
+<aura:component >
+  <aura:attribute name="value" type="Integer" default="1"/>
+  <aura:attribute name="pages" type="Integer" default="0"/>
+  <aura:attribute name="alignment" type="String" default="left" description="left or right or center"/>
+  <aura:attribute name="page0" type="Object" default="" access="private"/>
+  <aura:attribute name="page1" type="Object" default="" access="private"/>
+  <aura:attribute name="page2" type="Object" default="" access="private"/>
+  <aura:attribute name="page3" type="Object" default="" access="private"/>
+  <aura:attribute name="page4" type="Object" default="" access="private"/>
+  <aura:attribute name="page5" type="Object" default="" access="private"/>
+  <aura:attribute name="page6" type="Object" default="" access="private"/>
+  <aura:attribute name="page7" type="Object" default="" access="private"/>
+  <aura:attribute name="page8" type="Object" default="" access="private"/>
+  <aura:method name="gotoFirstPage" action="{!c.gotoFirstPage}"/>
+  <aura:registerEvent name="gotoPage" type="c:SimpleComponentEvent"/>
+  <aura:handler name="change" value="{!v.pages}" action="{!c.watchPagesChange}"/>
+  <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+  <div class="{!join('','datagrid-pagination-',v.alignment)}">
+    <ul class="ul">
+      <li class="{!v.page0.class}"><a data-id="{!v.page0.id}" href="javascript:void(0)" onclick="{!c.prevPage}">
+          <i class="fa fa-icon fa-angle-left fa-2x"></i></a>
+      </li>
+      <li class="{!v.page1.class}"><a data-id="{!v.page1.id}" href="javascript:void(0)" onclick="{!c.selectPage}">{!v.page1.value}</a></li>
+      <li class="{!v.page2.class}"><a data-id="{!v.page2.id}" href="javascript:void(0)" onclick="{!c.selectPage}">{!v.page2.value}</a></li>
+      <li class="{!v.page3.class}"><a data-id="{!v.page3.id}" href="javascript:void(0)" onclick="{!c.selectPage}">{!v.page3.value}</a></li>
+      <li class="{!v.page4.class}"><a data-id="{!v.page4.id}" href="javascript:void(0)" onclick="{!c.selectPage}">{!v.page4.value}</a></li>
+      <li class="{!v.page5.class}"><a data-id="{!v.page5.id}" href="javascript:void(0)" onclick="{!c.selectPage}">{!v.page5.value}</a></li>
+      <li class="{!v.page6.class}"><a data-id="{!v.page6.id}" href="javascript:void(0)" onclick="{!c.selectPage}">{!v.page6.value}</a></li>
+      <li class="{!v.page7.class}"><a data-id="{!v.page7.id}" href="javascript:void(0)" onclick="{!c.selectPage}">{!v.page7.value}</a></li>
+      <li class="{!v.page8.class}"><a data-id="{!v.page8.id}" href="javascript:void(0)" onclick="{!c.nextPage}">
+        <i class="fa fa-icon fa-angle-right fa-2x"></i>
+      </a></li>
+    </ul>
+  </div>
+</aura:component>

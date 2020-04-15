@@ -1,0 +1,77 @@
+<aura:component extends="c:UISecurity" controller="LightningProjectController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="projectId" type="Id" />	 
+    <aura:attribute name="projectFileList" type="AttachmentWrapper" />	 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="deleteAttachmentId" type="Id" />	 
+    <aura:attribute name="uploadedFile" type="String" default=""/>	 
+    <aura:handler name="messageBoxEvent" event="c:SimpleComponentEvent" action="{!c.onMessageBoxEvent}"/>
+    <div>
+        <c:MessageBox aura:id="messageBox"/>
+        <div class="slds-is-relative slds-size_1-of-1 slds-grid" style="overflow:hidden;">
+            <div class="slds-card slds-size_1-of-1 slds-p-around_medium" style="margin-right:12px;">
+                <c:SectionHeaderProject Title="Project Files" iconClass="fa-file" />
+                <div class="slds-media slds-grid_align-spread slds-p-around_small slds-m-bottom_small">
+                    <p class="slds-media__body">
+                        Project files and attachments
+                    </p>
+                    <div>
+                        <button class="slds-button slds-button_brand add-button file-upload slds-grid" type="reset">
+                            <input type="file" class="file-input" aura:id="file" accept="application/pdf,image/*,application/msword, application/vnd.ms-excel,application/vnd.ms-powerpoint,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation" onclick="{!c.prepareUpload}" onchange="{!c.fileUploadHandler}" value="{!v.uploadedFile}" />
+                            <span class="slds-m-right_x-small"><lightning:icon iconName="utility:add" size="x-small" variant="inverse" /></span>
+                            <span class="slds-grid slds-grid_align-center oh-plus-text">Add File</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="" aura:id="spinner" > 
+                    <lightning:spinner size="medium" variant="brand" />
+                </div>
+                <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+                    <thead>
+                        <tr class="slds-text-title--caps">
+                            <th scope="col">
+                                <div class="slds-truncate" title=""></div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="File Name">File Name</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Owner">Owner</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Last Modified Date">Last Modified</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Action"></div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.projectFileList}" var="pf" indexVar="index"> 
+                            <tr>
+                                <td data-label="Account Name">
+                                    <div class="slds-truncate" title="Cloudhub">{!index + 1}</div>
+                                </td>
+                                <th scope="row" data-label="Opportunity Name">
+                                    <div class="slds-truncate" title="Cloudhub"><ui:outputURL target="_blank" value="{!join('','/servlet/servlet.FileDownload?file=', pf.Id)}" label="{!pf.Name}"/></div>
+                                </th>
+                                <td data-label="Owner">
+                                    <div class="slds-truncate" title="Cloudhub">{!pf.Owner}</div>
+                                </td>
+                                <td data-label="Last Modified Date">
+                                    <div class="slds-truncate" title="Cloudhub"><ui:outputDate value="{!pf.LastModifiedDate}" format="EEE, d MMM yyyy HH:mm:ss"/></div>
+                                </td>
+                                <td data-label="Account Name">
+                                    <div class="slds-truncate hide" title="Cloudhub" aura:id="Project__c.Attachments">
+                                        <aura:if isTrue="{!pf.Description != 'OPPORTUNITY FILE'}">
+                                            <button class="slds-button slds-grid--align-end" type="button" onclick="{!c.deleteFile}" id="{!pf.Id}">Delete</button>                                             
+                                        </aura:if>
+                                    </div>
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+            </div>            
+        </div>
+    </div>
+</aura:component>

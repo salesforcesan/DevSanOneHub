@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disallow_Product_change_after_locations</fullName>
+    <active>true</active>
+    <description>Do not allow a product to be changed after adding reservation locations</description>
+    <errorConditionFormula>AND (ISCHANGED( Service__c ), NumberofReservedLocations__c &gt; 0)</errorConditionFormula>
+    <errorMessage>Cannot change service (product), after adding reservation locations. Remove all locations and retry.</errorMessage>
+</ValidationRule>

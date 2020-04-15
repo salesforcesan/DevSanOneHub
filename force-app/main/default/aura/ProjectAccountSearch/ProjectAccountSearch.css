@@ -1,0 +1,27 @@
+/*.THIS .oh-btn-box:hover {
+        color: #FFF;
+        text-align: center;
+        background-color: #4BCA81;
+    }
+    
+
+.THIS .oh-btn-box {
+        display: block;
+        cursor: pointer;
+        width: 6.5rem;
+        height: 6.5rem;
+        font-size: 1.3rem;
+        color: #FFF;
+        text-align: center;
+        line-height: .875rem;
+        padding: 1rem;
+        border-radius: 0.25rem;
+        background-color: #0070D2;
+    }
+*/
+.THIS .selectSize {
+    	width:50%;
+}
+.THIS .add-account-button {
+    margin-top: -3px;
+}

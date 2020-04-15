@@ -1,0 +1,185 @@
+<apex:page standardController="Project__c" showHeader="false" sidebar="false" tabStyle="ProjectDashBoard__tab" extensions="ProjectDisplaySummaryControllerExt">
+
+<script>
+    var dataArray = new Array();
+    dataArray.push({'name':'Pending', 'data1':{!floor(Project__c.NumberofJobsPending__c)}});
+    dataArray.push({'name':'Open', 'data1':{!floor(Project__c.NumberofJobsOpen__c)}});
+    dataArray.push({'name':'Assigned', 'data1':{!floor(Project__c.NumberofJobsAssigned__c)}});
+    dataArray.push({'name':'Started', 'data1': {!floor(Project__c.NumberofJobsStarted__c)}});
+    dataArray.push({'name':'Reported', 'data1': {!floor(Project__c.NumberofJobsReported__c)}});
+    dataArray.push({'name':'Canceled', 'data1':{!floor(Project__c.NumberofJobsCanceled__c)}});
+    dataArray.push({'name':'Closed', 'data1':{!floor(Project__c.NumberofJobsClosed__c)}});
+    
+    var exeArray = new Array();
+    exeArray.push({'name':'Executed', 'data1':{!floor(Project__c.NumberofJobsExecuted__c)}});
+    exeArray.push({'name':'Not Executed', 'data1':{!Project__c.NumberOfJobs__c - floor(Project__c.NumberofJobsExecuted__c)}});
+   
+    var comArray = new Array();
+    comArray.push({'name':'Completed', 'data1':{!floor(Project__c.NumberofJobsCompleted__c)}});
+    comArray.push({'name':'Not Completed', 'data1':{!Project__c.NumberOfJobs__c - floor(Project__c.NumberofJobsCompleted__c)}});
+    
+    
+    
+   
+
+</script>
+
+
+<apex:pageBlockSection columns="2" showHeader="true"  title="Project Summary" collapsible="true" >
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}">{!Project.NumberOfJobs__c}</apex:outputlink>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Total Time Reported"/>
+    {!BLANKVALUE(Project__c.ReportedTotalTime__c,0)}
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs Pending"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}&status=pending">{!floor(Project__c.NumberofJobsPending__c)}</apex:outputlink>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Total Estimated Minutes"/>
+    <apex:outputField value="{!Project__c.TotalEstimatedMinutes__c}" />
+</apex:pageBlockSectionItem>
+
+
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs Open"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}&fs=eyJTdGF0dXMiOiJPcGVuIn0=">{!floor(Project__c.NumberofJobsOpen__c)}</apex:outputlink>
+</apex:pageBlockSectionItem>
+
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs Executed"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}&fs=eyJFeGVjdXRlZCI6InRydWUifQ==">{!floor(Project__c.NumberofJobsExecuted__c)} ({!IF(Project.NumberOfJobs__c=0, 0, if((Project__c.NumberofJobsExecuted__c=0 || Project.NumberofJobsNotCanceled__c=0 ) ,0,floor(floor(Project__c.NumberofJobsExecuted__c) / Project.NumberofJobsNotCanceled__c * 100))    )}%)</apex:outputlink>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs Assigned"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}&fs=eyJTdGF0dXMiOiJBc3NpZ25lZCJ9">{!floor(Project__c.NumberofJobsAssigned__c)}</apex:outputlink>
+</apex:pageBlockSectionItem>
+
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs Completed"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}&fs=eyJDb21wbGV0ZWQiOiJDb21wbGV0ZWQifQ==">{!floor(Project__c.NumberofJobsCompleted__c)} ({!IF(Project.NumberOfJobs__c =0, 0, if((Project__c.NumberofJobsCompleted__c=0 || Project.NumberofJobsNotCanceled__c =0 ) ,0,   floor(floor(Project__c.NumberofJobsCompleted__c) / Project.NumberofJobsNotCanceled__c * 100)))}%)</apex:outputlink>
+</apex:pageBlockSectionItem>
+
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs Started"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}&fs=eyJTdGF0dXMiOiJTdGFydGVkIn0=">{!floor(Project__c.NumberofJobsStarted__c)}</apex:outputlink>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs Scheduled"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}&fs=eyJSYW5nZSBTdGFydCI6IjEvMS8xOTAwIiwiUmFuZ2UgRW5kIjoiMS8xLzIxMDAifQ==">{!floor(Project__c.NumberofJobsScheduled__c)} ({!IF(Project.NumberOfJobs__c =0, 0, if((Project__c.NumberofJobsScheduled__c=0 || Project.NumberofJobsNotCanceled__c =0 ) ,0,floor(floor(Project__c.NumberofJobsScheduled__c) / Project.NumberofJobsNotCanceled__c * 100)))}%)</apex:outputlink>
+</apex:pageBlockSectionItem>
+
+
+
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs Reported"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}&fs=eyJTdGF0dXMiOiJSZXBvcnRlZCJ9">{!floor(Project__c.NumberofJobsReported__c)}</apex:outputlink>
+</apex:pageBlockSectionItem>
+
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs FailedQC"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}&status=executed">{!floor(Project__c.NumberofJobsFailedQC__c)} ({!IF(Project.NumberOfJobs__c =0, 0, if((Project__c.NumberofJobsFailedQC__c=0 || Project.NumberofJobsNotCanceled__c =0 ) ,0, floor(floor(Project__c.NumberofJobsFailedQC__c) / Project.NumberofJobsNotCanceled__c * 100)))}%)</apex:outputlink>
+</apex:pageBlockSectionItem>
+
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs Canceled"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}&fs=eyJTdGF0dXMiOiJDYW5jZWxlZCJ9">{!floor(Project__c.NumberofJobsCanceled__c)}</apex:outputlink>
+</apex:pageBlockSectionItem>
+
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs Rescheduled"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}&status=executed">{!BLANKVALUE(floor(Project__c.NumberofJobsRescheduled__c),0)} ({!IF(Project.NumberOfJobs__c =0, 0,if((Project__c.NumberofJobsRescheduled__c=0 || Project.NumberofJobsNotCanceled__c =0 ) ,0, floor(floor(Project__c.NumberofJobsRescheduled__c) / Project.NumberofJobsNotCanceled__c * 100)))}%)</apex:outputlink>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs Closed"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}&fs=eyJTdGF0dXMiOiJDbG9zZWQifQ==">{!floor(Project__c.NumberofJobsClosed__c)}</apex:outputlink>
+</apex:pageBlockSectionItem>
+
+
+
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs Not Canceled"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}&fs=eyJTdGF0dXMiOiJQZW5kaW5nLE9wZW4sQXNzaWduZWQsU3RhcnRlZCxSZXBvcnRlZCxDbG9zZWQsbnVsbCJ9">{!floor(Project__c.NumberofJobsNotCanceled__c)} ({!IF(Project.NumberOfJobs__c =0, 0,if((Project__c.NumberofJobsNotCanceled__c=0 || Project.NumberOfJobs__c =0 ) ,0, floor(floor(Project__c.NumberofJobsNotCanceled__c) / Project.NumberOfJobs__c * 100)))}%)</apex:outputlink>
+</apex:pageBlockSectionItem>
+<apex:pageBlockSectionItem >
+   
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Number of Jobs Exception"/>
+    <apex:outputlink value="/apex/jobmanagement?id={!Project.id}&status=exception">{!floor(Project__c.NumberofJobsException__c)} ({!IF(Project.NumberOfJobs__c =0, 0, if((Project__c.NumberofJobsException__c=0 || Project.NumberofJobsNotCanceled__c=0 ) ,0, floor(floor(Project__c.NumberofJobsException__c) / Project.NumberofJobsNotCanceled__c * 100)))}%)</apex:outputlink>
+</apex:pageBlockSectionItem>
+
+</apex:pageBlockSection>
+
+<table width="100%">
+<tr>
+<td>
+    <h2>Project Progress</h2>
+</td>
+<td>
+    <h2>Execution</h2>
+</td>
+<td>
+    <h2>Completion</h2>
+</td>
+</tr>
+    <tr>
+        <td>
+           
+
+           
+            <apex:chart data="dataArray" legend="false" height="200" width="300" background="#F5F5F5" rendered="{!Project.NumberOfJobs__c > 0}" >
+                
+                 <apex:barSeries orientation="vertical" axis="bottom" xField="name" yField="data1"/>
+                 <apex:axis type="Category" position="bottom" fields="name" >
+                        <apex:chartLabel rotate="315"/>
+                 </apex:axis>
+
+                <!-- <apex:pieSeries labelField="name" dataField="data1" donut="50">
+                    <apex:chartLabel display="none" />
+                </apex:pieSeries> -->
+            </apex:chart>
+           
+        </td>
+        <td>
+            <apex:chart data="exeArray" height="200" width="300" background="#F5F5F5" rendered="{!Project.NumberOfJobs__c > 0}" >
+                <apex:legend position="right" rendered="true" font="bold 10px Helvetica"/>
+                <apex:pieSeries labelField="name" dataField="data1" donut="50" colorSet="#78C953,#94B3C8">
+                    <apex:chartLabel display="none" />
+                </apex:pieSeries>
+            </apex:chart>
+        </td>
+        <td>
+            <apex:chart data="comArray" height="200" width="300" background="#F5F5F5" rendered="{!Project.NumberOfJobs__c > 0}">
+                <apex:legend position="right" rendered="true" font="bold 10px Helvetica"/>
+                <apex:pieSeries labelField="name" dataField="data1" donut="50" colorSet="#78C953,#94B3C8">
+                    <apex:chartLabel display="none" />
+                </apex:pieSeries>
+            </apex:chart>
+        </td>
+    </tr>
+</table>
+
+
+
+</apex:page>

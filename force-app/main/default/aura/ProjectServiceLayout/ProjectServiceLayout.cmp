@@ -1,0 +1,49 @@
+<aura:component controller="LightningProjectController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+  	<ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <ltng:require styles="{!$Resource.oh_tools + '/oh-tools-style.css'}" />
+    <aura:attribute name="projectId" type="String" access="global" default="" />
+    <aura:attribute name="project" type="Object" access="global" />
+    <aura:attribute name="service" type="Object" access="global" />
+	<aura:attribute name="hiddenElements" type="Map" access="global"/>    
+    <aura:attribute name="editableElements" type="Map" access="global"/>    
+    <aura:attribute name="projectServiceContext" type="String" default="instructions"/>
+    <aura:handler name="changeProjectServiceContext" event="c:SimpleComponentEvent" action="{!c.handleChangeProjectServiceContext}" />
+    <aura:handler name="gobackToProject" event="c:SimpleComponentEvent" action="{!c.onGobackToProject}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+      <div class="slds-grid">
+        <div class="left-nav" style="height: 100%;margin-right:12px;">
+          <!-- Left nav -->
+          <c:ProjectServiceNav recordId="{!v.recordId}" projectId="{v.projectId}" />
+        </div>
+        <div class="oh-main-content">
+          {!v.body}
+        </div>
+      </div>
+
+    <div>
+      <c:Modal />
+    </div>
+    <style>
+      div:focus {
+        outline: 0;
+        border: 0;
+      }
+
+      .spinner {
+        position: fixed;
+        padding: 0;
+        margin: 0;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        z-index: 1000 !important;
+      }
+
+      .slds-page-header {
+        overflow: hidden;
+      }
+    </style>
+</aura:component>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>validateOneActiveResponse</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND ( NOT(ISNEW()), 
+					DefinedResponseCount__c &lt; 2,  
+					NOT(ISPICKVAL(ProjectService__r.Project__r.CloneStatus__c,&#39;Started&#39;)),
+					OR(QuestionType__c == &#39;Single-Select List&#39;,QuestionType__c ==&#39;Multi-Select List&#39; ))</errorConditionFormula>
+    <errorMessage>There should be at least two active Defined Responses for this question.</errorMessage>
+</ValidationRule>

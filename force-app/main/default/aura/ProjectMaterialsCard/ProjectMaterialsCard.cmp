@@ -1,0 +1,54 @@
+<aura:component controller="LightningProjectMaterialController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <aura:attribute name="projectServiceMaterial" type="ProjectServiceMaterialWrapper" access="global"/>
+    <aura:registerEvent name="ProjectMaterialChange" type="c:ProjectMaterialChange"/>
+    <aura:handler event="c:EventConfirm" action="{!c.removeMaterial}"/>
+    <aura:handler name="messageBoxEvent" event="c:SimpleComponentEvent" action="{!c.onMessageBoxEvent}"/>
+    <c:MessageBox aura:id="messageBox"/>
+    <div class="slds-hide" style="min-height:100px" aura:id="projectMaterialCardSpinner" > 
+        <lightning:spinner size="medium" variant="brand" />
+    </div>
+    <article class="slds-box slds-m-horizontal--small slds-m-bottom--xx-small slds-media">
+        <div class="slds-media__figure">
+            <div class="slds-box slds-float--left">   
+                <div class="img-container">	
+                    <i class="fa fa-cubes" aria-hidden="true"></i>   
+                </div>
+            </div>
+        </div>
+        <div class="slds-media__body">
+            <div class="slds-media slds-p-left--small">
+                <div class="slds-media slds-has-flexi-truncate">
+                    <h2 class="slds-truncate oh-card-title">
+                        {!v.projectServiceMaterial.MaterialName}
+                    </h2>
+                </div>
+                <div class="slds-no-flex">
+                    <aura:renderIf isTrue="{! or(v.projectServiceMaterial.ProjectStatus == 'Planning', v.projectServiceMaterial.ProjectStatus == 'Booked')}">
+                        <button class="oh-icon-button">
+                            <i style="color:#C23934;" class="oh-icon oh-icon-close slds-text-body--regular" aria-hidden="true" onclick="{!c.removeMaterialClick}"></i>       
+                        </button>
+                    </aura:renderIf>
+                </div>
+            </div>
+            <div class="slds-media slds-no-space slds-grow slds-p-horizontal--small">
+                <div class="slds-text-body--small slds-m-top--xx-small">
+                    <ul class="slds-list--horizontal slds-wrap">
+                        <li class="slds-item">Material Id: {!v.projectServiceMaterial.ExternalId}</li>
+                        <li class="slds-item">Qty: {!v.projectServiceMaterial.Quantity}</li>
+                        <li class="slds-item">Service Title: {!v.projectServiceMaterial.ProjectServiceTitle}</li>                 
+                        <li class="slds-item">Use Type: {!v.projectServiceMaterial.UseType}</li>                 
+                        <li class="slds-item">Ship To: {!v.projectServiceMaterial.ShipTo}</li>                 
+                    </ul>
+                </div>          
+            </div>
+            <div class="slds-media slds-no-space slds-grow slds-p-horizontal--small">
+                <div class="slds-text-body--small slds-m-top--x-small">
+                    <ul class="slds-list--horizontal slds-wrap;">
+                        <li class="slds-item">Fulfillment Center: {!v.projectServiceMaterial.FulfillmentCenterName} </li>
+                    </ul>
+                </div>          
+            </div>
+        </div>
+    </article>
+</aura:component>

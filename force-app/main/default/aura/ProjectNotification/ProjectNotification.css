@@ -1,0 +1,75 @@
+.THIS {
+    margin:0;
+    padding:0;
+  width: 100%;
+  height: 100%;
+  transform: scale(0.9);
+}
+
+.THIS .slds-button {
+    line-height: 1.6rem;
+}
+
+.THIS .oh-buttons-absolute {
+    /*position:absolute;*/
+    right:70;
+    /*top:50%;*/
+    min-width:405px;
+    z-index:10; 
+    margin-right:1rem;
+}
+
+.THIS.relative {
+  position: relative !important;
+}
+
+.THIS .slds-button_neutral {
+    text-decoration:none;
+}
+
+.THIS.absolute {
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+.THIS .slds-notify {
+  /*color: #fff;*/
+}
+
+.THIS.notify-hide {
+  height: 0;
+  width: 100%;
+  margin-bottom: 0 !important;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0.5;
+  transform: scale(0.9);
+  transition: height 1s ease-in, opacity 0.25s ease-out, transform 0.1s !important;
+}
+
+.THIS.notify-show {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  max-height: 200px;
+  opacity: 1;
+  transform: scale(1);
+  transition: height 1s ease-out, opacity 0.4s ease-in, transform 0.1s !important;
+}
+
+.THIS .slds-theme_warning button {
+    text-decoration:none !important;
+}
+
+.THIS .notify-close-icon svg {
+  width: 1rem !important;
+  height: 1rem !important;
+}
+
+
+@media screen and (max-width:1100px) {
+    .THIS .oh-buttons-absolute {
+        margin-right:3rem;
+    }
+}

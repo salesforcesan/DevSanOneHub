@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="Remote Action Gateway Request Component Event">
+    <aura:attribute name="id" type="String" description="event identifier" default="" />
+    <aura:attribute name="route" type="String" description="class name and method name" default="" />
+    <aura:attribute name="parameters" type="Map" description="aura method arguments" default="" />
+</aura:event>

@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="Selected Project Type Event">
+    <aura:attribute name="selectedProjectTypeId" type="String"/>
+</aura:event>

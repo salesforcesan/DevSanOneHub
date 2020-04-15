@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disallow_starttime_for_bundled_projects</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(Project__r.BundleServices__c,NOT(ISBLANK(StartTime__c)))</errorConditionFormula>
+    <errorDisplayField>JobStartTime__c</errorDisplayField>
+    <errorMessage>Start Time cannot be set for Bundled project.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DefinedResponseValueText__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( ISBLANK( DefinedResponseValue__c ),  Value__c , DefinedResponseValue__r.DefinedResponseText__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Defined Response Value Text</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

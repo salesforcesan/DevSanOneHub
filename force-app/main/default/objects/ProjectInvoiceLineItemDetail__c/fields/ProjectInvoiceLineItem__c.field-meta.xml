@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProjectInvoiceLineItem__c</fullName>
+    <externalId>false</externalId>
+    <label>Project Invoice Line Item</label>
+    <referenceTo>ProjectInvoiceLineItem__c</referenceTo>
+    <relationshipLabel>Project Invoice Line Items Detail</relationshipLabel>
+    <relationshipName>Project_Invoice_Line_Items_Detail</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>true</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

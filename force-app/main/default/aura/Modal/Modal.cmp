@@ -1,0 +1,58 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+   
+    <!--ATTRIBUTES DECLARATION -->
+    <ltng:require styles="{!$Resource.oh_tools + '/oh-tools-style.css'}" />
+    <aura:attribute name="modalProperties" type="Object"/>
+    <aura:attribute name="modalComponentName" type="String"/>
+    <aura:attribute name="modalComponentProperties" type="Object"/>
+    <aura:attribute name="modalMaxHeight" type="String"/>
+    <aura:attribute name="title" type="String"/>
+    <aura:attribute name="zindex" type="String" default="5" />
+    <aura:attribute name="showHeader" type="String" default="true"/>
+    
+    
+    <!--PUBLISHER -->
+    
+    <!--EVENT LISTENER -->
+    <aura:handler event="c:EventHideModal" action="{!c.hideModal}" />
+    <aura:handler event="c:EventDisplayModal" action="{!c.showModal}" />
+    <aura:handler event="aura:locationChange" action="{!c.destoryCmp}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="slds modal-component">
+        
+        <div aria-hidden="true" role="dialog" class="slds-modal slds-fade-in-hide" style="{! 'max-height:' + v.modalMaxHeight + 'px;'}" aura:id="modaldialog">
+            <div class="slds-modal__container modal-container">
+                <div class="slds-modal__close-container">
+                	<button class="slds-button slds-button--icon-inverse slds-modal__close" onclick="{!c.hideModal}" title="Close" >
+                        <i class="oh-icon oh-icon-close" style="font-size:1rem;" aria-hidden="true"></i>
+                        <!--
+                            <c:svg class="slds-button__icon slds-button__icon-large"
+                                   xlinkHref="{!$Resource.SLDS1 + '/assets/icons/action-sprite/svg/symbols.svg#close'}"
+                                   ariaHidden="true"
+                                   />-->
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </div>
+				<div style="{!v.showHeader == 'true' ? 'display:block;' : 'display:none;'}"
+                     class="slds-modal__header">
+                    <h2 class="slds-text-heading--medium">{!v.modalProperties.title}</h2>
+                </div>
+                <div class="slds-modal__content">
+                	{!v.body}
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="slds-backdrop slds-backdrop--hide" aura:id="backdrop">
+        </div>
+        
+    </div>
+    <style>
+        .oneHeader {
+            z-index: {!v.zindex} !important;
+        }
+    </style>
+    
+</aura:component>

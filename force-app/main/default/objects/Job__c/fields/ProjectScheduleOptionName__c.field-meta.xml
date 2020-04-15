@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProjectScheduleOptionName__c</fullName>
+    <description>The field that indicates who is able to update the Schedule date, the EC or the Project Builder.  In the future, there will also be a System Generated option.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Determines who (the Execution Company or the Project Builder) is able to update the Schedule date.</inlineHelpText>
+    <label>Project Schedule Option</label>
+    <length>50</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

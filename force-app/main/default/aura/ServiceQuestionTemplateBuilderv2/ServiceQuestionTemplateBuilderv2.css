@@ -1,0 +1,260 @@
+.THIS hr {
+    border: 0;
+    background-color: #D8DDE6;
+    margin: .2rem 0;
+}
+
+.THIS .icon-info-score {
+    position:absolute;
+    right:50;
+    top:10;
+    z-index:10;
+}
+
+.THIS .slds-box .oh-survey-score-title {
+    text-align:center;
+    padding:0 !important;
+    font-size:.7rem;
+    color:#54698D;
+    font-weight:300;
+}
+
+.THIS g.label text {
+    font-size:0;
+}
+.THIS .oh-survey-exception {
+    	width:1rem;
+    }
+
+.THIS .oh-survey-score.slds-box {
+    padding:.3rem;
+}
+
+.THIS .top-blue-target {
+    position:absolute;
+    top:0;
+    width:100%;
+    padding:.05rem 0 0 0rem;
+    text-align:left;
+    font-size:.75rem;
+    color:#0070D2;
+    margin-left:-1rem;
+    background-color:#EAF6FC;
+}
+
+.THIS .bottom-blue-target {
+    position:absolute;
+    bottom:0;
+    width:100%;
+    padding:.05rem 0 0 0rem;
+    text-align:left;
+    font-size:.75rem;
+    color:#0070D2;
+    margin-left:-1rem;
+    background-color:#EAF6FC;
+}
+
+.THIS .question-section {
+    width:100%;
+    overflow-x:hidden;
+}
+
+.THIS div.accordionv2 {
+    position:relative;
+    background-color: #FFF;
+    color: #444;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid #D8DDE6;
+    transition: all 0.6s ease;
+}
+
+
+.THIS div.panel-responses hr:last-child {
+	display:none;
+}
+
+.THIS div.accordion.itemClass {
+    background-color:#EAF6FC;
+}
+
+.THIS div.accordion.active, .THIS div.accordion:hover {
+  
+}
+
+.THIS div.panel-responses {
+    padding: 0 18px;
+    background-color: #F4F6F9;
+    max-height: 0;
+    overflow: hidden;
+    border-bottom: 0px solid #D8DDE6;
+    transition: all 0.7s ease-in-out;
+   
+}
+
+.THIS div.panel-responses p {
+    font-size: .725rem;
+    font-weight: 300;
+    color: #54698D;
+    line-height: 1.2rem;
+    margin: .9rem .5rem;
+    margin-left: 1.5rem;
+    }
+/*
+.THIS .show-responses {
+    max-height: 900px;
+    transition: all 0.7s ease-in-out;
+}*/
+
+.THIS div.panel-responses.show-responses {
+    max-height: 1500px;
+    transition: all 0.3s ease-in-out;
+}
+
+.THIS .oh-survey-question {
+    display:flex;
+    color: #16325C;
+    font-size: 0.875rem; /*14px*/
+}
+    
+.THIS .oh-icon-survey i {
+    color: #FFF;
+    font-size:1rem; 
+    margin-top:.5rem;
+    color:white; 
+    text-align:center;
+        
+}
+    
+.THIS .oh-icon-survey {
+    background-color: #54698D;
+    border-radius:50%;
+    width: 2rem;
+    height: 2rem;
+    text-align: center;
+    vertical-align: middle;
+}
+    
+.THIS .oh-survey-edit i {
+        padding-right: .8rem;
+        font-size:.875rem;  
+        text-align:center;
+        z-index: 5;
+        opacity: .7;
+    }
+  
+.THIS .oh-survey-edit {
+        width: 4rem;
+        position: relative;
+    }
+  
+.THIS .oh-survey-exception {
+    	width:2rem;
+        position: relative;
+    }
+  
+.THIS .oh-survey-options {
+    width:8.5rem;
+}
+  
+  
+.THIS .oh-icon-edit {
+    z-index: 10;
+    position: absolute;
+    left: 5%;
+    color:#0070D2;
+  }
+ 
+
+.THIS .survey-title {
+        font-size: 1rem;
+        color: #0070D2;
+    }
+    
+.THIS .panel-check {
+       color: #4BCA81; 
+       margin-right:.5rem;
+    }
+
+.THIS .question-number {
+       vertical-align:middle; 
+       line-height:2rem; 
+       margin-right:.5rem;  
+       color: #16325C;
+    }
+
+.THIS .oh-picklist-disabled {
+    width:100px;
+    color:#F39E58; /*orange*/
+    font-size:.75rem;
+    font-weight:300;
+    border:0px;
+    outline:0;
+    padding-left: .3rem;
+    background:transparent;
+    background-color:transparent !important;
+    appearance:none !important;
+    -webkit-appearance:none !important;
+    display:inline-block;
+}
+
+.THIS .oh-icon-logic:before {
+    color:#F39E58;
+    font-family:FontAwesome;
+    vertical-align:middle;
+    content:"\f0e8";/*\f149*/
+    -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+}
+
+.THIS .slds-checkbox--toggle [type="checkbox"][disabled] + .slds-checkbox--faux {
+    background-color:#4BCA81; 
+}
+
+.THIS .oh-picklist-disabled.select.uiInput.uiInputSelect.uiInput--default.uiInput--select {
+    color:#F39E58; /*orange*/
+    font-size:.75rem;
+    font-weight:300;
+    border:0px;
+    outline:0;
+    padding-left: .3rem;
+    background:transparent;
+    background-color:transparent;
+    -webkit-appearance:none;
+    appearance:none;
+}
+
+.THIS .oh-picklist-disabled .slds-checkbox--toggle [type=checkbox][disabled]+.slds-checkbox--faux, 
+.THIS .slds-checkbox--toggle [type=checkbox][disabled]~.slds-checkbox--faux, 
+.THIS .slds-checkbox--toggle [type=checkbox][disabled]+.slds-checkbox--faux_container .slds-checkbox--faux {
+    background-color:#4BCA81;
+    border:1px solid #DDD;
+}
+
+.THIS .slds-checkbox--toggle [type=checkbox][disabled]:checked+.slds-checkbox--faux_container .slds-checkbox--faux:before {
+    background-color:#4BCA81;
+    display:none;
+}
+
+.THIS .toggle {
+    display: none;
+}
+
+
+.THIS .button-container {
+    display: inline-block;
+    padding-left: 20px;   
+}
+
+.THIS .respCont {
+    top:40%;
+    left:0;
+    width:25%;
+    min-width:250px;
+    position:sticky;
+    align-self: flex-start;
+    margin-left:1rem;
+    max-height:500px;
+    overflow:auto;
+}

@@ -1,0 +1,123 @@
+<aura:component >
+    <aura:dependency resource="markup://c:MuticheckPickList"/>
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <aura:attribute name="projectId" type="String"/>
+    <aura:attribute name="services" type="List" default="[]"/>
+    <aura:attribute name="exeCompanies" type="List" default="[]"/>
+    <aura:attribute name="jobStatues" type="List" default="[]"/>
+    <aura:attribute name="jobCompleted" type="List" default="[]"/>
+    <aura:attribute name="exceptionReasons" type="List" default="[]"/>
+    <aura:registerEvent name="UnCheckAllCheckboxesEvent" type="c:UnCheckAllCheckboxesEvent"/>
+    <aura:registerEvent name="publishRemoteActionRequestAppEvent" type="c:ActionRequestAppEvent"/>
+    <aura:registerEvent name="showSpinnerEvent" type="c:SimpleComponentEvent"/>
+    <aura:method name="dispatchJobFilterAction" action="{!c.onClickFilter}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <!-- UI DEFINITION -->
+    <div>
+        <div class="slds-m-bottom_large slds-grid slds-grid_align-end slds-is-relative" style="margin-top:-2rem;">
+            <div class="button-toggle">
+                <lightning:buttonIcon iconName="utility:filterList" variant="bare" size="large" alternativeText="filter" iconClass="" onclick="{!c.toggleFilters}" />
+            </div>
+        </div>
+    </div>
+    <div class="slds-m-vertical_small">&nbsp;
+    </div>
+    <div class="slds-is-relative">
+        <div class="originalSize" aura:id="toggleFiltersId" onblur="{!c.closeFilter}">
+            <div class="container slds-card slds-m-around_small">
+                <div class="body slds-p-around_small slds-grid">
+                    <!-- search input -->
+                    <div class="slds-size_4-of-12 slds-m-right_small">
+                        <lightning:layout horizontalAlign="spread" multipleRows="true">
+                            <lightning:layoutItem flexibility="grow" class="slds-wrap">
+                                <div class="slds-m-bottom_small" aura:id="locationsearchKeywordContainer">
+                                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                                        <lightning:textarea aura:id="inputlocationSearchKeyword" name="keyword" label="Location Search" placeholder="Paste a list of comma separated location numbers or a single column of location numbers"/>
+                                        <div aura:id="searchLocationKeywordError" class="slds-form-element__help hide">The location number can not have non-digit characters.</div>
+                                    </div>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem flexibility="grow" class="slds-wrap">
+                                <div class="slds-m-bottom_small" aura:id="jobsearchKeywordContainer">
+                                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                                        <lightning:textarea aura:id="inputjobSearchKeyword" name="keyword" label=" Job Name Search" placeholder="Paste a list of comma separated job names"/>
+                                        <div aura:id="searchJobKeywordError" class="slds-form-element__help hide">The Job Names are not Valid</div>
+                                    </div>
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>
+                    <div class="slds-size_8-of-12">
+                    <lightning:layout horizontalAlign="spread" multipleRows="true">
+                        <lightning:layoutItem flexibility="grow" class="half-width">
+                            <div class="slds-m-bottom_small slds-m-right_small">
+                                <!-- <c:MuticheckPickList aura:id="multiJobStatus" Statues="{!v.jobStatues}" label="Job Status"></c:MuticheckPickList> -->
+                                <c:MultiSelect aura:id="multiJobStatus"  label="Job Status" data="{!v.jobStatues}"></c:MultiSelect>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem flexibility="grow" class="half-width">
+                            <div class="slds-m-bottom_small slds-m-right_small">
+                                <c:MultiSelect aura:id="multiexceptionReasons"  label="Exception Reason" data="{!v.exceptionReasons}"></c:MultiSelect>
+                                <!-- <c:MuticheckPickList aura:id="multiexceptionReasons" Statues="{!v.exceptionReasons}" label="Exception Reason" ></c:MuticheckPickList>-->
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem flexibility="grow" class="half-width">
+                            <div class="slds-m-right_small">
+                                <ui:inputSelect label="Completion Status" multiple="false" aura:id="Completed" class="slds-m-bottom_small">
+                                    <ui:inputSelectOption text="" label="" value="true"/>
+                                    <aura:iteration items="{!v.jobCompleted}" var="jobCompletion">
+                                        <ui:inputSelectOption text="{!jobCompletion.id}" label="{!jobCompletion.value}"/>
+                                    </aura:iteration>
+                                </ui:inputSelect> 
+                            </div>     
+                        </lightning:layoutItem>
+                        <lightning:layoutItem flexibility="grow" class="half-width slds-wrap">
+                            <div class="slds-m-right_small">
+                                <ui:inputSelect label="Service" multiple="false" aura:id="selService" class="slds-m-bottom_small">
+                                    <ui:inputSelectOption text="" label="" value="true"/>
+                                    <aura:iteration items="{!v.services}" var="service">
+                                        <ui:inputSelectOption text="{!service.id}" label="{!service.value}"/>
+                                    </aura:iteration>
+                                </ui:inputSelect>
+                            </div>
+                        </lightning:layoutItem>
+                        </lightning:layout>
+                        <h3 class="very-small-head">Job Schedule Date</h3>
+                        <lightning:layout horizontalAlign="spread" multipleRows="true">
+                            <lightning:layoutItem flexibility="grow" class="half-width">
+                                <div class="slds-p-bottom_x-small slds-m-right_small">
+                                    <ui:inputDate aura:id="scheduleDateFrom" format="MM/dd/YYYY" label="From"  displayDatePicker="true"/>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem flexibility="grow" class="half-width">
+                            <div class="slds-p-bottom_x-small slds-m-right_small">
+                                <ui:inputDate aura:id="scheduleDateTo" format="MM/dd/YYYY" label="To"  displayDatePicker="true"/>
+                            </div>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:layout horizontalAlign="spread" multipleRows="true">
+                        <lightning:layoutItem flexibility="grow" class="half-width slds-wrap">
+                            <ui:inputSelect label="Execution Company" multiple="false" aura:id="executionCompany" class="slds-m-bottom_small slds-m-right_small">
+                                <ui:inputSelectOption text="" label="" value="true"/>
+                                <aura:iteration items="{!v.exeCompanies}" var="company">
+                                    <ui:inputSelectOption text="{!company.id}" label="{!company.value}"/>
+                                </aura:iteration>
+                            </ui:inputSelect>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem flexibility="grow" class="slds-wrap half-width">
+                            <div class="slds-p-around_small" style="width:100%;">
+                                <lightning:input type="checkbox" class="half-width slds-m-bottom_x-small" name="chkExecuted" label="Executed Jobs" aura:id="chkExecuted"/>
+                            </div>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    </div>
+                </div> 
+                <!-- end of body -->
+                <div class="slds-grid slds-text-align_center slds-grid_align-end slds-wrap">
+                    <lightning:button label="Filter Jobs" onclick="{!c.onClickFilter}" variant="brand" class="slds-p-horizontal_large slds-m-right_small"/>
+                    <lightning:button label="Clear" onclick="{!c.onClickClear}" variant="neutral" class="slds-m-right_small"/>
+                </div>
+            </div>
+        </div>
+    </div>  
+</aura:component>

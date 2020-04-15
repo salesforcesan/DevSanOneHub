@@ -1,0 +1,393 @@
+<apex:page standardController="Project__c" extensions="CreateEditProjectExt" tabStyle="Upload_Products__tab">
+<head>
+    <apex:stylesheet value="{!URLFOR($Resource.TagItCSS)}"/>
+    <style>
+            .tagit.ui-widget-content{
+                border-radius:0;
+                padding:10px;
+                border:1px solid #bbb !important;
+            }
+            ul.tagit li.tagit-choice {
+                font-weight:normal;
+                font-size:12px;
+                color:#000;
+                border-radius:0;
+                background:#e5e5e5;
+                border:none;
+                height:13px;
+                display: inline-block;
+                position: relative;
+                border-top-left-radius: 2px;
+                border-bottom-left-radius: 2px;
+                margin: 0 15px 0 0;
+                text-decoration: none;
+            }
+                        
+            ul.tagit li.tagit-new{
+               padding:0;
+            }
+            
+            ul.tagit li.tagit-choice:after {
+                display: inline-block;
+                border: 9px solid;
+                border-color: transparent transparent transparent #e5e5e5;
+                height: 0;
+                width: 0;
+                position: absolute;
+                right: -18px;
+                top: 0;
+                content: "";
+                display: inline-block;
+            }
+            
+            body input.delete-icon{
+                border: none;
+                height: 22px;
+                width: 12px;
+                background-image: url('/img/func_icons/remove12_on.gif') !important;
+                background-position: left 0;
+                background-color: transparent;
+            }
+            
+            body input.delete-icon:hover{
+                background-position: left 0;
+            }
+             
+            body input.Add-icon{
+                width: 17px;
+                height: 18px;
+                background: url('/img/alohaSkin/addTabs.png') no-repeat center top;
+            }
+             body input.Add-icon:hover{
+                background: url('/img/alohaSkin/addTabs.png') no-repeat center top;
+            }
+            .pa-picklist-header{
+                display:none;
+            } 
+            body .bDetailBlock.bPageBlock .pbBody .labelCol, body .bDetailBlock.bPageBlock .pbBody .dataCol, body .bDetailBlock.bPageBlock .pbBody .data2Col, body .bPageBlock.bEditBlock .pbBody .labelCol, body .bPageBlock.bEditBlock .pbBody .dataCol, body .bPageBlock.bEditBlock .pbBody .data2Col{
+                min-width:240px
+            }    
+        </style>
+    </head>
+    <apex:sectionHeader title="Project" subtitle="{!IF(ISBLANK(Project__c.name), 'New Project', Project__c.name)}" />
+    <c:Breadcrumb backtoid="{!Project__c.Id}"/>
+    <apex:form id="createEditForm">
+        <apex:pageBlock mode="edit" title="Edit Project" id="projectBlock">
+            <apex:pageMessages escape="true"  />
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton id="projectsave" value="Save" onclick="return SubmitCheck();" action="{!save}"/>
+                <apex:commandButton id="projectcancel" value="Cancel" action="{!cancel}" immediate="true" />
+            </apex:pageBlockButtons>
+         
+                  
+                
+            <apex:pageBlockSection id="projectInfo" title="Project Information" columns="2">
+                <apex:pageblocksection columns="1">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Project Number" for="projectNumberId"/>
+                        <apex:outputText value="{!Project__c.ProjectNumber__c}" id="projectNumberId"/>
+                    </apex:pageBlockSectionItem>
+                                     <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Type" for="projectTypeId"/>
+                    <apex:outputText value="{!projectTypeName}" id="projectTypeId"/>
+                </apex:pageBlockSectionItem> 
+<apex:pageBlockSectionItem rendered="{!isScheduleOptionEditable}">
+                     <apex:outputLabel value="{!$ObjectType.Project__c.fields.ProjectScheduleOption__c.Label}" />
+                    <apex:actionRegion >
+                         <apex:inputField value="{!Project__c.ProjectScheduleOption__c}" styleClass="ProjectScheduleOption__c">
+                            <apex:actionSupport event="onchange" action="{!ScheduleOptionChange}"  rerender="isLocked_PBSI,isLocked_pbs" /> 
+                         </apex:inputField>
+                    </apex:actionRegion>
+                 </apex:pageBlockSectionItem>
+                 
+                 <apex:outputField value="{!Project__c.ProjectScheduleOption__c}"   rendered="{!!isScheduleOptionEditable}"/>
+                 <apex:pageblockSectionItem rendered="{!editableMap['Project__c.Name']}">
+                    <apex:outputLabel value="{!$ObjectType.Project__c.fields.Name.Label}" />
+                    <apex:outputPanel id="OP_Manual" layout="block">
+                        <div class="requiredInput" style="display: inline"> 
+                        <div class="requiredBlock" style="height: 17px;top: -1px;"></div>  
+                        <apex:inputField value="{!Project__c.Name}" styleClass="Name"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:outputField value="{!Project__c.Name}" rendered="{!!editableMap['Project__c.Name']}"/>
+                <apex:inputField id="projCycle" value="{!Project__c.ProjectCycle__c}"  styleClass="CycleStartDate__c" rendered="{!editableMap['Project__c.ProjectCycle__c']}">
+                </apex:inputField>
+                <apex:pageBlockSectionItem id="projectSellerContainer"> 
+                    <apex:outputLabel value="Project Seller" />
+                    <apex:inputField value="{!Project__c.ProjectSeller__c}" rendered="{!!editableMap['Project__c.ProjectSeller__c']}"/>
+                </apex:pageBlockSectionItem>
+                <apex:outputField value="{!Project__c.ProjectCycle__c}"  rendered="{!!editableMap['Project__c.ProjectCycle__c']}"/>
+                <apex:inputField id="Startdt" value="{!Project__c.StartDate__c}" styleClass="StartDate__c" rendered="{!editableMap['Project__c.StartDate__c']}" />
+                <apex:outputField value="{!Project__c.StartDate__c}" rendered="{!!editableMap['Project__c.StartDate__c']}" />
+                <apex:inputField id="endDt" value="{!Project__c.EndDate__c}" styleClass="EndDate__c" rendered="{!editableMap['Project__c.EndDate__c']}"/>
+                <apex:outputField value="{!Project__c.EndDate__c}" rendered="{!!editableMap['Project__c.EndDate__c']}" />
+                <apex:inputField value="{!Project__c.ProjectLaunchDate__c}" styleClass="ProjectLaunchDate__c" rendered="{!editableMap['Project__c.ProjectLaunchDate__c']}" />
+                <apex:outputField value="{!Project__c.ProjectLaunchDate__c}" rendered="{!!editableMap['Project__c.ProjectLaunchDate__c']}" />
+                <apex:inputField styleClass="numDays" id="NumberOfDays" value="{!Project__c.NumberOfDays__c}" required="true" rendered="{!editableMap['Project__c.NumberOfDays__c'] && canSetScheduleDate && captureNumberOfDays}" />
+                <apex:outputField value="{!Project__c.NumberOfDays__c}" rendered="{!!(editableMap['Project__c.NumberOfDays__c'] && canSetScheduleDate) && captureNumberOfDays}" />
+                <apex:pageBlockSectionItem rendered="{!editableMap['Project__c.SplitType__c']}">
+                   <apex:outputLabel value="{!$ObjectType.Project__c.fields.SplitType__c.Label}" />
+                    <apex:Inputfield id="SplitType" required="true"  value="{!Project__c.SplitType__c}">
+                    </apex:inputField> 
+                </apex:pageBlockSectionItem>
+                
+                 <apex:outputfield value="{!Project__c.SplitType__c}" rendered="{!!editableMap['Project__c.SplitType__c']}" />           
+                 <apex:inputHidden value="{!Project__c.Status__c}"/>
+                                <apex:Inputfield id="BudgetedLocationsCount" required="true"  value="{!Project__c.BudgetedLocationsCount__c}" rendered="{!editableMap['Project__c.BudgetedLocationsCount__c']}"></apex:inputField> 
+                <apex:outputfield value="{!Project__c.BudgetedLocationsCount__c}" rendered="{!!editableMap['Project__c.BudgetedLocationsCount__c']}" />           
+                
+               </apex:pageblocksection>
+                <apex:pageblocksection columns="1">
+                    <apex:pageBlockSectionItem rendered="{!retailers.size > 1 }">
+                    <apex:outputLabel value="Retailer" for="RetailerName"/>
+                     <apex:outputPanel layout="block">
+                     <div class="requiredInput" style="display: inline">
+                                <div class="requiredBlock" style="height: 17px;top: -1px;"></div>
+                    <apex:selectList id="Retailer" value="{!SelectedRetailer}" size="1" multiselect="false" required="true" label="Retailer"> 
+                        <apex:selectOptions value="{!RetailerSelectOptions}" />
+                    </apex:selectList>
+                    </div>
+                    </apex:outputPanel>
+                    </apex:pageBlockSectionItem>                    
+                    <apex:pageBlockSectionItem rendered="{!retailers.size == 1 }">
+                    <apex:outputLabel value="Retailer" for="RetailerName"/>
+                    <apex:outputText value="{!retailers[0].Name}" id="RetailerName" />
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!Project__c.Opportunity__c}" styleClass="Opportunity__c" rendered="{!editableMap['Project__c.Opportunity__c']}"/>
+                <apex:outputField value="{!Project__c.Opportunity__c}"  rendered="{!!editableMap['Project__c.Opportunity__c']}" />
+                                 <apex:inputField id="projProgram" value="{!Project__c.Program__c}"   rendered="{!editableMap['Project__c.Program__c']}"/>
+                 <apex:outputField value="{!Project__c.Program__c}"   rendered="{!!editableMap['Project__c.Program__c']}"/>
+            <apex:pageBlockSectionItem id="projectBuilderContainer">
+                    <apex:outputLabel value="Project Owner" />
+                    <apex:inputField value="{!Project__c.OwnerId}" rendered="{!!editableMap['Project__c.OwnerId']}"/>    
+                </apex:pageBlockSectionItem>
+                <apex:outputField value="{!Project__c.ExecutionSLA__c}"/>
+                <apex:pageBlockSectionItem rendered="false">  
+                    <apex:outputPanel id="isLocked_PBSI">
+                    <apex:outputLabel value="Locked" for="Locked" rendered="{!enableLocked}"/>
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="block" id="isLocked_pbs" >                                                     
+                        <div class="requiredInput" style="display: inline">                            
+                            <apex:Inputfield id="Locked" value="{!Project__c.IsLocked__c}"  rendered="{!enableLocked}"/>
+                        </div>    
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                </apex:pageblocksection>
+                </apex:pageBlockSection>
+            <apex:pageBlockSection id="projectTag" title="Project Tags" columns="1">
+                <input name="tags" id="TagField"/> 
+                <apex:inputHidden id="hdnTagfield" value="{!newTags}" />
+            </apex:pageBlockSection>    
+             
+        </apex:pageBlock>
+        
+        <input type="hidden" id="hdnProjectStartdate"  />
+        <input type="hidden" id="hdnProjectEnddate" />
+        <input type="hidden" id="hdnNumberOfDays" />
+        
+    </apex:form>
+    
+    
+           
+           
+    <c:jQueryScripts includejqueryui="true" />
+    <c:jQueryUICSS />
+    <script src="{!$Resource.TagIt}"></script>
+    <script type="text/javascript">     
+        var j$ = jQuery.noConflict();
+        
+        var endDateId = j$(".EndDate__c").attr('id');
+        var startDateId = j$(".StartDate__c").attr('id');
+        function SubmitCheck()
+        {
+
+            if ( j$("[id*=SplitType]").val() == '' || j$("[id*=SplitType]").val().toLowerCase().indexOf("none") >= 0)
+            {
+                alert("Please select a valid Split Type.");
+                return false;
+            }
+            return true;   
+        }
+        
+        function callJS(elem)
+        {
+            if(j$('[id="' + elem.id+ '"]').is(':checked')){
+                j$('.isprimary').attr('checked', false); 
+                j$('[id="' + elem.id+ '"]').prop('checked', true);                 
+            }
+            else{
+                if(j$("[id*=SplitValue]").length==1){
+                    j$('[id="' + elem.id+ '"]').prop('checked', true); 
+                }
+                
+            }
+            return false;
+        }
+        
+     
+        function isDate(val) {
+            var d = new Date(val);
+            return !isNaN(d.valueOf());
+        }
+    
+        function calculateNoOfDays() {
+            if (j$('[id="' + endDateId + '"]').val() != "" && j$('[id="' + endDateId + '"]').val() != "") {
+                var diff = Math.floor((Date.parse(j$('[id="' + endDateId + '"]').val()) - Date.parse(j$('[id="' + startDateId + '"]').val())) / 86400000);
+                if (diff == 0) {
+                    j$('.NumberOfDays__c').val('1 Day');
+                } else if (diff > 0) {
+                    j$('.NumberOfDays__c').val((diff + 1) + ' Days');
+                } else {
+                    j$('.NumberOfDays__c').val('Invalid start/end date');
+                }
+            }
+        }
+        
+
+        function bootstrapLockedAndRescheduleCheckBox() {
+            j$('.ui-checkbox input:checkbox').on('change',function(event){
+                event.preventDefault();
+                var isLockedField = j$(this).attr('id').indexOf('Locked') !== -1 ? 1 : 0,
+                    isOropField = j$(this).attr('id').indexOf('Orop') !== -1 ? 1 : 0,
+                    isLocked = j$(this).prop('checked') ? 1 : 0;
+
+                if (isLocked) {
+                   if (isLockedField) {
+                     console.log(j$('.ui-checkbox input[id*="Orop"]'));
+                     j$('.ui-checkbox input[id*="Orop"]').prop('checked','').attr('disabled',true);
+                   } else if (isOropField) {
+                     j$('.ui-checkbox input[id*="Locked"]').prop('checked','').attr('disabled',true);
+                   }    
+                } else {
+                   if (isLockedField) {
+                     j$('.ui-checkbox input[id*="Orop"]').removeAttr('disabled');
+                   } else if (isOropField) {
+                     j$('.ui-checkbox input[id*="Locked"]').removeAttr('disabled');
+                   }
+                }
+                
+            });
+
+            //init checkbox fields;
+            if (j$('.ui-checkbox input[id*="Orop"]').prop('checked')) {
+                j$('.ui-checkbox input[id*="Locked"]').attr('disabled',true);
+            } else if (j$('.ui-checkbox input[id*="Locked"]').prop('checked')){
+                j$('.ui-checkbox input[id*="Orop"]').attr('disabled',true);
+            }
+        }
+
+        function hideProjectBuilderUserSelection() {
+            j$('select[id*="projectBuilderContainer"]').hide();
+        }
+        
+        function hideProjectSellerUserSelection() {
+            j$('select[id*="projectSellerContainer"]').hide();
+        }
+        
+        j$(document).ready(function() 
+        {
+
+            var AvlTagsArr = "{!AvlTags}";
+            var arr = [] ;
+            arr = AvlTagsArr.split(',');
+            
+            var ProjectTagArr = "{!ProjectTag}";
+            var projArr = [] ;
+            projArr = ProjectTagArr.split(',');            
+            j$('#TagField').val(projArr);
+            
+            if(j$('[id*="hdnTagfield"]').val()!='')
+            {
+               j$('#TagField').val(j$('[id*="hdnTagfield"]').val()); 
+            }
+             
+            j$('#TagField').tagit({
+                autocomplete: {delay: 0, minLength: 2, source:arr },
+                caseSensitive : false,
+                removeConfirmation : true,
+                allowSpaces : true
+            });
+             
+            j$(".NumberOfDays__c").prop('disabled', true);
+            j$(".NumberOfDays__c").val("--");
+            j$(".ProjectType__c").prop('disabled', true);
+            j$(".ProjectLocationCount__c").prop('disabled', true);
+            j$(".ReservedLocationCount__c").prop('disabled', true);
+            
+            calculateNoOfDays();
+            
+            j$('[id="' + startDateId + '"],[id="' + endDateId + '"]').change(function(e) {
+                if (this.id.match(startDateId) && (j$('[id="' + endDateId + '"]').val() == "" || (Date.parse(j$('[id="' + startDateId + '"]').val()) > Date.parse(j$('[id="' + endDateId + '"]').val())))) {
+                    j$('[id="' + endDateId + '"]').val(j$('[id="' + startDateId + '"]').val());
+                }
+                
+                calculateNoOfDays();
+            });
+            
+
+            bootstrapLockedAndRescheduleCheckBox();
+            hideProjectBuilderUserSelection();
+            hideProjectSellerUserSelection();
+            j$("#hdnProjectStartdate").val(j$('[id*="Startdt"]').val());
+            j$("#hdnProjectEnddate").val(j$('[id*="endDt"]').val());
+            j$("#hdnNumberOfDays").val(j$('.numDays').val());
+        });
+        
+
+        
+        j$(document).on('change', '[id*=projCycle]', function() {
+            //add a 200 milisecond timeout
+            setTimeout(function(){
+                var projCycleId = j$('[id*="projCycle_lkid"]').val();                
+                console.log(projCycleId);  //this is returning an empty string
+                ajaxCall(projCycleId);
+            },200);
+        });
+
+
+        j$("[id*=projectsave]").click(function() {
+            j$('[id*="hdnTagfield"]').val(j$('#TagField').val()); 
+            var windowChangeWarning = {!windowChangeWarning};
+            if(windowChangeWarning && (j$('[id*="hdnProjectStartdate"]').val() != j$('[id*="Startdt"]').val() || j$('[id*="hdnProjectEnddate"]').val() != j$('[id*="endDt"]').val() || (j$('.numDays').length == 1 && j$('[id*="hdnNumberOfDays"]').val() < j$('.numDays').val()) )){
+                return confirm("Project window change or increase in number of days will clear out schedule dates on jobs. Do you want continue?");
+            }
+        });
+        
+        
+        
+        function zeroPadded(val) {
+          if (val >= 10)
+            return val;
+          else
+            return '0' + val;
+        }
+        
+        function ajaxCall(projCycleId){ 
+                        
+            Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.CreateEditProjectExt.getCycleDate}', 
+            projCycleId,     
+            function(result, event){                             
+               var LocID="";                         
+               if (event.status) {     
+                    var rowsHtml ='';
+                    console.log(JSON.stringify(result));
+                    //alert(JSON.stringify(result));
+                    
+                    j$.each(result, function (index,value) { 
+
+                        j$("[id*=Startdt]").val(value.{!NAMESPACE}CycleStartDate__c);
+                        j$("[id*=endDt]").val(value.{!NAMESPACE}CycleEndDate__c);
+                        
+                    }); 
+               }
+               else{
+                    notif({msg: event.result,  type: "error",  position: "center", clickable: true});
+               }   
+            });
+        }
+         
+    </script>
+</apex:page>

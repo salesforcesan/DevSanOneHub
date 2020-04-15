@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Project_Launch_Date_Validation</fullName>
+    <active>true</active>
+    <errorConditionFormula>ProjectLaunchDate__c &gt;  StartDate__c</errorConditionFormula>
+    <errorDisplayField>ProjectLaunchDate__c</errorDisplayField>
+    <errorMessage>Project launch date cannot be greater than project start date.</errorMessage>
+</ValidationRule>

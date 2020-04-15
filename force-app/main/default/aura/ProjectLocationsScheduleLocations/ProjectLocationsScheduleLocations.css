@@ -1,0 +1,67 @@
+.THIS.container header {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.THIS .no-flow {
+  position: absolute !important;
+  z-index: 100000;
+}
+
+.THIS.container .slds-form-element__label {
+  display: none !important;
+}
+
+.THIS.container h3 {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.THIS .schedule-body {
+  padding: 20px;
+}
+
+.THIS.container .date-input {
+  text-align: left;
+}
+
+.THIS.container .date-input > i {
+  vertical-align: top;
+}
+
+.THIS .gray {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.THIS.container .date-input .slds-input {
+  width: 10rem;
+  margin-left: 10px;
+}
+
+.THIS.container .locationPanel {
+  width: 20rem;
+  height: 200px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.THIS.container footer {
+  text-align: right;
+  padding: 10px;
+  border-top: 2px solid #ddd;
+}
+
+.THIS .slds-scrollable::-webkit-scrollbar-track,
+.THIS .slds-scrollable--y::-webkit-scrollbar-track {
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.THIS .slds-scrollable::-webkit-scrollbar-thumb,
+.THIS .slds-scrollable--y::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.2);
+  border-radius: 0.5rem;
+  box-shadow: none;
+}

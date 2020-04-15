@@ -1,0 +1,18 @@
+<apex:page controller="ScheduleLocationsModalController" showHeader="false" sidebar="false" action="{!submitSchedulingBatchJob}" >
+    <head>
+        <style>
+            .message {
+        border-radius: 0;
+    margin: 5px 5px 10px 5px;
+    padding: 8px 10px;
+    background: #fff;
+    border: none;
+    padding: 10px 5px;
+    line-height: 1.6;
+            }
+        </style>
+</head>
+<apex:form id="frmScheduleModal" >
+<apex:pageMessage title="{!messageHead}" summary="{!messageBody}"  escape="false"  severity="{!messageSeverity}" strength="1"  />    
+</apex:form>
+</apex:page>

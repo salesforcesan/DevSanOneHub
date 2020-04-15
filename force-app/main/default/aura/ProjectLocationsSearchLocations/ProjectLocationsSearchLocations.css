@@ -1,0 +1,136 @@
+.THIS.container>header {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 20%;
+}
+
+.THIS.container .search-location-body {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+.THIS.container .columns-8 {
+  width: 66.6666%;
+}
+
+.THIS.container .columns-4 {
+  width: 33.3333%;
+}
+
+.THIS .no-flow {
+  position: absolute !important;
+  z-index: 2;
+}
+
+.THIS.container .grid {
+  height: 300px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  border-radius: 5px;
+}
+
+.THIS .slds-size--8-of-12 {
+  width: 66%;
+}
+
+.THIS .slds-size--4-of-12 {
+  width: 33%;
+}
+
+.THIS .card-checkbox .slds-form-element__label,
+.THIS.container>header .form-element__label {
+  display: none;
+}
+
+.THIS .side-panel {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.THIS .side-panel .header {
+  border-bottom: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+.THIS .side-panel .header > h2 {
+  display: inline-block;
+}
+
+.THIS .side-panel .footer {
+  border-top: 1px solid #ddd;
+}
+
+.THIS.container .icon-filter-small {
+  bottom: 12px;
+  top: auto;
+}
+
+.THIS.container .icon-filter-small svg {
+  width: 1rem !important;
+  height: 1rem !important;
+}
+
+.THIS .side-panel .icon-filter-small svg {
+  width: 0.8rem !important;
+  height: 0.8rem !important;
+}
+
+.THIS .slds-scrollable--y {
+  min-height: 300px;
+}
+
+.THIS .slds-scrollable::-webkit-scrollbar-track,
+.THIS .slds-scrollable--y::-webkit-scrollbar-track {
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.THIS .slds-scrollable::-webkit-scrollbar-thumb,
+.THIS .slds-scrollable--y::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.2);
+  border-radius: 0.5rem;
+  box-shadow: none;
+}
+
+.THIS .slds-table th {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.THIS .slds-table td {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.THIS .width-200 {
+  width: 200px;
+}
+
+.THIS .half-width {
+  width: 50%;
+  min-width: 8rem;
+}
+
+.THIS .slds-table tr > th:first-child,
+.THIS .slds-table tr > td:first-child {
+  padding-left: 1rem !important;
+}
+
+.THIS.container select {
+  margin-top: 5px;
+}
+
+.THIS .use-guid-container .slds-form-element__label {
+    display: none;
+}
+
+.THIS .use-guid-container .oh-radio-group .slds-form-element__label {
+    display: inline-block;
+}
+
+.THIS .use-guid-container .oh-radio-group legend.slds-form-element__label {
+    display: none;  
+}
+
+.THIS .use-guid-container .slds-form-element__control .slds-radio {
+    display: inline-block;
+}

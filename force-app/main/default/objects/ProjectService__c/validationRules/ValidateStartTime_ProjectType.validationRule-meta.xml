@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ValidateStartTime_ProjectType</fullName>
+    <active>true</active>
+    <description>allow starttime only for Non Bundled work</description>
+    <errorConditionFormula>AND(
+   Project__r.ProjectType__r.AllowBundlingOfServices__c ,
+   NOT(ISBLANK(StartTime__c))
+  )</errorConditionFormula>
+    <errorDisplayField>StartTime__c</errorDisplayField>
+    <errorMessage>Start Time is allowed only for Non-Bundled work.</errorMessage>
+</ValidationRule>

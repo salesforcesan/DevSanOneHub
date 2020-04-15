@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="One hub dialog close event" >
+	<aura:attribute name="dialogType" type="String" description=" origin dialog"/>
+	<aura:attribute name="confirmResult" type="Boolean" description="CONFIRM type" />
+	<aura:attribute name="context" type="Object" description="callback" />
+</aura:event>

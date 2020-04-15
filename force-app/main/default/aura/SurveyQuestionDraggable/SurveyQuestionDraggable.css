@@ -1,0 +1,203 @@
+.THIS .scrolling {
+}
+.THIS .ghost {
+      border:1px dashed rgba(75,202,129,.8);/*#4BCA81*/
+      padding:10px;
+      color:green;
+      font-size:.8rem;
+      border-radius:0;
+      width:95%;
+
+    }
+
+.THIS .oh-pad {
+	padding:5px;
+}
+
+.THIS .responsesButton {
+    padding:.04rem .3rem;
+    background:#CCC;
+    color:grey;
+    font-size:.6rem;
+    border-radius:0;
+}
+
+.THIS .notActiveBG {
+    background:red;
+    color:white;
+}
+
+.THIS .addedBG {
+    background:rgba(75,202,129,.9);
+    color:white;
+}
+
+.THIS .responsesButtonContainer {
+   position:absolute;
+    top:2px;
+    left:0;
+    z-index:3;
+    margin-top:-.1rem;
+}
+
+.THIS .oh-drag-border {
+    position:relative;
+    border:1px solid #DDD;
+    border-radius:0;
+    background:#FFF;
+    color:grey;
+    padding:4px;
+}
+
+.THIS .targetGroup {
+    border:1px solid orange;
+}
+
+.THIS .targetGroup:before {
+    color:orange;
+    content:'Target Group';
+}
+
+.THIS .addedButtonContainer {
+    position:absolute;
+    top:0;
+    right:0;
+    z-index:3;
+    margin-top:0;
+}
+
+/*.THIS .oh-drag-border:active {
+	opacity:.8;
+}
+*/
+.THIS .oh-parent::before {
+    content:'Drop here to reparent';
+    color:rgb(60,60,60);
+    font-size:.75rem;
+    position:absolute;
+    top:0;
+    left:0;
+   	margin-left:0;
+    background:rgba(255,255,255,.8);
+    padding:3px;
+    z-index:5;
+
+}
+
+
+.THIS .grey hr:last-child {
+    display:none;
+}
+
+.THIS .not-active-opacity {
+   opacity:.5; 
+}
+
+
+.THIS .responses {
+    display:block;
+    z-index:300;
+    background:white;
+    border:1px solid lightgrey;
+    border-radius:5px;
+    box-shadow: 1 1 5 #333;
+    width:300px;
+    height:100%;
+    min-height:100%;
+    max-height:900px;
+}
+
+.THIS .oh-parent {
+    border:1px dashed black !important;
+}
+
+
+.THIS .showResponses {
+    display:block;
+}
+
+.THIS .hideResponses {
+    display:none;
+}
+
+
+.THIS .hand {
+    cursor:grab;
+}
+
+.THIS .dragging {
+    opacity:1;
+    box-shadow: 0px 0px 10px #444;
+    backface-visibility:hidden;
+}
+
+.THIS .drag-before {
+    border-top:1px dashed #0070D2;
+}
+.THIS .slds-popover {
+    max-height:600px;
+    border:1px solid #DDD;
+    overflow-y:scroll;
+}
+
+.THIS .drag-after {
+    border-bottom:1px dashed #0070D2;
+}
+
+.THIS .survey-item.none .card-back {
+	display:none;
+}
+
+
+.THIS .sortable-drag {opacity: 0;}
+/*.THIS .list-group {
+  height: 40px;
+  padding: 5px;
+  background: #8da6ce;
+  border-radius: 3px;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+
+.THIS .card{
+    box-shadow: 0px 0px 2px 0px;
+    width: 35px;
+    float: left;
+    background: #e9e5e5;
+    margin: 5px;
+    text-align: center;
+}*/
+.THIS .clone{
+  opacity: 1 !important;
+  box-shadow: 0px 0px 2px 0px;
+  /*background-color: #2196f3;*/
+}
+.THIS .clone_card{
+  opacity: 1 !important;
+  /*background-color: #ff9800;*/
+}
+
+.THIS .dropped {
+     border:1px solid #DDD;/*1px solid #4BCA81;*/
+     animation: droppedOutline 1s;
+}
+
+
+@keyframes droppedOutline {
+  
+  0% {
+    box-shadow: 0 0 0 rgba(60,240,240,.0);
+    border:1px solid rgba(0,0,0,.2);
+  }
+  70% {
+    box-shadow: -1px -2px 0px rgba(60,240,240,.3);
+    border:1px solid #57c2ff;
+  }
+  100% {
+     box-shadow: 0 0 5px rgba(60,240,240,.0);
+    border:1px solid #DDD;
+  }
+}

@@ -1,0 +1,143 @@
+<apex:page standardController="Project__c" extensions="SubmitProjectExt" sidebar="false" showHeader="false" action="{!init}">
+    <c:jQueryUICSS />
+    <style>
+        
+        .pbTitle {
+            white-space: nowrap;
+            font-size: 10px !important;
+        }
+        
+        .message {
+               margin: 5px 0 12px 0;
+              border-radius: 0;
+              width: 630px;
+              border-color: #E0E0C4;
+        }
+        body .secondaryPalette.bPageBlock{
+            border-radius:0 !important;
+            border: 1px solid #ddd !important;
+            margin-bottom: 18px;
+              width: 645px;
+        }
+        .apexp .bPageBlock.apexDefaultPageBlock .pbHeader>table, #ep.bLayoutBlock .pbHeader>table {
+          border-bottom: 1px solid #ededed;
+        }
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody{
+            margin:0 !important;
+            padding: 5px 12px 5px;
+            background-color: #fff;
+        }
+        .apexp .bPageBlock.apexDefaultPageBlock .pbHeader{
+            line-height:.8em;
+        }
+        .pbBody table.list tr.headerRow th{
+          background-color: #f9f9f9 !IMPORTANT;
+        }
+        .red{
+            color:#c00 !important;
+            font-weight:bold;
+            font-size:11px;
+        }
+    </style>
+    <c:jQueryScripts includejQueryUI="true" />
+    <apex:form >
+        <apex:pageMessages escape="false" /> 
+        <!--
+        <apex:pagemessage title="{!overallTitle}" summary="{! overallMessage }" severity="error" strength="1" rendered="{!IF(success = false, true, false)}" escape="false" />
+        <apex:pagemessage title="{!overallTitle}" summary="{!overallMessage}" severity="confirm" strength="1" rendered="{!IF(success = false, false, true)}" escape="false"/> -->
+        <apex:outputpanel layout="block">
+            <apex:pageblock title="Project Accounts" mode="detail">
+                <apex:pageblocktable value="{!doesHaveProjectAccount}" var="c" columnsWidth="8%,92%" rendered="{!doesHaveProjectAccount=false}" >
+                    <apex:column >
+                        <apex:commandLink id="editmps" value="Add" onclick="window.open('{!URLFOR($Action.Project__c.View,projectID,['id'= projectID, 'retURL' = ''])}','_blank','height=600,location=no,resizable=yes,toolbar=no,status=no,menubar=no,scrollbars=1',1)" />
+                    </apex:column>
+                    <apex:column headerValue="Missing Accounts" headerClass="red" >
+                        <apex:outputText ><apex:image url="/img/func_icons/util/alert16.gif" width="14px"/>&nbsp;&nbsp;There are no accounts for the project</apex:outputText>
+                    </apex:column>
+                </apex:pageblocktable>
+                <apex:outputText rendered="{!IF(doesHaveProjectAccount = false, false, true)}">
+                    <apex:image url="/img/func_icons/util/checkmark16.gif" /> Check Passed&nbsp;&nbsp;</apex:outputText>
+            </apex:pageblock>
+        </apex:outputpanel>
+        <apex:outputpanel layout="block">
+            <apex:pageblock title="Project Services" mode="detail">
+                <apex:pageblocktable value="{!doesHaveProjectService}" var="c" columnsWidth="8%,92%" rendered="{!doesHaveProjectService=false}">
+                    <apex:column >
+                        <apex:commandLink id="editmps" value="Add" onclick="window.open('{!URLFOR($Action.Project__c.View,projectID,['id'= projectID, 'retURL' = ''])}','_blank','height=600,location=no,resizable=yes,toolbar=no,status=no,menubar=no,scrollbars=1',1)" />
+                    </apex:column>
+                    <apex:column headerValue="Missing Services" headerClass="red" >
+                        <apex:outputText >There are no services for the project</apex:outputText>
+                    </apex:column>
+                </apex:pageblocktable>
+                <apex:outputText rendered="{!IF(doesHaveProjectService = false, false, true)}">
+                    <apex:image url="/img/func_icons/util/checkmark16.gif" /> Check Passed&nbsp;&nbsp;</apex:outputText>
+            </apex:pageblock>
+        </apex:outputpanel>
+        <apex:outputpanel layout="block">
+            <apex:pageblock title="Project Locations" mode="detail">
+                <apex:pageblocktable value="{!doesHaveProjectLocation}" var="c" columnsWidth="8%,92%" rendered="{!IF(doesHaveProjectLocation, false, true)}">
+                    <apex:column >
+                        <apex:commandLink id="editmps" value="Add" onclick="window.open('{!URLFOR($Action.Project__c.View,projectID,['id'= projectID, 'retURL' = ''])}','_blank','height=600,location=no,resizable=yes,toolbar=no,status=no,menubar=no,scrollbars=1',1)" />
+                    </apex:column>
+                    <apex:column headerValue="Missing Locations" headerClass="red" >
+                        <apex:outputText ><apex:image url="/img/func_icons/util/alert16.gif" width="14px"/>&nbsp;&nbsp;There are no locations added to the project</apex:outputText>
+                    </apex:column>
+                </apex:pageblocktable>
+                <apex:pageblocktable value="{!doesAllLocationsHaveAJob}" var="c" columnsWidth="8%,92%" rendered="{!IF(doesAllLocationsHaveAJob, false, true)}">
+                    <apex:column >
+                        <apex:commandLink id="editmps" value="Add" onclick="window.open('{!URLFOR($Action.Project__c.View,projectID,['id'= projectID, 'retURL' = ''])}','_blank','height=600,location=no,resizable=yes,toolbar=no,status=no,menubar=no,scrollbars=1',1)" />
+                    </apex:column>
+                    <apex:column headerValue="Missing Jobs" headerClass="red" >
+                        <apex:outputText ><apex:image url="/img/func_icons/util/alert16.gif" width="14px"/>&nbsp;&nbsp;Some of the locations have no jobs</apex:outputText>
+                    </apex:column>
+                </apex:pageblocktable>
+                <apex:outputText rendered="{!(doesAllLocationsHaveAJob && doesHaveProjectLocation)}">
+                    <apex:image url="/img/func_icons/util/checkmark16.gif" /> Check Passed&nbsp;&nbsp;</apex:outputText>
+            </apex:pageblock>
+        </apex:outputpanel>
+        <apex:outputpanel layout="block">
+            <apex:pageblock title="Jobs" mode="detail">
+                <apex:pageblocktable value="{!doesHaveJob}" var="c" columnsWidth="8%,92%" rendered="{!doesHaveJob=false}">
+                    <apex:column rendered="{!IF(doesHaveJob= false, true, false)}">
+                        <apex:commandLink id="editmps" value="Add" onclick="window.open('{!URLFOR($Action.Project__c.View,projectID,['id'= projectID, 'retURL' = ''])}','_blank','height=600,location=no,resizable=yes,toolbar=no,status=no,menubar=no,scrollbars=1',1)" />
+                    </apex:column>
+                    <apex:column headerValue="Missing Jobs" headerClass="red" >
+                        <apex:outputText ><apex:image url="/img/func_icons/util/alert16.gif" width="14px"/>&nbsp;&nbsp;There are no jobs for the project</apex:outputText>
+                    </apex:column>
+                </apex:pageblocktable>
+                <apex:outputText rendered="{!IF(doesHaveJob= false, false, true)}">
+                    <apex:image url="/img/func_icons/util/checkmark16.gif" /> Check Passed&nbsp;&nbsp;</apex:outputText>
+            </apex:pageblock>
+        </apex:outputpanel>
+        <apex:outputpanel layout="block">
+            <apex:pageblock title="Primary Products" mode="detail">
+                <apex:pageblocktable value="{!doesHavePrimaryProducts}" var="c" columnsWidth="8%,92%" rendered="{!doesHavePrimaryProducts=false}" >
+                    <apex:column >
+                        <apex:commandLink id="editmps" value="Add" onclick="window.open('{!URLFOR($Action.Project__c.View,projectID,['id'= projectID, 'retURL' = ''])}','_blank','height=600,location=no,resizable=yes,toolbar=no,status=no,menubar=no,scrollbars=1',1)" />
+                    </apex:column>
+                    <apex:column headerValue="Missing Primary Products" headerClass="red" >
+                        <apex:outputText ><apex:image url="/img/func_icons/util/alert16.gif" width="14px"/>&nbsp;&nbsp;There are no primary products for service</apex:outputText>
+                    </apex:column>
+                </apex:pageblocktable>
+                <apex:outputText rendered="{!IF(doesHavePrimaryProducts = false, false, true) && doesHaveProjectService=true}">
+                    <apex:image url="/img/func_icons/util/checkmark16.gif" /> Check Passed&nbsp;&nbsp;</apex:outputText>
+                <apex:outputText rendered="{!doesHaveProjectService=false}">
+                    <apex:image url="/img/func_icons/util/alert16.gif" width="14px"/>&nbsp;&nbsp;No Service to check</apex:outputText>
+            </apex:pageblock>
+        </apex:outputpanel>
+        <apex:outputpanel layout="block">
+            <apex:pageblock title="Defined Responses" mode="detail">
+                <apex:pageblocktable value="{!invalidsq}" var="b" columnsWidth="8%,92%" rendered="{!invalidsq.size>0}">
+                    <apex:column id="sqText" HeaderValue="Missing Defined Responses" headerClass="red">
+                        <apex:outputText ><apex:image url="/img/func_icons/util/alert16.gif" width="14px"/>&nbsp;&nbsp;{!b.QuestionText__c}</apex:outputText>  
+                    </apex:column>
+                </apex:pageblocktable>
+                <apex:outputText rendered="{!invalidsq.size=0 && doesHaveProjectService=true}">
+                    <apex:image url="/img/func_icons/util/checkmark16.gif" /> Check Passed&nbsp;&nbsp;</apex:outputText>
+                <apex:outputText rendered="{!doesHaveProjectService=false}">
+                    <apex:image url="/img/func_icons/util/alert16.gif" width="14px"/>&nbsp;&nbsp;No Service to check</apex:outputText>
+            </apex:pageblock>
+        </apex:outputpanel>
+        <input type="hidden" id="pageSuccess" value="{! success }" />
+    </apex:form>
+</apex:page>

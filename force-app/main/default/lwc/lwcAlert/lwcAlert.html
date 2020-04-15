@@ -1,0 +1,17 @@
+<template>
+  <template if:true={showAlert}>
+    <div class="slds-box slds-box_xx-small" style="background: #ffb75d;">
+      <lightning-layout vertical-align="center">
+        <lightning-layout-item flexibility="shrink">
+          <div class="slds-var-p-around_x-small">
+            <lightning-icon size="small" icon-name={iconName} alternative-text={iconTitle}>
+            </lightning-icon>
+          </div>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="auto">
+          <span class="slds-var-p-around_x-small">{message}</span>
+        </lightning-layout-item>
+      </lightning-layout>
+    </div>
+  </template>
+</template>

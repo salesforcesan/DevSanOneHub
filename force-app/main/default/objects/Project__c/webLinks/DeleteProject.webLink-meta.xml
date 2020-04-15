@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DeleteProject</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Delete Project</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/25.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/25.0/apex.js&quot;)}
+if(confirm(&#39;Are you sure?&#39;)){
+sforce.apex.execute(&quot;Project&quot;,&quot;DeleteProject&quot;,{&quot;projectId&quot;:&quot;{!Project__c.Id}&quot;});
+window.location.reload()
+};</url>
+</WebLink>

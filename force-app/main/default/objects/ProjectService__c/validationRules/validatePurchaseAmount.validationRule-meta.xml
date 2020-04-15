@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>validatePurchaseAmount</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR( PurchaseAmount__c  &lt; 0,
+PurchaseAmount__c   &gt; 500)</errorConditionFormula>
+    <errorMessage>Please check to ensure purchase amount is between $0 and $500.</errorMessage>
+</ValidationRule>

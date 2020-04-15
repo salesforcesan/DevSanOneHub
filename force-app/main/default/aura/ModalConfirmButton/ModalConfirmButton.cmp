@@ -1,0 +1,8 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:registerEvent name="confirmModal" type="c:EventConfirmModal"/>
+    <aura:attribute name="project" type="Object"/>
+	<aura:attribute name="buttonLabel" type="String" default="Yes" access="global" />    
+    <div>
+        <button class="slds-button slds-button--brand" onclick="{!c.confirmModal}">{!v.buttonLabel}</button>
+    </div>     
+</aura:component>

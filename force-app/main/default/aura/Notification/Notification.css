@@ -1,0 +1,46 @@
+.THIS {
+    width: 100%;
+    height: 100%;
+    margin: 20px;
+    transform: scale(0.9);
+}
+
+.THIS.relative {
+  position: relative !important;
+}
+
+.THIS.absolute {
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+.THIS .slds-notify {
+  /*color: #fff;*/
+}
+
+.THIS.notify-hide {
+  height: 0;
+  width: 100%;
+  margin-bottom: 0 !important;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0.5;
+  transform: scale(0.9);
+  transition: height 1s ease-in, opacity 0.25s ease-out, transform 0.1s !important;
+}
+
+.THIS.notify-show {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  max-height: 200px;
+  opacity: 1;
+  transform: scale(1);
+  transition: height 1s ease-out, opacity 0.4s ease-in, transform 0.1s !important;
+}
+
+.THIS .notify-close-icon svg {
+  width: 1rem !important;
+  height: 1rem !important;
+}

@@ -1,0 +1,65 @@
+.THIS {}
+
+.THIS .hide {
+  display: none !important;
+}
+
+.THIS .show {
+  display: inline-block !important;
+}
+
+.THIS .ul {
+  list-style-type: none;
+}
+
+.THIS .ul>li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.THIS .ul>li>a {
+  border-radius: 2.5px;
+  text-decoration: none;
+  width: 30px;
+  display: inline-block;
+  text-align: center;
+  padding: 5px;
+}
+
+.THIS .ul>li>a>i {
+  vertical-align: middle;
+}
+
+.THIS .ul>li>a:hover {
+  background-color: #005fb2;
+  color: #fff;
+}
+
+.THIS .ul>li.selected>a,
+.THIS .ul>li.selected>a:hover {
+  background-color: #00396b;
+  color: #fff;
+}
+
+.THIS .ul>li.in-processing>a {
+  color: #eee;
+}
+
+.THIS .ul>li.disabled>a,
+.THIS .ul>li.disabled>a:Hover {
+  background-color: transparent;
+  color: #54698d;
+  cursor: default;
+}
+
+.THIS.datagrid-pagination-left {
+  text-align: left;
+}
+
+.THIS.datagrid-pagination-right {
+  text-align: right;
+}
+
+.THIS.datagrid-pagination-center {
+  text-align: center;
+}

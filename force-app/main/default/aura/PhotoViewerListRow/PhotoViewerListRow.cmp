@@ -1,0 +1,47 @@
+<aura:component extends="c:Remotable">
+    <!-- attributes -->
+    <aura:attribute name="id" type="integer" default="0"/>
+    <aura:attribute name="usage" type="string" default=""/>
+    <aura:attribute name="photos" type="List" description="a row of photos to render"/>
+    <aura:attribute name="photoWidth" type="integer" default="100"/>
+    <aura:attribute name="photoHeight" type="integer" default="100"/>
+    <aura:attribute name="exportSelectCount" type="integer" default="0"/>
+    <aura:attribute name="markTarget" type="Map" access="private"/>
+    <aura:attribute name="selPhoto" type="Map" 
+        description="a selected photo to view detail"/>
+
+    <!-- event handlers -->
+    <aura:handler name="onShowPhotoDetail" 
+        event="c:SimpleComponentEvent" action="{! c.onShowPhotoDetail }"/>
+    <aura:handler name="onClosePhotoDetail"
+        event="c:SimpleComponentEvent" action="{! c.onClosePhotoDetail }"/>
+    <aura:handler name="onPhotoClick"
+        event="c:SimpleComponentEvent" action="{! c.onPhotoClick }"/>
+    <aura:handler name="onMarkFavoriteEventRaised" action="{! c.onMarkFavoriteEventRaised }"
+        event="c:SimpleComponentEvent"/>
+
+    <!-- html template -->
+    <div class="row-container">
+        <div class="oh-row-list">
+            <aura:iteration items="{! v.photos}" var="p">
+                <div class="oh-row-list-card">
+                    <c:PhotoViewerListRowPhotoCard photo="{! p }"
+                        usage="{! v.usage }"
+                        markTarget="{! v.markTarget }"
+                        width="{! v.photoWidth }"
+                        height="{! v.photoHeight }"
+                        ></c:PhotoViewerListRowPhotoCard>
+                </div>
+            </aura:iteration>
+        </div>
+        <div class="oh-row-detail">
+                <div aura:id="arrow" class="oh-arrow hide"></div>
+            <aura:if isTrue="{! v.selPhoto != null }">
+                <c:PhotoViewerListRowDetail 
+                    id="{!v.selPhoto.id}"
+                    usage="{! v.usage }"
+                    ></c:PhotoViewerListRowDetail>
+            </aura:if>
+        </div>
+    </div>
+</aura:component>

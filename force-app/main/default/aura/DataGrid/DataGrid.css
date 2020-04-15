@@ -1,0 +1,35 @@
+.THIS {}
+
+.THIS .hide {
+  display: none;
+}
+
+.THIS .datagrid-default {
+  overflow: auto;
+  border: 1px solid #eee;
+  border-radius: 5px;
+}
+
+.THIS .datagrid-footer {
+  padding: 5px;
+}
+
+.THIS .show {
+  display: block;
+}
+
+.THIS .grid-checkbox .slds-form-element__label {
+  display: none;
+}
+
+.THIS .slds-scrollable::-webkit-scrollbar-track,
+.THIS .slds-scrollable--y::-webkit-scrollbar-track {
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.THIS .slds-scrollable::-webkit-scrollbar-thumb,
+.THIS .slds-scrollable--y::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.2);
+  border-radius: 0.5rem;
+  box-shadow: none;
+}

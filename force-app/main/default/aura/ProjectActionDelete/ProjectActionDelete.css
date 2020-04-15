@@ -1,0 +1,31 @@
+.THIS h1.title {
+    color:#0070D2;
+    font-weight:300;
+    text-align:center;
+    margin:auto;
+}
+
+.THIS p {
+   text-align:center;
+   flex:1;
+}
+
+.THIS .oh-margin {
+  margin-right: -2rem;
+  margin-left: -2rem; 
+}
+
+.THIS .slds-modal__content {
+    overflow-y:hidden !important;
+}
+
+.THIS ::-webkit-scrollbar { 
+    display: none; 
+}
+
+.THIS .oh-margin {
+    margin-top:-1rem;
+    margin-left:-2rem;
+    margin-right:-2rem;
+    padding-bottom:2rem;
+}

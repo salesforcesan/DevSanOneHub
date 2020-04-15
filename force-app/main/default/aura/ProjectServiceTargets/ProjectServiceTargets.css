@@ -1,0 +1,181 @@
+.THIS .oh-plus-button {
+    background-color:#fff; 
+    padding:1rem; 
+    width:100%;
+    font-size:3rem; 
+    line-height:1.5rem; 
+    vertical-align:middle;
+    outline: 0;
+    text-align:center; 
+    color:#4BCA81;
+    border: 1px solid #4BCA81;
+}
+
+
+.THIS .delete {
+    padding: 0;
+    border:1px transparent #FFF;
+    opacity:0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-in-out, padding .3s ease-in-out, opacity .8s ease-in-out; 
+}
+
+.THIS .oh-check-absolute {
+    position:absolute;
+    top:25px;
+    left:25px;
+    width:20px;
+    z-index:3;
+}
+
+.THIS .oh-flex {
+    flex:1 auto;
+    width:100%;
+}
+
+.THIS .slds-textarea {
+    min-height:160px;
+}
+
+.THIS .oh-plus-button:hover {
+    color: #04844b;
+    border-color: #04844b;
+    background-color:#FFF;
+}
+.THIS .oh-plus-text {
+    width: 100%;
+    text-align: center;
+}
+
+.THIS .slds-box {
+    background:white;
+    padding: .5rem 1rem;
+}
+
+.THIS .slds-button.oh-btn {
+    line-height:1rem !important;
+    font-size:.7rem;
+    margin:0;
+    background-color:rgb(244, 246, 249);
+}
+
+.THIS .slds-accordion__section {
+    border-radius: .25rem;
+    border: 1px solid rgb(221, 219, 218);
+    margin-bottom:.6rem;
+}
+
+.THIS .slds-accordion__list-item {
+    border-top: none;
+}
+
+.THIS .hiddenSize {
+    display:none;
+}
+.THIS .expandedSize {
+    display:block;
+}
+
+.THIS .originalSize {
+    max-height:0rem;
+    height:0;
+    overflow:hidden;
+    transition:all .1s ease;
+    border-radius:4px;
+    box-shadow:0 0 0 rgba(0,0,0,.5);
+
+}
+
+
+.THIS .absolutePaste {
+    position:absolute;
+    z-index:4;
+    left:0;
+    top:0;
+    width:99%;
+    margin:0;
+    padding:0;
+}
+
+.THIS .button-toggle {
+    position:absolute;
+    z-index:500;
+    right:0;
+    padding-right:10px;
+    top:5px;
+}
+
+.THIS .togglePaste {
+    max-height:50rem;
+    height:100%;
+    transition:all .5s ease;
+}
+
+
+.THIS .oh-inverse {
+    color:white !important;
+}
+
+.THIS .oh-btn-box:hover {
+    color: #FFF;
+    background-color: green;
+    transition:background-color .3s ease;
+}
+.THIS .oh-btn-box {
+    cursor: pointer;
+    font-size: .9rem;
+    color: #FFF;
+    padding: .5rem;
+    border-radius: 0.25rem;
+    background-color: #4BCA81;
+    width:275px;
+    transition:background-color .3s ease;
+}
+
+
+.THIS .oh-blue-button {
+    border-radius:.25rem;
+    background:rgba(0, 160, 221, 1.0);
+    padding:1em;
+    width:7em;
+    height:3em;
+    min-width:8em;
+    color:#FFF;
+    text-align:center;
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+    align-items:center;
+    transition:background .3s ease;    
+}
+
+.THIS .oh-blue-button:hover {
+    background:#0070D2;
+    transition:background .3s ease; 
+}
+
+.THIS .oh-blue-button:disabled {
+    background:rgb(236, 235, 234);
+    border:1px solid rgb(201, 199, 197);
+    box-shadow:0;
+    outline:0;
+    cursor:not-allowed;
+    transition:background .3s ease; 
+}
+
+.THIS .oh-green-button {
+    border-radius:.25rem;
+    background: #4BCA81;
+    padding:1em;
+    width:7em;
+    height:3em;
+    min-width:8em;
+    color:#FFF;
+    text-align:center;
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+    align-items:center;
+    transition:background .3s ease;    
+}

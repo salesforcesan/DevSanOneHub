@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disallow_booked_with_0locations</fullName>
+    <active>true</active>
+    <description>At least one location must be reserved before a reservation can be approved/booked.</description>
+    <errorConditionFormula>AND(ISCHANGED(Status__c), OR(TEXT(Status__c) == &#39;Pending Approval&#39;,TEXT(Status__c) == &#39;Approved&#39;, TEXT(Status__c) == &#39;Reserved&#39; ), NumberofReservedLocations__c == 0)</errorConditionFormula>
+    <errorMessage>At least one location should be reserved before a reservation can be submitted for approval or booked.</errorMessage>
+</ValidationRule>

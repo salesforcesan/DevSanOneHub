@@ -1,0 +1,64 @@
+<aura:component extends="c:AuraImportProgramLibrary">
+  <!-- public -->
+  <aura:attribute name="custStyle" type="String" default="" />
+  <aura:attribute name="projects" type="Object" default="{}" />
+  <aura:attribute name="helps" type="List" default="[]" />
+  <aura:attribute name="schemas" type="List" default="[]" />
+  <aura:attribute name="chunkSize" type="Integer" default="1000" />
+  <aura:method name="analyzeFile" action="{!c.onAnalyzeFile}">
+    <aura:attribute name="file" type="String" default="" />
+  </aura:method>
+
+  <!-- private -->
+  <aura:attribute name="columns" type="List" default="[]" access="private" />
+  <aura:attribute name="hasColumns" type="Boolean" default="false" access="private" />
+  <aura:attribute name="results" type="List" default="[]" access="private" />
+  <aura:attribute name="hasResults" type="Boolean" default="false" access="private" />
+  <aura:attribute name="guides" type="List" default="[]" access="private" />
+  <aura:attribute name="hasGuides" type="Boolean" default="false" access="private" />
+  <aura:attribute name="groupKeyColumn" type="Integer" default="-1" access="private" />
+  <aura:attribute name="groupKeyNameColumn" type="Integer" default="-1" access="private" />
+
+  <!-- event -->
+  <aura:registerEvent name="step2Event" type="c:SimpleComponentEvent" />
+  <aura:handler name="change" value="{!v.helps}" action="{!c.onHelpsChanged}" />
+  <aura:handler name="change" value="{!v.schemas}" action="{!c.onSchemasChanged}" />
+  <aura:registerEvent name="fileContentReadyEvent" type="c:SimpleComponentEvent" />
+  <aura:registerEvent name="fileContentInvalidEvent" type="c:SimpleComponentEvent" />
+  <aura:handler name="fileContentReadyEvent" event="c:SimpleComponentEvent" action="{!c.onFileContentReady}" />
+  <aura:handler name="fileContentInvalidEvent" event="c:SimpleComponentEvent" action="{!c.onFileContentInvalid}" />
+
+  <!-- template -->
+  <div style="{!v.custStyle}">
+    <div class="oh-step-header slds-text-align_center">
+      <h2>Validate Import File</h2>
+    </div>
+    <div class="slds-p-around_small">
+      <lightning:layout>
+        <lightning:layoutItem flexibility="auto">
+          <div class="slds-p-around_small oh-step-section">
+            <aura:if isTrue="{!v.hasColumns}">
+              <lightning:datatable keyField="id" columns="{!v.columns}" data="{!v.results}" hideCheckboxColumn="true">
+              </lightning:datatable>
+            </aura:if>
+          </div>
+        </lightning:layoutItem>
+        <lightning:layoutItem flexibility="shrink">
+          <div class="slds-p-around_small oh-step-section">
+            <lightning:tabset variant="scoped">
+              <lightning:tab label="Import Guide">
+                <div class="slds-p-around_x-small slds-scrollable_y" style="height:250px;">
+                  <aura:iteration items="{!v.guides}" var="it">
+                    <div class="oh-list-box slds-p-around_xx-small slds-m-bottom_small">
+                      {!it.guide}
+                    </div>
+                  </aura:iteration>
+                </div>
+              </lightning:tab>
+            </lightning:tabset>
+          </div>
+        </lightning:layoutItem>
+      </lightning:layout>
+    </div>
+  </div>
+</aura:component>

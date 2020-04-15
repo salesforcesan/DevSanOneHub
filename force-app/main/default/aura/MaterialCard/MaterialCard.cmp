@@ -1,0 +1,46 @@
+<aura:component >
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    
+    <aura:attribute name="material" type="ProjectServiceMaterialWrapper" />
+    <article class="slds-box slds-p-around--small slds-grid slds-clearfix">
+        <div class="slds-radio--button slds-m-horizontal--x-small" >
+            <div class="slds-align-start oh-circle-check slds-grid slds-grid--vertical-align-center" for="{!v.material.MaterialId + 'checked'}">
+                <input type="radio"  name="checkbox" id="{!v.material.MaterialId + 'checked'}" onclick="{!c.onCheck}" />
+                <label class="oh-label-color" for="{!v.material.MaterialId + 'checked'}">
+                    <span class="slds-p-top--small slds-p-bottom--x-small">  
+                    </span>
+                </label>
+            </div>
+        </div> 
+        <div class="slds-media__figure">
+            <div class="slds-box slds-float--left slds-m-around--xx-small">   
+                <div class="img-container">	
+                    <i class="fa fa-cubes" aria-hidden="true"></i>   
+                </div>
+            </div>
+        </div>
+        <div class="slds-media__body">
+            <div class="slds-media slds-p-horizontal--small slds-p-top--small">
+                <div class="slds-media slds-has-flexi-truncate">
+                    <h2 title="{!v.material.MaterialName}" class="slds-text-heading--medium slds-truncate oh-card-title">
+                        {!v.material.MaterialName}
+                    </h2>
+                </div>                
+            </div>       
+            <div class="slds-media slds-no-space slds-grow slds-p-horizontal--small">
+                <div class="slds-text-body--small">
+                    <ul class="slds-list--horizontal slds-wrap;">
+                        <li class="slds-item">Fulfillment Center: {!v.material.FulfillmentCenterName} </li>                 
+                    </ul>
+                </div>          
+            </div>
+            <div class="slds-media slds-no-space slds-grow slds-p-horizontal--small">
+                <div class="slds-text-body--small">
+                    <ul class="slds-list--horizontal slds-wrap;">
+                        <li class="slds-item">PMID: {!v.material.ExternalId} </li>                 
+                    </ul>
+                </div>          
+            </div>
+        </div>
+    </article>
+</aura:component>

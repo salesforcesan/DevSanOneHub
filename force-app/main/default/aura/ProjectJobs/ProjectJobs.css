@@ -1,0 +1,57 @@
+.THIS.container {
+  margin: 0 auto;
+  padding: 0px;
+}
+
+.THIS .oh-spinner-container {
+    position: relative;
+    display: inline-block;
+}
+
+.THIS .of-hidden {
+    overflow:hidden;
+}
+
+.THIS ::-webkit-scrollbar {
+    display:none !important;
+}
+
+.THIS .oh-margin-right {
+    margin-right:12px;
+}
+
+.THIS .pad-right {
+    padding-right:12px;
+}
+
+.THIS .hide {
+  display: none;
+  opacity: 0;
+  transition: all 0.5s ease-out;
+}
+
+.THIS .show {
+  display: inherit;
+  opacity: 1;
+  transition: all 0.5s ease-in;
+}
+
+.THIS .icon-xx-small svg {
+  width: 0.8rem !important;
+  height: 0.8rem !important;
+}
+
+.THIS .slds-card.jobs {
+    min-height:500px;
+}
+
+.THIS .small-head {
+  font-size: 0.875rem;
+}
+
+.THIS .very-small-head {
+  font-size: 0.75rem;
+}
+
+.THIS .side-panel {
+}

@@ -1,0 +1,246 @@
+<apex:page standardController="Project__c" 
+  showHeader="false" 
+  sidebar="false" 
+  extensions="ProjectSummaryControllerExt" 
+  docType="html-5.0"
+  readOnly="true">
+<apex:stylesheet value="{!$Resource.slds213 + '/assets/styles/salesforce-lightning-design-system.min.css'}" />
+<apex:stylesheet value="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+<apex:stylesheet value="{!$Resource.projectSummary + '/style/app.1.0.1.min.css'}"/>
+<!--
+<apex:stylesheet value="https://localhost:8080/style/app.1.0.1.min.css"/>
+<apex:stylesheet value="https://localhost:8080/style/index.css"/>
+-->
+<apex:includeScript value="{!$Resource.momentJS}" />
+<apex:includeScript value="{!$Resource.amchart3 + '/amchart.1.0.0.min.js'}" /> 
+<apex:includeScript value="{!$Resource.projectSummary + '/js/app.1.0.3.min.js'}" />
+<!--
+<apex:includeScript value="https://localhost:8080/js/images.js"/>
+<apex:includeScript value="https://localhost:8080/js/app.js"/>
+<apex:includeScript value="https://localhost:8080/js/pdf.exporter.js"/>
+<apex:includeScript value="https://localhost:8080/js/index.js"/>
+-->
+<style>
+body {
+  font-family: "Salesforce Sans" !important;
+  min-width: 1100px; width:100vw; font-size: 16px;
+}
+.hide {
+  display: none !important;
+}
+</style>
+<div class="slds">
+      <div class="oh-page-title">
+        <section class="slds-clearfix">
+          <div class="slds-float--left">
+            <h1><a href='/{!project.Id}' id="pageTitle" title="Return to the project page">{!projectRecord.title} - {!projectRecord.retailer}</a></h1>
+            <span class="oh-page-subtitle" id="pageSubTitle">Project ID: {!projectRecord.id}</span>
+          </div>
+          <div class="slds-float--right">
+          <i id="ohBusyIndicator" class="fa fa-spinner fa-pulse fa-1x fa-fw cmk-hide"></i>
+          <!--<span class="sr-only">Loading...</span>-->
+            <button class="slds-button slds-button--brand oh-button-icon-label" id="btnExport">
+              <i class="fa fa-file-pdf-o"></i>EXPORT TO PDF
+            </button>
+          </div>
+        </section>
+      </div>
+     <div class="oh-container">
+         <div style="width:100%">
+          <apex:pageMessages />
+         </div>
+        <div class="oh-section-timeline oh-margin-bt-20" id="projectTimelineContainer">
+          <canvas id="projectTimeline" style=" width: 100%; height: 150px;"></canvas>
+        </div>
+        <div class="slds-grid slds-wrap slds-grid--pull-padded slds-grid--align-center">
+          <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+            <section id="executionContainer" class="oh-margin-bt-large oh-content-container">
+              <div class="oh-header">
+                <img alt="Execution" id="ohExecutionImg" src="{!$Resource.projectSummary + '/images/placeholder.png'}" /><span class="oh-title oh-green">Execution</span>
+              </div>
+              <canvas id="ohExecution" style="width: 300px; height: 200px; margin-bottom: 10px;"></canvas>
+            </section>
+          </div>
+          <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+            <section id="locationsContainer" class="oh-margin-bt-large oh-content-container">
+              <div class="oh-header">
+                <img alt="locations" id="ohLocationsImg" src="{!$Resource.projectSummary + '/images/placeholder.png'}" />
+                <span class="oh-title oh-orange">Locations</span>
+              </div>
+              <canvas id="ohLocations" style="width: 300px; height: 200px;"></canvas>
+            </section>
+          </div>
+        </div>
+        <div class="slds-grid slds-wrap slds-grid--pull-padded slds-grid--align-center">
+          <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+            <section id="accountsContainer" class="oh-content-container">
+              <div class="oh-header">
+                <img alt="Accounts" id="ohAccountsImg" src="{!$Resource.projectSummary + '/images/placeholder.png'}" /><span class="oh-title oh-blue">Accounts</span>
+              </div>
+              <canvas id="ohAccounts" style="width: 300px; height: 200px;"></canvas>
+            </section>
+          </div>
+          <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+            <section  id="projectDetailContainer" class="oh-content-container">
+                <div class="oh-header oh-divider">
+                  <img alt="locations" id="ohProjectDetailImg" src="{!$Resource.projectSummary + '/images/placeholder.png'}" />
+                  <span class="oh-title oh-blue">Project Detail</span>
+                </div>
+                <div class="oh-footer oh-content-spread">
+                  <div class="slds-grid {! IF(projectRecord.cycle == '' && projectRecord.program=='','cmk-hide','')}">
+                    <div class="slds-col slds-size--1-of-2 {! IF(projectRecord.cycle == '', 'cmk-hide', '')}">
+                      <dl class="oh-small-card">
+                        <dt><img alt="Project Cycle" src="{!$Resource.projectSummary + '/images/placeholder.png'}" class='oh-project-detail-item-icon' id='ohProjectCycleImg' /></dt>
+                        <dd id="ohProjectCycle" class="{! IF(projectRecord.cycle=='', 'hide','')}"><span>Cycle</span>{!projectRecord.cycle}</dd>
+                      </dl>
+                    </div>
+                    <div class="slds-col slds-size--1-of-2 {! IF(projectRecord.program=='', 'cmk-hide','')}">
+                      <dl class="oh-small-card">
+                        <dt><img alt="Program Name" src="{!$Resource.projectSummary + '/images/placeholder.png'}" class='oh-project-detail-item-icon' id='ohProgramNameImg' /></dt>
+                        <dd id="ohProgramName" class="{! IF(projectRecord.program=='', 'hide','')}"><span>Program</span>{!projectRecord.program}</dd>
+                      </dl>
+                    </div>
+                  </div>
+                  <div class=" slds-grid">
+                    <div class="slds-col slds-size--1-of-2">
+                      <dl class="oh-small-card">
+                        <dt>
+                          <img alt="Project Owner" src="{!$Resource.projectSummary + '/images/placeholder.png'}" class='oh-project-detail-item-icon' id='ohProjectOwnerImg' /></dt>
+                        <dd id="ohProjectOwner"><span>Project Owner</span>{!projectRecord.owner}</dd>
+                      </dl>
+                    </div>
+                    <div class="slds-col slds-size--1-of-2 {! IF(projectRecord.builder=='', 'cmk-hide','')}">
+                      <dl class="oh-small-card">
+                        <dt class="{! IF(projectRecord.builder=='', 'hide','')}">
+                          <img alt="Project Seller" src="{!$Resource.projectSummary + '/images/placeholder.png'}" class="oh-project-detail-item-icon" id="ohProjectBuilderImg" /></dt>
+                        <dd id="ohProjectBuilder" class="{! IF(projectRecord.builder=='', 'hide','')}"><span>Project Seller</span>{!projectRecord.builder}</dd>
+                      </dl>
+                    </div>
+                  </div>
+                  <div class=" slds-grid">
+                      <div class="slds-col slds-size--1-of-2">
+                        <dl class="oh-small-card">
+                          <dt>
+                            <img alt="Billable Times" src="{!$Resource.projectSummary + '/images/placeholder.png'}" class='oh-project-detail-item-icon' id='ohBillableTimeImg' /></dt>
+                          <dd id="ohBillableTime"><span>Billable Time</span>{!projectRecord.billableTime}</dd>
+                        </dl>
+                      </div>
+                      <div class="slds-col slds-size--1-of-2">
+                        <dl class="oh-small-card"><dt></dt><dd></dd></dl>
+                      </div>
+                  </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+      <div class="oh-container" id="locationsExecutedByDayContainer">
+        <section>
+          <div class="oh-section-header oh-align-center oh-green on-border-green">
+            <img id="locationsExecutedByDayImage" alt="Executed Locations By Day" src="{!$Resource.projectSummary + '/images/placeholder.png'}" />
+            <span class="oh-font-medium">Executed Locations By Day</span>
+          </div>
+          <div class="oh-section-body">
+            <div id="chartExecutedLocationsByDay" style="width: 100%; height: 350px;">
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- loop through each services -->
+      <div class="oh-container" id="services">
+        <!-- service1 -->
+        <apex:repeat value="{!projectRecord.services}" var="service">
+        <article id="{!service.id}">
+          <header class="oh-section-header oh-blue on-border-blue">
+            <h2 id="serviceName_{!service.id}">{!service.title}</h2>
+            <span class="oh-section-header-subtitle">{!service.name}</span>
+          </header>
+          <div class="oh-section-body">
+            <section class="oh-service-summary">
+              <div class="slds-grid slds-wrap slds-grid--pull-padded">
+                <div class="slds-p-horizontal--small slds-size--2-of-3 slds-medium-size--2-of-3 slds-large-size--2-of-3">
+                  <h4 class="oh-blue" id="serviceObjectiveLabel_{!service.id}">Service Objective</h4>
+                  <div class="oh-light-gray" id="serviceObjective_{!service.id}">
+                    <apex:outputText escape="false" value="{!service.objective}"/>
+                  </div>
+                </div>
+                <div class="slds-p-horizontal--small slds-size--1-of-3 slds-medium-size--1-of-3 slds-large-size--1-of-3">
+                  <dl class="oh-small-card">
+                    <dt>
+                      <img id="cancelledLocationsCountImage_{!service.id}" alt="Canceled Location Count" src="{!$Resource.projectSummary + '/images/placeholder.png'}" class='oh-icon-24x24' /></dt>
+                    <dd id="cancelledLocationsCount_{!service.id}">{!service.cancelledLocations} Canceled Jobs</dd>
+                  </dl>
+                  <dl class="oh-small-card">
+                    <dt>
+                      <img id="workerCountImage_{!service.id}" alt="Assigned Worker Count" src="{!$Resource.projectSummary + '/images/placeholder.png'}" class='oh-icon-24x24' /></dt>
+                    <dd id="workerCount_{!service.id}">{!service.workers} Worker(s)</dd>
+                  </dl>
+                  <dl class="oh-small-card">
+                    <dt>
+                      <img id="estimatedMinutesImage_{!service.id}" alt="Estimated Minutes" src="{!$Resource.projectSummary + '/images/placeholder.png'}" class='oh-icon-24x24' /></dt>
+                    <dd id="estimatedMinutes_{!service.id}">{!service.estimatedMinutes} Minutes Estimated</dd>
+                  </dl>
+                </div>
+                </div>
+            </section>
+            <section class="oh-margin-bt-20">
+              <div class="slds-grid slds-wrap slds-grid--pull-padded">
+                <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+                  <section id="executionContainer" class="oh-margin-bt-large oh-content-container">
+                    <div class="oh-header">
+                      <img alt="Execution" id="ohJobExecutionImg_{!service.id}" src="{!$Resource.projectSummary + '/images/placeholder.png'}" /><span class="oh-title oh-green">Job Execution</span>
+                    </div>
+                    <canvas id="ohJobExecution_{!service.id}" style="width: 300px; height: 200px;"></canvas>
+                  </section>
+                </div>
+                <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+                  <div style="min-height: 300px;">
+                    <div id="chartJobCompletion_{!service.id}" style="width: 280px; height: 300px; float:left;"></div>
+                    <div style="min-width: 250px; height: 280px; display: inline-block;">
+                      <canvas id="ohJobCompletionLegend_{!service.id}" style="width:300px; height: 280px;"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="oh-margin-bt-20">
+              <div class="oh-section-header oh-align-center oh-green on-border-green">
+                <img id="servicesExecutedByDayImage_{!service.id}" alt="Services Executed By Day" src="{!$Resource.projectSummary + '/images/placeholder.png'}" />
+                <span class="oh-font-medium">Services Executed By Day</span>
+              </div>
+              <div class="oh-section-body">
+                <div id="chartServicesExecutedByDay_{!service.id}" style="width: 100%; height: 350px;">
+                </div>
+                <div class="oh-section-disclaimer oh-align-center">individual service executions are independent of each other.</div>
+              </div>
+            </section>
+            </div>
+            <footer>
+              <section itemprop="questionGroupHeader" class="oh-margin-bt-20">
+                <h3 class="oh-section-header oh-blue on-border-blue" id="questions_{!service.id}">Survey Response Questions</h3>
+              </section>
+              <div id="questionGroup_{!service.id}" class="oh-questiongroup-container">
+              </div>
+            </footer>
+        </article>
+        </apex:repeat>
+        </div>
+        </div>
+        <div class="oh-page-footer oh-top-divider">
+        <div class="oh-container">
+        <div class="oh-section-disclaimer oh-page-footer" id="ohDisclaimer">The information in this Project Summary is not complete until all works have been reported and the project has reached a closed status. Counts on jobs and locations are updated every 15 minutes.</div>
+        </div>
+        </div>
+        <script type="text/template" id="cmkQuestionTemplate">
+          <section itemprop="questionCard">
+                <div class="slds-grid">
+                  <div class="slds-p-horizontal--small slds-size--1-of-1">
+                   [[placeholder]]
+                  </div>
+                </div>
+          </section>
+        </script>
+        <script>
+        window["OHPROJECT"] = {!oneHubData};
+        </script>
+</apex:page>

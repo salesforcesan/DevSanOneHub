@@ -1,0 +1,130 @@
+.THIS .hide {
+  display: none;
+}
+
+.THIS {
+    position:absolute;
+    z-index:400;
+    right:3;
+    top:-15;
+    width:100%;
+    margin:0;
+    padding:0;
+}
+
+.THIS .button-toggle {
+    position:absolute;
+    z-index:500;
+    right:10;
+    top:-10;
+}
+
+.THIS .originalSize {
+    max-height:0rem;
+    height:0;
+    overflow:hidden;
+   transition:all .1s ease;
+    background:white;
+    border-radius:4px;
+    box-shadow:0 0 0 rgba(0,0,0,.5);
+
+}
+
+.THIS .originalSize::-webkit-scrollbar {
+  display: none;
+}
+
+.THIS .toggleFilters {
+    max-height:25rem;
+    height:100%;
+    box-shadow: 0 0 10px rgba(0,0,0,.3);
+    transition:all .5s ease;
+}
+
+.THIS .container .header {
+  border-bottom: 1px solid #ddd;
+}
+
+.THIS .container .header > h2 {
+  display: inline-block;
+}
+
+.THIS .container .footer {
+  border-top: 1px solid #ddd;
+}
+
+.THIS .container .mg-bt-small {
+  margin-bottom: 10px;
+}
+
+.THIS .container .icon-filter-small {
+  bottom: 12px !important;
+  top: auto !important;
+}
+
+.THIS.container select {
+  margin-top: 5px;
+    height:2rem;
+}
+
+/*.THIS.container .icon-filter-small svg {
+  width: 1rem !important;
+  height: 1rem !important;
+}*/
+
+.THIS .width-200 {
+  width: 200px;
+}
+
+.THIS .half-width {
+  width: 50%;
+  min-width: 8rem;
+}
+
+.THIS .third-width {
+  width: 33%;
+  min-width: 10rem;
+}
+
+.THIS .container .hide-label .form-element__label {
+  display: none;
+}
+
+.THIS .container .uiInputDate .form-element {
+  margin-top: 5px;
+}
+
+.THIS .container textarea {
+ height: 2rem;
+}
+
+.THIS .changeText:before {
+    content:'show advanced';
+    transition: all .4s ease;
+}
+
+.THIS .hideAdv:before {
+    content: 'hide advanced';
+    transition: all .4s ease;
+}
+
+.THIS .paste-location-tool .bt-tooltip {
+  position: absolute;
+  margin-left: 50px;
+  margin-top: 60px;
+  display: none;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.5s, transform 0.25s !important;
+}
+
+.THIS .paste-location-tool .bt-tooltip > p {
+  padding: 10px;
+}
+
+.THIS .paste-location-tool:hover .bt-tooltip {
+  display: inline-block;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.5s, transform 0.25s !important;
+}

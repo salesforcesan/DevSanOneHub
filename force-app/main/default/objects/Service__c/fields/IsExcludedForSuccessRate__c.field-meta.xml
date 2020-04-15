@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsExcludedForSuccessRate__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>The indicator to the system if this service is excluded for the success rate calculation</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The indicator to the system if this service is excluded for the success rate calculation</inlineHelpText>
+    <label>Do Not Include in Success Rate</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

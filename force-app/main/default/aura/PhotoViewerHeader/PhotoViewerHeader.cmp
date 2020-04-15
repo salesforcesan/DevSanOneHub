@@ -1,0 +1,20 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="toggled" type="boolean" default="false"/>
+    <aura:registerEvent name="onToggleFilter" type="c:SimpleComponentEvent"/>
+    <aura:handler name="change" value="{! v.toggled }" action="{! c.onToggleChanged }"/>
+    <div class="oh-container">
+        <div class="slds-grid">
+            <div class="slds-col slds-size_6-of-12 oh-left">
+                <div class="oh-content">
+                    <lightning:icon variant="inverse" iconName="utility:photo"></lightning:icon>
+                    <span class="oh-title">Photo Viewer</span>
+                </div>
+            </div>
+            <div class="slds-col slds-size_6-of-12 oh-right">
+                <div class="oh-content">
+                    <lightning:button aura:id="btnToggle" onclick="{! c.onToggleFilter }" label="Expand Filter" iconPosition="right" class="oh-button" variant="base" iconName="utility:filterList" title="Expand Filter"></lightning:button>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

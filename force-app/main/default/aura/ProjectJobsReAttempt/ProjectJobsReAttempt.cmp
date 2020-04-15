@@ -1,0 +1,42 @@
+<aura:component controller="LightningJobsController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="selectedJobIds" type="String[]" default="[1,50,21,3,44]"/>
+    <aura:attribute name="project" type="Object"/>
+    <aura:attribute name="projectEndDate" type="Object"/>
+    <aura:attribute name="day" type="Date" default=""/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />    
+    <aura:registerEvent name="refreshJobs" type="c:EventJobsRefresh"/>
+    
+    <ltng:require styles="/resource/slds213/assets/styles/salesforce-lightning-design-system.min.css"/>    
+    <aura:handler event="c:EventConfirmModal" action="{!c.ConfirmAttemptJobs}"/>
+    <aura:attribute name="errormessage" type="Object" default=""/> 
+    <div class="slds-form--horizontal">		
+        <c:Notification aura:id="notification" duration="5000" class="slds-m-bottom--small"/>
+        <div class="slds-form-element">
+            <label class="slds-form-element__label">Selected Jobs</label>
+            <div class="slds-form-element__control">
+                <label class="slds-form-element__label"><b>{!v.selectedJobIds.length}</b></label>
+            </div>
+        </div>
+        <div>
+            <center><abbr class="slds-required" title="required">{!v.errormessage}</abbr></center>           
+        </div>               
+        <div class="slds-form-element">
+            <label class="slds-form-element__label"><abbr class="slds-required" title="required">*</abbr>Select Date</label>
+              <div class="slds-form-element__control">
+                  <!--div class="root">
+                      <c:DatePicker aura:id="rescheduleDate" startDate="{!v.project.StartDate}" endDate="{!v.project.EndDate}" isMultipleSelection="false"/>
+                  </div-->
+                <div>
+                    <ui:inputDate required="true" class="dynamic" value="{!v.day}" aura:id="rescheduleDate" displayDatePicker="true"/>
+                </div>
+            </div>                        
+        </div>        
+        <div class="slds-modal__footer">            	
+            <div class="slds-button-group" role="group">
+                <c:ModalConfirmButton project="{!v.selectedJobIds}" buttonLabel="Submit"/>
+                <c:ModalCancelButton buttonLabel="Cancel"/>
+            </div>
+        </div>
+    </div>
+</aura:component>

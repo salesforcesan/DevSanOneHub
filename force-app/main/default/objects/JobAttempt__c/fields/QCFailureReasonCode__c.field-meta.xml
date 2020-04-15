@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>QCFailureReasonCode__c</fullName>
+    <externalId>false</externalId>
+    <label>QC Failure Reason Code</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>NEED A CODE</fullName>
+                <default>false</default>
+                <label>NEED A CODE</label>
+            </value>
+            <value>
+                <fullName>Inconclusive Reporting</fullName>
+                <default>false</default>
+                <label>Inconclusive Reporting</label>
+            </value>
+            <value>
+                <fullName>Job Incomplete</fullName>
+                <default>false</default>
+                <label>Job Incomplete</label>
+            </value>
+            <value>
+                <fullName>Incorrect Photo Uploaded</fullName>
+                <default>false</default>
+                <label>Incorrect Photo Uploaded</label>
+            </value>
+            <value>
+                <fullName>Store Manager Complaint</fullName>
+                <default>false</default>
+                <label>Store Manager Complaint</label>
+            </value>
+            <value>
+                <fullName>Client Complaint</fullName>
+                <default>false</default>
+                <label>Client Complaint</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

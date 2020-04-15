@@ -1,0 +1,15 @@
+<template>
+  <template if:false={hasNameValues}>
+    <div>{placeholder}</div>
+  </template>
+  <template if:true={hasNameValues}>
+    <dl class={className}>
+      <template for:each={nameValues} for:item="nvp">
+        <dt key={nvp.name} class="slds-item_label slds-text-color_weak slds-truncate" title={nvp.name}>{nvp.name}:
+        </dt>
+        <dd key={nvp.name} class="slds-item_detail" title={nvp.value}>{nvp.value}
+        </dd>
+      </template>
+    </dl>
+  </template>
+</template>

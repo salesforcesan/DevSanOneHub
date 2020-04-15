@@ -1,0 +1,32 @@
+<aura:component >
+  <aura:attribute name="dialogId" type="String" default=""/>
+  <aura:attribute name="projectId" type="String" default=""/>
+  <aura:registerEvent name="selectAddLocationOptionEvent" type="c:SimpleComponentEvent"/>
+  <div class="container">
+    <header>
+      <h2>Upload a file, paste a list of locations, or search for a list you would like to add to your project.</h2>
+    </header>
+    <div class="body">
+      <lightning:layout horizontalAlign="center" verticalAlign="center">
+        <lightning:layoutItem >
+          <a href="javascript:void(0)" class="card" data-value="uploadFile" title="Upload File" onclick="{!c.selectOption}">
+            <i class="fa fa-icon fa-upload fa-2x"></i>
+            <span>Upload File</span>
+          </a>
+        </lightning:layoutItem>
+        <lightning:layoutItem >
+          <a href="javascript:void(0)" class="card" data-value="pasteList" title="Paste List" onclick="{!c.selectOption}">
+            <i class="fa fa-icon fa-list-ul fa-2x" aria-hidden="true"></i>
+            <span>Paste List</span>
+          </a>
+        </lightning:layoutItem>
+        <lightning:layoutItem >
+          <a href="javascript:void(0)" class="card" data-value="searchLocations" title="Search Locations" onclick="{!c.selectOption}">
+            <i class="fa fa-icon fa-search fa-2x" aria-hidden="true"></i>
+            <span>Search For Locations</span>
+          </a>
+        </lightning:layoutItem>
+      </lightning:layout>
+    </div>
+  </div>
+</aura:component>

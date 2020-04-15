@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JumpToQuestion__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Jump To Question</label>
+    <referenceTo>Question__c</referenceTo>
+    <relationshipLabel>Service Question Defined Responses</relationshipLabel>
+    <relationshipName>Service_Question_Defined_Responses</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

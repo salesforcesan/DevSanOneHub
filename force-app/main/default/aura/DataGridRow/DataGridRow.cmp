@@ -1,0 +1,11 @@
+<aura:component >
+  <aura:attribute name="record" type="object" default=""/>
+  <aura:attribute name="fields" type="List" default="[]"/>
+  <aura:attribute name="visible" type="Boolean" default="true"/>
+  <aura:attribute name="columns" type="List" default="[]" access="private"/>
+  <aura:attribute name="components" type="List" default="[]" access="private"/>
+  <aura:attribute name="firstTime" type="Boolean" default="true" access="private"/>
+  <tr class="{!join(' ','slds-hint-parent', v.visible?'':'hide')}">
+  {!v.body}
+  </tr>
+</aura:component>

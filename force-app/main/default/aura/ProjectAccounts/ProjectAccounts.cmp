@@ -1,0 +1,66 @@
+<aura:component extends="c:UISecurity" controller="LightningProjectAccountsController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+
+    <aura:attribute name="ProjectAccounts" type="object" access="global" />
+    <aura:attribute name="projectId" type="Id" access="global" />
+    <aura:attribute name="projectAccountId" type="object" access="global" />
+    <aura:attribute name="ns" type="String" access="global" default=""/>
+    <aura:attribute name="lawsonAccountField" type="String" access="global" default=""/>
+    <aura:registerEvent name="ProjectAccountChange" type="c:ProjectAccountChange" />
+    <aura:handler action="{!c.doInit}" event="c:ProjectAccountChange" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="projectAccountSelected" type="String" default="" />
+
+    <div>
+        <div class="slds-is-relative slds-size_1-of-1  slds-grid" style="overflow:hidden;min-height:490px;">
+            <div class="slds-card slds-size_1-of-1 slds-p-around_medium">
+                <c:Notification aura:id="projectAccountNotification" class="no-flow" />
+
+                <lightning:spinner size="medium" variant="brand" aura:id="projectAccountSpinner"/>
+                <div class="slds-p-bottom_small">
+                    <c:SectionHeaderProject Title="Account Summary" iconClass="fa-building" />
+                    <div class="slds-media slds-p-around--small">
+                        <p class="slds-media__body">
+                            Add and manage the responsible account(s) for the project.
+                        </p>
+                    </div>
+                </div>
+                <div aura:id="ProjectAccount__c.Add" class="slds-text-body_regular slds-text-color_weak slds-p-left_x-small hide">
+                    <div class="slds-grid slds-wrap slds-grid_pull-padded">
+                        <div class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                            <div class="add-account-lookup">
+                                <aura:if isTrue="{!v.projectId != null}">
+                                    <c:strike_lookup aura:id="searchText" 
+                                                     value="{!v.projectAccountSelected}" 
+                                                     label="Account" 
+                                                     object="Account" 
+                                                     searchField="Name" 
+                                                     order="Name"
+                                                     filter="{! v.ns + 'CanRequestProjects__c = true '}"
+                                                     subtitleField="{!v.lawsonAccountField}" 
+                                                     placeholder="Enter Account Name" 
+                                                     iconName="standard:account" 
+                                                     limit="5" 
+                                                     loadingMessage="Loading..." 
+                                                     errorMessage="Invalid input" 
+                                	/>
+                                </aura:if>
+                            </div>
+                        </div>
+                        <div class="slds-p-horizontal_x-small slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                            <div class="add-account-button">
+                                <lightning:button onclick="{! c.addAccount }" disabled="{!!v.projectAccountSelected}" class="slds-m-vertical_large" label="Add&nbsp;Account" variant="brand" iconName="utility:add" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="slds-m-top_small"></hr>
+                <aura:iteration items="{!v.ProjectAccounts}" var="acct">
+                    <span>
+                        <c:ProjectAccountsCard projectAccount="{!acct}" recordId="{!v.projectId}"/>
+                    </span>
+                </aura:iteration>
+            </div>
+        </div>
+    </div>
+</aura:component>

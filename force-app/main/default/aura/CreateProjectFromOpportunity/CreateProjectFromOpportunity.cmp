@@ -1,0 +1,37 @@
+<aura:component controller="LightningProjectController" implements="force:LightningQuickActionWithoutHeader,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="sObjectName" type="String" />
+    <aura:attribute name="modalBody" type="String" />
+    <aura:attribute name="disabled" type="Boolean" default="true" />
+    <aura:dependency resource="markup://force:navigateToSObject" type="EVENT"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+     <style>
+        .slds-modal__header--empty+.slds-modal__content{
+        	height:auto !important;
+        	padding:0 !important;
+         	max-height: initial !important;
+        }
+    </style>
+    
+    <div class="slds-is-relative" id="mainDiv">
+        <div class="modal-header slds-modal__header">
+            <h2 class="title slds-text-heading--medium" >Create Project</h2>
+        </div>
+        <c:Notification aura:id="notificationInfo"/>
+        <c:Notification aura:id="notificationError" />
+        <div  class="scrollable slds-modal__content">
+            <div class="slds-hide" aura:id="spinner">
+                <lightning:spinner size="medium" variant="brand" />
+            </div>
+            <div class="slds-p-around--medium">
+                <ui:outputText value="{!v.modalBody}" class="slds-text-body--regular" />
+            </div>
+        </div>
+        <div class="modal-footer slds-modal__footer">
+            <lightning:button label="Cancel" onclick="{! c.cancel}" /> 
+            <lightning:button label="Yes, Create Project" onclick="{! c.createProject}" variant="brand" disabled="{!v.disabled}"  /> 
+        </div>
+    </div>
+    
+    
+</aura:component>

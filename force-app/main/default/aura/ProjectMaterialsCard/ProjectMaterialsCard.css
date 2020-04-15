@@ -1,0 +1,30 @@
+.THIS .oh-card-title {
+    font-weight:300; 
+    font-size:1.03rem; 
+    color:#0070D2;
+  }
+
+
+.THIS .img-container {
+    vertical-align:middle;
+    text-align:center;
+    font-size:3rem;
+    line-height:3rem;
+    min-width:100px;
+    width:100px;
+    max-width:100px;
+    height:50px;
+    max-height:80px;
+    color:grey;
+}
+
+.THIS .slds-item {
+	margin-right:1.5rem;
+}
+
+.THIS .oh-icon-button {
+    border:0;
+    box-shadow:0;
+    outline:0;
+    background-color:transparent;
+}

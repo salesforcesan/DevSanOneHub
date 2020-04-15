@@ -1,0 +1,138 @@
+<aura:component>
+    <ltng:require styles="{!$Resource.font_awesome +'/font-awesome/css/font-awesome.min.css'}" />
+    <aura:attribute name="projectId" type="String" />
+    <aura:attribute name="showScheduledCheckbox" type="Boolean" default="false" />
+    <aura:attribute name="customLocationType" type="String" />
+    <aura:method name="dispatchLocationFilterAction" action="{!c.onClickFilter}" />
+    <aura:registerEvent name="onRemoteRequest" type="c:RemoteActionRequestEvent" />
+    <aura:registerEvent name="showSpinnerEvent" type="c:SimpleComponentEvent" />
+    <aura:registerEvent name="clearFilter" type="c:SimpleComponentEvent" />
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+
+    <!-- UI DEFINITION -->
+    <div>
+        <div class="slds-m-bottom_large slds-grid slds-grid_align-end slds-is-relative" style="margin-top:-2rem;">
+            <div class="button-toggle">
+                <lightning:buttonIcon iconName="utility:filterList" variant="bare" size="large" alternativeText="filter"
+                    iconClass="" onclick="{!c.toggleFilters}" />
+            </div>
+        </div>
+    </div>
+    <div class="slds-m-vertical_small">&nbsp;
+    </div>
+    <div class="slds-is-relative">
+        <div class="originalSize" aura:id="toggleFiltersId" onblur="{!c.closeFilter}">
+            <div class="container slds-card slds-m-around_small">
+                <div class="body slds-p-around_small slds-grid">
+                    <!-- checkbox group -->
+                    <div class="slds-size_3-of-12 slds-grow slds-m-right_small">
+                        <lightning:layout horizontalAlign="spread" multipleRows="true">
+
+                            <lightning:input type="checkbox"
+                                class="third-width slds-m-right_small slds-m-bottom_x-small" name="chkClosedLocations"
+                                label="Closed Locations" aura:id="chkClosedLocations" />
+
+                            <lightning:input type="checkbox"
+                                class="third-width slds-m-right_small slds-m-bottom_x-small" label="Has Materials"
+                                name="chkHasMaterials" aura:id="chkHasMaterials" />
+                            <!--<lightning:layoutItem flexibility="grow">-->
+                            <lightning:input type="checkbox"
+                                class="third-width slds-m-right_small slds-m-bottom_x-small" name="chkExecuted"
+                                label="Executed" aura:id="chkExecuted" />
+                            <!--</lightning:layoutItem>-->
+                            <!--<lightning:layoutItem flexibility="grow">-->
+                            <lightning:input type="checkbox"
+                                class="third-width slds-m-right_small slds-m-bottom_x-small" name="chkHasExceptions"
+                                label="Has Exceptions" aura:id="chkHasExceptions" />
+                            <!--</lightning:layoutItem>-->
+                            <!--<lightning:layoutItem flexibility="grow">-->
+                            <lightning:input type="checkbox"
+                                class="third-width slds-m-right_small slds-m-bottom_x-small" label="Completed"
+                                name="chkCompleted" aura:id="chkCompleted" />
+                            <lightning:input type="checkbox"
+                                class="third-width slds-m-right_small slds-m-bottom_x-small" label="Canceled"
+                                name="chkCanceled" aura:id="chkCanceled" />
+                            <!--</lightning:layoutItem>-->
+                            <!--<lightning:layoutItem flexibility="grow">-->
+                            <aura:if isTrue="{!v.showScheduledCheckbox}">
+                                <lightning:input type="checkbox" class="third-width slds-m-bottom_x-small"
+                                    label="Scheduled" name="chkScheduled" aura:id="chkScheduled" />
+                            </aura:if>
+                            <!--</lightning:layoutItem>-->
+                            <!--<lightning:layoutItem flexibility="grow">-->
+                            <div class="slds-p-right_x-small" style="margin-top:1.5rem;">
+                                <ui:inputSelect label="Job Filter" multiple="false" aura:id="selJobFilter"
+                                    class="mg-bt-small">
+                                    <ui:inputSelectOption text="" label="" value="true" />
+                                    <ui:inputSelectOption text="1" label="With Jobs" />
+                                    <ui:inputSelectOption text="0" label="Without Jobs" />
+                                </ui:inputSelect>
+                            </div>
+                            <!--</lightning:layoutItem>-->
+                        </lightning:layout>
+                    </div>
+                    <!-- input group -->
+                    <div class="slds-size_9-of-12">
+                        <lightning:layout horizontalAlign="spread" multipleRows="true">
+                            <lightning:layoutItem flexibility="grow" class="half-width slds-wrap">
+                                <div class="slds-p-right_x-small paste-location-tool" aura:id="searchKeywordContainer">
+                                    <div class="slds-popover slds-theme_info slds-nubbin_top bt-tooltip" role="tooltip">
+                                        <p>Paste a list of Location Numbers Or IDs that are either comma-delimited or in
+                                            a single column without punctuation</p>
+                                    </div>
+                                    <div
+                                        class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                                        <lightning:textarea aura:id="inputSearchKeyword" name="keyword" label="Search"
+                                            placeholder="Paste Location Numbers Or IDs" />
+                                    </div>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem flexibility="grow" class="half-width slds-wrap">
+                                <div class="slds-p-right_x-small">
+                                    <lightning:input type="text" name="city" label="City" aura:id="city"
+                                        class="slds-m-bottom_x-small" />
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                        <lightning:layout horizontalAlign="spread" multipleRows="true">
+                            <lightning:layoutItem flexibility="grow" class="half-width">
+                                <div class="slds-p-right--x-small">
+                                    <c:StateDropDownList aura:id="state" label="State" defaultValue="" />
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem flexibility="grow" class="half-width">
+                                <div class="slds-p-right--x-small">
+                                    <lightning:input type="text" name="postal" label="Postal Code" aura:id="postal" />
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+
+                        <h3 class="very-small-head slds-m-top--small">Select Dates to Filter</h3>
+                        <lightning:layout horizontalAlign="spread" multipleRows="true">
+                            <lightning:layoutItem flexibility="grow" class="half-width">
+                                <div class="slds-p-bottom--x-small slds-p-right--x-small">
+                                    <ui:inputDate aura:id="scheduleDateFrom" format="MM/dd/YYYY" label="From"
+                                        displayDatePicker="true" class="oh-input-date" />
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem flexibility="grow" class="half-width">
+                                <div class="slds-p-bottom--x-small slds-p-right--x-small">
+                                    <ui:inputDate aura:id="scheduleDateTo" format="MM/dd/YYYY" label="To"
+                                        displayDatePicker="true" class="oh-input-date" />
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>
+
+
+                </div> <!-- end of body -->
+                <div class="slds-text-align_center slds-p-vertical_medium slds-grid slds-grid_align-end slds-wrap">
+                    <lightning:button label="Filter Locations" onclick="{!c.onClickFilter}" variant="brand"
+                        class="slds-p-horizontal_large slds-m-right_small" aura:id="filter" />
+                    <lightning:button label="Clear" onclick="{!c.onClickClear}" variant="neutral" />
+
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,49 @@
+<aura:component >
+  <aura:attribute name="dialogId" type="String" default=""/>
+  <aura:attribute name="projectId" type="String" default=""/>
+  <aura:attribute name="locations" type="List" default="[]"/>
+  <aura:attribute name="startDate" type="Date" default=""/>
+  <aura:attribute name="endDate" type="Date" default=""/>
+  <aura:attribute name="selDate" type="String" default=""/>
+  <aura:attribute name="searchByOneHubId" type="Boolean" default="true"/>
+  <aura:attribute name="locationString" type="String" default="" access="private"/>
+  <aura:registerEvent name="closeDialogEvent" type="c:SimpleComponentEvent"/>
+  <aura:handler event="c:ActionResponseSuccessAppEvent" action="{!c.onSuccess}"/>
+  <aura:handler event="c:ActionResponseErrorAppEvent" action="{!c.onError}"/>
+   <aura:handler name="datePickerDateSelectedEvent" event="c:SimpleComponentEvent" action="{!c.onSelectDate}"/>
+  <aura:registerEvent name="onRemoteRequest" type="c:RemoteActionRequestEvent"/>
+  <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+  <article class="container slds-is-relative">
+    <c:Notification aura:id="notification" class="no-flow"/>
+    <c:Spinner aura:id="busyIndicator" type="modal" size="medium">
+      <div>
+         <header>
+          <h2>Select a date to schedule the locations / jobs.</h2>
+        </header>
+        <div class="schedule-body">
+          <div class="slds-grid slds-grid--align-center">
+            <div class="slds-col">
+              <c:DatePicker aura:id="datePicker" showTodayLink="false" startDate="{!v.startDate}" endDate="{!v.endDate}" class="slds-m-right--medium"/>
+            </div>
+            <div class="slds-col">
+              <div class="slds-m-left--medium">
+                <h3>Selected Locations</h3>
+                <div class="locationPanel slds-scrollable--y">
+                  <aura:unescapedHtml value="{!v.locationString}"></aura:unescapedHtml>
+                </div>
+                <h3>Schedule Date</h3>
+                <div class="date-input">
+                  <i class="fa fa-icon fa-calendar gray fa-2x"></i><span class="slds-input">{!v.selDate}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer>
+          <lightning:button label="Close" name="btnCancel" variant="neutral" onclick="{!c.onCancel}"/>
+          <lightning:button label="Schedule" name="btnSchedule" variant="brand" onclick="{!c.onSchedule}"/>
+        </footer>
+    </div>
+    </c:Spinner>
+  </article>
+</aura:component>

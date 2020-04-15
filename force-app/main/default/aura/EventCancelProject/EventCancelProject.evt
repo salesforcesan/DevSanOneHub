@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION">
+	<aura:attribute name="project" type="Object"/>
+    <aura:attribute name="didUserConfirmed" type="Boolean" default="false"/>
+</aura:event>

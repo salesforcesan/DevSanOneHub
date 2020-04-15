@@ -1,0 +1,39 @@
+<apex:page standardController="ProjectService__c" recordSetVar="Projservs"  extensions="CancelProjectServiceExt" sidebar="true" showHeader="true" tabStyle="ProjectDashboard__tab">
+<c:jQueryScripts includejQueryUI="true" />
+<apex:sectionHeader title="Cancel Project Service(s)" subtitle="{!projObj.Name}" />
+<c:Breadcrumb backtoid="{!projObj.Id}" />
+<apex:pageMessages showDetail="false" escape="false" />
+<apex:pageMessage rendered="{!errorMessage<>null}"  summary="{!errorMessage}" severity="FATAL" strength="2" /> 
+
+    <apex:form >
+    <apex:pageBlock >      
+        <apex:pageBlockButtons >
+            <apex:commandButton id="btnSave" action="{!CancelService}" value="Cancel Service(s)" rendered="{!selectedProjectServices.size>0}"/>
+            <apex:commandButton id="btnCancel" action="{!DoNotCancel}" immediate="true"  value="Do not Cancel" rendered="{!selectedProjectServices.size>0}"/>
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection title="Information" collapsible="false" columns="1">  
+            <apex:outputField value="{!projObj.Name}" label="Project Name" />
+            <apex:outputField value="{!projObj.Status__c}" /> 
+            <apex:inputTextarea label="Selected Services" value="{!psNames}" disabled="true" cols="150" />  
+            <apex:inputField id="reason" value="{!psObj.CancelReason__c}" required="true" />
+            <apex:inputTextarea value="{!psObj.CancelReasonComment__c}" id="CancelReason" cols="150" /> 
+        </apex:pageBlockSection>       
+    </apex:pageBlock> 
+</apex:form>
+    <script> 
+        var j$ = jQuery.noConflict();
+        j$(document).ready(function() {               
+             j$("[id*=btnSave]").click(function(){
+                 if(j$("[id*=reason]").val() == ""){
+                     alert("Cancel reason is required");
+                     return false;
+                 }
+                 if(j$("[id*=reason]").val() == "Other" && j$("[id*=CancelReason]").val() == ""){
+                     alert("Cancel reason comment is required");
+                     return false;
+                 }
+                 return(confirm("Do you want to cancel the selected Service(s)?"));
+             });
+         });
+    </script>   
+</apex:page>

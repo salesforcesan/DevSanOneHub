@@ -1,0 +1,173 @@
+<aura:component controller="LightningProjectServiceTargetsController" >
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <ltng:require styles="{!$Resource.oh_tools + '/oh-tools-style.css'}" />  
+    <aura:attribute name="view" type="String" default="chooseMethod"/>
+    <aura:attribute name="targets" type="ProjectServiceTargetWrapper[]" />
+    <aura:attribute name="targetTypes" type="list" default="[]"/>
+    <aura:attribute name="targetuseTypes" type="list" default="['Primary']"/>
+   <aura:attribute name="selectedUseType" type="string" />
+    
+    <aura:attribute name="projectServiceId" type="Id" />
+    <aura:attribute name="disabled" type="Boolean" default="false" />
+    <aura:attribute name="showCSVResults" type="Boolean" default="false"/>
+    <aura:attribute name="showNoResultsMessage" type="Boolean" default="false" />
+    <aura:attribute name="showNoCSVResultsMessage" type="Boolean" default="false" />
+    <aura:registerEvent name="ProjectServiceTargetChange" type="c:ProjectServiceTargetChange"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+   <div style="" class="slds-is-relative">
+    <div class="" aura:id="addTargetSpinner" > 
+        <lightning:spinner size="medium" variant="brand" />
+    </div>
+    
+    <aura:if isTrue="{!v.view == 'chooseMethod'}" >
+    <!--    <aura:if isTrue="{!v.targetuseTypes.length > 0}">-->
+          <div class="slds-grid slds-grid_align-center slds-m-around_medium">
+            <p class="slds-text-body_regular">Select a target use type then paste or search for a list of targets to add to your service.</p>
+        </div>
+            <div class="slds-grid slds-grid_align-center slds-p-around_medium">
+                <div style="max-width:70%;width:70%;"> 
+                    <aura:if isTrue="{!or(v.targetuseTypes.length == 1, v.targetuseTypes.length == 0)}">
+                        <lightning:select aura:id="targetuseType"                                       
+                                              name="TargetUseTypes" label="Select Target Use Types"  value="{!v.selectedUseType}" onchange="{!c.onChangeTargetUseType}"
+                                              >
+                                <aura:iteration items="{!v.targetuseTypes}" var="tu">
+                                    <option value="{!tu}">{!tu}</option>
+                                </aura:iteration>
+
+                    			</lightning:select> 
+                        <aura:set attribute="else">
+                 			<lightning:select aura:id="targetuseType"                                       
+                                              name="TargetUseTypes" label="Select Target Use Types"  value="{!v.selectedUseType}" onchange="{!c.onChangeTargetUseType}"
+                                              >
+                                <aura:iteration items="{!v.targetuseTypes}" var="tu">
+                                    <option value="{!tu}">{!tu}</option>
+                                </aura:iteration>
+
+                    			</lightning:select> 
+                            </aura:set>
+                   </aura:if>
+                </div>
+            </div>
+        
+        <div class="slds-grid slds-grid_align-center slds-p-top_medium slds-p-bottom_large">
+            <div class="oh-btn-box slds-m-around_small" onclick="{!c.switchToPasteView}">
+                <div class="slds-p-top_small slds-p-bottom_x-small">
+                    <i class="fa fa-file-text" aria-hidden="true"></i>
+                </div>
+                <div class="slds-text-body_regular"> Paste list of Target IDs</div>
+            </div>
+            <div class="oh-btn-box slds-m-around_small" onclick="{!c.switchToSearchView}">
+                <div class="slds-p-top_small slds-p-bottom_x-small">
+                    <i class="fa fa-search " aria-hidden="true"></i>
+                </div>
+                <div class="slds-text-body_regular">Search List</div>
+            </div>
+        </div>
+          <!--  <aura:set attribute="else">
+            <div style="color:red;" class="slds-grid slds-grid_align-center slds-m-around_medium">
+              <p class="slds-text-body_regular">Select a target use type in service template then paste or search for a list of targets to add to your service.</p>
+            </div>
+            </aura:set>
+        </aura:if>-->
+    </aura:if>
+    <aura:if isTrue="{!and(v.view=='paste',v.showCSVResults == false)}">
+        <hr class="slds-m-vertical_small"></hr>
+        <div class="">  
+            <div class="slds-p-horizontal_medium">
+                <div class="slds-text-align_center slds-m-around_medium">
+                    <p class="slds-text-body_regular">Paste a list of targets by UPC or ID below to add them to your service.</p>
+                </div>
+               
+                <ui:inputTextArea rows="5" aura:id="searchTextCSV" placeholder="Paste List of Target Ids (1234,4565,7897)" />
+            </div>
+             <div class="slds-grid slds-grid_align-spread">   
+                <div class="slds-grid">
+                     <lightning:button iconName="utility:back" iconPosition="left" class="slds-m-around_small" label="Back" onclick="{!c.back}"/>
+                </div>
+                <div class="slds-grid slds-grid_align-end">               
+                    <lightning:button class="slds-m-around_small" label="Cancel" onclick="{!c.close}"/>
+                    <lightning:button class="slds-m-around_small" label="Search" onclick="{! c.handleCSVSearch }" variant="Brand" /> 
+                </div>
+            </div>
+           
+        </div> 
+        
+    </aura:if>	
+    <aura:if isTrue="{!and(v.view=='paste',v.showCSVResults == true)}">
+        <div class="slds-p-around_medium">
+            <div style="max-height: 200px; overflow:auto;" class="">
+                <div>
+                    <aura:iteration items="{!v.targets}" var="target">
+                        <c:TargetCard target="{!target}" withSelector="true"  />     
+                    </aura:iteration>
+                </div>
+                <aura:if isTrue="{!v.showNoCSVResultsMessage}">
+                    <div style="color:red">No targets matched your critera.</div>
+                </aura:if>
+            </div>
+        </div>
+        <div class="slds-grid slds-grid_align-spread">   
+            <div class="slds-grid">
+            	 <lightning:button iconName="utility:back" iconPosition="left" class="slds-m-around_small" label="Back" onclick="{!c.back}"/>
+            </div>
+            <div class="slds-grid slds-grid_align-end">               
+                <lightning:button class="slds-m-around_small" label="Cancel" onclick="{!c.close}"/>
+                <lightning:button class="slds-m-around_small" label="Add Selected Target(s)" onclick="{! c.addProducts }" variant="Brand" /> 
+            </div>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.view=='search'}">
+        <div class="slds-text-align_center slds-m-around_medium">
+            <p class="slds-text-body_regular">Select your target type and search for a target by name or UPC below. After selecting your targets click the "Add Selected Targets" button.</p>               
+                         
+        </div>
+        <div class="slds-p-horizontal_medium">
+            
+            <div class="slds-grid slds-grid_align-spread">                
+                <ui:inputSelect aura:id="selectType" options="{!v.targetTypes}" class="selectSize" label="Select Target Type" />                                              
+            </div>
+        </div>    
+        <div class="slds-p-horizontal_medium">
+            <div class="slds-grid slds-grid_align-spread">                 
+                <div class="slds-grow slds-p-top_x-small"  onkeyup="{!c.onKeyHandle}">
+                    <lightning:input type="search" 
+                                     name="enter-target" 
+                                     label="Enter Target" 
+                                     placeholder="Enter Target Name or UPC " value="" 
+                                     variant="label-hidden"
+                                     aura:id="searchText"
+                                    
+                                     />
+                    <!--<ui:inputText aura:id="searchText" placeholder="Enter Target Name or UPC"  /> -->
+                </div>
+                <div class="slds-m-horizontal_x-small slds-p-top_x-small">
+                    <lightning:button class="btn-change" label="Search" onclick="{! c.handleSearch }" variant="Brand" disabled="{!v.disabled}"/> 
+                </div>
+            </div>
+        </div>
+        <hr class="slds-m-vertical_small"></hr>
+        <div class="slds-p-around_medium">
+            <div style="max-height: 200px; overflow:auto;" class="">           
+                <aura:iteration items="{!v.targets}" var="target">
+                    <span>                
+                        <c:TargetCard target="{!target}" withSelector="true"  />
+                    </span>
+                </aura:iteration>  
+                <aura:if isTrue="{!v.showNoResultsMessage}">
+                    <div style="color:red">No Targets matched your search criteria.</div>
+                </aura:if>
+            </div>
+        </div>
+        <div class="slds-grid slds-grid_align-spread">   
+            <div class="slds-grid">
+            	 <lightning:button iconName="utility:back" iconPosition="left" class="slds-m-around_small" label="Back" onclick="{!c.back}"/>
+            </div>
+            <div class="slds-grid slds-grid_align-end">               
+                <lightning:button class="slds-m-around_small" label="Cancel" onclick="{!c.close}"/>
+                <lightning:button class="slds-m-around_small" label="Add Selected Target(s)" onclick="{! c.addProducts }" variant="Brand" /> 
+            </div>
+        </div>
+    </aura:if>
+    </div>
+</aura:component>

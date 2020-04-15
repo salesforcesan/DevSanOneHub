@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NoReschedule4ReportedJobWithEndedProject</fullName>
+    <active>true</active>
+    <description>CSM can&#39;t reschedule a reported job if the project is ended.</description>
+    <errorConditionFormula>AND(
+ISCHANGED(JobScheduledDate__c),
+LOWER(TEXT(PRIORVALUE(JobStatus__c))) == &#39;reported&#39;,
+LOWER(ProjectStatus__c) == &#39;ended&#39;
+)</errorConditionFormula>
+    <errorMessage>CSM can&#39;t reschedule a reported job if the project is ended.</errorMessage>
+</ValidationRule>

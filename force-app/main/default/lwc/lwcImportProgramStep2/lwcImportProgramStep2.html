@@ -1,0 +1,34 @@
+<template>
+    <div style={custStyle}>
+        <div class="oh-step-header slds-text-align_center">
+            <h2>Validate Import File</h2>
+        </div>
+        <div class="slds-p-around_small">
+            <lightning-layout>
+                <lightning-layout-item flexibility="auto">
+                    <div class="slds-p-around_small oh-step-section">
+                        <template if:true={columns}>
+                            <lightning-datatable key-field="id" columns={columns} data={results} hide-checkbox-column>
+                            </lightning-datatable>
+                        </template>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="shrink">
+                    <div class="slds-p-around_small oh-step-section">
+                        <lightning-tabset variant="scoped">
+                            <lightning-tab label="Import Guide">
+                                <div class="slds-p-around_x-small slds-scrollable_y" style="height:250px;">
+                                    <template for:each={guides} for:item="it">
+                                        <div key={it.id} class="oh-list-box slds-p-around_xx-small slds-m-bottom_small">
+                                            {it.guide}
+                                        </div>
+                                    </template>
+                                </div>
+                            </lightning-tab>
+                        </lightning-tabset>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </div>
+</template>

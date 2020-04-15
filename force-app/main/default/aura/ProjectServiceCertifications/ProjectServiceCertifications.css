@@ -1,0 +1,64 @@
+.THIS .icon-close {
+    margin-top: .3rem;
+    position:absolute;
+    right:5%;
+    color:#C23934;
+    z-index:1000;
+}
+  
+.THIS .slds-size_1-of-1.pad-right {
+    padding-right:12px;
+}
+
+.THIS .fa-certificate.grey {
+    color:grey;
+    opacity:.8;
+}
+
+.THIS .icon-close-container {
+    position:absolute;
+    right:3px;
+    top:4px;
+}
+
+.THIS .gray {
+    font-size: 1rem;
+  color: rgba(0, 0, 0, 0.24);
+}
+
+.THIS .red-alert {
+    color:#C23934;
+}
+
+.THIS .slds-box {
+    padding:.5rem;
+}
+
+
+.THIS .oh-icon-button {
+    border:0;
+    box-shadow:0;
+    outline:0;
+    background-color:transparent;
+}
+
+.THIS .slds-is-collapsed {
+  	height: 0;
+  	overflow: hidden; 
+	transition: all 1s linear;
+}
+
+.THIS .slds-is-expanded {
+  height: auto;
+  overflow: visible; }
+
+.THIS .add-cert-button {
+    padding-top: 23px;
+}
+
+.THIS .add-certification-button {
+    margin-top: 20px;
+}
+.THIS .add-certification-button {
+    margin-top: 21px;
+}

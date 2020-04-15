@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MaximumOf10ThousandBudgetedLocations</fullName>
+    <active>true</active>
+    <description>A project can not have more than 9,500 Budgeted locations</description>
+    <errorConditionFormula>BudgetedLocationsCount__c &gt;9500</errorConditionFormula>
+    <errorMessage>A project can not have more than 9,500 Budgeted locations</errorMessage>
+</ValidationRule>

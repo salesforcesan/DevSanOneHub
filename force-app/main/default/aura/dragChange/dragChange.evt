@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="">
+	<aura:attribute type="String" name="sourceId"></aura:attribute>
+    <aura:attribute type="String" name="targetId"></aura:attribute> 
+    <aura:attribute type="String" name="actionType"></aura:attribute>
+</aura:event>

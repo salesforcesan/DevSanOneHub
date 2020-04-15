@@ -1,0 +1,178 @@
+<aura:component extends="c:UISecurity" controller="LightningProjectServiceController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <c:Notification aura:id="notification" class="no-flow" />
+    <aura:attribute name="service" type="ProjServiceWrapper" />
+    <aura:attribute name="serviceLoaded" type="Boolean" default="false" />
+    <aura:attribute name="projectId" type="Id" />
+    <aura:attribute name="bundledProject" type="Boolean" />
+    <aura:attribute name="IdToRemove" type="String" default="" access="private" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="onSaveSuccess" event="force:recordSaveSuccess" action="{!c.handleSaveSuccess}" access="global" />
+    <aura:attribute name="AttachmentIDs" type="String" />
+    <aura:handler name="messageBoxEvent" event="c:SimpleComponentEvent" action="{!c.deleteProjectServiceHandler}" />
+    <c:MessageBox aura:id="messageBox" />
+    <aura:attribute name="DeleteAttachmentIDs" type="String" />
+    <aura:attribute name="editorPlaceholder" type="Aura.Component[]"/>
+    
+    <aura:attribute name="IsJobManualAttributeAdded" type="boolean" default="false" />
+    
+    <div class="slds-is-relative">
+        <div class="slds-hide" aura:id="Spinner">
+            <lightning:spinner size="large" variant="brand" />
+        </div>
+        <c:ModalDialogContainer aura:id="modalDialog" title="Application Dialog" size="medium" />
+        <div class="slds-is-relative slds-size_1-of-1 pad-right slds-grid" style="overflow:hidden;">
+            <div class="slds-card slds-size_8-of-12 slds-p-around_medium" style="margin-right:12px;">
+               <div class="slds-m-bottom_small">
+                 <c:SectionHeaderProject Title="Service Details" iconClass="fa-file-text"/>
+               </div>
+                
+              <!--  <div class="slds-p-bottom_small">
+                    <c:SectionHeader Title="Service Details" iconClass="fa-file-text" ProjServiceID="{!v.recordId}" />
+                </div>-->
+                <div class="slds-p-around--small slds-grid slds-size--1-of-1">
+                    <p class="slds-text-body--regular slds-size--2-of-3">Review and edit service details and instructions.</p>
+                </div>
+                <div class="slds-grid slds-grid--align-end slds-p-right--medium">
+                    <div class="hide" aura:id="ProjectService__c.Edit">
+                        <button class="slds-button slds-button--brand" onclick="{!c.saveButtonClicked}" id="save" style="margin-left:12px;">Save Details</button>
+                    </div>
+                </div>
+                <div class="slds-form-element__row">
+                    {!v.editorPlaceholder}
+                </div>
+            
+                
+                
+                <aura:if isTrue="{!v.serviceLoaded}">
+                    <input style="display: none;" type="file" data-id="temp" value="temp" id="temp" aura:id="file" accept="application/pdf" />
+                    <fieldset class="slds-form--compound">
+                        <div class="slds-form-element__group">
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-col slds-size--1-of-2 slds-p-around--small">
+                                    <div class="slds-form-element__control slds-text-color--weak">
+                                        <div aura:id="ProjectService__c.Edit" class="readonly">
+                                            <c:strike_tooltip placement="right" text="Choose standard or upload a custom job manual (max file size 4 MB)">
+                                                <lightning:icon iconName="utility:info" size="xx-small" class="job-manual-tooltip-icon" />
+                                            </c:strike_tooltip>                                            
+                                            <ui:inputSelect aura:id="JobTemplate" label="Job Manual" change="{!c.JobTemplateChangeHandler}" value="{!v.service.JobManualTemplate}">
+                                                <aura:iteration items="{!v.service.JobManual}" var="s">                                                    
+                                                    <!--<aura:if isTrue="{!v.service.AvlPSA.length>0}">-->
+                                                    <aura:if isTrue="{!v.service.IsJobManualAttributeAdded}">    
+                                                        <ui:inputSelectOption text="{!s}"/> 
+                                                        <!--</aura:if>      
+                                                     <aura:if isTrue="{!v.service.AvlPSA.length==0}">-->
+                                                        <aura:set attribute="else">
+                                                            <aura:if isTrue="{!s=='No Manual'}">
+                                                                <ui:inputSelectOption text="{!s}"/> 
+                                                            </aura:if> 
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </aura:iteration>
+                                            </ui:inputSelect>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="slds-form-element slds-size--1-of-2 slds-p-around--small">
+                                    <div class="slds-form-element__control slds-m-top--medium slds-m-horizontal--large">
+                                        <div aura:id="PrevManual">
+                                            <button class="slds-button slds-button--neutral slds-align--bottom" onclick="{!c.PreviewManual}" disabled="{!or(v.service.JobManualUrl==null , v.service.JobManualUrl=='')}">Preview Manual</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row">
+                                <div aura:id="uploadManualDiv">
+                                    <aura:iteration items="{!v.service.AvlPSA}" var="psa">
+                                        <span>
+                                            <aura:If isTrue="{! and(psa.AttributeType=='Photo' , psa.Attributename=='Job Manual')}"> 
+                                                
+                                               
+                                                
+                                                <aura:if isTrue="{!v.service.isManualGenInProgress}">
+                                                    <div style="color: red;">Job Manual in progress. Please refresh the screen for updated values.</div>
+                                                </aura:if>
+                                                
+                                                <aura:if isTrue="{!and(v.service.JobManualFileName!=null,v.service.JobManualFileName!='',v.service.isManualGenInProgress!=true)}">
+                                                    {!psa.Attributename}: <ui:outputURL value="{!psa.AttachmentURL}" label="{!v.service.JobManualFileName}" target="_blank"/>
+                                                </aura:if>                                                
+                                                
+                                                <aura:if isTrue="{!and(v.service.JobManualTemplate=='Custom Manual',v.service.isManualGenInProgress==false)}">
+                                                    <div class="slds-p-around--small">                                                
+                                                        {!psa.Attributename}: <input type="file" data-id="{!psa.RecordID}" value="{!psa.AttributeValue}" id="{!psa.Attributename}" aura:id="file" accept="application/pdf,image/*" onchange="{!c.FileUploadHandler}"/>                                                 
+                                                    </div>
+                                                </aura:if>
+                                                
+                                            </aura:If>
+                                        </span>
+                                    </aura:iteration>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="slds-form--compound">
+                        <div class="slds-form-element__group slds-p-around--small">
+                            <aura:iteration items="{!v.service.AvlPSA}" var="psa">
+                                <span>
+                                    <div class="slds-form-element__row oh-textarea slds-p-top--x-small"> 
+                                        <aura:renderIf isTrue="{!psa.AttributeType=='Text'}">  
+                                            <div aura:id="ProjectService__c.Edit"  class="readonly readonly slds-size--1-of-1"> 
+                                                <label> 
+                                                    {!psa.Attributename}
+                                                    <lightning:inputRichText value="{!psa.AttributeValue}" disabledCategories="FORMAT_FONT,FORMAT_TEXT,FORMAT_BODY,ALIGN_TEXT,REMOVE_FORMATTING"/>
+                                                </label>
+                                                <!--
+                                                <ui:inputRichText cols="140" rows="3" resizable="true"  height="60px" label="{!psa.Attributename}"  value="{!psa.AttributeValue}" />
+                                                <ui:inputTextArea cols="140" rows="3" label="{!psa.Attributename}"  class="textfield" value="{!psa.AttributeValue}" /> 
+                                                -->
+                                            </div>
+                                        </aura:renderIf>
+                                        <aura:If isTrue="{! and(psa.AttributeType=='Photo' , psa.Attributename!='Job Manual')}">  
+                                            <div class="slds-p-vertical--small slds-p-right--small">
+                                                <p class="slds-text-color--weak slds-text-body--small" style="display:block;">{!psa.Attributename}:<br/><br/></p>
+                                            </div>
+                                            <aura:if isTrue="{!or(psa.AttributeValue==null,psa.AttributeValue=='')}">
+                                                <div class="slds-p-around--small">
+                                                    <div aura:id="ProjectService__c.Edit"  class="readonly">                                                     
+                                                        <input type="file" data-id="{!psa.RecordID}" value="{!psa.AttributeValue}" id="{!psa.Attributename}" aura:id="file" accept="application/pdf,image/*" onchange="{!c.FileUploadHandler}" ></input>
+                                                        <!--<input type="file" data-id="{!psa.RecordID}" value="{!psa.AttributeValue}" id="{!psa.Attributename}" aura:id="file" accept="application/pdf,image/*"  />-->
+                                                    </div>
+                                                </div>
+                                            </aura:if>
+                                            
+                                            <aura:if isTrue="{!and(psa.AttributeValue!=null,psa.AttributeValue!='')}">
+                                                <div aura:id="ProjectService__c.Edit"  class="readonly">
+                                                    <ui:outputURL value="{!psa.AttachFileLink}" label="{!psa.AttachFile}" target="_blank"/>                                                      
+                                                    <button class="oh-icon-button">
+                                                        <i style="color:red;font-size:.7rem;" label="123" class="oh-icon oh-icon-close"  aria-hidden="true" id="{!psa.RecordID}"  onclick="{!c.DeleteAttachmentHandler}"></i>
+                                                    </button>
+                                                </div>
+                                            </aura:if>
+                                        </aura:If>
+                                    </div>
+                                </span>
+                            </aura:iteration>
+                        </div>
+                    </fieldset>    
+                </aura:if>
+            
+                <div class="slds-grid">
+                    <div class="hide" aura:id="ProjectService__c.Edit">
+                        <button class="slds-button slds-button--brand" onclick="{!c.saveButtonClicked}" id="save" style="margin-left:12px;">Save Details</button>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+                <br/>
+            </div>
+            <div class="slds-size_4-of-12 slds-card slds-p-around_medium" style="margin-top:0;">
+                <div class="slds-p-bottom--medium">
+                    <c:SectionHeaderProject Title="Chatter" iconClass="fa-commenting-o" />
+                </div>
+                <div class="slds-p-horizontal--small">
+                    <forceChatter:publisher context="RECORD" recordId="{!v.projectId}" />
+                    <forceChatter:feed type="Record" subjectId="{!v.projectId}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,8 @@
+<aura:component >
+  <aura:attribute name="field" type="object" default=""/>
+    <td role="gridcell">
+      <div class="slds-truncate" title="{!v.field.name}">
+        {!v.field.__value}
+      </div>
+  </td>
+</aura:component>

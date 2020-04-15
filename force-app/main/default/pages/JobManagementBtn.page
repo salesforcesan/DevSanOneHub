@@ -1,0 +1,3 @@
+<apex:page showHeader="false" sidebar="false" standardcontroller="Job__c" recordSetVar="Jobs" action="{!navigateToJobManagement}" extensions="ManageJobLocationsBtnCtrl">
+    
+</apex:page>

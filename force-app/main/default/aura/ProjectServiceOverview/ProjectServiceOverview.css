@@ -1,0 +1,82 @@
+.THIS .services-bar {
+    width: 100%;
+    background-color: #EAF6FC;
+    border-top: 1px solid #0070D2;
+    border-bottom: 1px solid #0070D2;
+}
+
+.THIS .services-bar .services-icon {
+    width: 20%;
+    padding: 8px 0 4px 0;
+    vertical-align: middle;
+    float: left;
+    color: #0070d2;
+    font-size: 1.75em;
+    transition: all 0.3s ease;
+}
+
+.THIS .services-bar .services-icon:hover {
+    opacity: .7;
+    color: #16325C;
+}
+    
+.THIS i {
+        color: #0070D2;
+        font-size: 1.3rem;
+        width:45px;
+}
+
+.THIS .bar-title {
+        margin-top: 10px;
+        line-height: 2.75em;
+        color: #0070D2;
+        font-size: 1.0625rem;
+        font-weight: regular;
+        vertical-align: baseline;
+    }
+    
+.THIS .page-title {
+        line-height: 130%;
+        color: #0070D2;
+        font-size:  1.4rem;
+        font-weight: 300;
+        margin: 0;
+    }
+    
+.THIS .fa-cube {
+        vertical-align: baseline;
+        padding-top: 10px;
+    } 
+
+.THIS .page-subtitle {
+        line-height: 125%;
+        color: #54698D;
+        font-size: 0.875rem;
+        font-weight: regular;
+        margin: .2rem 0;
+    }
+    
+.THIS p {
+        font-size: 0.75rem;
+        line-height: 125%; /*12px*/
+        margin: .2em;
+        color: #54698D;
+    }
+
+.THIS .button-green {
+        background: #4BCA81;
+        font-weight: 300;
+        border: 0px;
+        letter-spacing: normal;
+        min-width: 150px;
+        transition: all .3 ease;
+    }
+    
+.THIS .button-green:hover {
+        background: #04844B;
+         transition: all .3 ease;
+    }
+    
+.THIS .button-green:focus {
+        background: #04844B;
+    }

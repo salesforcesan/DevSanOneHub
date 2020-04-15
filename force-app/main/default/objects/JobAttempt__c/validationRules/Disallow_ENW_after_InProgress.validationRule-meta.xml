@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disallow_ENW_after_InProgress</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( 
+ISCHANGED(ExpectedNumberofWorkers__c), 
+OR(
+AND 
+( 
+IsShift__c = false,
+UPPER(TEXT(Job__r.Project__r.Status__c)) != &#39;PLANNING&#39;, 
+UPPER(TEXT(Job__r.Project__r.Status__c)) != &#39;BOOKED&#39;, 
+UPPER(TEXT(Job__r.Project__r.Status__c)) != &#39;LAUNCHED&#39; 
+)
+,
+AND 
+( 
+IsShift__c = true,
+UPPER(TEXT(Job__r.Project__r.Status__c)) != &#39;PLANNING&#39;, 
+UPPER(TEXT(Job__r.Project__r.Status__c)) != &#39;BOOKED&#39;, 
+UPPER(TEXT(Job__r.Project__r.Status__c)) != &#39;LAUNCHED&#39;,
+UPPER(TEXT(Job__r.Project__r.Status__c)) != &#39;IN PROGRESS&#39;
+)
+)
+)</errorConditionFormula>
+    <errorMessage>Number of Workers cannot be changed after a project is In progress unless it&#39;s a Shift.</errorMessage>
+</ValidationRule>

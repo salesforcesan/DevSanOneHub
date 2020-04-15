@@ -1,0 +1,89 @@
+<apex:page standardController="ProjectService__c" extensions="ProjectServiceEquipmentEditExt" tabStyle="Project__c" docType="HTML-5.0">
+    <c:jQueryUICSS />
+    <style type="text/css">
+        .loading-gif {
+        position: fixed;
+        z-index: 999;
+        margin: auto !important;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        padding: 12px 55px;
+        background-color: #FFF;
+        box-shadow: 0 0px 3px #ccc;
+        border-radius: 2px;
+        }    
+        
+        .message {
+        margin: 8px 0 0px 0 !important;
+        border-radius: 0;
+        border-color: #E0E0C4;
+        }
+        .row-header{
+        height: 20px;line-height: 20px;
+        }
+        .row-normal{
+        background-color: #fff !important;
+        }
+        .trash-can{
+        width: 12px;
+        background-image: url('/img/func_icons/remove12_on.gif') !important;
+        background-position: right 0 !important;
+        background-position-x: 0 !important;
+        border: 1px solid #ccc !important;
+        background-color: #fff !important;
+        border: none !important;
+        }
+        .align-c{
+            text-align:center;        
+        }
+        
+        .titleCl{
+            font-size:14.1833px;
+            font-family: Arial,Helvetica,sans-serif;
+            font-weight: bold;
+            color:rgb(0, 0, 0);
+        }
+        
+    </style>
+    <apex:actionStatus id="loadingStatus">
+        <apex:facet name="start">
+            <img class="loading-gif" src="/img/loading24.gif" width="24" height="24" />
+        </apex:facet>
+    </apex:actionStatus>
+    
+    <apex:form >
+           <apex:pageBlock title="Tool" mode="edit">   
+            <apex:outputPanel id="msg">
+                <div class="cm-panel-error" >
+                <apex:pageMessages id="messagesForAddTool" />
+                </div>
+            </apex:outputPanel>
+            <apex:facet name="header">
+                <apex:outputPanel layout="block" style="clear:both; border-bottom: 1px solid #ddd; height: 40px;">
+                    <apex:outputPanel layout="block" style="width: 50%; float:left; display:inline-block; padding: 10px;">
+                        <h2 class="titleCl">Tool</h2>
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="block" style="float:center; padding: 10px;"> 
+                        <apex:commandButton id="btnSaveUtensil" action="{!SaveUtensil}" value="Save" status="loadingStatus" reRender="msg,utensilSection,messagesForAddTool,utensilMsg" rendered="{!showToolsButtons}"  />
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:facet>
+            <apex:dataList value="{!selectedUtensils}" var="utensil" rendered="{!!showToolsButtons}">
+                <apex:outputText value="{!utensil}"/>
+            </apex:dataList>
+            <apex:pageBlockSection showHeader="false" id="utensilSection" columns="1" rendered="{!showToolsButtons}">                 
+                <c:MultiselectPicklist leftLabel="Available Tools"   
+                leftOption="{!utensilList}"
+                rightLabel="Selected Tools"
+                rightOption="{!SelectedUtensilList}"
+                size="14"
+                width="150px"/>
+            </apex:pageBlockSection>     
+            <apex:pageBlockSection id="utensilMsg" rendered="{!SelectedUtensilList.size == 0}" columns="1" >
+                No tools selected<br/><br/>
+             </apex:pageBlockSection>     
+        </apex:pageBlock>       
+    </apex:form> 
+</apex:page>

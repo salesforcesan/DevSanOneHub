@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EnableMultiListQnsDragnDrop__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This flag enables drag and drop feature on survey builder for multi select question.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This flag enables drag and drop feature on survey builder for multi select question.</inlineHelpText>
+    <label>EnableMultiListQnsDragnDrop</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

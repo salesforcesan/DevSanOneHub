@@ -1,0 +1,7 @@
+<aura:component >
+  <aura:attribute name="field" type="object" default=""/>
+  <aura:registerEvent name="systemDataGridButtonCellClick" type="c:SimpleComponentEvent"/>
+  <td role="gridcell">
+    <lightning:button variant="bare" label="{!v.field.label}" onclick="{!c.onClick}"/>
+  </td>
+</aura:component>

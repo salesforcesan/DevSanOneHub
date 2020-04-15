@@ -1,0 +1,8 @@
+<design:component label="Simple Alert">
+    <design:attribute name="isShown" label="visible" default="true"/>
+    <design:attribute name="iconName" label="Icon Name" required="true" description="icon name"/>
+    <design:attribute name="iconTitle" label="Icon Title" required="true"/>
+    <design:attribute name="alertMessage" label="Alert Message" description="An alert mesasage" required="true"/>
+    <design:attribute name="rule" label="visibility rules"/>
+    <design:attribute name="object" label="Record Name" required="true"/>
+</design:component>

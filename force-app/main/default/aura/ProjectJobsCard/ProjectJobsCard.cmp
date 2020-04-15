@@ -1,0 +1,204 @@
+<aura:component >
+    <ltng:require styles="{!$Resource.font_awesome +'/font-awesome/css/font-awesome.min.css'}"/>
+    <aura:attribute name="jobs" type="List" default="[]"/>
+     <aura:attribute name="projectId" type="String"/>
+    <aura:attribute name="visible" type="Boolean" default="true"/>
+    <aura:attribute name="removeJobAppEventId" type="String"/>
+    
+    <aura:attribute name="canDelete" type="Boolean" default="false"/>
+    <aura:method name="selectOne" action="{!c.onCheckOne}"/>
+   <aura:method name="unSelectCurrentCard" action="{!c.unSelectCurrentCard}">
+    <aura:attribute name="id" type="String" default=""/>
+  </aura:method>
+    <aura:method name="selectAll" action="{!c.onCheckAll}"/>
+   
+    <aura:registerEvent name="checkOneJobEvent" type="c:SimpleComponentEvent"/>
+    <aura:registerEvent name="actionRequest" type="c:ActionRequestAppEvent"/>
+    <aura:registerEvent name="showSpinnerEvent" type="c:SimpleComponentEvent"/>	
+    
+    <aura:registerEvent name="removeOneJobEvent" type="c:SimpleComponentEvent"/>
+    <div class="{!v.visible ? 'card-container show' : 'card-container hide'}" aura:id="cardContainer">
+        <aura:iteration items="{!v.jobs}" var="job">
+            <article  class="card slds-is-relative" data-id="{!job.Id}">
+                <div class="top-blue-status slds-p-left--x-small"><p>&nbsp;&nbsp;Status:&nbsp;{!job.JobStatus}</p></div>
+                <div class="slds-p-top--xx-small">   
+                <lightning:input type="checkbox" name="{!join('_','chkCard',job.Id)}" label="{!job.Id}" class="card-checkbox" checked="{!job.selected}" value="{!job.Id}" onchange="{!c.onCheckOne}"/>
+
+                    <!-- header -->
+                    <section class="slds-clearfix slds-m-bottom--x-small">
+                        <div class="slds-float--left slds-truncate">
+                            <div class="blue">
+                                <ul class="horizontal-list slds-has-divider--right">
+                                    <li><a onclick="{!c.onClickJobDetails}" data-id="{!job.Id}" class="job-title">{!job.JobName}</a></li>
+                                    <li><span class="slds-text-body--regular">({!job.ProjectServiceTitle})</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="slds-float--right">
+                            <aura:if isTrue="{!v.canDelete}">
+                                <a onclick="{!c.onClickDeleteCurrentJob}" href="javascript:void(0)" title="Delete Job" data-id="{!job.Id}">
+                                <lightning:icon class="red" size="xx-small" variant="error" iconName="utility:close" alternativeText="Delete Job"/>
+                                </a>
+                            </aura:if>
+                        </div>
+                    </section>
+                    <!-- address -->
+                    <section class="slds-m-bottom--x-small">
+    
+                        <ul class="horizontal-list slds-grid slds-text-body--small">
+                            <c:strike_tooltip placement="top-left"
+                                                text="Retailer">
+                                            
+                            <li class="slds-item"><span >{!job.Retailer}</span></li>
+ 	                        
+                            </c:strike_tooltip>
+                            
+                            <c:strike_tooltip placement="top-left"
+                                                text="Accountable Execution Company">
+                                            
+                             <li class="slds-item"><span >{!job.AccountableExecutionCompany}</span></li>
+ 	                        
+                            </c:strike_tooltip>
+                            
+                            <aura:if isTrue="{!job.IsExecuted}">
+                                <c:strike_tooltip placement="top-left"
+                                                text="Job Executed">
+                                              
+                                <li class="slds-item"> <span><i class="fa fa-check green" aria-hidden="true"></i>Executed</span></li>
+                                </c:strike_tooltip>
+                                
+                                <aura:set attribute="else">
+                                      <c:strike_tooltip placement="top-left"
+                                                text="Job Not Executed">
+                                              
+                                	<li class="slds-item"> <span> <i class="fa fa-times red" aria-hidden="true"></i>Executed</span></li>
+                                    </c:strike_tooltip>
+                                </aura:set>
+                            </aura:if>
+                              
+                            <aura:if isTrue="{!job.CompletionStatus == 'Completed'}">
+                                <c:strike_tooltip placement="top-left"
+                                                text="Job Completion Status">
+                                
+                                <li class="slds-item"> <span><i class="fa fa-check green" aria-hidden="true"></i>Completed</span></li>
+                                </c:strike_tooltip>
+                                <aura:set attribute="else">
+                                       <c:strike_tooltip placement="top-left"
+                                                text="Job  not Completed">
+                                	<li class="slds-item"> <span> <i class="fa fa-times red" aria-hidden="true"></i> Completed </span></li>
+                                    </c:strike_tooltip>
+                                </aura:set>
+                            </aura:if>
+                              <aura:if isTrue="{!!empty(job.ExceptionCode)}">
+                                   <c:strike_tooltip placement="top"
+                                                text="Job Exception">
+                                  
+                            	<li class="slds-item"> <span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{!job.ExceptionName}</span></li>   
+                                  </c:strike_tooltip>     
+                                </aura:if>
+                               <aura:if isTrue="{!!empty(job.CanceledReason)}">
+                                   <c:strike_tooltip placement="top"
+                                                text="Job Canceled Reason">
+                            	<li class="slds-item"> <span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{!job.CanceledReason}</span></li>  
+                                   </c:strike_tooltip>       
+                            </aura:if>
+        
+                        </ul>                                   
+        
+                    </section>
+                <!-- detail -->
+                <section class="slds-m-bottom--x-small">
+                    <div class="slds-grid slds-text-body--small slds-grid--align-spread">
+                        <div class="" style="width:35%;"> 
+                            <span >
+                                <c:strike_tooltip placement="top"
+                                                text="Location Number">
+                                                <i class="fa fa-map fa-lg gray slds-m-right--x-small" aria-hidden="true"></i>
+                                 {!job.LocationNumber}
+                                </c:strike_tooltip>
+                                <c:strike_tooltip placement="top"
+                                                text="Location Name"> &nbsp;&nbsp;- {!job.LocationName}
+                                </c:strike_tooltip>
+                            </span>
+                        </div>
+                        <aura:if isTrue="{!!empty(job.JobScheduledDate)}">
+                            <div> 
+                                <span>
+                                    <c:strike_tooltip placement="top"
+                                                text="The Job Schedule Date">
+                                                <i class="fa fa-calendar fa-lg gray slds-m-right--x-small"></i>
+                                    {!job.JobScheduledDate}
+                                    </c:strike_tooltip>
+                                   
+                                </span>
+                            </div>
+                            <aura:set attribute="else">
+                            	<div>
+                                    <span>
+                                    	<c:strike_tooltip placement="top"
+                                                text="The Job is not scheduled">
+                                                <i class="fa fa-calendar fa-lg gray slds-m-right--x-small"></i>
+                                        Not Scheduled
+                                        </c:strike_tooltip>
+                                        
+                                    </span>
+                                </div>
+                            </aura:set>
+                        </aura:if>
+                        <div> 
+                            <span>
+                                <c:strike_tooltip placement="top"
+                                                text="Estimated Minutes">
+                                                <i class="fa fa-clock-o gray fa-lg slds-m-right--x-small"></i>
+                                {!job.EstimatedMinutes}
+                                </c:strike_tooltip>
+                                
+                            </span>
+                        </div>      
+                        <aura:if isTrue="{!!empty(job.NumberOfWorkers)}">
+                            <div> 
+                                <span>
+                                    <c:strike_tooltip placement="top"
+                                                text="Number of Team Members">
+                                                <i class="fa fa-icon fa-users gray fa-lg slds-m-right--x-small"></i>
+                                    {!job.NumberOfWorkers}
+                                    </c:strike_tooltip>
+                                    
+                                </span>
+                            </div>
+                            <aura:set attribute="else">
+                            	<div> 
+                                    <span>
+                                        <c:strike_tooltip placement="top"
+                                                text="Number of Team Members">
+                                                <i class="fa fa-icon fa-users gray fa-lg slds-m-right--x-small"></i>
+                                                1
+                                        </c:strike_tooltip>
+                                        
+                                    </span>
+                                </div>
+                            </aura:set>
+                        </aura:if>
+                        <!--
+                        <aura:if isTrue="{!and(job.NumberOfWorkers==1,job.IsSingleRep)}">
+                            <div style="display:none;">
+                                <span>
+                                        <c:strike_tooltip placement="top"
+                                                text="Can Reattempt">
+                                                <i class="fa fa-icon fa-refresh gray fa-lg slds-m-right_x-small"></i>
+                                                Can Reattempt
+                                        </c:strike_tooltip>
+                                </span>
+                            </div>  
+                            <aura:set attribute="else">
+                                <div><span>&nbsp;</span></div>
+                            </aura:set>
+                        </aura:if>    -->                             
+                    </div>  
+
+                </section>
+                </div>
+            </article>
+        </aura:iteration>
+    </div>
+</aura:component>

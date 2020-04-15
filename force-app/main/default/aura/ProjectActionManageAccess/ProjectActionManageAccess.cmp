@@ -1,0 +1,122 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="ProjectAccountServiceAccessController">
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />    
+    <aura:registerEvent name="closeDialogEvent" type="c:SimpleComponentEvent"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />        
+    <aura:attribute name="ProjectServices" type="object" />
+    <aura:attribute type="String" name="callbackresult" default="NONE"></aura:attribute>
+    <aura:attribute type="String" name="callbackmessage"></aura:attribute>    
+    
+    <aura:attribute name="searchText" type="String" default=""/>
+    <aura:attribute type="list" name="recordIds" />
+    <aura:attribute name="ProjectAccoutServiceAcesses" type="object" default="null"/>    
+    <aura:attribute name="overrideAccess" type="Boolean" default="false" />    
+    
+    <aura:attribute type="integer" name="indxv" />
+    <aura:attribute type="integer" name="indxh" />
+    <aura:registerEvent name="refreshProject" type="c:EventProjectRefresh"/>    
+    
+    <div id="containerDiv" aura:id="containerDiv" style="display:flex;flex-direction:column;width:100%;padding-right:.5rem;position:relative;top: 1rem;overflow-x:auto;">
+        
+        <div class="spinner" aura:id="projectAccountSpinner">
+            <lightning:spinner size="medium" variant="brand" />
+        </div>       
+        <h1 id="title" class="slds-text-heading_medium title">Project Service Data Access Model</h1>    
+        <hr class="slds-m-vertical_medium" style=""></hr> 
+        <div style="top: 1rem;display: inline-block; vertical-align: top;">
+            <aura:if isTrue="{!v.callbackresult == 'SUCCESS' }">
+                <c:Notification aura:id="notification" class="no-flow" message="{!v.callbackmessage}" visible="true" hideCloseButton="True" type="success"/>
+                <br />                
+            </aura:if>        
+            <aura:if isTrue="{!v.callbackresult == 'ERROR' }">
+                <c:Notification aura:id="notification" class="no-flow" message="{!v.callbackmessage}" visible="true" hideCloseButton="True" type="error"/>
+                <br />
+            </aura:if>
+            <aura:if isTrue="{! or(v.ProjectAccoutServiceAcesses == null, v.ProjectAccoutServiceAcesses.length == 0)}">
+                <div style="">
+                    <c:Notification aura:id="notification" class="no-flow" message="Project has no account \ service." hideCloseButton="True" visible="true" type="warning"/>
+                    <br />
+                </div>                
+            </aura:if>
+            <!--<aura:if isTrue="{! and(v.ProjectAccoutServiceAcesses.length > 0, (!v.overrideAccess))}">
+                <div style="margin-left:-2rem;margin-right:-2rem;">
+                    <c:Notification aura:id="notification" class="no-flow" message="Project data access is set to default. To change please override the data access setting in project details page." hideCloseButton="True" visible="true" type="warning"/>
+                    <br />
+                </div>                
+            </aura:if>  -->
+        </div>
+        <aura:if isTrue="{!v.ProjectAccoutServiceAcesses.length > 0}">       
+            
+            <div class="slds-col" style="display:flex; flex-direction: row;">
+                Override default account and service access&nbsp;&nbsp;<ui:inputCheckbox value="{!v.overrideAccess}" aura:id="checkboxOverride" change="{!c.handleIsOverride}" />
+            </div>
+            <hr class="slds-m-vertical_small" style=""></hr> 
+            
+            <table class="table-header-rotated" style="overflow-y:hidden;max-width:36rem;width:100%;">             
+                <thead>         
+                    <tr>
+                        <aura:if isTrue="{! and(v.ProjectAccoutServiceAcesses.length > 1, v.ProjectServices.length > 1)}">
+                            <th></th>
+                            
+                            <aura:set attribute="else">
+                                <th></th>
+                            </aura:set>
+                        </aura:if>    
+                        
+                        <th class="header" style="vertical-align:bottom">Account \ Service</th>
+                        <aura:iteration items="{!v.ProjectServices}" var="service" indexVar="indv">
+                            <th class="rotate" title="{!service.Name}">
+                                <div>
+                                    <span>{!service.Name}</span>
+                                </div>                            
+                            </th> 
+                        </aura:iteration>
+                    </tr>
+                    <aura:if isTrue="{!v.ProjectAccoutServiceAcesses.length > 1}">
+                        <tr>    
+                            <th class="selectAll" title="Select All">
+                                <span>Select All</span>
+                            </th>                        
+                            <th class="selectAll"></th>
+                            <aura:iteration items="{!v.ProjectServices}" var="account" indexVar="indv">
+                                <th class="selectAll">
+                                    <ui:inputCheckbox aura:id="checkboxC" disabled="{! (!v.overrideAccess)}" text="{! 'C'+indv}" change="{!c.fireCheckAllCheckboxes}" />                            
+                                </th> 
+                            </aura:iteration>
+                        </tr>
+                    </aura:if>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.ProjectAccoutServiceAcesses}" var="p" indexVar="indx">
+                        <tr>
+                            <td class="checkbox-column" >
+                                <ui:inputCheckbox aura:id="checkboxR" disabled="{! (!v.overrideAccess)}" text="{! 'R'+indx}" change="{!c.fireCheckAllCheckboxes}" />
+                            </td>
+                            <td class="row-header" title="{!p.AccountName}">
+                                {!p.AccountName}
+                            </td>
+                            <aura:iteration items="{!p.ProjectAccountService}" var="pas" indexVar="indxh">
+                                <td class="checkbox-column" style="text-align:center;">
+                                    <ui:inputCheckbox value="{!pas.Access}"  change="{!c.refreshAcessList}" disabled="{! (!v.overrideAccess)}"  />
+                                </td>
+                            </aura:iteration>                        
+                        </tr>            
+                    </aura:iteration>
+                </tbody>
+            </table>            
+            <aura:set attribute="else">
+                <div style="height:100px;" ></div>
+            </aura:set>
+            
+        </aura:if>
+        <div class="oh-button-foot" style="margin-top:auto;margin-bottom:2rem;">                 
+            <div class="slds-p-vertical_medium slds-p-right_medium" style="width:100%;">
+                <div class="slds-grid slds-float_right">                    
+                    <aura:if isTrue="{! and(v.ProjectAccoutServiceAcesses != null, v.ProjectAccoutServiceAcesses.length > 0)}">
+                        <lightning:button iconName="utility:check" label="Save" variant="brand" onclick="{! c.handleSaveClick }" />
+                    </aura:if>
+                    <lightning:button iconName="utility:close" label="Cancel" variant="brand" onclick="{! c.handleCancelClick }" />                     
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

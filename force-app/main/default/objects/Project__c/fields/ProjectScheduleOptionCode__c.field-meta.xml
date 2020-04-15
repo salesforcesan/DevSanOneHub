@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProjectScheduleOptionCode__c</fullName>
+    <description>Code that specifies the Schedule Option for a Project. Reference this field within APEX where functionality is determined based upon Schedule Option, such as who sets the Schedule Date for a specific Job. The Code should not be visible in page layouts for Users. Use the Project Schedule Option Name within Reporting and the Project Schedule Option within page layouts.</description>
+    <externalId>false</externalId>
+    <formula>ProjectScheduleOption__r.Code__c</formula>
+    <label>Project Schedule Option Code</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

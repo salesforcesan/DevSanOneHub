@@ -1,0 +1,25 @@
+.THIS .content-container {
+    padding: 20px;
+}
+.THIS .slds-text-heading--medium {
+    color:#0070D2;
+}
+.THIS .header-offset {
+    top: 9em;
+}
+.THIS .close-modal-icon {
+    font-size: 2em;
+}
+.THIS .modal-container {
+    /* top: 133px; */
+    
+}
+.THIS .slds-modal__close-container {
+    float: right;
+}
+.THIS .slds-modal__close {
+    position: relative;
+    top: 0;
+    right: 0;
+    float: right;
+}

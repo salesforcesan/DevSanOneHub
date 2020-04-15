@@ -1,0 +1,557 @@
+<aura:component extends="c:Remotable" controller='LightningGatewayController' extensible="true">
+    <!-- properties -->
+    <aura:attribute name="appState" type="Map" default="{}"/>
+    <aura:attribute name="services" type="List" default="[]" access="private"/>
+    <aura:attribute name="questions" type="List" default="[]" access="private"/>
+    <aura:attribute name="targets" type="List" default="[]" access="private"/>
+    <aura:attribute name="currentProjectId" type="String" default="" access="private"/>
+    <aura:attribute name="currentAccountId" type="String" access="private" default=""/>
+    <aura:attribute name="visible" type="boolean" default="false"/>
+    <aura:attribute name="loaded" type="boolean" default="false" access="private" />
+    <aura:attribute name="skipCityChanged" type="boolean" default="false" access="private"/>
+    <aura:attribute name="showUnmatchedCheckbox" type="boolean" default="false" access="private"/>
+    <aura:attribute name="lookupReady" type="boolean" default="false"/>
+    <aura:attribute name="checkboxOptions" type="List" default="[]" access="private"/>
+    <aura:attribute name="checkboxValues" type="List" access="private" default="[]"/>
+    <aura:attribute name="serviceId" type="String" access="private" default=""/>
+    <aura:attribute name="locationId" type="String" access="private" default=""/>
+    <aura:attribute name="city" type="String" access="private" default=""/>
+    <aura:attribute name="startDate" type="String" access="private" default=""/>
+    <aura:attribute name="endDate" type="String" access="private" default=""/>
+    <aura:attribute name="showUnMatched" type="Boolean" access="private" default="false"/>
+    <aura:attribute name="filter" type="Map" access="private" default="{}"/>
+    <aura:attribute name="btnSearchDisabled" type="boolean" access="private" default="true"/>
+    <aura:attribute name="filterChangeSource" type="string" access="private" default=""/>
+    <aura:attribute name="isAdvancedSearch" type="boolean" access="private" default="false"/>
+    <aura:attribute name="repFilter" type="string" access="private" default="" />
+
+    <!-- event -->
+    <aura:registerEvent name="onFilterChanged" type="c:SimpleComponentEvent"/>
+    <aura:registerEvent name="onFilterClear" type="c:SimpleComponentEvent"/>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+    <aura:handler name="change" value="{! v.startDate }" action="{! c.onStartDateChanged }"/>
+    <aura:handler name="change" value="{! v.endDate }" action="{! c.onEndDateChanged }"/>
+    <aura:handler name="change" value="{! v.filter }" action="{! c.onFilterChanged }"/>
+    <aura:handler name="change" value="{! v.appState }" action="{! c.onAppStateChanged }"/>
+    <aura:handler name="change" value="{! v.city}" action="{! c.onCityChanged}"/>
+    <aura:handler name="onDropdownListOptionChanged"
+        event="c:SimpleComponentEvent" action="{! c.onDropdownChanged }"/>
+    <aura:handler name="onStateChanged" event="c:SimpleComponentEvent"
+        action="{! c.onStateChanged }"/>
+    <aura:handler name="render" value="{! this }" action="{! c.onRender}"/>
+
+    <!-- html template -->
+    <div>
+        <div class="oh-container slds-grid oh-flex-vertical">
+             <aura:if isTrue="{!v.appState.usage == 'Project Builder'}">
+                <div class="slds-grid slds-is-relative" style="align-items:center;" onclick="{!c.toggleFilters}">
+                    <div class="button-toggle">
+                        <lightning:buttonIcon iconName="utility:filterList" variant="bare" size="large" alternativeText="filter" iconClass=""  />
+                    </div>
+                    <h2>Filters</h2>
+                </div>
+                 <aura:set attribute="else">
+                    <div class="slds-grid slds-grow">
+                        <span class="oh-title">Toggle Filters</span>
+                    </div>
+                 </aura:set>
+            </aura:if>
+
+            <div class="slds-size_1-of-1 oh-flex-vertical slds-wrap">
+                <aura:if isTrue="{!v.appState.usage == 'Project Builder'}">
+                    <div aura:id="filtersPB" class="oh-hide slds-grid slds-wrap">
+ 						<div class="slds-size_4-of-12 slds-p-around_xx-small">
+                            <c:DropdownList
+                                id="serviceId"
+                                options="{! v.services }"
+                                label=""
+                                value="{! v.filter.serviceId }"
+                                defaultValue=""
+                                class="oh-dropdown"
+                                defaultLabel = "-- All Services --"
+                                ></c:DropdownList>
+                        </div> 
+                        <!--
+                        <div class="slds-size_4-of-12  slds-p-around_xx-small">
+                             <c:DropdownList
+                                id="questionId"
+                                options="{! v.questions }"
+                                label=""
+                                value="{! v.filter.questionId }"
+                                defaultValue=""
+                                class="oh-dropdown"
+                                defaultLabel = "- All Questions -"
+                                ></c:DropdownList>
+                        </div>-->
+                         <div class="slds-size_4-of-12 slds-p-around_xx-small">
+                                    <lightning:select name="question" label="" aura:id="questionSelect" value="{!v.filter.questionId}" onchange="{!c.onchangeQuestion}">
+                                        <option text="--All Questions--" value="" />
+                                        <aura:iteration items="{!v.questions}" var="option">
+                                            <aura:if isTrue="{!or(empty(option.ai),option.ai == 'null')}">
+                                                <option text="{!option.value}" value="{!option.key}" /><!--selected="{!option.Selected}" -->
+                                                <aura:set attribute="else">
+                                                   <option text="{!'AI: ' + option.value}" value="{!option.key}" />
+                                                </aura:set>
+                                            </aura:if>
+                                        </aura:iteration>
+                                    </lightning:select>
+                           </div>
+                        <aura:if isTrue="{!v.showUnmatchedCheckbox}">
+                            <div class="slds-size_4-of-12 slds-p-around_xx-small">
+                                <div class="oh-flex-box">
+                                	<lightning:input aura:id="unclassified" name="showUnMatched" type="checkbox" class="oh-show-label" label="Show unmatched AI images" onchange="{! c.onShowUnmatched }"></lightning:input>
+                                </div>
+                            </div>
+                        </aura:if>
+                        <div class="slds-size_4-of-12  slds-p-around_xx-small">
+                            <c:strike_lookup aura:id="locationId"
+                                class="oh-lookup"
+                                value="{! v.filter.locationId }"
+                                searchField="CMKOneHub__Title__c"
+                                placeholder="Location #"
+                                iconName="standard:address"
+                                label="Location"
+                                order="Name"
+                                limit="{! v.appState.lookupSize}"
+                                object="CMKOneHub__Location__c"></c:strike_lookup>
+                        </div>
+                        <div class="slds-size_4-of-12 slds-p-around_xx-small">
+                            <div class="oh-datepicker">
+                                <c:strike_datepicker aura:id="startDate"
+                                    valueFormat="yyyy-MM-dd"
+                                    value="{! v.filter.startDate }"
+                                    placeholder="Reported Date - Start"
+                                    errorMessage="Invalid input"
+                                    label="Start Date"></c:strike_datepicker>
+                            </div>
+                        </div>
+                        <div class="slds-size_4-of-12 slds-p-around_xx-small">
+                            <div class="oh-datepicker">
+                                <c:strike_datepicker aura:id="endDate"
+                                    valueFormat="yyyy-MM-dd"
+                                    value="{! v.filter.endDate }"
+                                    placeholder="Reported Date - End"
+                                    disabled="false"
+                                    label="End Date"></c:strike_datepicker>
+                            </div>
+                        </div>
+                    <aura:if isTrue="{!v.isAdvancedSearch}">
+                         <div class="slds-size_4-of-12 slds-p-around_xx-small">
+                            <c:DropdownList
+                                id="targetId"
+                                options="{! v.targets }"
+                                label=""
+                                value="{! v.filter.targetId }"
+                                defaultValue=""
+                                class="oh-dropdown"
+                                defaultLabel = "-- All Targets --"
+                                ></c:DropdownList>
+                        </div>
+                        <div class="slds-size_4-of-12 slds-p-around_xx-small">
+                            <c:strike_lookup aura:id="repId"
+                                class="oh-lookup"
+                                value="{! v.filter.repId }"
+                                searchField="Name"
+                                placeholder="Representative"
+                                iconName="standard:avatar"
+                                label="Representative"
+                                filter="{! v.repFilter}"
+                                order="Name"
+                                limit="{! v.appState.lookupSize}"
+                                object="Contact"></c:strike_lookup>
+                        </div>
+                        <div class="slds-size_4-of-12 slds-p-around_xx-small">
+                           <c:StateDropDownList
+                                label=""
+                                class="oh-dropdown"
+                                defaultValue=""
+                                defaultLabel="-- All States --"
+                                aura:id="state"
+                                value="{! v.filter.state }"
+                            ></c:StateDropDownList>
+                        </div>
+                        <div class="slds-size_4-of-12 slds-p-around_xx-small">
+                            <lightning:input aura:id="city" type="text" value="{! v.city}" class="oh-dropdown" placeholder="City">
+                            </lightning:input>
+                        </div>
+                    
+                    <div class="slds-grid slds-p-bottom_x-small">
+                         <div class="slds-col slds-size_4-of-12 slds-p-around_xx-small">
+                            <lightning:input aura:id="chkUserFavorite" name="showFavoritePhotos" type="checkbox" class="oh-show-label" label="Client Favorites" onchange="{! c.onShowUserFavoritePhotos }"></lightning:input>
+                        </div>
+                        <div class="slds-col slds-size_4-of-12 slds-p-around_xx-small">
+                          <lightning:input aura:id="chkFavorite" name="showFavoritePhotos" type="checkbox" class="oh-show-label" label="CMK Favorites" onchange="{! c.onShowFavoritePhotos }"></lightning:input>
+                        </div>
+                        <div class="slds-col slds-size_4-of-12 oh-middle-item no-rpad slds-p-around_xx-small">
+                            <lightning:input aura:id="chkDuplicated" name="showDuplicatedPhotos" type="checkbox" class="oh-show-label" label="Duplicated Photos" onchange="{! c.onShowDuplicatedPhotos }"></lightning:input>
+                       </div>
+                    </div>
+                    </aura:if>
+                    <div class="slds-grid slds-size_1-of-1 slds-p-around_xx-small">
+                     <lightning:button variant="base" label="{! v.isAdvancedSearch ? 'Basic Filter' : 'Advanced Filter'}" title="{! v.isAdvancedSearch ? 'Basic Filter' : 'Advanced Filter'}" onclick="{! c.onAdvanceClick }"/>
+                     </div>
+                        <div class="slds-grid slds-p-bottom_x-small">
+                        <div class="slds-col slds-size_12-of-12 slds-text-align_right">
+                             <lightning:button variant="brand" label="Search" title="Apply Filter" class="slds-p-right-small"
+                                        onclick="{! c.onApplyFilter}" disabled="{! v.btnSearchDisabled}"/>
+                                    <lightning:button label="Clear" title="Clear Filter" 
+                                        disabled="{! v.btnSearchDisabled }"
+                                        onclick="{! c.onClearFilter}" />
+                        </div>
+                     </div>
+                 </div>
+                <aura:set attribute="else">
+                    <aura:if isTrue="{! v.appState.usage == 'Internal User'}">
+                        <!-- row -->
+                            <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                               <c:strike_lookup aura:id="accountId"
+                                    class=" oh-lookup "
+                                    value="{! v.filter.accountId }"
+                                    searchField="Name"
+                                    placeholder="Account"
+                                    iconName="standard:account"
+                                    object="Account"
+                                    order="Name"
+                                    limit="{! v.appState.lookupSize}"
+                                    label="Account"
+                                    >
+                                </c:strike_lookup>
+                            </div>
+                            <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                <div class="oh-datepicker">
+                                    <c:strike_datepicker aura:id="startDate"
+                                        valueFormat="yyyy-MM-dd"
+                                        value="{! v.startDate }"
+                                        placeholder="Reported Date - Start"
+                                        errorMessage="Invalid input"
+                                        label="Start Date"></c:strike_datepicker>
+                                </div>
+                            </div>
+                            <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                <div class="oh-datepicker">
+                                    <c:strike_datepicker aura:id="endDate"
+                                        valueFormat="yyyy-MM-dd"
+                                        value="{! v.endDate }"
+                                        placeholder="Reported Date - End"
+                                        disabled="false"
+                                        label="End Date"></c:strike_datepicker>
+                                </div>
+                            </div>
+                        <!--row-->
+                            <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                    <c:strike_lookup aura:id="programId"
+                                    class="oh-lookup"
+                                    value="{! v.filter.programId }"
+                                    searchField="Name"
+                                    placeholder="Program Name"
+                                    iconName="standard:channel_programs"
+                                    label="Program"
+                                    order="Name"
+                                    limit="{! v.appState.lookupSize}"
+                                    object="CMKOneHub__Program__c"></c:strike_lookup>
+                            </div>
+                            <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                <c:strike_lookup aura:id="projectNumber"
+                                    class=" oh-lookup "
+                                    value="{! v.filter.projectNumber }"
+                                    searchField="CMKOneHub__ProjectNumber__c"
+                                    placeholder="Project ID #"
+                                    iconName="custom:custom93"
+                                    object="CMKOneHub__project__c"
+                                    order="Name"
+                                    limit="{! v.appState.lookupSize}"
+                                    label="Project"
+                                    >
+                                </c:strike_lookup>
+                            </div>
+                        <!-- row -->
+                         	<div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                <c:strike_lookup aura:id="projectId"
+                                    class=" oh-lookup "
+                                    value="{! v.filter.projectId }"
+                                    searchField="Name"
+                                    placeholder="Project Title"
+                                    iconName="custom:custom93"
+                                    object="CMKOneHub__project__c"
+                                    order="Name"
+                                    limit="{! v.appState.lookupSize}"
+                                    label="Project"
+                                    >
+                                </c:strike_lookup>
+                            </div>
+                         <aura:if isTrue="{!not(empty(v.services))}">
+                            <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                 <div class="oh-left-pad16">
+                                <c:DropdownList
+                                    id="serviceId"
+                                    options="{! v.services }"
+                                    label=""
+                                    value="{! v.filter.serviceId }"
+                                    defaultValue=""
+                                    class="oh-dropdown"
+                                    defaultLabel = "-- All Services --"
+                                    ></c:DropdownList>
+                                </div>
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!not(empty(v.targets))}">
+                       	    <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                <div class="oh-left-pad32">
+                                    <c:DropdownList
+                                        id="targetId"
+                                        options="{! v.targets }"
+                                        label=""
+                                        value="{! v.filter.targetId }"
+                                        defaultValue=""
+                                        class="oh-dropdown"
+                                        defaultLabel = "-- All Targets --"
+                                        ></c:DropdownList>
+                                </div>
+                            </div>
+                        </aura:if>
+                       <aura:if isTrue="{!not(empty(v.questions))}">
+                            <!--<div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                <div class="oh-left-pad32">
+                                <c:DropdownList
+                                    id="questionId"
+                                    options="{! v.questions }"
+                                    label=""
+                                    value="{! v.filter.questionId }"
+                                    defaultValue=""
+                                    class="oh-dropdown"
+                                    defaultLabel = "- All Questions -"
+                                    ></c:DropdownList>
+                                </div>
+                            </div>-->
+                           <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                <div class="oh-left-pad32">
+                                    <lightning:select name="question" label="" aura:id="questionSelect" value="{!v.filter.questionId}" onchange="{!c.onchangeQuestion}">
+                                        <option text="--All Questions--" value="" />
+                                        <aura:iteration items="{!v.questions}" var="option">
+                                            <aura:if isTrue="{!or(empty(option.ai),option.ai == 'null')}">
+                                                <option text="{!option.value}" value="{!option.key}" /><!--selected="{!option.Selected}" -->
+                                                <aura:set attribute="else">
+                                                   <option text="{!'AI: ' + option.value}" value="{!option.key}" />
+                                                </aura:set>
+                                            </aura:if>
+                                        </aura:iteration>
+                                    </lightning:select>
+                               </div>
+                           </div>
+                        <aura:if isTrue="{!v.showUnmatchedCheckbox}">
+                          <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                <div class="oh-flex-box">
+                                	<lightning:input aura:id="unclassified" name="showUnMatched" type="checkbox" class="oh-show-label" label="Show unmatched AI images" onchange="{! c.onShowUnmatched }"></lightning:input>
+                                </div>
+                            </div>
+                        </aura:if>
+                        </aura:if>
+                            <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                <c:strike_lookup aura:id="locationId"
+                                    class=" oh-lookup "
+                                    value="{! v.filter.locationId }"
+                                    searchField="CMKOneHub__Title__c"
+                                    placeholder="Location #"
+                                    iconName="standard:address"
+                                    label="Location"
+                                    order="Name"
+                                    limit="{! v.appState.lookupSize}"
+                                    object="CMKOneHub__Location__c"></c:strike_lookup>
+                            </div>
+                        <!-- row -->
+
+                            <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                <c:StateDropDownList
+                                    label=""
+                                    class="oh-dropdown"
+                                    defaultValue=""
+                                    defaultLabel="-- All States --"
+                                    aura:id="state"
+                                    value="{! v.filter.state }"
+                                ></c:StateDropDownList>
+                            </div>
+                            <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                <lightning:input class="oh-dropdown" aura:id="city" type="text" value="{! v.city}" placeholder="City">
+                             </lightning:input>
+                            </div>
+                        <!-- row -->
+
+                            <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                <c:strike_lookup aura:id="repId"
+                                    class="oh-lookup"
+                                    value="{! v.filter.repId }"
+                                    searchField="Name"
+                                    placeholder="Representative"
+                                    iconName="standard:avatar"
+                                    label="Representative"
+                                    order="Name"
+                                    filter="{! v.repFilter}"
+                                    limit="{! v.appState.lookupSize}"
+                                    object="Contact"></c:strike_lookup>
+                            </div>
+                            <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                <div class="oh-flex-box">
+                                <lightning:input aura:id="chkUserFavorite" name="showFavoritePhotos" type="checkbox" class="oh-show-label" label="Client Favorites" onchange="{! c.onShowUserFavoritePhotos }"></lightning:input>
+                                <lightning:input aura:id="chkFavorite" name="showFavoritePhotos" type="checkbox" class="oh-show-label" label="CMK Favorites" onchange="{! c.onShowFavoritePhotos }"></lightning:input>
+                                <lightning:input aura:id="chkDuplicated" name="showDuplicatedPhotos" type="checkbox" class="oh-show-label" label="Duplicate Photos" onchange="{! c.onShowDuplicatedPhotos }"></lightning:input>
+                                </div>
+                            </div>
+                        <!-- row -->
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_right">
+                                <lightning:button variant="brand" label="Search" title="Apply Filter" 
+                                        onclick="{! c.onApplyFilter}" disabled="{! v.btnSearchDisabled}"/>
+                                    <lightning:button label="Clear" title="Clear Filter" 
+                                        disabled="{! v.btnSearchDisabled}"
+                                        onclick="{! c.onClearFilter}" />
+                            </div>
+                        </div>
+                        <aura:set attribute="else">
+                            <!-- row -->
+                                <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                    <c:strike_lookup aura:id="projectId"
+                                        class=" oh-lookup "
+                                        value="{! v.filter.projectId }"
+                                        searchField="Name"
+                                        placeholder="Project Title"
+                                        iconName="custom:custom93"
+                                        object="CMKOneHub__Project__c"
+                                        order="Name"
+                                        limit="{! v.appState.lookupSize}"
+                                        label="Project"
+                                        >
+                                </c:strike_lookup>
+                                </div>
+                                <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                    <div class="oh-datepicker">
+                                        <c:strike_datepicker aura:id="startDate"
+                                            valueFormat="yyyy-MM-dd"
+                                            value="{! v.startDate }"
+                                            placeholder="Reported Date - Start"
+                                            errorMessage="Invalid input"
+                                            label="Start Date"></c:strike_datepicker>
+                                    </div>
+                                </div>
+                                <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                    <div class="oh-datepicker">
+                                        <c:strike_datepicker aura:id="endDate"
+                                            valueFormat="yyyy-MM-dd"
+                                            value="{! v.endDate }"
+                                            placeholder="Reported Date - End"
+                                            disabled="false"
+                                            label="End Date"></c:strike_datepicker>
+                                    </div>
+                                </div>
+                            <!--row-->
+                            <aura:if isTrue="{!not(empty(v.services))}">
+                                <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                    <div class="oh-left-pad16">
+                                    <c:DropdownList
+                                        id="serviceId"
+                                        options="{! v.services }"
+                                        label=""
+                                        value="{! v.filter.serviceId }"
+                                        defaultValue=""
+                                        class="oh-dropdown"
+                                        defaultLabel = "-- All Services --"
+                                        ></c:DropdownList>
+                                    </div>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!not(empty(v.targets))}">
+                             	<div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                    <div class="oh-left-pad32">
+                                    <c:DropdownList
+                                        id="targetId"
+                                        options="{! v.targets }"
+                                        label=""
+                                        value="{! v.filter.targetId }"
+                                        defaultValue=""
+                                        class="oh-dropdown"
+                                        defaultLabel = "-- All Targets --"
+                                        ></c:DropdownList>
+                                    </div>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!not(empty(v.questions))}">
+                                <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                    <div class="oh-left-pad32">
+                                    <c:DropdownList
+                                        id="questionId"
+                                        options="{! v.questions }"
+                                        label=""
+                                        value="{! v.filter.questionId }"
+                                        defaultValue=""
+                                        class="oh-dropdown"
+                                        defaultLabel = "-- All Questions --"
+                                        ></c:DropdownList>
+                                    </div>
+                                </div>
+                            </aura:if>
+                                <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                    <c:strike_lookup aura:id="locationId"
+                                        class=" oh-lookup "
+                                        value="{! v.filter.locationId }"
+                                        searchField="CMKOneHub__Title__c"
+                                        placeholder="Location #"
+                                        iconName="standard:address"
+                                        label="Location"
+                                        order="Name"
+                                        limit="{! v.appState.lookupSize}"
+                                        object="CMKOneHub__Location__c"></c:strike_lookup>
+                                </div>
+                            <!-- row -->
+                               
+                                <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                         <c:StateDropDownList
+                                        label=""
+                                        class="oh-dropdown"
+                                        defaultValue=""
+                                        defaultLabel="-- All States --"
+                                        aura:id="state"
+                                        value="{! v.filter.state }"
+                                    ></c:StateDropDownList>
+                                </div>
+                                <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                    <lightning:input class="oh-dropdown" aura:id="city" type="text" value="{! v.city}" placeholder="City">
+                                        </lightning:input>
+                                </div>
+                            <!-- row -->
+
+                                <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                        <c:strike_lookup aura:id="programId"
+                                        class="oh-lookup"
+                                        value="{! v.filter.programId }"
+                                        searchField="Name"
+                                        placeholder="Program Name"
+                                        iconName="standard:channel_programs"
+                                        label="Program"
+                                        order="Name"
+                                        limit="{! v.appState.lookupSize}"
+                                        object="CMKOneHub__Program__c"></c:strike_lookup>
+                                </div>
+                                <div class="slds-size_1-of-1 slds-p-bottom_x-small">
+                                    <div class="oh-flex-box">
+                                        <lightning:input aura:id="chkUserFavorite" name="showFavoritePhotos" type="checkbox" class="oh-show-label" label="Client Favorites" onchange="{! c.onShowUserFavoritePhotos }"></lightning:input>
+                                        <lightning:input aura:id="chkFavorite" name="showFavoritePhotos" type="checkbox" class="oh-show-label" label="CMK Favorites" onchange="{! c.onShowFavoritePhotos }"></lightning:input>
+                                    </div>
+                                </div>
+                            <!-- row -->
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_12-of-12 slds-text-align_right">
+                                    <lightning:button variant="brand" label="Search" title="Apply Filter" 
+                                        onclick="{! c.onApplyFilter}" disabled="{! v.btnSearchDisabled}"/>
+                                    <lightning:button label="Clear" title="Clear Filter" 
+                                        disabled="{! v.btnSearchDisabled}"
+                                        onclick="{! c.onClearFilter}" />
+                                </div>
+                            </div>
+                        </aura:set>
+                    </aura:if>
+                </aura:set>
+                </aura:if>
+                <!--- end of row -->
+            </div>
+        </div>
+    </div>
+</aura:component>

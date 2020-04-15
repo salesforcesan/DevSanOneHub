@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsRescheduled__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>The checkbox that indicates that the Job is rescheduled.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>If selected, the job is rescheduled.</inlineHelpText>
+    <label>Rescheduled</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,120 @@
+<div ng-controller="ProjectServiceViewController" class="container" id="masterContainer">
+<div class="main ng-cloak" role="main">
+  <!-- page header -->
+  <section class="slds-page-header" role="banner" id="pageHeader">
+
+    <nav class="slds-m-bottom--xx-small" role="navigation">
+       <p id="bread-crumb-label" class="slds-assistive-text">You are here:</p>
+       <ol class="slds-breadcrumb slds-list--horizontal" aria-labelledby="bread-crumb-label">
+         <li class="slds-list__item slds-text-heading--label"><a href="#" ng-click="goBackProjectView($event)">Project</a></li>
+         <li class="slds-list__item slds-text-heading--label"><span class="slds-m-left--x-small">{{headerVM.projectTitle}}</span></li>
+       </ol>
+    </nav>
+    <div class="slds-grid">
+      <div class="slds-col slds-has-flexi-truncate">
+        <div class="slds-media">
+          <div class="slds-media__figure">
+            <svg aria-hidden="true" class="slds-icon slds-icon--large slds-icon-custom-43">
+              <use ng-href="{{resourcePath}}assets/icons/custom-sprite/svg/symbols.svg#custom43" xlink:href=""></use>
+            </svg>
+          </div>
+          <div class="slds-media__body">
+            <p class="slds-text-heading--label">Project Service</p>
+              <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Service Title">{{headerVM.title}}</h1>
+          </div>
+        </div>
+      </div>
+      <div class="slds-col slds-no-flex slds-align-bottom">
+              <div class="slds-button-group" role="group">
+                <button class="slds-button slds-button--neutral" ng-click="onEditProject()">
+                  <span>
+                    <svg aria-hidden="true" class="slds-button__icon--stateful slds-button__icon--left">
+                      <use ng-href="{{resourcePath}}assets/icons/utility-sprite/svg/symbols.svg#edit" xlink:href=""></use>
+                    </svg>Edit</span>
+                </button>
+                <button class="slds-button slds-button--neutral" ng-click="onPreviewEventManual()">
+                    <span>
+                      <svg aria-hidden="true" class="slds-button__icon--stateful slds-button__icon--left">
+                        <use ng-href="{{resourcePath}}assets/icons/utility-sprite/svg/symbols.svg#cases" xlink:href=""></use>
+                      </svg>Preview Event Manual</span>
+                </button>
+              </div>
+      </div>
+    </div>
+    <div class="slds-grid slds-page-header__detail-row">
+                    <div class="slds-col--padded slds-size--1-of-4">
+                      <dl>
+                        <dt>
+                          <p class="slds-truncate" title="Field 1">Responsible For Execution</p>
+                        </dt>
+                        <dd>
+                          <p class="slds-text-body--regular slds-truncate" title="Supplier">{{headerVM.executor}}</p>
+                        </dd>
+                      </dl>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-4">
+                      <dl>
+                        <dt>
+                          <p class="slds-text-heading--label slds-truncate" title="Type">Target Type
+                          </p>
+                        </dt>
+                        <dd>
+                          <p class="slds-text-body--regular">{{headerVM.targetType}}</p>
+                        </dd>
+                      </dl>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-4">
+                      <dl>
+                        <dt>
+                          <p class="slds-text-heading--label slds-truncate" title="Status">Status</p>
+                        </dt>
+                        <dd><span class="slds-badge {{headerVM.statusCSS}}">{{headerVM.status}}</span></dd>
+                      </dl>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-4">
+                      <dl>
+                        <dt>
+                          <p class="slds-text-heading--label slds-truncate" title="Execution Date Range">Estimated duration per day</p>
+                        </dt>
+                        <dd>
+                          <p>
+                            <span>{{headerVM.duration}}</span>
+                          </p>
+                        </dd>
+                      </dl>
+                    </div>
+                  </div>
+  </section>
+  <!-- page body -->
+  <section aria-labelledby="pageBody">
+        <div id="pageBody">
+          <div class="slds-grid cm-row slds-wrap">
+            <div class="slds-col slds-size--12-of-12 slds-small-size--1-of-1 slds-medium-size--6-of-6 slds-large-size--12-of-12">
+              <div class="slds-tabs--default" id="projectServiceTabContainer">
+                <ul class="slds-tabs--default__nav" role="tablist">
+                  <li class="slds-tabs__item slds-text-heading--label" ng-class='{"slds-active": tabVM.selDetailTab}' title="Detail" role="presentation">
+                    <a href="#" ng-click="tabClicked('detail')" role="tab" tabindex="0" aria-selected="{{tabVM.selDetailTab}}" aria-controls="tab-default-1">Detail</a>
+                  </li>
+                  <li class="slds-tabs__item slds-text-heading--label" ng-class='{"slds-active": tabVM.selSurveyTab}'  title="Survey Questions" role="presentation">
+                    <a href="#" role="tab" ng-click="tabClicked('surveyQuestions')" tabindex="-1" aria-selected="{{tabVM.selSurveyTab}}" aria-controls="tab-default-1">
+                      Survey Questions<span class="slds-badge slds-theme--success slds-m-left--xx-small">{{tabVM.surveyCount}}</span></a></li>
+                  <li class="slds-tabs__item slds-text-heading--label" ng-class='{"slds-active": tabVM.selItemTab}'  title="Items" role="presentation">
+                        <a href="#" role="tab" ng-click="tabClicked('items')" tabindex="-1" aria-selected="{{tabVM.selItemTab}}" aria-controls="tab-default-1">
+                          Items<span class="slds-badge slds-theme--shade slds-m-left--xx-small">{{tabVM.itemCount}}</span></a></li>
+                  <li class="slds-tabs__item slds-text-heading--label" ng-class='{"slds-active": tabVM.selMaterialTab}'  title="Materials" role="presentation">
+                            <a href="#" role="tab" ng-click="tabClicked('materials')" tabindex="-1" aria-selected="{{tabVM.selMaterialTab}}" aria-controls="tab-default-1">
+                              Materials<span class="slds-badge slds-theme--warning slds-m-left--xx-small">{{tabVM.materialCount}}</span></a></li>
+                  <li class="slds-tabs__item slds-text-heading--label" ng-class='{"slds-active": tabVM.selEquipmentTab}'  title="Equipments" role="presentation">
+                                <a href="#" role="tab" ng-click="tabClicked('equipments')" tabindex="-1" aria-selected="{{tabVM.selEquipmentTab}}" aria-controls="tab-default-1">
+                                  Equipments<span class="slds-badge slds-theme--alt-inverse slds-m-left--xx-small">{{tabVM.equipmentCount}}</span></a></li>
+                </ul>
+                <div id="tab-default-1" class="slds-tabs__content slds-show" role="tabpanel">
+                   <ui-view class="cm-ui-view" ng-cloak></ui-view>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

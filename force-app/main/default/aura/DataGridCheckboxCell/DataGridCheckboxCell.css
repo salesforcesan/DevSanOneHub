@@ -1,0 +1,5 @@
+.THIS {}
+
+.THIS .card-checkbox .slds-form-element__label {
+  display: none;
+}

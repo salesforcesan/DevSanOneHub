@@ -1,0 +1,29 @@
+.THIS .slds-card {
+   height: auto;
+    position: relative;
+}
+.THIS .slds-card__body {
+    width: 50%;
+    height: 50%;
+    margin:10px 0 10px 10px;
+    top: 0; left: 0; bottom: 0; right: 0;
+    font-size: 1em;
+}
+
+.THIS .oh-border-top {
+    border-top:1px solid #5a88bb;
+}
+
+.THIS .card-iteration {
+
+}
+.THIS .be-a-link {
+    cursor: pointer;
+    color: blue;
+}
+.THIS .be-a-link:hover {
+    text-decoration: underline;
+}
+.THIS .oh-component-spinner-wrap .slds-spinner{
+    top:10vh;
+}

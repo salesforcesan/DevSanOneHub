@@ -1,0 +1,40 @@
+.THIS.container>header {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.THIS.container>.body {
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px;
+}
+
+.THIS.container>.body .card {
+  display: block;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  padding: 30px;
+  margin: 10px;
+  width: 140px;
+  height: 120px;
+  font-size: 0.75rem;
+  background-color: #0070d2;
+  color: #fff;
+}
+
+.THIS.container>.body .card:hover {
+  background-color: #005fb2;
+}
+
+.THIS.container>.body .card:link,
+.THIS.container>.body .card:hover,
+.THIS.container>.body .card:visited,
+.THIS.container>.body .card:active {
+  text-decoration: none;
+}
+
+.THIS.container>.body .card>i,
+.THIS.container>.body .card>span {
+  display: block;
+  text-align: center;
+}

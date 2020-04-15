@@ -1,0 +1,124 @@
+.THIS hr {
+    border: 0;
+    background-color: #D8DDE6;
+    margin: .2rem 0;
+}
+
+
+.THIS div.accordion {
+    cursor:pointer;
+    background-color: #FFF;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid #D8DDE6;
+    transition: all 0.6s ease;
+}
+
+.THIS div.accordion.active, .THIS div.accordion:hover {
+    outline-color: #0070D2;
+}
+
+
+
+.THIS div.panel {
+    padding: 0 18px;
+    background-color: #F4F6F9;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.7s ease-in-out;
+}
+
+.THIS div.panel p {
+    font-size: .725rem;
+    font-weight: 300;
+    color: #54698D;
+    line-height: 1.2rem;
+    padding: .9rem .5rem;
+    margin-left: 1.5rem;
+    }
+
+.THIS div.panel hr:last-child {
+	display:none;
+}
+
+
+.THIS div.panel.show {
+    max-height: 900px;
+} 
+
+.THIS .oh-survey-question {
+    display:flex;
+    color: #16325C;
+    font-size: 1.2rem;
+}
+    
+.THIS .oh-icon-survey i {
+    color: #FFF;
+    font-size:1rem; 
+    margin-top:.5rem;
+    color:white; 
+    text-align:center;
+        
+}
+    
+.THIS .oh-icon-survey {
+    background-color: #54698D;
+    border-radius:50%;
+    width: 2rem;
+    height: 2rem;
+    text-align: center;
+    vertical-align: middle;
+}
+.THIS .oh-icon-disabled {
+    background-color: rgba(0,0,0,0.38);
+}
+
+.THIS .oh-icon-survey .oh-error {
+  color: rgb(212, 80, 76);
+}
+
+.THIS .panel-check {
+       color: #4BCA81; 
+       margin-right:.5rem;
+}
+.THIS .question-section {
+    height:350px;
+}
+
+.THIS .oh-card-title {
+    font-weight:300; 
+    font-size:1.03rem; 
+    color:#0070D2;
+  }
+
+
+  .THIS .responses .pl-card-tooltip {
+  position: absolute;
+  margin-top: -50px;
+  margin-left: -10px;
+  display: none;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.5s ease-out, transform 0.1s !important;
+}
+
+  .THIS .responses .pl-card-tooltip1 {
+  position: absolute;
+  margin-top: 50px;
+  margin-left: -10px;
+  display: none;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.5s ease-out, transform 0.1s !important;
+}
+
+.THIS .responses .oh-icon-container:hover .pl-card-tooltip,
+.THIS .responses .oh-icon-container:hover .pl-card-tooltip1 {
+  display: inline-block;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.5s ease-in, transform 0.1s !important;
+}

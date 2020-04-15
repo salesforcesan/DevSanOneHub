@@ -1,0 +1,17 @@
+.THIS {
+}
+
+.THIS .groupedWarning {
+    background:darkorange;
+    color:white;
+    border-radius:8px;
+    padding:.4rem;
+}
+
+.THIS .buttonIcon {
+    position:absolute;
+    padding:10px;
+    right:0;
+    top:0;
+    z-index:3;
+}

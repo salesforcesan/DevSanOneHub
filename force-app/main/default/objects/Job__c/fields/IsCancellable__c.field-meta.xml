@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsCancellable__c</fullName>
+    <description>The checkbox that indicates if this Job can be canceled.</description>
+    <externalId>false</externalId>
+    <formula>OR 
+(
+
+JobCancelOverride__c == true, 
+
+AND(
+
+	AND(LOWER(ProjectStatus__c) != &#39;planning&#39;, LOWER(ProjectStatus__c) != &#39;closed&#39;, LOWER(ProjectStatus__c) != &#39;pending&#39;), 
+	LOWER(TEXT(JobStatus__c)) != &#39;canceled&#39;, 
+	LOWER(TEXT(JobStatus__c)) != &#39;closed&#39;, 
+
+(DATETIMEVALUE(NULLVALUE(JobScheduledDate__c, JobStartDate__c)) - NOW() - 
+													((NULLVALUE(JobCancelLeadTime__c,0) - 5)/24)) &gt; 0
+
+))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Job can be canceled if Project Status = Booked, Launched or In Progress and Job is within Cancel Lead Time.</inlineHelpText>
+    <label>Cancelable</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

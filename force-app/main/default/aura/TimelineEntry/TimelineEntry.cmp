@@ -1,0 +1,29 @@
+<aura:component >
+    <aura:attribute name="timelineEntryList" type="TimelineEntryWrapper[]" access="Global" description="It receives and stores user image/icon and event title of each TimelineEntry event in a list. A single TimelineEntry depicts a unique event of Project lifecycle"/>
+    <aura:iteration items="{!v.timelineEntryList}" var="timelineEntry">
+        <div class="timeline-entry-row">
+            <div class="timeline-entry-details">
+                <span class="slds-icon_container slds-icon-action-approval slds-icon_container--circle slds-clock-icon">
+                	<i class="fa fa-clock-o fa-lg"></i>
+                </span>
+                <!-- added the icon above - use either one -->
+                <!--<lightning:icon iconName="utility:clock" size="small" alternativeText="clock" class="slds-icon_container slds-icon-action-approval slds-icon_container-circle slds-clock-icon"/> -->       
+               <!--<div class="slds-media-figure__details">
+                    <div class="slds-media__figure">
+                        <aura:if isTrue="{!timelineEntry.IsEventIcon}">
+                            <span class="{!'slds-icon-custom-custom94'}">
+                                <c:SvgCmp svgPath="{!'/resource/ProjectAuditHistory' + timelineEntry.EventIconName}" category="standard" size="small" name="clock"/>
+                            </span>
+                            <aura:set attribute="else">
+                                <img src="{!timelineEntry.PhotoURL}" />
+                            </aura:set>
+                        </aura:if> 
+                    </div>
+                </div>-->    
+                <div class="slds-media__body">
+                    <p class="slds-text-title">{!timelineEntry.TimelineEntryTitle}</p>
+                </div>     
+            </div>
+        </div>    
+    </aura:iteration>
+</aura:component>

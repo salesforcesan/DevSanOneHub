@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsSplit__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>A checkbox that indicates if the project is split among the accounts.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>If selected, the project is split among accounts.</inlineHelpText>
+    <label>Is Split</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

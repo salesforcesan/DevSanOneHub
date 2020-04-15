@@ -1,0 +1,27 @@
+<aura:component controller="LightningProjectAuditHistoryController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <ltng:require styles="{!$Resource.ProjectAuditHistoryCSS}" />
+    <aura:attribute name="isLoaded" type="Boolean" default="False" access="Global" description="It is used to add a check to ensure that prerequisite information is available before initiating Timeline component"/> 
+    <aura:attribute name="projectId" type="Id" />
+    <aura:attribute name="recordId" type="String" access="Global" description="It receives record Id from record of Project object in order to extract Project Audit details from Salesforce"/>
+    <aura:attribute name="timeline" type="TimelineWrapper" access="Global" description="It is a custom apex class to store TimelineEntryWrapperList and TimelineTitle details. These values are used while calling child component Timeline"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <div>
+        <div class="slds-is-relative slds-size_1-of-1 slds-grid" style="overflow:hidden;">
+            <div class="slds-card slds-size_1-of-1 slds-p-around_medium" style="margin-right:12px;">
+                <div class=""  aura:id="projectAuditSpinner" > 
+                    <lightning:spinner size="medium" variant="brand" />
+                </div>
+                
+                <div class="slds-p-bottom--small">
+                    <c:SectionHeaderProject Title="Audit History Summary" iconClass="fa-history" />
+                </div>
+                
+                <div class="slds-p-top--small">
+                    <aura:if isTrue="{!v.isLoaded}">
+                        <c:Timeline timelineEntryList="{!v.timeline.TimelineEntryWrapperList}" timelineTitle="{!v.timeline.Title}" />
+                    </aura:if>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

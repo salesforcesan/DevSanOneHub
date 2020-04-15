@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsExecutedinWindow__c</fullName>
+    <description>The checkbox that indicates if the job was executed between Project Start Date and Project End Date.</description>
+    <externalId>false</externalId>
+    <formula>AND((JobExecutedDate__c&gt;=OriginalProjectStartDate__c),(JobExecutedDate__c&lt;=Project__r.LaunchedProjectEndDate__c))&amp;&amp; IsExecuted__c=True</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>If selected, the job was executed between Project Start Date and Project End Date.</inlineHelpText>
+    <label>Executed in Window</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

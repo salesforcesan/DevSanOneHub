@@ -1,0 +1,17 @@
+<aura:component>
+  <aura:attribute name="hasGap" type="boolean" default="false" />
+  <aura:attribute name="style" type="String" default="" access="private" />
+  <aura:Attribute name="title" type="String" default="" />
+  <aura:Attribute name="marginGap" type="String" default="" />
+  <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+  <div>
+    <h1 class="slds-text-heading_medium slds-p-vertical_x-small oh-title">{!v.title}</h1>
+    <aura:if isTrue="{!v.hasGap}">
+      <hr class="slds-m-bottom_x-small slds-m-top_none" style="{!v.style}">
+      </hr>
+    </aura:if>
+    <aura:if isTrue="{!v.hasGap==false}">
+      <hr class="slds-m-bottom_x-small slds-m-top_none" />
+    </aura:if>
+  </div>
+</aura:component>

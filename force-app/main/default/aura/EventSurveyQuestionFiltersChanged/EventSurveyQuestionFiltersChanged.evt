@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION" description="Event template">
+    <aura:attribute name="questionText" type="String"/>
+    <aura:attribute name="questionType" type="String"/>
+    <aura:attribute name="targetQuestion" type="Boolean"/>
+</aura:event>

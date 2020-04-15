@@ -1,0 +1,80 @@
+<aura:component controller="LightningSurveyQuestionsController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />    
+    
+    <!-- ATTRIBUTES DECLARATION -->
+    <aura:attribute name="servicename" type="String" access="global" />
+    <aura:attribute name="questions" type="Object" access="global" />
+    <aura:attribute name="answers" type="List" access="global" />   
+    <aura:attribute name="currentQuestion" type="Object" access="global" />
+    <aura:attribute name="currentQuestionQuestionType" type="String" default="" access="global" />
+    <aura:attribute name="selectedResponse" type="Object" default="" access="global" />
+    
+    <!-- EVENT LISTENER -->
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="c:EventResponseSelected" action="{!c.handleEventResponseSelected}"/>
+    
+    <!-- DEPENDENCIES -->
+    <aura:dependency resource="markup://c:PreviewSurveyTabletViewQuestion" />
+
+    
+    <div style="height:100%;">
+        
+        <div class="survey-header">
+            <span class="survey-header-title">Survey Preview</span><br/>
+            <span class="survey-header-subtitle">{!v.servicename}</span>
+        </div>
+        
+        <div class="survey-content">
+            <div class="survey-questions">
+                <div aura:id="QuestionPlaceholder">
+                    {!v.body}
+                </div>
+                <div style="{!(v.currentQuestionQuestionType == 'end' ) ? 'display:block;' : 'display:none;'}">
+                    <div class="survey-endtext__big">The Survey is complete.</div>
+                    <div class="survey-endtext__regular">Click the 'Submit Survey' button if you are satisfied with your responses.</div>
+                </div>
+                <div style="{!(v.currentQuestionQuestionType == 'submitted' ) ? 'display:block;' : 'display:none;'}">
+                    <div class="survey-endtext__big">Survey submitted.</div>
+                </div>
+
+            </div>
+            
+            <div class="survey-push"></div>
+            
+		</div>
+        
+        <div class="survey-footer">
+            <div class="survey-button-container">
+            	<button class="slds-button slds-button_brand slds-button__left slds-button__direction-nav"
+                        style="{!v.answers ? 'display:inline-block;' : 'display:none;'}"
+                        onclick="{!c.returnToLastQuestion}">
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                </button>
+                <button class="slds-button slds-button_brand slds-button__center slds-button__submit" 
+                        style="{!(v.currentQuestionQuestionType == 'end' ) ? 'display:block;' : 'display:none;'}"
+                        onclick="{!c.endSurvey}">
+                    SUBMIT SURVEY
+                </button>
+                <button class="slds-button slds-button_brand slds-button__right slds-button__direction-nav" 
+                        style="{!(v.selectedResponse.Response || v.currentQuestion.Optional) ? 'display:inline-block;' : 'display:none;'}"
+                        onclick="{!c.continueSurvey}">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </button>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+                
+        <style>
+        	.slds-modal__content {
+                height: 100%;
+            	overflow-y: scroll;
+            }
+            .slds-template__container {
+                position: fixed !important;
+            }
+        </style>
+        
+    </div>  
+
+</aura:component>

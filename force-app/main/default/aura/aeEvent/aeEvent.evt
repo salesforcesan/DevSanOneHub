@@ -1,0 +1,9 @@
+<!--c:aeEvent-->
+<aura:event type="APPLICATION">
+    <aura:attribute name="message" type="String"/>
+    <aura:attribute name="action" type="String"/>
+    <aura:attribute name="baseSearchCriteria" type="List" />
+    <aura:attribute name="toBeGroupedInvoices" type="List" />
+    <aura:attribute name="toBeRemovedInvoices" type="List" />
+    <aura:attribute name="toBeSavedInvoices" type="List" />
+</aura:event>

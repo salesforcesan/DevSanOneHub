@@ -1,0 +1,205 @@
+<!-- picklist template content -->
+<span tabindex="0" class="picklist__label cm-label-10 truncate" aria-haspopup="true">{{selOption}}
+    <svg aria-hidden="true" class="icon">
+        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+    </svg>
+</span>
+<ul class="picklist__options cm-picklist-options hide">
+    {{#each queryList}} {{#if selected }}
+    <li id="{{key}}" class="picklist__options-item is-selected" aria-selected="true" tabindex="-1" role="option">
+        <svg aria-hidden="true" class="icon icon--small icon--left">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#task2"></use>
+        </svg>
+        <span>{{value}}</span>
+    </li>
+    {{else}}
+    <li id="{{key}}" class="picklist__options-item" aria-selected="false" tabindex="-1" role="option">
+        <span>{{value}}</span>
+    </li>
+    {{/if}} {{/each}}
+</ul>
+<!-- dropdown template content -->
+<button class="button button--neutral button--icon-more">
+    <svg aria-hidden="true" class="button__icon">
+        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
+    </svg>
+    <span class="assistive-text">actions</span>
+    <svg aria-hidden="true" class="button__icon button__icon--x-small">
+        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+    </svg>
+</button>
+<div class="dropdown dropdown--nubbin-top dropdown--small dropdown--menu">
+    <div class="dropdown__header">
+        <span class="text-heading--label">List View Controls</span>
+    </div>
+    <ul class="dropdown__list" role="menu">
+        <li id="menu-3-0" disabled="" href="#rename" class="dropdown__item has-icon--left" role="menuitem option" tabindex="0">
+            <a href="#rename" tabindex="-1" aria-disabled="true">
+                <svg aria-hidden="true" class="icon icon--small icon--left">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#copy"></use>
+                </svg><span>Rename...</span></a>
+        </li>
+        <li id="menu-4-1" disabled="" href="#share" class="dropdown__item has-icon--left" role="menuitem option" tabindex="-1">
+            <a href="#share" tabindex="-1" aria-disabled="true">
+                <svg aria-hidden="true" class="icon icon--small icon--left">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#share"></use>
+                </svg><span>Share...</span></a>
+        </li>
+        <li id="menu-5-2" disabled="" href="#delete" class="dropdown__item has-icon--left" role="menuitem option" tabindex="-1">
+            <a href="#delete" tabindex="-1" aria-disabled="true">
+                <svg aria-hidden="true" class="icon icon--small icon--left">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+                </svg><span>Delete</span></a>
+        </li>
+        <li id="menu-6-3" disabled="" href="#save" class="dropdown__item has-icon--left" role="menuitem option" tabindex="-1">
+            <a href="#save" tabindex="-1" aria-disabled="true">
+                <svg aria-hidden="true" class="icon icon--small icon--left">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#paste"></use>
+                </svg><span>Save</span></a>
+        </li>
+        <li id="menu-7-4" href="#save_as" class="dropdown__item has-icon--left" role="menuitem option" tabindex="-1">
+            <a href="#save_as" tabindex="-1">
+                <svg aria-hidden="true" class="icon icon--small icon--left">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#package"></use>
+                </svg><span>Save As...</span></a>
+        </li>
+        <li id="menu-8-5" href="#discard" class="dropdown__item has-icon--left" role="menuitem option" tabindex="-1">
+            <a href="#discard" tabindex="-1">
+                <svg aria-hidden="true" class="icon icon--small icon--left">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#undo"></use>
+                </svg><span>Discard Changes to List</span></a>
+        </li>
+    </ul>
+</div>
+<button class="button button--neutral button--icon-more">
+    <svg aria-hidden="true" class="button__icon">
+        <use xlink:href="{{iconUrl}}"></use>
+    </svg>
+    <span class="assistive-text">{{iconHint}}</span>
+    <svg aria-hidden="true" class="button__icon button__icon--x-small">
+        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+    </svg>
+</button>
+<!-- tokenized dropdown -->
+{{#if hasTitle}}
+<div class="dropdown__header">
+    <span class="text-heading--label">{{title}}</span>
+</div>
+{{/if}}
+<ul class="dropdown__list" role="menu">
+    {{#each menuItems}} {{#if disabled}}
+    <li data-id="{{key}}" disabled="" href="#rename" class="dropdown__item has-icon--left" role="menuitem option" tabindex="0">
+        <a href="#{{key}}" tabindex="-1" aria-disabled="true">
+                {{#if hasLeftIcon}}
+                    <svg aria-hidden="true" class="icon icon--small icon--left">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{{leftIconUrl}}"></use>
+                    </svg>
+                {{/if}}
+                    <span>{{value}}</span>
+                {{#if hasRightIcon}}
+                    <svg aria-hidden="true" class="icon icon--small icon--right">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{{rightIconUrl}}"></use>
+                    </svg>
+                {{/if}}
+            </a>
+    </li>
+    {{else}}
+    <li data-id="{{key}}" href="#rename" class="dropdown__item has-icon--left" role="menuitem option" tabindex="0">
+        <a href="#{{key}}" tabindex="-1" aria-disabled="false">
+                {{#if hasLeftIcon}}
+                    <svg aria-hidden="true" class="icon icon--small icon--left">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{{leftIconUrl}}"></use>
+                    </svg>
+                {{/if}}
+                    <span>{{value}}</span>
+                {{#if hasRightIcon}}
+                    <svg aria-hidden="true" class="icon icon--small icon--right">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{{rightIconUrl}}"></use>
+                    </svg>
+                {{/if}}
+            </a>
+    </li>
+    {{/if}} {{/each}}
+</ul>
+<!-- compacted version -->
+{{#if hasTitle}}
+<div class="dropdown__header"><span class="text-heading--label">{{title}}</span></div>{{/if}}
+<ul class="dropdown__list" role="menu">{{#each menuItems}} {{#if disabled}}
+    <li data-id="{{key}}" disabled="" href="#rename" class="dropdown__item has-icon--left" role="menuitem option" tabindex="0"><a href="#{{key}}" tabindex="-1" aria-disabled="true">{{#if hasLeftIcon}}<svg aria-hidden="true" class="icon icon--small icon--left"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{{leftIconUrl}}"></use></svg>{{/if}}<span>{{value}}</span>{{#if hasRightIcon}}<svg aria-hidden="true" class="icon icon--small icon--right"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{{rightIconUrl}}"></use></svg>{{/if}}</a></li>{{else}}
+    <li data-id="{{key}}" href="#rename" class="dropdown__item has-icon--left" role="menuitem option" tabindex="0"><a href="#{{key}}" tabindex="-1" aria-disabled="false">{{#if hasLeftIcon}}<svg aria-hidden="true" class="icon icon--small icon--left"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{{leftIconUrl}}"></use></svg>{{/if}}<span>{{value}}</span>{{#if hasRightIcon}}<svg aria-hidden="true" class="icon icon--small icon--right"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{{rightIconUrl}}"></use></svg>{{/if}}</a></li>{{/if}} {{/each}}</ul>
+<!-- article HTML structure -->
+<article class="cm-article">
+    <header class="clearfix">
+        <div class="float-left">
+            <h2 class="text-heading--label text-heading--large cm-article-title">Project List</h2></div>
+        <div class="float-right">
+            <button title="View Card" class="button button--icon-border button--icon-border-small">
+                <svg aria-hidden="true" class="button__icon button__icon--small cm-icon">
+                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#kanban"></use>
+                </svg>
+                <span class="assistive-text">View Card</span>
+            </button>
+            <button title="Expand To Full Screen" class="button button--icon-border button--icon-border-small">
+                <svg aria-hidden="true" class="button__icon button__icon--small cm-icon">
+                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#expand"></use>
+                </svg>
+                <span class="assistive-text">Expand</span>
+            </button>
+            <button title="Close Project List" class="button button--icon-border button--icon-border-small">
+                <svg aria-hidden="true" class="button__icon button__icon--small cm-icon">
+                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                </svg>
+                <span class="assistive-text">Close</span>
+            </button>
+        </div>
+    </header>
+    <section class="cm-article-body">article body</section>
+</article>
+<!-- article header -->
+<<article clas="cm-article">
+    <header class="clearfix">
+        <div class="float-left">
+            <h2 class="text-heading--label text-heading--large cm-article-title">{{title}}</h2></div>
+        <div class="float-right">
+            {{#each navBars}}
+            <button title="View Card" class="button button--icon-border button--icon-border-small">
+                <svg aria-hidden="true" class="button__icon button__icon--small cm-icon">
+                    <use xlink:href="{{iconUrl}}"></use>
+                </svg>
+                <span class="assistive-text">{{text}}</span>
+            </button>
+            {{/each}}
+        </div>
+    </header>
+    <div class="cm-article-body">{{body}}</div>
+    </article>
+    <!-- nospace header -->
+    <article class="cm-article">
+        <header class="clearfix">
+            <div class="float-left">
+                <h2 class="text-heading--label text-heading--large cm-article-title">{{title}}</h2></div>
+            <div class="float-right">{{#each navBars}}
+                <button data-id="{{id}}" title="{{text}}" class="button button--icon-border button--icon-border-small">
+                    <svg aria-hidden="true" class="button__icon button__icon--small cm-icon">
+                        <use xlink:href="{{iconUrl}}"></use>
+                    </svg><span class="assistive-text">{{text}}</span></button>{{/each}}</div>
+        </header>
+        <div class="cm-article-body">{{{bodyHtml}}}</div>
+    </article>'
+    <!-- table header template -->
+    <thead>
+        <tr>{{#each headers}}
+            <th data-id="{{id}}" class="is-interactive{{selected}}{locked}}"><span class="truncate">{{title}}</span>
+                <button class="button button--icon-bare button--icon-border-small">
+                    <svg aria-hidden="true" class="button__icon button__icon--small">
+                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"></use>
+                    </svg><span class="assistive-text">Sort</span></button>
+            </th>{{/each}}</tr>
+    </thead>
+    <!-- table body template -->
+    <tbody>
+    </tbody>{{#each rowset}}
+    <tr class="hint-parent">
+        <td data-label="{{title}}">{{{cmCell}}}</td>
+    </tr>{{/each}}</toby>
+

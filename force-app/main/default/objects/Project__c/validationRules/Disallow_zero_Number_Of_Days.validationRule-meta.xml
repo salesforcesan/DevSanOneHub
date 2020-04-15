@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disallow_zero_Number_Of_Days</fullName>
+    <active>true</active>
+    <description>Do not allow a non zero number of days</description>
+    <errorConditionFormula>NumberOfDays__c &lt;= 0</errorConditionFormula>
+    <errorMessage>Number of Days has to be a number &gt; 0</errorMessage>
+</ValidationRule>

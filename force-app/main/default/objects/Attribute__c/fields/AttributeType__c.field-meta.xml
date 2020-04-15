@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AttributeType__c</fullName>
+    <description>A picklist with that determines the type of Attribute.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Choose the type of attribute.</inlineHelpText>
+    <label>AttributeType</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Text</fullName>
+                <default>false</default>
+                <label>Text</label>
+            </value>
+            <value>
+                <fullName>Date</fullName>
+                <default>false</default>
+                <label>Date</label>
+            </value>
+            <value>
+                <fullName>Yes/No</fullName>
+                <default>false</default>
+                <label>Yes/No</label>
+            </value>
+            <value>
+                <fullName>Number</fullName>
+                <default>false</default>
+                <label>Number</label>
+            </value>
+            <value>
+                <fullName>Single-Select List</fullName>
+                <default>false</default>
+                <label>Single-Select List</label>
+            </value>
+            <value>
+                <fullName>Multi-Select List</fullName>
+                <default>false</default>
+                <label>Multi-Select List</label>
+            </value>
+            <value>
+                <fullName>Photo</fullName>
+                <default>false</default>
+                <label>Photo</label>
+            </value>
+            <value>
+                <fullName>File</fullName>
+                <default>false</default>
+                <label>File</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

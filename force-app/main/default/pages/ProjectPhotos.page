@@ -1,0 +1,735 @@
+<apex:page standardController="Project__c" extensions="ProjectPhotoExt" showHeader="false" sidebar="false">  
+<apex:stylesheet value="{!URLFOR($Resource.slds_203, 'assets/styles/salesforce-lightning-design-system.min.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.font_awesome, '/font-awesome/css/font-awesome.min.css')}"/>
+<style  type="text/css">
+body.hidden-scroll {
+    overflow: hidden;
+}
+
+.sl-overlay {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #fff;
+    opacity: .7;
+    display: none;
+    z-index: 1006;
+}
+
+.sl-wrapper {
+    z-index: 1000;
+}
+
+.sl-wrapper button {
+    border: 0;
+    background: 0 0;
+    font-size: 24px;
+    padding: 0;
+    cursor: pointer;
+}
+
+.sl-wrapper button:hover {
+    opacity: .7;
+}
+
+.sl-wrapper .sl-close {
+    display: none;
+    position: fixed;
+    right: 30px;
+    top: 30px;
+    z-index: 1015;
+}
+
+.sl-wrapper .sl-counter {
+    display: none;
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    z-index: 1015;
+}
+
+.sl-wrapper .sl-navigation {
+    width: 100%;
+    display: none;
+}
+
+.sl-wrapper .sl-navigation button {
+    position: fixed;
+    top: 50%;
+    margin-top: -10px;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    text-align: center;
+    display: block;
+    z-index: 1015;
+    font-family: arial sans-serif;
+}
+
+.sl-wrapper .sl-navigation button.sl-next {
+    right: 40px;
+}
+
+.sl-wrapper .sl-navigation button.sl-prev {
+    left: 40px;
+}
+
+.sl-wrapper .sl-image {
+    position: fixed;
+    -ms-touch-action: none;
+    touch-action: none;
+    z-index: 10000;
+}
+
+.sl-wrapper .sl-image img {
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+
+.sl-wrapper .sl-image iframe {
+    border: 0;
+    background: #000;
+}
+
+.sl-wrapper .sl-image .sl-caption {
+    display: none;
+    padding: 10px;
+    color: #fff;
+    background: #000;
+    opacity: .8;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.sl-wrapper .sl-image .sl-caption.pos-top {
+    bottom: auto;
+    top: 0;
+}
+
+.sl-wrapper .sl-image .sl-caption.pos-outside {
+    bottom: auto;
+}
+
+.sl-wrapper .sl-image .sl-download {
+    display: none;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    color: #fff;
+    z-index: 1005;
+}
+
+.sl-spinner {
+    display: none;
+    border: 5px solid #333;
+    border-radius: 40px;
+    height: 40px;
+    left: 50%;
+    margin: -20px 0 0 -20px;
+    opacity: 0;
+    position: fixed;
+    top: 50%;
+    width: 40px;
+    z-index: 1007;
+    -webkit-animation: pulsate 1s ease-out infinite;
+    -moz-animation: pulsate 1s ease-out infinite;
+    -ms-animation: pulsate 1s ease-out infinite;
+    -o-animation: pulsate 1s ease-out infinite;
+    animation: pulsate 1s ease-out infinite;
+}
+
+.sl-scrollbar-measure {
+    position: absolute;
+    top: -9999px;
+    width: 50px;
+    height: 50px;
+    overflow: scroll;
+}
+
+@-webkit-keyframes pulsate {
+    0% {
+        transform: scale(.1);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+}
+
+@keyframes pulsate {
+    0% {
+        transform: scale(.1);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+}
+
+@-moz-keyframes pulsate {
+    0% {
+        transform: scale(.1);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+}
+
+@-o-keyframes pulsate {
+    0% {
+        transform: scale(.1);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+}
+
+@-ms-keyframes pulsate {
+    0%,100% {
+        opacity: 0;
+    }
+
+    0% {
+        transform: scale(.1);
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.2);
+    }
+}
+
+html,body {
+    padding: 0 !important;
+    margin: 0;
+    background: #fff;
+    height:100vh;
+    overflow: hidden;
+    color: rgba(0,0,0,0.81);
+}
+
+/* line 8, ../sass/demo.scss */
+* {
+    box-sizing: border-box;
+}
+
+/* line 12, ../sass/demo.scss */
+a {
+    color: #4ab19a;
+}
+
+/* line 16, ../sass/demo.scss */
+.clear {
+    clear: both;
+    float: none;
+    width: 100%;
+}
+
+/* line 22, ../sass/demo.scss */
+.container {
+    min-width:860px;
+    width: 100%;
+    height: 100%;
+    padding:0;
+}
+
+.container .gallery {
+    padding:20px;
+    height: 100%;
+    /*border-right: 1px solid rgb(216, 221, 230);*/
+}
+
+/* line 32, ../sass/demo.scss */
+.container .gallery a img {
+    float: left;
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    border: 2px solid #fff;
+    -webkit-transition: -webkit-transform .15s ease;
+    -moz-transition: -moz-transform .15s ease;
+    -o-transition: -o-transform .15s ease;
+    -ms-transition: -ms-transform .15s ease;
+    transition: transform .15s ease;
+    position: relative;
+}
+
+/* line 46, ../sass/demo.scss */
+.container .gallery a:hover img {
+    -webkit-transform: scale(1.05);
+    -moz-transform: scale(1.05);
+    -o-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    transform: scale(1.05);
+    z-index: 5;
+}
+
+/* line 57, ../sass/demo.scss */
+.container .gallery a.big img {
+    width: 40%;
+}
+
+/* line 65, ../sass/demo.scss */
+.align-center {
+    text-align: center;
+}
+
+div.imageBox {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    float: left;
+    margin: 10px;
+}
+
+div.imageBox.selected {
+    border: 4px solid #ff0;
+}
+
+input.checkbox {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 2006;
+}
+.hide {
+    display: none;
+}
+.show {
+    display: block;
+}
+.fade-out-to-hide {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+.fade-in-to-show {
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+
+.cm-grid {
+    height: 100%;
+}
+.cm-page {
+    height: 100%;
+}
+.cm-panel {
+    padding: 20px;
+    height: 100%;
+}
+
+.cm-panel > h2 {
+    display: block;
+    margin-bottom:10px;
+}
+.cm-panel form {
+    padding: 20px auto;
+}
+.slds-scrollable::-webkit-scrollbar-track,
+.slds-scrollable--y::-webkit-scrollbar-track {
+    background: none;
+}
+
+.slds-scrollable::-webkit-scrollbar-thumb,
+.slds-scrollable--y::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.2);
+    border-radius: 0.5rem;
+    box-shadow: none;
+}
+
+.slds-scrollable:hover::-webkit-scrollbar-thumb,
+.slds-scrollable--y:hover::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.5);
+}
+.navbar-goback {
+    border-bottom:1px solid #eee;
+    padding:10px;
+}
+
+.slds-media {
+    padding-bottom: 20px;
+}
+.cm-fa {
+    text-align: center;
+    line-height: 64px;
+    width:64px;
+    height: 64px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    color: rgba(0,0,0,0.64);
+}
+.cm-label, .cm-content {
+    display: inline-block;
+}
+.cm-content {
+    padding-right: 10px;
+}
+.cm-label:after {
+    content: ':';
+}
+.cm-label {
+    color: rgba(0,0,0,0.48);
+    padding-right: 5px;
+}
+.slds-media__body > h2 {
+    font-size: 1rem;
+}
+.cm-photo-count {
+    display:inline-block;
+    padding: 5px 10px;
+    color:#fff;
+    background-color:#5cb85c;
+    text-align: center;
+}
+.cm-photo-count > h2 {
+    font-size:1.25rem;
+}
+</style>
+<div class="slds" id="page">
+    <div id="pageHeader">
+        <c:PageHeader iconUrl="/assets/icons/standard-sprite/svg/symbols.svg#user" 
+        title="{!projectRecord.Name}" 
+        recordType="Project"
+        recordId="{!Project__c.Id}"/>
+    </div>
+    <div class="container">
+        <div id="panelMaster" class="cm-page">
+            <div class="slds-grid cm-grid">
+                <div class="slds-p-horizontal--small1 slds-size--2-of-3 slds-medium-size--2-of-3 slds-large-size--2-of-3">
+                    <div id="thumbs" class="gallery slds-scrollable--y"></div>
+                </div>
+                <div class="slds-p-horizontal--small1 slds-size--1-of-3 slds-medium-size--1-of-3 slds-large-size--1-of-3">
+                    <div class="cm-panel">
+                        <h2 class="slds-section-title--divider">Filter</h2>
+                        <form>
+                        <div class="slds-form--stacked">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="selService">Services</label>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-select_container">
+                                      <select id="selService" class="slds-select">
+                                        <apex:repeat value="{!services}" var="svc">
+                                            <option value="{!svc.Service__c}">{!svc.Name + ' (' + svc.ServiceName__c + ')'}</option>
+                                        </apex:repeat>
+                                      </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="slds-form-element__label" for="locations">Locations</label>
+                              <div class="slds-form-element__control">
+                                <textarea id="locations" class="slds-textarea" rows="8" 
+                                    placeholder="Specify one or more location numbers separated by comas."></textarea>
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                            <button type="button" class="slds-button slds-button--brand" id="btnApply" title="Apply Filter">Apply</button>
+                            <button type="button" class="slds-button slds-button--neutral" id="btnClear" title="Clear Filter">Clear</button>
+                          </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="panelSlave" class="cm-page hide">
+            <div class="navbar-goback">
+                <button class="slds-button slds-button--icon-container slds-button--icon-border-filled"
+                    title="Return to Photo List">
+                  <svg aria-hidden="true" class="slds-button__icon">
+                    <use xmlns="http://www.w3.org/2000/svg" 
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        xlink:href="{!URLFOR($Resource.slds_203,'/assets/icons/utility-sprite/svg/symbols.svg#chevronleft')}"></use>
+                  </svg>
+                  <span class="slds-assistive-text">Return to Photo List</span>
+                </button>
+            </div>
+            <div class="slds-grid cm-grid">
+                <div class="slds-p-horizontal--small1 slds-size--2-of-3 slds-medium-size--2-of-3 slds-large-size--2-of-3">
+                    <div id="photo" class="gallery slds-scrollable"/>
+                </div>
+                <div class="slds-p-horizontal--small1 slds-size--1-of-3 slds-medium-size--1-of-3 slds-large-size--1-of-3">
+                    <div class="cm-panel slds-scrollable">
+                        <h2 class="slds-section-title--divider">Photo Info</h2>
+                        <div class="slds-media slds-media--responsive">
+                          <div class="slds-media__figure">
+                            <i class="fa fa-camera fa-3x cm-fa" aria-hidden="true"></i>
+                          </div>
+                          <div class="slds-media__body">
+                            <p><span class="cm-label">Date Photo Taken</span><span class="cm-content" id="photoTakenDate">06/05/2016</span></p>
+                          </div>
+                        </div>
+                        <h2 class="slds-section-title--divider">Worker</h2>
+                        <div class="slds-media slds-media--responsive">
+                          <div class="slds-media__figure">
+                            <i class="fa fa-user fa-3x cm-fa" aria-hidden="true"></i>
+                         </div>
+                          <div class="slds-media__body">
+                            <h2 id="workerName">...</h2>
+                            <p>
+                                <span class="cm-label">Title</span><span class="cm-content" id="workerTitle">...</span>
+                                <span class="cm-label">Employee #</span><span class="cm-content" id="workerEmployeeId">...</span>
+                                <span class="cm-label">Contact Id</span><span class="cm-content" id="workerContactId">...</span>
+                            </p>
+                          </div>
+                        </div>
+                        <h2 class="slds-section-title--divider">Job And Store</h2>
+                        <div class="slds-media slds-media--responsive">
+                          <div class="slds-media__figure">
+                             <i class="fa fa-truck fa-3x cm-fa" aria-hidden="true"></i>
+                          </div>
+                          <div class="slds-media__body">
+                            <h2 id="jobNumber">...</h2>
+                            <p>
+                                <span class="cm-label">Location #</span><span class="cm-content" id="jobLocationNumber">...</span>
+                                <span class="cm-label">Address</span><span class="cm-content" id="jobAddress">...</span>
+                                <span class="cm-label">City</span><span class="cm-content" id="jobCity">...</span>
+                                <span class="cm-label">State</span><span class="cm-content" id="jobState">...</span>
+                                <span class="cm-label">Postal Code</span><span class="cm-content" id="jobPostalCode">...</span>
+                            </p>
+                          </div>
+                        </div>
+                        <h2 class="slds-section-title--divider">Survey Question</h2>
+                        <div class="slds-media slds-media--responsive">
+                          <div class="slds-media__figure">
+                            <i class="fa fa-question fa-3x cm-fa" aria-hidden="true"></i>
+                          </div>
+                          <div class="slds-media__body">
+                            <p id="photoQuestion">...</p>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<apex:includeScript value="https://code.jquery.com/jquery-2.2.4.min.js"  ></apex:includeScript>
+<apex:includeScript value="{!URLFOR($Resource.cloudinary, 'cloudinary.jquery.js')}"></apex:includeScript>  
+<script type="text/javascript">
+(function(){
+    var FLD_IMAGE=0, FLD_JOB_ID=1, FLD_QUESTION_ID=2, FLD_PHOTO_DATE=3;
+    var _model = {
+        projectId: '{!JSENCODE(projectRecord.id)}',
+        doRemote: function(method, query){
+            var defer = $.Deferred();
+            Visualforce.remoting.Manager.invokeAction(method, query, function(result, event){
+                if(event.status){
+                    defer.resolve(result);
+                } else {
+                    defer.reject(event);
+                }
+            });
+            return defer;
+        },
+        //use new api
+        getPhotos: function() {
+            return _model.doRemote(
+                '{!$RemoteAction.ProjectPhotoExt.getPhotoURLs}',
+                _model.projectId
+                );
+        },
+        getPhotoDetail: function(query) {
+            return _model.doRemote(
+                '{!$RemoteAction.ProjectPhotoExt.getPhotoDetail}',
+                query
+                );
+        }, 
+        searchPhotos: function(query){
+            return _model.doRemote(
+                '{!$RemoteAction.ProjectPhotoExt.searchPhotos}',
+                query
+                );
+        }
+    };
+    
+    Visualforce.remoting.timeout = 120000;
+    function fadeOut(e){
+        var t = $(e);
+        t.removeClass('show');
+        t.removeClass('fade-out-to-show');
+        if(!t.hasClass('hide') && !t.hasClass('fade-out-to-hide')){
+            t.addClass('fade-out-to-hide');
+            setTimeout(function(){
+                t.addClass('hide');
+                t.removeClass('fade-out-to-hide');
+            }, 500);
+        }
+    }
+    function fadeIn(e){
+        var t = $(e);
+        t.removeClass('hide');
+        if(!t.hasClass('show') && !t.hasClass('fade-in-to-show')){
+            t.addClass('fade-in-to-show');
+            setTimeout(function(){
+                t.addClass('show');
+                t.removeClass('fade-in-to-show');
+            }, 500);
+        }
+    }
+
+    function getFullSizeImageSource(src){
+        var pos, pos1;
+        if(!src || src.indexOf('/', 10) === -1) {
+            console.log('The image source is invalid:' + src);
+            return;
+        }
+        pos = src.lastIndexOf('/');
+        pos1 = src.lastIndexOf('/',pos - 1);
+        return src.substr(0,pos1) + src.substr(pos);
+    }
+
+    function handleThumbOnClick(a){
+        var src = $(a).find('img')[0];
+        var photo = {
+            url: src.getAttribute('data-url'),
+            jobId: src.getAttribute('data-job-id'),
+            questionId: src.getAttribute('data-question-id'),
+            takenDate: src.getAttribute('data-date')
+        };
+        var img = $.cloudinary.image(photo.url);
+        $('#photo').empty().append(img);
+        _model.getPhotoDetail({projectId: _model.projectId, jobId: photo.jobId, questionId: photo.questionId})
+            .done(function(result){
+                $('#jobNumber').text(result.jobNumber || '-');
+                $('#jobLocationNumber').text(result.jobLocationNumber || '-');
+                $('#jobAddress').text(result.jobAddress || '-');
+                $('#jobCity').text(result.jobCity || '-');
+                $('#jobState').text(result.jobState || '-');
+                $('#jobPostalCode').text(result.jobPostalCode || '-');
+                $('#workerName').text(result.workerName || '-');
+                $('#workerTitle').text(result.workerTitle || '-');
+                $('#workerContactId').text(result.workerContactId || '-');
+                $('#workerEmployeeId').text(result.workerEmployeeId || '-');
+                $('#photoTakenDate').text(photo.takenDate || '-');
+                $('#photoQuestion').text(result.photoQuestion || '-');
+            })
+            .fail(function(err){
+                console.log(err);
+            })
+            .always(function(){
+                fadeIn('#panelSlave');
+                resizeContainer(1); 
+            });
+        fadeOut('#panelMaster');
+    }
+
+    function resizeContainer(hasBackButton){
+        var h = $('body').innerHeight(), 
+            hHdr = $('#pageHeader').innerHeight();
+        if (!!hasBackButton){
+            h -= $('.navbar-goback').innerHeight();
+        }
+        $('.cm-grid').height(h - hHdr - 4);
+    }
+
+        function applyFilter(){
+        var svcId= $('#selService').val();
+        var query = {
+            projectId: _model.projectId,
+            serviceId: svcId  === '-' ? '' : svcId,
+            locations: $('#locations').val()
+        };
+         $('#photoCount').text('...');
+        _model.searchPhotos(query)
+            .done(function(result){
+                var links = [];
+                $.each(result, function(){
+                    links.push(thumbnailLink(this));
+                });
+                $('#thumbs').empty().append(links);
+                $('#photoCount').text(result.length);
+            })
+            .fail(function(err){
+                console.log(err);
+                alert(err.message);
+            })
+    }
+    applyFilter();
+    $.cloudinary.config({ cloud_name: '{!JSENCODE(cloudinarySettings.Cloud_Name__c)}', api_key: '{!JSENCODE(cloudinarySettings.API_Key__c)}'})
+    var options = {width: 100, height: 100, crop: 'thumb'},
+
+    thumbnailLink = function(imageUrl){
+        var $div = $(document.createElement('div'));
+        $div.addClass('imageBox');
+        //create link and embedded image elements
+        var $a = $(document.createElement('a'));
+        //open the original image in a new tab/window
+        $a.attr({href : 'javascript:void()'});
+        $a.addClass('thumb');
+        //cloudinary will resize based on options
+        var img = $.cloudinary.image(imageUrl[FLD_IMAGE], options);
+        img.attr({title:'{!JSENCODE(projectRecord.name)}'});
+        img.attr('data-job-id', imageUrl[FLD_JOB_ID]);
+        img.attr('data-url', imageUrl[FLD_IMAGE]);
+        img.attr('data-question-id', imageUrl[FLD_QUESTION_ID]);
+        img.attr('data-date', imageUrl[FLD_PHOTO_DATE]);
+        $a.append(img);
+        $div.append($a);
+        
+        return $div;
+    };
+
+    $(function(){
+        $('#thumbs').on("click", "div.imageBox > a.thumb", function(evt){
+            evt.preventDefault();
+            handleThumbOnClick(this);
+            return false;
+        });
+        resizeContainer(1);
+        $(window).resize(function(){
+            resizeContainer($('#panelSlave').hasClass('hide'));
+        });
+        $('.navbar-goback button').on('click', function(evt){
+            evt.preventDefault();
+            fadeOut('#panelSlave');
+            fadeIn('#panelMaster');
+            resizeContainer(0);
+        });
+        $('#btnApply').on('click', function(evt){
+            evt.preventDefault();
+            applyFilter();
+        });
+        $('#btnClear').on('click', function(evt){
+            evt.preventDefault();
+            $('#locations').val('');
+            applyFilter();
+        });
+    });
+})();
+</script> 
+</apex:page>

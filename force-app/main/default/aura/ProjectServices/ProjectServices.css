@@ -1,0 +1,48 @@
+.THIS .card-container {
+    width: 100%;
+}
+
+.THIS .oh-container {
+    min-height:500px;
+}
+
+.THIS .slds-size_1-of-1.pad-right {
+    padding-right:12px;
+}
+
+.THIS .oh-plus-button {
+    background-color:#fff; 
+    padding:1rem; 
+    width:100%;
+    font-size:3rem; width:100%; line-height:1.5rem; vertical-align:middle;
+    outline: 0;
+    text-align:center; 
+    color:#4BCA81;
+    border: 1px solid #4BCA81;
+}
+.THIS .oh-plus-button:hover {
+    color: #04844b;
+    border-color: #04844b;
+    background-color:#FFF;
+}
+.THIS .oh-plus-text {
+    width: 100%;
+    text-align: center;
+}
+.THIS .oh-component-spinner-wrap{
+    min-height:150px;
+}
+.THIS #items li {
+    cursor: move;
+    cursor: -webkit-grabbing;
+}
+.THIS .drag-instructions {
+    margin-bottom: 10px;
+}
+.THIS .add-button {
+    margin-left: -11px;
+}
+
+.THIS .add-service-button {
+  padding-top: 7px;
+}

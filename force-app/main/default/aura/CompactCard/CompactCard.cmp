@@ -1,0 +1,29 @@
+<aura:component >
+    <aura:attribute name="cssClass" type="String" default="" />
+    <aura:attribute name="id" type="object" default=""/>
+    <aura:attribute name="toolbars" type="Aura.Component[]"/>
+    <aura:attribute name="footer" type="Aura.Component[]"/>
+    <aura:attribute name="title" type="String" default="No Title Defined"/>
+    <aura:registerEvent name="compactCardTitleClicked" type="c:SimpleComponentEvent"/>
+    <div class="{! 'slds-box ' + cssClass}">
+        <div class="slds-p-bottom_x-small cmk-header">
+            <div class="slds-grid">
+                <div class="slds-col">
+                    <h2 class="cmk-card-title">
+                        <a href="javascript:void(0)" onclick="{!c.onTitleClicked}">{!v.title}</a></h2>
+                </div>
+                <div class="slds-col_bump-left slds-m-bottom_none oh-lineH">
+                    {!v.toolbars}
+                </div>
+            </div>
+        </div>
+        <div class="cmk-body">
+            {!v.body}   
+        </div>
+        <aura:if isTrue="{!v.footer.length > 0}">
+            <div class="cmk-footer slds-p-top_x-small">
+                {!v.footer}
+            </div>
+        </aura:if>
+    </div>
+</aura:component>

@@ -1,0 +1,218 @@
+<apex:page standardController="ProjectService__c" extensions="ProjectServiceTargetsAddExt" tabStyle="Project__c" docType="HTML-5.0">
+<c:jQueryScripts includejQueryUI="true" />
+
+<style>
+    .loading-gif {
+        position: fixed;
+        z-index: 999;
+        margin: auto;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        padding: 12px 55px;
+        background-color: #FFF;
+        box-shadow: 0 0px 3px #ccc;
+        border-radius: 2px;
+        margin: auto !important;
+    }
+    .requiredLegend {
+        display: none;
+    }
+    .hr {
+        margin: 0;
+        border: 0;
+        height: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    priceColumn
+        text-align: right;
+    }
+
+    .hidden, .hideHeader{
+
+        display: none;
+    }
+
+    textarea{
+        width:90%;
+    }
+    .tabCSS{
+         width:90%;
+         align:center;
+         float:right;
+         display:none;
+    }
+    .smallTxtCSS{
+         width:50%;
+    }
+    body input.delete-icon{
+        border: none;
+        height: 22px;
+        width: 12px;
+        background-image: url('/img/func_icons/remove12_on.gif') !important;
+        background-position: left 0;
+        background-color: transparent;
+        background-repeat: no-repeat;
+    }
+    body input.delete-icon:hover{
+        background-position: left 0;
+    }
+    .titleCl{
+            font-size:14.1833px;
+            font-family: Arial,Helvetica,sans-serif;
+            font-weight: bold;
+            color:rgb(0, 0, 0);
+    }
+</style>
+<apex:actionStatus id="loadingStatus">
+    <apex:facet name="start">
+        <img class="loading-gif" src="/img/loading24.gif" width="24" height="24" />
+    </apex:facet>
+</apex:actionStatus>
+<apex:form >
+    <apex:outputpanel id="OpPanel">
+  <apex:pageBlock id="target" title="Target" mode="edit">
+    <apex:facet name="header">
+        <apex:outputPanel layout="block" style="clear:both; border-bottom: 1px solid #ddd; height: 40px;">
+            <apex:outputPanel layout="block" style="width: 50%; float:left; display:inline-block; padding: 10px;">
+                <h2 class="titleCl">Targets</h2>
+            </apex:outputPanel>
+            <apex:outputPanel layout="block" style="float:center; padding: 10px;">
+             <apex:commandButton action="{!SaveAllChanges}" value="Save" id="saveButton" reRender="sectionMessages" rendered="{!$ObjectType.Project__c.updateable && showProductButtons}"/>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:facet>
+
+    <apex:pageBlockSection showHeader="false"  columns="4" id="sectionMessages" >    
+        <apex:pageMessages escape="false" id="messagesForAddTarget"/>
+    </apex:pageBlockSection>
+            
+    <apex:tabPanel id="tabpanel"  tabClass="activeTab" inactiveTabClass="inactiveTab" switchType="client" immediate="true">
+        <apex:tab label="Single Target" style="background-color:white;">
+
+            <apex:pageBlockSection showHeader="false"  columns="1" id="sectionActions" html-class="cm-material-table" rendered="{!$ObjectType.Project__c.updateable && showProductButtons}"> 
+                <apex:outputPanel >
+                   <label for="ddlprojService" class="cm-label"><span class="assistiveText">*</span>Target Type</label>
+                   <div class="cm-input cm-mg-rt-20">
+                         <apex:selectList id="ddlprojService" value="{!SelectedType}" size="1" multiselect="false" style="width:80px">
+                            <apex:selectOptions value="{!AvlTypes}" />
+                        </apex:selectList>
+                    </div>
+                    <label for="TargetInp" class="cm-label"><span class="assistiveText">*</span>Target</label>
+                    <div class="cm-input">
+                            <apex:inputField id="TargetInp" value="{!psc.Target__c}"  style="width:160px" rendered="{!$ObjectType.Project__c.updateable && showProductButtons}"/>
+                    </div>
+                    <label for="ddlAccount" class="cm-label"><span class="assistiveText">*</span>Account</label>
+                    <div class="cm-input ">
+                         <apex:selectList id="ddlAccount" value="{!SelectedAccnt}" size="1" multiselect="false" style="width:160px">
+                            <apex:selectOptions value="{!AvailAccnts}" />
+                        </apex:selectList>
+                    </div>
+                    
+                    <div class="cm-input">
+                    <apex:commandButton id="btnAddProduct" action="{!AddProduct}" value="Add Target" reRender="Primary,Supplemental,Featured,Backup,Halo,sectionActions,messagesForAddTarget,TargetInp,ddlAccount,Quantity,Price" status="loadingStatus"  rendered="{!$ObjectType.Project__c.updateable && showProductButtons}" />
+                    </div>        
+               </apex:outputPanel>
+            </apex:pageBlockSection>
+        </apex:tab>
+        
+        <apex:tab label="Multiple Target(s)">
+            <apex:selectRadio value="{!TargetOption}">
+                <apex:selectOptions value="{!items}"/>
+            </apex:selectRadio>
+                        
+            <apex:pageBlockSection columns="2" showHeader="false" collapsible="false">  
+                <apex:pageBlockSectionItem helpText="Key in or Copy/Paste a Stock ID / UPC per row in the box">                     
+                     <apex:inputTextarea title="CopyAndPaste" rows="10" style="width:400px" value="{!MultipleTgts}" /> 
+                     <apex:commandButton id="importColl" value="Add Target(s)"  status="loadingStatus" reRender="target,tabpanel,OpPanel,messagesForAddTarget" onclick="HideImport()" oncomplete="ShowImport()" action="{!BulkAddProduct}" rendered="{!$ObjectType.Project__c.updateable && showProductButtons}" />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection> 
+        </apex:tab>
+    </apex:tabpanel>
+    
+    
+    <apex:pageBlockSection id="Primary" title="Primary Target(s)" columns="1" collapsible="false" >
+        <apex:pageblocktable value="{!prodAttr}" var="a1" id="pbTable" columnsWidth="18%,10%,6%,10%,7%,5%,5%,5%,5%,5%,5%,2%" rendered="{!prodAttr.size>0}"  style="border-bottom-width:0">
+                <apex:column value="{!a1.psc.Target__r.Name}" headerValue="Target" headerClass="even cm-align-left" />  
+                <apex:column headerValue="Custom Description" headerClass="even cm-align-left">
+                    <apex:inputField value="{!a1.psc.customdesc__c}"  id="CustomDesc"  rendered="{!showProductButtons}"/>
+                    <apex:outputField value="{!a1.psc.customdesc__c}"  rendered="{!!showProductButtons}"/>
+                </apex:column>            
+                <!--<apex:column value="{!a1.psc.Account__c}" headerValue="Account" headerClass="even cm-align-left" />-->
+                <apex:column value="{!a1.psc.Target__r.UPC__c}" headerValue="UPC" headerClass="even cm-align-left"/>
+                <apex:column value="{!a1.psc.Target__r.StockCode__c}" HeaderValue="Stock ID" headerClass="even cm-align-left"/>
+                <apex:column value="{!a1.psc.Target__r.DepartmentNumber__c}" headerValue="Department" headerClass="even cm-align-left"/>
+                <apex:column headerClass="even" >
+                    <apex:commandButton id="delete" value=" " rendered="{!$ObjectType.Project__c.updateable && showProductButtons}" styleClass="delete-icon" action="{!DeleteProducts}" rerender="Primary, messagesForAddTarget" status="loadingStatus" onclick="if(!confirm('Are you sure you want to delete?')){return false};">
+                        <apex:param name="pscParamDEL"  value="{!a1.psc.id}"/>
+                        <apex:param name="Oper"  value="Primary"/>
+                    </apex:commandButton>
+                </apex:column>
+        </apex:pageblocktable>
+        <apex:outputpanel layout="block" rendered="{!prodAttr.size=0}">
+            No records to display
+        </apex:outputpanel>
+    </apex:pageBlockSection>
+    <!--
+    <div id="DivSuccess">
+     <apex:outputPanel layout="block"  rendered="{!lstSucc.size>0}" >         
+         <div style="margin-bottom: 10px;font-weight:bold;color:green;">Following Target(s) have been added to the project</div>
+         <apex:pageblocktable value="{!lstSucc}" var="Obj" columnsWidth="30%,70%">
+            <apex:column value="{!Obj.EReason}" headerValue="Status"  /> 
+            <apex:column value="{!Obj.ENumber}" headerValue="Stock ID/UPC #" styleclass="colsStyle" /> 
+        </apex:pageblocktable>
+     </apex:outputPanel>
+    </div> 
+    <div id="DivFailed">
+        <apex:outputPanel layout="block"  rendered="{!lstErr.size>0}" >  
+            <div class="errorMsg" style="margin-bottom: 10px;font-weight:bold">Following Target(s) cannot be loaded</div>
+            <apex:pageblocktable value="{!lstErr}" var="obj" columnsWidth="30%,70%" >
+              <apex:column value="{!Obj.EReason}" headerValue="Reason for failure"   /> 
+              <apex:column value="{!Obj.ENumber}" headerValue="Stock ID/UPC #" styleclass="colsStyle"  />              
+            </apex:pageblocktable>  
+         </apex:outputPanel>                    
+    </div>      
+    -->
+            
+    </apex:pageBlock>
+    </apex:outputpanel>
+</apex:form>
+<script type="text/javascript">
+    var j$ = jQuery.noConflict();
+
+    function AfterProdAdded() {
+        j$('[id*=TargetInp]').val('');
+    }
+
+  function HideImport(){
+            //alert("hide");
+            j$('[id*="importColl"]').hide();
+        }
+        
+        function ShowImport(){
+            //alert("show");
+            j$('[id*="importColl"]').show();
+        }
+        
+    j$('#saveButton').click(function() {
+        $('input[id*=parVal]').each(function(){
+            var p = j$(this).closest("tr").find("input[id*='parAttrVal']");
+            $(this).val(p.val());
+        });
+    });
+    
+    j$('[id*=ddlprojService]').change(function () {
+        if(this.value == 'Featured' || this.value == 'Halo'){
+            j$('[id*=tgtAcquired]').val('N/A'); 
+            j$('[id*=tgtAcquired]').attr('disabled', true);
+        }
+        else{
+              j$('[id*=tgtAcquired]').attr('disabled', false);              
+        }
+    });
+
+</script>
+</apex:page>

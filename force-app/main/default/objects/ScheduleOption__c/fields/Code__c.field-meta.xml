@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Code__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>Unique value that should be used within APEX code when referencing the Schedule Option.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Unique value that should be used within APEX code when referencing the Schedule Option.</inlineHelpText>
+    <label>Code</label>
+    <length>40</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

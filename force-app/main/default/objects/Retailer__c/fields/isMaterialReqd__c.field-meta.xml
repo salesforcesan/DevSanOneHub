@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>isMaterialReqd__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>To determine if materials are needed for this retailer.</description>
+    <externalId>false</externalId>
+    <label>Is Material Reqd</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

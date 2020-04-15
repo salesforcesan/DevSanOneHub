@@ -1,0 +1,83 @@
+<aura:component >
+  <ltng:require styles="{!$Resource.font_awesome +'/font-awesome/css/font-awesome.min.css'}" />
+  <aura:attribute name="data" type="List" default="[]" />
+  <aura:attribute name="projectId" type="Id" default="" />
+  <aura:attribute name="visible" type="Boolean" default="true" />
+  <aura:attribute name="canDelete" type="Boolean" default="false" />
+  <aura:attribute name="showSchedule" type="Boolean" default="true" />
+  <aura:method name="selectOne" action="{!c.onCheckOne}" />
+  <aura:method name="selectAll" action="{!c.onCheckAll}" />
+  <aura:registerEvent name="checkOneLocationEvent" type="c:SimpleComponentEvent" />
+  <div class="{!v.visible ? 'card-container show' : 'card-container hide'}" aura:id="cardContainer">
+    <aura:iteration items="{!v.data}" var="location">
+      <article class="card" data-id="{!location.id}">
+        <lightning:input type="checkbox" name="{!join('_','chkCard',location.id)}" label="{!location.id}" class="card-checkbox" checked="{!location.selected}" value="{!location.id}" onchange="{!c.onCheckOne}" />
+        <section class="slds-clearfix slds-m-bottom--x-small">
+          <div class="slds-float--left">
+            <a class="view-detail blue" href="javascript:void(0)" data-id="{!location.id}" onclick="{!c.gotoDetail}">
+              <ul class="horizontal-list">
+                <li><span>{!location.num}</span></li>
+                <li><span class="dashed">-</span></li>
+                <li><span>{!location.name}</span></li>
+                <li><span class="dashed">-</span></li>
+                <li><span class="gray">{!location.type}</span></li>
+              </ul>
+            </a>
+          </div>
+          <div class="slds-float--right">
+            <aura:if isTrue="{!v.canDelete}">
+              <a onclick="{!c.onClickDeleteCurrentLocation}" href="javascript:void(0)" title="Delete Location" data-id="{!location.id}">
+                <lightning:icon class="red" size="xx-small" variant="error" iconName="utility:close" alternativeText="Delete Location" />
+              </a>
+            </aura:if>
+          </div>
+        </section>
+        <!-- address -->
+        <section class="slds-m-bottom--x-small">
+          <ul class="horizontal-list slds-text-body--small">
+            <li class="slds-item"><span>{!location.address}</span></li>
+            <li class="slds-item"><span class="dotted">&middot;</span></li>
+            <li class="slds-item"><span>{!join(', ', location.city, location.state)}</span></li>
+            <li class="slds-item"><span class="dotted">&middot;</span></li>
+            <li class="slds-item"><span>{!location.postal}</span></li>
+            <li class="slds-item">
+              <lightning:badge label="{!location.status}" class="{!join(' ','slds-float--right', location.__class)}" />
+            </li>
+          </ul>
+        </section>
+        <!-- bottom information bar -->
+        <section>
+          <div class="slds-grid slds-text-body--small slds-text-color--weak">
+            <div class="{!v.showSchedule ? '': 'hide'}">
+              <div class="slds-popover slds-popover--tooltip slds-nubbin--bottom-left pl-card-tooltip" role="tooltip">
+                <div class="slds-popover__body">Schedule Date</div>
+              </div>
+              <span><i class="fa fa-icon fa-calendar gray slds-m-right--x-small fa-lg"></i>{!location.schedule}</span>
+            </div>
+           <!--sankar deleted-->
+            <div>
+              <div class="slds-popover slds-popover--tooltip slds-nubbin--bottom-left pl-card-tooltip" role="tooltip">
+                <div class="slds-popover__body">Execution Status</div>
+              </div>
+              <span>
+                <i class="{!location.execution==-1?'fa fa-icon fa-close fa-lg red slds-m-right--x-small show':'hide'}"></i>
+                <i class="{!location.execution==1?'fa fa-icon fa-check fa-lg green slds-m-right--x-small show':'hide'}"></i>
+                <i class="{!location.execution==0?'fa fa-icon gray fa-circle-o fa-lg gray slds-m-right--x-small show':'hide'}"></i>Executed
+              </span>
+            </div>
+            <div class="hide">
+              <div class="slds-popover slds-popover--tooltip slds-nubbin--bottom-left pl-card-tooltip" role="tooltip">
+                <div class="slds-popover__body">Execution Company</div>
+              </div>
+              <div class="slds-truncate" style="max-width:150px;">
+                <span>
+                <i class="fa fa-icon fa-building-o gray slds-m-right--x-small fa-lg"></i>{!location.company}
+              </span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </article>
+    </aura:iteration>
+  </div>
+</aura:component>

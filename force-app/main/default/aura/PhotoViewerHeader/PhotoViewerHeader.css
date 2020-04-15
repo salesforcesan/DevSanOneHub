@@ -1,0 +1,24 @@
+.THIS.oh-container {
+    background: #2962FF;
+    padding: 16px;
+    color: #ffffff;
+}
+
+.THIS.oh-container .oh-left .oh-title {
+    font-size: 1.25rem;
+    padding-left: 16px;
+    text-transform: uppercase;
+}
+.THIS.oh-container .oh-left .oh-content {
+    display: flex;
+    align-items: center;
+}
+.THIS.oh-container .oh-right .oh-content {
+    display: flex;
+    flex-grow:1;
+    align-items: center;
+    justify-content: flex-end;
+}
+.THIS.oh-container .oh-right .oh-content .oh-button {
+    color: #fff;
+}

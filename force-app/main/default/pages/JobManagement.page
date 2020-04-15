@@ -1,0 +1,955 @@
+<apex:page standardController="Project__c" extensions="JobManagementController" showHeader="true" sidebar="false" standardStylesheets="false" cache="false" expires="0" docType="html-5.0" applyHtmlTag="true">
+
+<apex:stylesheet value="{!URLFOR($Resource.slds_crossmark, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}"/>
+<!--<apex:stylesheet value="{!URLFOR($Resource.JobManagement, 'vendor.min.css')}"/>-->
+<apex:stylesheet value="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.css"/>
+
+<style>
+
+    textarea.slds-input,input.slds-input {
+        min-width: 2rem;
+    }
+
+    .slds-table thead td,
+    .slds-table thead th {
+        background-color: #f7f9fb;
+    }
+
+    .text-right {
+        text-align: right;
+        flex: 2 0 0;
+    }
+
+    .slds-media--center {
+        text-align: left;
+    }
+
+    td,th.cmx-centered{
+        text-align: center;
+    }
+
+    .slds-checkbox [type=checkbox][disabled]+.slds-checkbox--faux{
+        background-color: lightblue;
+    }
+
+    span.ui-icon.ui-icon-triangle-1-s {
+        display : none;
+    }
+
+    input.datepicker {
+        width : 8.25em;
+    }
+
+    #filterString{
+        display:none;
+    }
+
+    div.reattempt-results,div.schedule-results,div.cancel-results {
+        display:none;
+    }
+
+    .hidden, .slds-button.hidden {
+        display: none;
+    }
+
+    .fc-highlight{
+        background-color: black;
+    }
+
+    .ui-multiselect {
+        background: #fff;
+        border: 1px solid #d8dde6 !important;
+        color: #16325c !important;
+        font-family: "Salesforce Sans",Arial,sans-serif !important;
+        height: 32px;
+        padding: 4px 2rem 4px 0.75rem;
+        width: 100% !important;
+    }
+
+    .ui-multiselect:hover,
+    .ui-multiselect:focus {
+        background: #fff;
+        border: 1px solid #d8dde6 !important;
+    }
+
+    .ui-multiselect-menu {
+        padding: 0;
+        width: auto !important;
+    }
+
+    .ui-multiselect-menu li {
+        padding-right: 0;
+    }
+
+    .ui-multiselect-checkboxes label {
+        border-radius: 0;
+        padding: 0.5rem 1.5rem 0.5rem 0.75rem;
+    }
+
+    .ui-multiselect-checkboxes label input {
+        margin-right: 0.5rem;
+        top: 0 !important;
+    }
+
+    .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus, .ui-button:hover, .ui-button:focus {
+        border-color: transparent;
+        background: #f4f6f9;
+    }
+
+    .ui-multiselect-menu li {
+        margin-left: 0;
+    }
+</style>
+
+
+<div class="crossmark">
+    <div class="slds-page-header" role="banner">
+        <div class="slds-grid">
+            <div class="slds-col slds-has-flexi-truncate">
+                <div class="slds-media slds-media--center slds-no-space slds-grow">
+                    <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon-standard-user">
+                            <use href="{!URLFOR($Resource.slds_203, '/assets/icons/standard-sprite/svg/symbols.svg#user')}"></use>
+                        </svg>
+                    </div>
+                    <div class="slds-media__body">
+                        <p class="slds-text-heading--label">Project</p>
+                        <h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" ><a href="" class="project-name" ></a></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-no-flex slds-grid slds-align-bottom">
+                <div class="slds-button-group" role="group">
+                    <button class="slds-button slds-button--neutral hidden" id="reattempt-button" >Reattempt</button>
+                    <button class="slds-button slds-button--neutral hidden" id="cancel-button">Cancel</button>
+                    <button class="slds-button slds-button--neutral hidden" id="delete-button">Delete</button>
+                </div>
+            </div>
+        </div>
+        <ul class="slds-grid slds-page-header__detail-row">
+            <li class="slds-page-header__detail-block">
+                <p class="slds-text-heading--label-normal slds-truncate slds-m-bottom--xx-small" title="Field 1">Project Number</p>
+                <p class="slds-text-body--regular slds-truncate project-number" title="{!HTMLENCODE(project.projectNumber)}">{!HTMLENCODE(project.projectNumber)}</p>
+            </li>
+            <li class="slds-page-header__detail-block start-date">
+                <p class="slds-text-heading--label-normal slds-truncate slds-m-bottom--xx-small" title="Field2 (3)">Start Date</p>
+            </li>
+            <li class="slds-page-header__detail-block end-date">
+                <p class="slds-text-heading--label-normal slds-truncate slds-m-bottom--xx-small" title="Field 3">End Date</p>
+            </li>
+            <li class="slds-page-header__detail-block">
+                <p class="slds-text-heading--label-normal slds-truncate slds-m-bottom--xx-small" title="Field 4">Status</p>
+                <p>
+                    <span title="In progress">{!HTMLENCODE(project.status)}</span>
+                </p>
+            </li>
+            <li class="text-right">
+                <span class="slds-text-heading--small slds-m-right--small"><span id="jobs-results">0</span> Jobs of <span id="jobs-total">0</span> Found</span>
+                <button class="slds-button slds-button--neutral apply-filter">Apply Filter</button>
+                <!-- <button class="slds-button slds-button--neutral copy-filter">Copy Filter</button> -->
+                <textarea id="filterString" rows="8" cols="40"></textarea>
+            </li>
+        </ul>
+    </div>
+
+    <table border="0" cellpadding="0" cellspacing="0" class="slds-table slds-table--bordered slds-table--cell-buffer" id="searchResults" style="display: table;">
+        <thead>
+            <tr class="slds-text-heading--label">
+                <th>
+                    <input id="chkAll" type="checkbox"/>
+                </th>
+                <th scope="col" id="TableHeader">Job Name</th>
+                <th scope="col">Service</th>
+                <th scope="col">Location</th>
+                <th scope="col">Accountable EC</th> 
+                <th scope="col">Status</th>
+                <th scope="col" colspan="2" class="cmx-centered">Scheduled Date</th>
+                <th scope="col">Exception Reason</th>
+                <th scope="col">Executed</th>
+                <th scope="col">Completed</th>
+            </tr>
+        </thead>
+        <tbody id="filters-body">
+            <tr class="filters-row">
+                <th></th>
+                <!-- filters template will be inserted here -->
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+    <!-- configsettings -->
+    <script type="text/javascript">
+        window.configSettings = {
+            parameters : {
+                filterSelections : '{!JSENCODE(filterSelections)}'
+            },
+            project :{
+                name : '{!JSENCODE(project.name)}',
+                id : '{!JSENCODE(project.id)}',
+                startDate : '{!JSENCODE(project.startDate)}',
+                endDate : '{!JSENCODE(project.endDate)}',
+                projectNumber : '{!JSENCODE(project.projectNumber)}',
+                status : '{!JSENCODE(project.status)}',
+                option : '{!JSENCODE(project.option)}'
+            },
+            remoteActions: {
+                greeting: '{!$RemoteAction.JobManagementController.greeting}',
+                getJobFilters: '{!$RemoteAction.JobManagementController.getJobFilters}',
+                filterJobs: '{!$RemoteAction.JobManagementController.filterJobs}',
+                createAttempts: '{!$RemoteAction.JobManagementController.createAttempts}',
+                cancelJobs: '{!$RemoteAction.JobManagementController.cancelJobs}',
+                deleteJobs: '{!$RemoteAction.JobManagementController.deleteJobs}',
+                cancelReasons : '{!$RemoteAction.JobManagementController.cancelReasons}',
+            }
+        };
+    </script>
+
+    <!--  javascript dependencies -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+  <link rel="stylesheet" href="/resources/demos/style.css"/>
+    <!--<script type="text/javascript" src="{!URLFOR($Resource.JobManagement, 'vendor.min.js')}"></script>-->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <div id="reattempt-dialog" title="Reattempt">
+        <div class="message">
+            <h1 class="jobs-request-confirmation">Are you sure you want to reattempt <span class="number-of-attempts">0</span> Jobs?</h1>
+            <div class="jobs-request-results">
+                Jobs in Open, Assigned, Started or Reported can be Reattempted. <br/>
+                Reattempt successful for  <span style="color:green" class="jobs-request-successes">0</span> job(s) and failed for <span style="color:red" class="jobs-request-failures">0</span> job(s).<br/>
+                <span  class="jobs-request-errorInfo" style="color:red"></span>
+            </div>
+            <br/><br/>
+            <!--label id='errDiffSchDate'>Please select Jobs with same scheduled date to Re-attempt.</label>-->
+            
+            <div id="divScheduleDate">
+                Please select a Scheduled Date: <div id="ScheduleDate"  />                
+            </div>                
+
+            <div class="jobs-request-progress">
+            </div>
+        </div>
+    </div>
+
+    <div id="cancel-dialog" title="Cancel">
+        <div class="jobs-request-confirmation">
+            <div class="slds-form-element">
+                <label  for="cancel-reason">Cancellation Reason</label>
+                <div class="slds-select_container" for="cancel-reason">
+                    <select id="cancel-reason" class="slds-select" ></select>
+                </div>
+            </div>
+
+            <div class="slds-form-element">
+                <label  for="cancel-reason">Explanation</label>
+                <div class="slds-select_container" for="cancel-explanation">
+                    <textarea id="cancel-explanation" class="slds-textarea" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="jobs-request-progress"></div>
+        <div class="jobs-request-results">
+            Jobs in Pending, Open or Assigned can be Canceled. <br />
+            Cancel successful for <span class="jobs-request-successes">0</span> jobs and failed for <span class="jobs-request-failures">0</span> jobs.
+        </div>
+    </div>
+
+    <div id="delete-dialog" title="Delete">
+        <div class="message">
+            <h1 class="jobs-request-confirmation">Are you sure you want to delete <span class="number-of-attempts">0</span> Jobs?</h1>
+            <div class="jobs-request-results">
+                Delete successful for <span class="jobs-request-successes">0</span> jobs and failed for <span class="jobs-request-failures">0</span> jobs.
+            </div>
+            <div class="jobs-request-progress"></div>
+        </div>
+    </div>
+
+    
+    <!-- template for the dynamic filters -->
+    <script id="template-filters" type="text/x-handlebars-template">
+    {{#each filters}}
+        <th>
+            <div class="slds-form-element">
+                <label class="slds-form-element__label slds-assistive-text" for="filter-job-name">{{label}}</label>
+                <div class="slds-form-element__control">
+                    {{#if_eq type 'text'}}                        
+                        <!-- <input class="slds-input job-filter" data-filter="{{label}}" type="text" placeholder="{{label}}"/>  -->
+                        <textarea rows="1" cols="26" class="slds-input job-filter" data-filter="{{label}}"  placeholder="{{label}}"/>
+                    {{/if_eq}}
+                    {{#if_eq type 'date'}}
+                        <input class="slds-input datepicker job-filter" data-filter="{{label}}" type="text" placeholder="{{label}}"/>
+                    {{/if_eq}}
+                    {{#if_eq type 'picklist'}}
+                    <div class="slds-select_container">
+                        <select class="slds-select job-filter" data-filter="{{label}}">
+                            {{#each options}}
+                                <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    {{/if_eq}}
+                    {{#if_eq type 'multiselect'}}
+                    <div class="slds-select_container">
+                        <select class="slds-select multiselect job-filter" data-filter="{{label}}" multiple="multiple" size="1">
+                            {{#each options}}
+                                <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    {{/if_eq}}
+                </div>
+            </div>
+        </th>
+    {{/each}}
+    </script>
+
+    <script id="template-job-row" type="text/x-handlebars-template">
+    {{#each jobs}}
+    <tr class="cmx-job">
+        <td>
+            <input class="include" data-id="{{id}}" type="checkbox"/>
+        </td>
+        <td><a href="/{{id}}">{{name}}</a></td>
+        <td>{{service}}</td>
+        <td>{{location}}</td>
+        <td>{{executionCompany}}</td> 
+        <td>{{status}}</td>
+        <td colspan="2" style="text-align:center">{{scheduledDate}}</td>
+        <td>{{exceptionName}}</td>
+        <td>
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <label class="slds-checkbox">
+                        <input type="checkbox" name="options" id="checkbox-01" {{#if executed}}checked{{/if}} disabled/>
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label slds-assistive-text">Checkbox Label</span>
+                    </label>
+                </div>
+            </div>
+        </td>
+        <td>{{completed}}</td>
+    </tr>
+    {{/each}}
+    </script>
+
+    <script type="text/javascript">
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": false,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+    Handlebars.registerHelper('if_eq', function(a, b, opts) {
+        if (a == b) {
+            return opts.fn(this);
+        } else {
+            return opts.inverse(this);
+        }
+    });
+
+
+
+    
+       
+    //compile handlebars templates
+    var jobRowTemplate = Handlebars.compile($("#template-job-row").html()),
+        filtersTemplate = Handlebars.compile($("#template-filters").html());
+
+    $(document).ready(function () {
+        
+        if({!isSCHEDULEOPTION_EC})
+            $('#divScheduleDate').hide();
+        else
+            $('#divScheduleDate').show();
+        
+        toastr.info("Loading..", null, {timeOut:60000});
+        var cancel_reasons = [];
+
+        $.jsr({method: configSettings.remoteActions.cancelReasons}).then(function(reasons){
+            cancel_reasons = reasons;
+            console.log('reasons', reasons);
+        });
+
+        if( window.configSettings.project.status === 'Launched'){
+            $('#cancel-button').removeClass('hidden');
+        }else if(window.configSettings.project.status === 'In Progress'){
+            $('#cancel-button').removeClass('hidden');
+            if({!isSingleDay}){
+                $('#reattempt-button').removeClass('hidden');
+            }
+        }else if(window.configSettings.project.status === 'Booked'  ){
+            $('#cancel-button').removeClass('hidden');
+        }else if(window.configSettings.project.status === 'Planning'  ){
+            $('#delete-button').removeClass('hidden');
+        }
+
+
+        $('.project-name').text(window.configSettings.project.name).attr("href", "/" + window.configSettings.project.id);
+        $('.project-number').text(window.configSettings.project.projectNumber);
+        $('.start-date').append(window.configSettings.project.startDate);
+        $('.end-date').append(window.configSettings.project.endDate);
+
+        //check and uncheck all checkboxes from header
+        $('#chkAll').change(function(){
+            $('input.include').prop('checked', $(this).prop("checked"));
+        });
+        
+        
+        var $reattemptDialog = $("#reattempt-dialog").dialog({
+            autoOpen: false,
+            height: 350,
+            width: 500,
+            modal: true,
+            buttons: [{
+                text: "Reattempt",
+                "class": "jobs-request-confirmation",
+                click: function(){
+
+                    var $this = $(this);
+                    var jobIds = getSelectedJobIds();
+                    var $progress = $this.find( ".jobs-request-progress" ).progressbar({
+                        value: false
+                    });
+
+                    $this.parent().find(".jobs-request-confirmation").hide();
+
+                    console.log(jobIds);                    
+                    //alert({!isSCHEDULEOPTION_EC});
+
+            
+                    $this.find(".jobs-request-errorInfo").html("");
+                    var errorInfo= "<br/>Error Info: <br/>";
+                    
+                    $.jsr({
+                        method: configSettings.remoteActions.createAttempts,
+                        args : [jobIds,$(ScheduleDate).val()]
+                    }).then(function(actionResponses){
+                        $progress.progressbar("destroy");
+                        var len = actionResponses.length,
+                            successes = 0,
+                            failures = 0;
+                        for(var i=0; i < len; i++){
+                            var ar = actionResponses[i];
+                            if(ar.IsSuccessful){
+                                successes++;                                
+                            }
+                            else{
+                               errorInfo = errorInfo +  ar.ResponseMessage + "<br />";
+                            }
+                        }
+                        failures = len - successes;
+                        $this.find(".jobs-request-successes").text(successes);
+                        $this.find(".jobs-request-failures").text(failures);
+
+                        if(errorInfo.length>25)
+                            $this.find(".jobs-request-errorInfo").html(errorInfo);
+                        
+                        
+                        console.log('~~~~'+JSON.stringify(actionResponses));
+                    }).catch(function(error){
+                        toastr.error(error.message);
+                    }).then(function(){
+                        $this.find(".jobs-request-results").toggle();
+                        $('#divScheduleDate').hide();
+                        $(".apply-filter").trigger("click");
+                    });
+                }
+            }]
+        });
+
+
+
+
+        $('#reattempt-button').click(function(){
+            var jobIds = getSelectedJobIds();
+
+            if(jobIds.length){
+                $reattemptDialog.find(".number-of-attempts").text(jobIds.length);
+                $reattemptDialog.parent().find(".jobs-request-confirmation").show();
+                $reattemptDialog.find(".jobs-request-results").hide();
+                                    
+                if({!isSCHEDULEOPTION_EC})
+                    $('#divScheduleDate').hide();
+                else
+                    $('#divScheduleDate').show();
+                    
+                var rtnVal= isMultipleDateSelected();
+                if(rtnVal){
+                    //$('#errDiffSchDate').show();                    
+                    alert(' Please select Jobs with same scheduled date to Re-attempt.');                    
+                    $('#divScheduleDate').hide();
+                    return false;
+                }
+                else{
+                    //$('#errDiffSchDate').hide(); '{!projEndDate}' +
+                    var endDate = $('.end-date').clone().children().remove().end().text().trim();
+                    
+                    if(!{!isSCHEDULEOPTION_EC} ){
+                        //$('#divScheduleDate').show();
+                        $('#ScheduleDate').datepicker({minDate:0,maxDate:endDate});                
+                    }
+                    //else
+                    //    $('#divScheduleDate').hide();
+                }
+                $reattemptDialog.dialog("open");                
+            }else{
+              toastr.warning('Please select jobs to reattempt');
+            }
+        });
+
+
+        // cancel dialog
+        var $cancelDialog = $("#cancel-dialog").dialog({
+            autoOpen: false,
+            height: 450,
+            width: 500,
+            modal: true,
+            buttons: [{
+                text: "Cancel Jobs",
+                "class": "jobs-request-confirmation",
+                click: function(){
+
+                    var $this = $(this);
+                    var jobIds = getSelectedJobIds(),
+                        reason = $('#cancel-reason').val(),
+                        explanation = $('#cancel-explanation').val();
+
+                    if(reason === 'Other' && explanation === ''){
+                        toastr.warning('Please provide an explanation if your reason is "Other" ');
+                    }else{
+
+                        var $progress = $this.find( ".jobs-request-progress" ).progressbar({
+                          value: false
+                        });
+
+                        $this.parent().find(".jobs-request-confirmation").hide();
+
+                        $.jsr({
+                            method: window.configSettings.remoteActions.cancelJobs,
+                            args : [jobIds,reason,explanation]
+                        }).then(function(actionResponses){
+                            var len = actionResponses.length,
+                                successes = 0,
+                                failures = 0;
+                            for(var i=0; i < len; i++){
+                                var ar = actionResponses[i];
+                                if(ar.IsSuccessful){
+                                    successes++;
+                                }
+                            }
+                            failures = len - successes;
+                            $this.find(".jobs-request-successes").text(successes);
+                            $this.find(".jobs-request-failures").text(failures);
+
+                            $progress.progressbar("destroy");
+                            toastr.success('Cancelled');
+
+                            console.log('cancel responses', actionResponses)
+                        }).catch(function(error){
+                            toastr.error(error.message);
+                        }).then(function(){
+                            $this.find(".jobs-request-results").toggle();
+
+                            $(".apply-filter").trigger("click");
+                        });
+                    }
+                }
+            }]
+        });
+
+        $('#cancel-button').click(function(){
+            var jobIds = getSelectedJobIds();
+            var $select = $('#cancel-reason').empty(),
+                $explanation = $('#cancel-explanation').val('');
+            //$select.append("<option value='Other'>Other</option>");
+            for(var i=0;i<cancel_reasons.length;i++){
+                var reason = cancel_reasons[i];
+                $select.append("<option value='"+reason+"'>"+reason+"</option>");
+            }
+
+            if(jobIds.length){
+
+                $cancelDialog.parent().find(".jobs-request-confirmation").show();
+                $cancelDialog.find(".jobs-request-results").hide();
+                $cancelDialog.dialog("open");
+            }else{
+                toastr.warning('Please select jobs to cancel');
+            }
+        });
+
+        //end cancel jobs
+
+        // delete dialog
+        var $deleteDialog = $( "#delete-dialog" ).dialog({
+            autoOpen: false,
+            height: 300,
+            width: 600,
+            modal: true,
+            buttons: [{
+                text: "Delete Jobs",
+                "class": "jobs-request-confirmation",
+                click: function(){
+
+                    var jobIds = getSelectedJobIds();
+                    var $this = $(this);
+                    var $progress = $this.find( ".jobs-request-progress" ).progressbar({
+                        value: false
+                    });
+
+                    $this.parent().find(".jobs-request-confirmation").hide();
+
+                    console.log(jobIds);
+
+                    $.jsr({
+                        method: configSettings.remoteActions.deleteJobs,
+                        args : [jobIds]
+                    }).then(function(actionResponses){
+                        $progress.progressbar("destroy");
+                        var len = actionResponses.length,
+                            successes = 0,
+                            failures = 0;
+                        for(var i=0; i < len; i++){
+                            var ar = actionResponses[i];
+                            if(ar.IsSuccessful){
+                                successes++;
+                            }
+                        }
+                        failures = len - successes;
+                        $this.find('.jobs-request-successes').text(successes);
+                        $this.find('.jobs-request-failures').text(failures);
+                        console.log(actionResponses);
+                    }).catch(function(error){
+                        toastr.error(error.message);
+                    }).then(function(){
+                        $this.find('.jobs-request-results').toggle();
+
+                        $(".apply-filter").trigger("click");
+                    });
+                }
+            }]
+        });
+
+        $('#delete-button').click(function(){
+            var jobIds = getSelectedJobIds();
+            if(jobIds.length){
+
+                $deleteDialog.find(".number-of-attempts").text(jobIds.length);
+                $deleteDialog.parent().find('.jobs-request-confirmation').show();
+                $deleteDialog.find('.jobs-request-results').hide();
+
+                $deleteDialog.dialog("open");
+            }else{
+                toastr.warning('Please select jobs to delete');
+            }
+        });
+
+        //end delete dialog
+
+        //when user selects a filter and clicks "Apply"
+        $(".apply-filter").click(function(){
+            toastr.info("Loading..", null, {timeOut:60000});
+            var filterSelections = getFilterSelections();
+            var TotalJobCount = "{!displaytotalJobCount}";
+            
+            console.log('filterSelections',filterSelections);
+            console.log('base64 encoded filter selections', window.location.pathname + '?fs=' +serialize(filterSelections));
+
+            $('.cmx-job').remove();
+            
+            //hide existing rows
+            var maxResults = "{!maxResults}";            
+            var tempFS = filterSelections;
+            var ismaxFilterReached = false;
+            Object.keys(tempFS).forEach(function(key) {
+                console.log('Person ', key,': ', tempFS[key].replace(/[\r\n]/g,','));              
+                //alert(maxResults +'----'+ tempFS[key].replace(/[\r\n]/g,',').split(',') +'----'+ JSON.stringify(tempFS[key]));               
+                if(maxResults < tempFS[key].replace(/[\r\n]/g,',').split(',').length)
+                {    
+                    /*toastr.clear();
+                    toastr.error('Maximum result returned cannot exceed '+ maxResults  +'. Please limit the filters and try again.');
+                    timer.start();
+                    setTimeout(stopTimer,5000);
+                    return null; */  
+                    ismaxFilterReached =true;
+                }                
+            });
+            
+            var TotalJobsReturned = 0;
+            if(ismaxFilterReached!=true)
+            {
+                var filters = {};//getFilterSelections();
+                $.jsr({
+                    method: configSettings.remoteActions.filterJobs,
+                    args:[window.configSettings.project.id, filterSelections],
+                    options: {timeout: 60000}
+                }).then(function (response) {                
+                    var jobs = response.jobs;
+                    var cmp;  
+                    if(!!jobs){
+                      jobs.forEach(function(j){
+                        cmp = j['executionCompany'] || '';
+                        j['executionCompany'] = cmp.replace('&#39;',"'");
+                      });
+                    }
+                    //alert(maxResults +' --- '+response.total );
+                    TotalJobsReturned =  response.total;      
+                                          
+                    $('#jobs-results').text(jobs.length);
+                    //$('#jobs-total').text(response.total);
+                    $('#jobs-total').text(TotalJobCount);
+                    var context = {jobs: jobs};
+                    var row = jobRowTemplate(context);
+                    $('#filters-body').append(row);
+                    toastr.clear();
+                    
+                    //alert(       maxResults +'  '+TotalJobsReturned      );
+                    if(maxResults < TotalJobsReturned ){
+                         toastr.info('Displaying only '+maxResults +' jobs of '+TotalJobsReturned +' returned Jobs. Please modify filters to work on limited data.');                                                                                       
+                    }    
+
+                }).catch(function (error) {
+                    if(error.message.includes('timeout'))
+                        toastr.error('Timeout Exception. Please limit the filters and try again.');                    
+                    else
+                        toastr.error(error.message);
+                });
+            }
+            if(ismaxFilterReached==true){
+                $('tr.cmx-job').remove();
+                toastr.clear();
+                toastr.error('Maximum result returned cannot exceed '+ maxResults  +'. Please limit the filters and try again.');
+                timer.start();
+                setTimeout(stopTimer,5000);
+                return null;
+            }
+                         
+        });
+
+        //greet the user
+        getJobFilters(window.configSettings.project.id);
+        //greeting();
+    });
+
+    //attempt to copy the url to recreate current search to users clipboard
+    $('.copy-filter').click(function(){
+        var filterSelections = getFilterSelections();
+        console.log(filterSelections);
+        var $filterTextarea = $('#filterString').text('&fs=');
+        $filterTextarea.show().append( serialize(filterSelections) ).select();
+        try {
+            var successful = document.execCommand('copy');
+            $filterTextarea.hide();
+            var msg = successful ? 'successful' : 'unsuccessful';
+            if(successful){
+                toastr.success('Saving filter url to clipboard ' + msg);
+            }else{
+                toastr.error('Oops, unable to copy filter.  Check developer console for filter url');
+            }
+
+        } catch (err) {
+            toastr.error('Oops, unable to copy filter.  Check developer console for filter url');
+        }
+
+    });
+
+    function getFilterSelections(){
+        var filterSelections = {};
+
+        $('.job-filter').each(function(){
+            //console.log($(this).data('filter'), $(this).val());
+            var value = $(this).val();
+            if((typeof value === 'string' && value)  ) {
+                filterSelections[$(this).data('filter')] = value;
+            }else if((typeof value === 'object'  && value.length)){
+                filterSelections[$(this).data('filter')] = value.join(',');
+            }
+        });
+
+        return filterSelections;
+    }
+
+    function greeting(){
+        toastr.clear();
+        return $.jsr({
+            method: '{!$RemoteAction.JobManagementController.greeting}'
+        }).then(function (greeting) {
+            toastr.success(greeting);
+            return greeting;
+        }).catch(function (error) {
+            toastr.error(error.message);
+        });
+    }
+
+    function getJobFilters(){
+        return $.jsr({
+            method: '{!$RemoteAction.JobManagementController.getJobFilters}',
+            args: [window.configSettings.project.id]
+        }).then(function (filters) {
+            
+                    
+            var html = filtersTemplate({
+                filters: filters
+            });
+            $('tr.filters-row').append(html);
+
+            //setup multiselect picklists
+            $("select.multiselect").multiselect({
+                header : false
+                , minWidth : 100
+                , noneSelectedText : "Select"
+            });
+
+            // Remove addition ui-icon-triangle-2-n-s added by the multiselect class, which conflicts with SLDS
+            $("select.multiselect").parent().find("button span.ui-icon-triangle-2-n-s").hide();
+
+            //setup datepicker filters
+            $("input.datepicker").datepicker({
+                numberOfMonths: 1
+            });
+
+            var filterSelections = {};
+
+            //if a base64 filter selection object is provided
+            if(configSettings.parameters.filterSelections){
+
+                toastr.info('Loading saved filter');
+
+                filterSelections = deserialize(configSettings.parameters.filterSelections);
+
+                console.log('base 64 encoded filter selections', configSettings.parameters.filterSelections, filterSelections);
+
+            }
+
+            for (var label in filterSelections){
+                if (filterSelections.hasOwnProperty(label) ){
+                    setFilter(label, filterSelections[label]);
+                }
+            }
+
+            $('button.apply-filter').click();
+
+            return filters;
+
+        }).catch(function (error) {
+            toastr.error(error.message);
+        });
+    }
+
+    function getSelectedJobIds(){
+        var jobIds = [];
+        $('input.include:checked').each(function(){            
+            jobIds.push($(this).data('id'));
+        });
+        //alert(jobIds.length);
+        return jobIds;
+    }
+
+
+    function isMultipleDateSelected(){
+        var temp1=null;
+        var tempVal=false;   
+        $('input.include:checked').each(function(){
+            var data = $(this).parents('tr:eq(0)');   
+            if(temp1==null){
+                temp1=$(data).find('td:eq(6)').text();
+            }
+            else{
+                if(temp1!=$(data).find('td:eq(6)').text())
+                    {tempVal=true;}
+            }         
+        });
+        return tempVal;
+    }
+
+
+    function setFilter(label, value){
+
+        //find the filter with the data-filter value of label
+        //so all labels must be unique
+        var $filter = $("[data-filter='"+ label +"']");
+
+        if($filter.is('input')){
+            //this is either a text input or datepicker
+            $filter.val(value);
+        }else if($filter.is('select')){
+            //a single select picklist
+            if(typeof value === 'string' && ! value.includes(',')){
+                console.log('solo!', value)
+                $filter.children('option').each(function(){
+                    var $opt = $(this);
+                    if($opt.val() == value){
+                        $opt.attr({selected:'selected'});
+                    }
+                });
+                if($filter.hasClass('multiselect')){
+                    $filter.multiselect('refresh');
+                }
+            //a multiselect picklist
+            }else if(typeof value === 'string' &&  value.includes(',')){
+                //this value has multiple selections
+                console.log('multi!', value)
+                var values = value.split(',');
+                for(var i=0;i<values.length;i++){
+
+                    var val = values[i];
+
+                    $filter.children('option').each(function(){
+                        var $opt = $(this);
+                        if($opt.val() == val){
+                            $opt.attr({selected:'selected'});
+                        }
+                    });
+                }
+                //reflect changes in multiselect widget
+                $filter.multiselect('refresh');
+            }
+        }
+    }
+
+
+    function serialize(obj){
+        return btoa(JSON.stringify(obj));
+    }
+
+    function deserialize(base64){
+        return JSON.parse(atob(base64));
+    }
+       
+    $(document).on('focus',".job-filter[data-filter='Location'],.job-filter[data-filter='Job Name']", function() 
+    {
+        $(this).height(100); 
+    })
+    .on('blur',".job-filter[data-filter='Location'],.job-filter[data-filter='Job Name']", function() {
+        $(this).scrollTop(0);
+        $(this).height(30); 
+    });
+    
+    var entityMap = {
+       '&#39;': "'"
+    };
+    
+    function escapeHtml(string) {
+      return String(string).replace(/&#39;/g, "'");
+    }
+    
+    
+
+    </script>
+
+</apex:page>

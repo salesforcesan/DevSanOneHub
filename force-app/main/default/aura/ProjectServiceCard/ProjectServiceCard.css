@@ -1,0 +1,96 @@
+.THIS .card-marg  {
+    margin-left:-.5rem;
+    margin-right:-.5rem;
+}
+.THIS .oh-service-card {
+    padding:.5rem;
+    cursor:pointer;
+}
+.THIS .oh-service-card:hover {
+    border:1px solid #4BCA81;
+}
+
+.THIS .slds-button {
+    outline:0 !important;
+    box-shadow:0 !important;
+}
+
+.THIS .service-icon-container {
+    padding: 0 0 0 17px;
+}
+.THIS .services-icon:hover {
+    color: #0070D2;
+}
+.THIS i {
+    color: #0070D2;
+    width:35px;
+}
+
+.THIS .page-title {
+    color: #0070D2;
+    font-size:  1.4rem;
+    font-weight: 300;
+    word-break:normal;
+}
+.THIS .page-title:hover {
+    cursor: pointer;
+}
+
+.THIS .fa-cube {
+    vertical-align: baseline;
+    padding-top: 10px;
+} 
+
+.THIS .page-subtitle {
+    line-height: 125%;
+    color: #54698D;
+    font-size: 0.875rem;
+}
+.THIS .page-subtitle:hover {
+    cursor: pointer;
+}
+.THIS .services-icon:hover {
+    cursor: pointer;
+} 
+.THIS p {
+    font-size: 0.75rem;
+    line-height: 125%; /*12px*/
+    margin: .2em;
+    color: #54698D;
+}
+
+.THIS .oh-arrow-reorder {
+    margin-right:-.2rem;
+    margin-top:-.5rem;
+}
+
+/*.THIS .title {
+    font-size: 1rem;
+    font-weight: 300;
+    color: #0070D2;
+  }
+  
+.THIS .services-icon:hover {
+    color: #0070D2;
+  
+}
+  
+.THIS i {
+    color:gray;
+    width:2.5rem;
+}
+  
+.THIS .icons ~ div {
+    width: 8rem;
+    text-align: center;
+  }
+  
+.THIS .slds-box:hover {
+    border:1px solid #4BCA81;
+    cursor: pointer;
+   background:#f4f6f9;
+  }
+  
+.THIS .icons p {
+    color: gray;
+  }*/

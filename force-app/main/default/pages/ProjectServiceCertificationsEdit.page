@@ -1,0 +1,96 @@
+<apex:page standardController="ProjectService__c" extensions="ProjectServiceCertificationsEditExt" tabStyle="Project__c" docType="HTML-5.0">
+    <c:jQueryUICSS />
+    <style type="text/css">
+        .loading-gif {
+        position: fixed;
+        z-index: 999;
+        margin: auto !important;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        padding: 12px 55px;
+        background-color: #FFF;
+        box-shadow: 0 0px 3px #ccc;
+        border-radius: 2px;
+        }    
+        
+        .message {
+        margin: 8px 0 0px 0 !important;
+        border-radius: 0;
+        border-color: #E0E0C4;
+        }
+        .row-header{
+        height: 20px;line-height: 20px;
+        }
+        .row-normal{
+        background-color: #fff !important;
+        }
+        .trash-can{
+        width: 12px;
+        /* height: 19px; */
+        background-image: url('/img/func_icons/remove12_on.gif') !important;
+        background-position: right 0 !important;
+        background-position-x: 0 !important;
+        border: 1px solid #ccc !important;
+        background-color: #fff !important;
+        border: none !important;
+        }
+        .align-c{
+            text-align:center;        
+        }
+    </style>
+    <apex:actionStatus id="loadingStatus">
+        <apex:facet name="start">
+            <img class="loading-gif" src="/img/loading24.gif" width="24" height="24" />
+        </apex:facet>
+    </apex:actionStatus>
+    
+    <apex:form > 
+     <apex:pageBlock title="Certification" mode="edit">
+
+     <apex:outputPanel rendered="{!showAddButton}">
+        <div class="cm-panel-container">
+        <div class="cm-panel">
+            <apex:outputPanel id="msg1">
+            <div class="cm-panel-error">
+            <apex:pageMessages id="messagesForCertifications"/>
+            </div>
+            </apex:outputPanel>
+            <div class="cm-panel-body">
+               <label for="ddlEquipment" class="cm-label"><span class="assistiveText">*</span>Certification</label>
+               <div class="cm-input cm-required cm-mg-rt-20">
+                    <apex:selectList id="ddlCertification" value="{!SelectedCertification}" multiselect="false" size="1" style="width:180px">
+                            <apex:selectOptions value="{!CertificationSelectOptions}" />
+                    </apex:selectList>
+                </div>
+                <div class="cm-input">
+                <apex:commandButton id="btnAddCertification" action="{!AddCertification}" value="Add Certification" reRender="msg1,gridSection,messagesForCertifications,ddlCertification" status="loadingStatus" rendered="{!$ObjectType.ProjectServiceCertification__c.updateable && showAddButton}" />
+                </div>
+            </div>
+        </div>
+       </div>
+       </apex:outputPanel>
+
+
+        <apex:pageBlockSection showHeader="false" id="gridSection" columns="1"> 
+            <div>
+                <apex:pageblocktable value="{!pscList}" var="psc" rendered="{!pscList.size>0}" columnswidth="70%,20%,10%">          
+                    <apex:column HeaderValue="Certification"  headerClass="row-header" styleClass="row-normal"  >
+                        <apex:outputField value="{!psc.Certification__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Action" headerClass="row-header align-c" styleClass="row-normal align-c" width="45px" rendered="{!$ObjectType.ProjectServiceCertification__c.updateable && showAddButton}">                   
+                        <apex:commandButton id="delete" value=" " rendered="{!psc.IsLocked__c==false}" styleClass="trash-can"  action="{!DeleteCertification}" rerender="Primary, messages" status="loadingStatus" onclick="if(!confirm('Are you sure?')){return false};" reRender="gridSection">  
+                            <apex:param name="pscCertId"  value="{!psc.id}"/>
+                        </apex:commandButton>       
+                        <apex:image rendered="{!psc.IsLocked__c==true}" url="/img/func_icons/util/lock12.gif" />
+                    </apex:column>               
+                </apex:pageblocktable>
+                <apex:outputpanel layout="block" rendered="{!pscList.size=0}">
+                    No certification to display
+                </apex:outputpanel>
+            </div>
+        </apex:pageBlockSection>  
+        </apex:pageBlock>    
+    </apex:form> 
+</apex:page>

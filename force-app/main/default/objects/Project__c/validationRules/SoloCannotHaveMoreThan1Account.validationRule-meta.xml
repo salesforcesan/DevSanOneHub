@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SoloCannotHaveMoreThan1Account</fullName>
+    <active>true</active>
+    <description>Only allow 1 project account for split type of solo</description>
+    <errorConditionFormula>ProjectAccountsCount__c &gt; 1 &amp;&amp; TEXT(SplitType__c) = &quot;Solo&quot; &amp;&amp; NOT(ISCHANGED(SplitType__c))</errorConditionFormula>
+    <errorMessage>Project split type &#39;Solo&#39; can not have more than one account</errorMessage>
+</ValidationRule>

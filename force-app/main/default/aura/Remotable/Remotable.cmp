@@ -1,0 +1,8 @@
+<aura:component extensible="true">
+<aura:attribute name="scrollY" type="integer" default="0" />
+<aura:attribute name="lock" type="Boolean" default="false"/>
+<aura:attribute name="firstTimeLock" type="Boolean" default="true"/>
+<aura:attribute name="timeoutId" type="integer" default="0"/>
+<aura:registerEvent name="onLoadNextPage" type="c:SimpleComponentEvent"/>
+{!v.body}
+</aura:component>

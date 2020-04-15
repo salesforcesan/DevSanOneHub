@@ -1,0 +1,19 @@
+<aura:component >
+  <aura:attribute name="type" type="String" default="page" description="modal,page"/>
+  <aura:attribute name="id" type="String" default="" description="The spinner identifier"/>
+  <aura:attribute name="context" type="String" default="" description="used to store application related metadata"/>
+  <aura:attribute name="size" type="String" description="small,medium,large"/>
+  <aura:attribute name="visible" type="boolean" default="false" access="private"/>
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+  <aura:method name="show" action="{!c.doShow}" access="public"/>
+  <aura:method name="hide" action="{!c.doHide}" access="public"/>
+
+  <div class="body" aura:id="spinnerBody">
+    <aura:if isTrue="{! v.visible}">
+      <div class="spinner-container" aura:id="spinner">
+        <lightning:spinner alternativeText="busy indicator" size="{!v.size}" variant="brand" />
+      </div>
+  </aura:if>
+    {!v.body}
+  </div>
+</aura:component>

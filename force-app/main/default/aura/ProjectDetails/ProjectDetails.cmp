@@ -1,0 +1,139 @@
+<aura:component extends="c:UISecurity" controller="LightningProjectController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <c:Notification aura:id="notification" class="no-flow" />
+    <aura:attribute name="ProjectId" type="Id" />
+    <aura:attribute name="project" type="Object" access="global" />    
+    <aura:attribute name="projectStatus" type="String" access="global" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="onSaveSuccess" event="force:recordSaveSuccess" action="{!c.handleSaveSuccess}" access="global" />
+    <aura:handler event="c:EventProjectRefresh" action="{!c.refreshProject}" access="global" />
+    <aura:registerEvent name="refreshProject" type="c:EventProjectRefresh" access="global" />
+    <aura:attribute name="securityEditable" type="Boolean" default="false" />
+    <div style="" class="slds-is-relative">
+        <div aura:id="projectDetailsSpinner" class="">
+            <lightning:spinner size="medium" variant="brand"/>
+        </div>
+        <div class="slds-is-relative slds-size_1-of-1 slds-grid" style="overflow:hidden;">
+            <div class="slds-card slds-size_1-of-1 slds-p-around_medium" style="margin-right:12px;">
+                <!--spinner-->
+                <c:SectionHeaderProject Title="Project Details" iconClass="fa-file-text-o" />
+                <aura:if isTrue="{!v.project.OverrideAccountAndServiceAccess}">
+                    <div class="slds-grid slds-grid_align-end" style="margin-top:-2.3rem;">
+                        <div class="oh-tool-container">
+                            <div class="slds-popover slds-popover_tooltip slds-nubbin_right oh-tooltip" id="ManageAccess" role="tooltip" style="right:57px;top:22px;">
+                                <div class="slds-popover__body">Account to Service access has been overridden</div>
+                            </div>  
+                            <div class="circle" aria-describedby="ManageAccess">
+                                <lightning:icon class="orange" iconName="utility:shield" size="small" />
+                                <!--<i class="fa fa-warning fa-lg" style="color:orange;"></i>-->
+                            </div>
+                        </div>
+                    </div>
+                </aura:if>
+                <div class="slds-media slds-p-around_small slds-m-bottom_small">
+                    <p class="slds-media__body">
+                        Review your project details
+                        <aura:if isTrue="{!v.project.ProjAttributeList.length>0}">and custom attributes</aura:if>
+                    </p>
+                    <aura:if isTrue="{!v.projectStatus != 'Planning'}">
+                        <div aura:id="Project__c.Summary" class="hide slds-grid slds-grid_align-end slds-m-right_small">
+                            <button class="slds-button slds-button_neutral" tabindex="-1" onclick="{!c.summaryClicked}" id="ViewProjectSummary">View Summary Report</button>
+                        </div>
+                        <aura:if isTrue="{!v.project.ExternalDetailReportURL}">
+                            <div aura:id="Project__c.ViewDetail" class="slds-grid slds-grid_align-end slds-m-right_small">
+                                <button class="slds-button slds-button_neutral" tabindex="-1" onclick="{!c.viewExternalDetailClicked}" id="externalDetailReport">View External Detail Report</button>
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!v.project.DetailReportURL}">
+                            <div aura:id="Project__c.ViewDetail" class="slds-grid slds-grid_align-end slds-m-right_small">
+                                <button class="slds-button slds-button_neutral" tabindex="-1" onclick="{!c.viewdetailClicked}" id="detailReport">View Detail Report</button>
+                            </div>
+                        </aura:if>
+                        <aura:set attribute="else">
+                            <div class="slds-grid slds-grid_align-end slds-m-left_small">
+                                <div class="hide" aura:id="Project__c.RecordEdit">
+                                    <lightning:button variant="brand" label="Save Project" onclick="{!c.save}" class="saveProjectButton" />
+                                </div>
+                            </div>
+                        </aura:set>
+                    </aura:if>
+                </div>
+                <div aura:id="Project__c.ProjAttributes" class="hide">                       
+                    <fieldset class="slds-m-vertical_small">
+                        <div class="oh-cont slds-p-bottom_large">
+                            <aura:iteration items="{!v.project.ProjAttributeList}" var="attr" indexVar="indx">
+                                
+                                <aura:if isTrue="{!attr.isReadOnly}">  
+                                    <div class="slds-p-around_medium oh-inl" id="{!('projectDetailsIdWrap' + indx)}">
+                                        {!attr.AttributeDescription} <br />
+                                        <aura:if isTrue="{!and(attr.AttributeValue != null, attr.AttributeValue != '')}">
+                                            
+                                            <!-- fields that you want to show when not null or empty -->
+                                            <ui:outputText value="{!attr.AttributeValue}" />                                                  
+                                            <aura:set attribute="else">
+                                                <br />
+                                                <!--other fields-->
+                                            </aura:set>
+                                        </aura:if>
+                                    </div>                                    
+                                    <aura:set attribute="else"> 
+                                        
+                                        <aura:if isTrue="{! or(attr.AttributeType=='Text',attr.AttributeType=='Number')}">
+                                            
+                                            
+                                            
+                                            <div class="slds-p-around_medium oh-inl" id="{!('projectDetailsIdWrap' + indx)}">
+                                                <ui:inputText aura:id="{!attr.AttributeDescription}_attr" 
+                                                              label="{!attr.AttributeDescription}" 
+                                                              class="{!join('projectDetailsField', indx, ' textfield')}" 
+                                                              value="{!attr.AttributeValue}" 
+                                                              required="{!attr.isRequired}"                                                      
+                                                              />
+                                            </div>
+                                            
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{!attr.AttributeType=='Single-Select List'}">
+                                            <div class="slds-p-around_medium oh-inl" id="{!('projectDetailsIdWrap' + indx)}">
+                                                <ui:inputSelect aura:id="{!attr.AttributeDescription}_attr" 
+                                                                label="{!attr.AttributeDescription}" 
+                                                                value="{!attr.AttributeValue}" 
+                                                                required="{!attr.isRequired}">
+                                                    <aura:iteration items="{!attr.ResponsesList}" var="resp">
+                                                        <ui:inputSelectOption text="{!resp.responseValue}" 
+                                                                              class="{!join('projectDetailsField',indx, ' textfield')}" 
+                                                                              label="{!resp.responseValue}" />
+                                                    </aura:iteration>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </aura:if>
+                                    </aura:set>
+                                </aura:if> 
+                                
+                            </aura:iteration>
+                        </div>
+                    </fieldset>
+                    <hr class="slds-m-around_medium" />
+                </div>
+                <div aura:id="Project__c.ProjAttributesReadOnly" class="hide">
+                    
+                    <fieldset class="slds-m-vertical_medium">
+                        <div class="oh-cont">
+                            <aura:iteration items="{!v.project.ProjAttributeList}" var="attr" indexVar="indx">
+                                <div class="slds-p-around_medium oh-inl forcePageBlockItemView" id="{!('projectDetailsIdWrap' + indx)}">
+                                    <label class="oh-label">{!attr.AttributeDescription}</label>
+                                    <ui:outputText class="textfield" value="{!attr.AttributeValue}" />
+                                </div>
+                            </aura:iteration>
+                        </div>
+                    </fieldset>
+                    <hr class="slds-m-vertical_small" />
+                </div>
+                <force:recordEdit recordId="{!v.ProjectId}" aura:id="project_edit" />
+                <div class="slds-p-verticall_medium hide" aura:id="Project__c.RecordEdit">
+                    <lightning:button variant="brand" label="Save Project" class="slds-m-around_medium" onclick="{!c.save}" />
+                </div>
+                <!--<force:recordView recordId="{!v.ProjectId}" type="MINI"/>-->
+            </div>
+        </div>
+    </div>
+</aura:component>

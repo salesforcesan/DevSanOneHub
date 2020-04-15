@@ -1,0 +1,40 @@
+.THIS.project-bar {
+  width: 100%;
+  border-bottom: 1px solid #0070D2;
+  font-size: 1.3rem;
+}
+
+.THIS .project-bar-icon {
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  margin-right: 0.65rem;
+  font-size: 1.3rem;
+  color: #0070D2;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.THIS .project-bar-title {
+  -ms-flex: 1;
+  flex: 1;
+  min-width: 100px;
+  margin: 0;
+  text-align: left;
+  color: #0070D2;
+  font-size: 1.3rem;
+  font-weight: 300;
+  vertical-align: middle;
+}
+
+.THIS .project-subtitle {
+  text-align: right;
+  flex: 1;
+  vertical-align: bottom;
+  color: #0070D2;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.THIS .green {
+  color: #4bca81
+}

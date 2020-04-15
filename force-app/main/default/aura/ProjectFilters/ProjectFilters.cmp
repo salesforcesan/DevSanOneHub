@@ -1,0 +1,184 @@
+<aura:component controller="LightningProjectController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+
+    <!--ATTRIBUTES DECLARATION -->
+    <aura:attribute name="projects" type="Object" access="global" />
+    <aura:attribute name="filters" type="Object" access="global"/>
+    
+    <!--PUBLISHER -->
+    <!--aura:registerEvent name="formFilters" type="c:ProjectFormFiltersChanged"/-->
+    
+    <!--EVENT LISTENER -->
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <div class="slds-card slds-p-around_medium slds-size_1-of-1">
+    <div class="slds-grid slds-p-bottom--xx-small slds-text-color--weak">
+       <div class="slds-media__figure">
+           <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+       </div>
+       <div class="slds-media__body">
+           <p class="slds-text-heading--small">Filters</p>
+       </div>
+    </div>
+        <hr class="slds-m-vertical--none" style="margin-left:-1rem;margin-right:-1rem;"></hr>
+    <form>
+        <fieldset class="slds-form--compound">
+            
+            <div class="slds-form-element__group slds-p-top--small">
+                
+                <!-- Has materials 
+                <div class="slds-form-element__row future-filter">
+                    <div class="slds-form-element slds-size_1-of-1">
+                        <label class="slds-checkbox_toggle slds-grid">
+                            <span class="slds-form-element__label slds-m-bottom_none">Needs materials</span>
+                            <input id="materials" name="checkbox" type="checkbox" aria-describedby="materials" onclick="{!c.changeFilter}" />
+                            <span id="materialsOptions" class="slds-checkbox_faux_container" aria-live="assertive">
+                                <span class="slds-checkbox_faux"></span>
+                                <span class="slds-checkbox_on">Enabled</span>
+                                <span class="slds-checkbox_off">Disabled</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                -->
+                <!-- Has exceptions
+                <div class="slds-form-element__row future-filter">
+                    <div class="slds-form-element slds-size_1-of-1">
+                        <label class="slds-checkbox_toggle slds-grid">
+                            <span class="slds-form-element__label slds-m-bottom_none">Has exceptions</span>
+                            <input id="exceptions" name="checkbox" type="checkbox" aria-describedby="exceptions" onclick="{!c.changeFilter}" />
+                            <span id="exceptionsOptions" class="slds-checkbox_faux_container" aria-live="assertive">
+                                <span class="slds-checkbox_faux"></span>
+                                <span class="slds-checkbox_on">Enabled</span>
+                                <span class="slds-checkbox_off">Disabled</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                 -->
+                <!-- Has tasks 
+                <div class="slds-form-element__row future-filter">
+                    <div class="slds-form-element slds-size_1-of-1">
+                        <label class="slds-checkbox_toggle slds-grid">
+                            <span class="slds-form-element__label slds-m-bottom_none">Has tasks</span>
+                            <input id="tasks" name="checkbox" type="checkbox" aria-describedby="tasks" onclick="{!c.changeFilter}" />
+                            <span id="tasksOptions" class="slds-checkbox_faux_container" aria-live="assertive">
+                                <span class="slds-checkbox_faux"></span>
+                                <span class="slds-checkbox_on">Enabled</span>
+                                <span class="slds-checkbox_off">Disabled</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+				-->
+                
+                <!-- Project Number -->
+                <div class="slds-form-element__row">
+                    <div class="slds-form-element slds-size_1-of-1">
+                         <label class="slds-form-element__label" for="number">Project Number</label>
+                         <div class="slds-form-element__control">
+                             <ui:inputText class="slds-input slds-form-element__label" aura:id="number" value="{!v.filters.ProjectNumber__c}"  label="" />
+                         </div>
+                       <!--
+                        <div class="slds-form-element__control">
+                            <input  aura:id="number" id="ProjectNumber__c" class="slds-input" type="text" placeholder="Project Number" />
+                        </div>-->
+                    </div>
+                </div>
+                    
+                <!-- Title -->
+                <div class="slds-form-element__row">
+                    <div class="slds-form-element slds-size--1-of-1">
+                        <label class="slds-form-element__label" for="title">Title</label>
+                         <div class="slds-form-element__control">
+                             <ui:inputText class="slds-input slds-form-element__label" aura:id="title" value="{!v.filters.Name}"  label="" />
+                         </div>
+                        <!--
+                        <div class="slds-form-element__control">
+                            <input aura:id="title" id="Name" class="slds-input" type="text" placeholder="Title" />
+                        </div>-->
+                    </div>
+                </div>
+                
+                <!-- Supplier
+                <div class="slds-form-element__row future-filter">
+                    <div class="slds-form-element slds-size_1-of-1">
+                        <label class="slds-form-element__label" for="supplier">Supplier</label>
+                        <div class="slds-form-element__control">
+                            <input id="supplier" class="slds-input" type="text" placeholder="Supplier" />
+                        </div>
+                    </div>
+                </div>
+                 -->
+                <!-- Service 
+                <div class="slds-form-element__row future-filter">
+                    <div class="slds-form-element slds-size_1-of-1">
+                        <label class="slds-form-element__label" for="service">Service</label>
+                        <div class="slds-form-element__control">
+                            <input id="service" class="slds-input" type="text" placeholder="Service" />
+                        </div>
+                    </div>
+                </div>
+                -->
+                <!-- Owner -->
+                <div class="slds-form-element__row">
+                    <div class="slds-form-element slds-size_1-of-1">
+                        <label class="slds-form-element__label" for="owner">Owner</label>
+                        
+                        <div class="slds-form-element__control">
+                             <ui:inputText class="slds-input slds-form-element_label" label="" value="{!v.filters.OwnerName__c}" />
+                         </div>
+                        <!--
+                        <div class="slds-form-element__control">
+                            <input aura:id="owner" id="OwnerName__c" class="slds-input" type="text" placeholder="Owner" />
+                        </div>-->
+                    </div>
+                </div>
+                
+                <!-- Start Date style="display: none;" -->
+                <div class="slds-form-element__row slds-p-right_x-small">
+                    <div class="slds-form-element slds-size_1-of-2">
+                        <c:strike_datepicker label="Start Date"
+                                             valueFormat="YYYY-MM-DD"
+                                             value="{!v.filters.StartDate}"
+                                             errorMessage="Invalid input"
+                                             disabled="false"
+                                             required="false"
+                                             error="false"
+                                             />
+                    	<!-- <ui:inputDate aura:id="startDate" format="YYYY-MM-DD" label="Start Date"  displayDatePicker="true" value="{!v.filters.StartDate}" /> -->  
+                    </div>
+                    <div class="slds-form-element slds-size_1-of-2">
+                        <c:strike_datepicker label="End Date"
+                                             valueFormat="YYYY-MM-DD"
+                                             value="{!v.filters.EndDate}"
+                                             errorMessage="Invalid input"
+                                             disabled="false"
+                                             required="false"
+                                             error="false"
+                                             />
+                    	<!-- <ui:inputDate aura:id="endDate" format="MM/dd/YYYY" label="End Date"  displayDatePicker="true" value="{!v.filters.EndDate}" /> -->   
+                    </div>
+                </div>
+            	
+            </div>   
+            <div class="slds-p-top_large slds-grid">
+                    <ui:button aura:id="btnApplyFilter" class="slds-button slds-button_brand slds-p-horizontal_medium" label="Filter Projects" press="{!c.applyFilter}"/>
+    				<div class="slds-m-left_small slds-m-right_medium">
+                		<lightning:button label="Clear" onclick="{!c.clearFilters}" />
+                   	</div>
+             </div> 
+        </fieldset>
+        <fieldset class="slds-form--compound">
+            
+            <div class="slds-form-element__group">
+                
+                <!-- Start date range -->
+                
+                <!-- End date range -->
+                
+                <!-- Launch date range -->
+            </div>
+            
+        </fieldset>
+    </form>
+	</div> 
+</aura:component>

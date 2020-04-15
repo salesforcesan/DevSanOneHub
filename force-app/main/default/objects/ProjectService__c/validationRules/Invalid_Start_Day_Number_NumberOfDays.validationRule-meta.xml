@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Invalid_Start_Day_Number_NumberOfDays</fullName>
+    <active>true</active>
+    <description>Checks if the start day number of the service falls within the boundaries of the project.</description>
+    <errorConditionFormula>StartDayNumber__c +  NumberOfDays__c &gt;  Project__r.NumberOfDays__c + 1</errorConditionFormula>
+    <errorMessage>Please enter a valid Start Day Number / Number of Days to make sure that the duration doesn&#39;t exceed the project Number of Days.</errorMessage>
+</ValidationRule>

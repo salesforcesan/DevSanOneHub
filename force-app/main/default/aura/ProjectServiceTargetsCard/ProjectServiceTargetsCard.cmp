@@ -1,0 +1,59 @@
+<aura:component controller="LightningProjectServiceTargetsController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <aura:attribute name="service" type="Object" access="global" />    
+    <aura:attribute name="ProjectTarget" type="Object" access="global" /> 
+    <aura:attribute name="projectServiceTarget" type="ProjectServiceTargetWrapper" access="global" />
+    <aura:attribute name="projectAccounts" type="List" access="global" />
+    <aura:attribute name="selectedAccount" type="String" access="global" />
+    <aura:attribute name="selected" type="Boolean" access="global" default="false" />
+    <aura:attribute name="projectType" type="String" access="global" />
+    <aura:attribute name="canDelete" type="Boolean" access="private" />
+    <aura:attribute name="editMode" type="Boolean" default="false" />
+    <aura:attribute name="projectTypeName" type="String" />
+    <aura:attribute name="deleteAnim" type="String" />
+    <aura:registerEvent name="ProjectServiceTargetChange" type="c:ProjectServiceTargetChange" />
+    <aura:handler event="c:EventConfirm" action="{!c.removeTarget}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="messageBoxEvent" event="c:SimpleComponentEvent" action="{!c.onMessageBoxEvent}"/>
+    <div style="width:100%;position:absolute;top:0:left:0;flex:grow;flex:1;">
+    <c:MessageBox aura:id="messageBox"/>
+   </div>
+   <div><!--slds-grid_vertical-->
+    <div class="slds-box slds-grid  slds-p-around_small slds-is-relative" style="width:100%;">
+          <div class="slds-m-right_small slds-grid"> 
+              <div class="img-container">   
+                  <aura:if isTrue="{! (v.projectServiceTarget.ImageURL == null)}" >                     
+                      <i class="oh-icon oh-icon-product" aria-hidden="true"></i>   
+                      <aura:set attribute="else">
+                          <img src="{!v.projectServiceTarget.ImageURL}" width="100" height="100" />
+                      </aura:set>                       
+                  </aura:if>
+              </div>
+          </div>
+      <div class="">
+          <div class="slds-has-flexi-truncate">
+            <h2 class="slds-text-heading_medium slds-truncate oh-card-title" 
+                id="{!v.projectServiceTarget.ProjectServiceTargetId}" 
+                onclick="{!c.navToTarget}">
+              {!v.projectServiceTarget.TargetName}
+            </h2>
+                <aura:if isTrue="{!and(empty(v.projectServiceTarget.ProjectAccountId),v.projectTypeName == 'CMK Events')}" >
+                    <div class="oh-badge">
+                        <lightning:badge label="No Account is Assigned" class="errorAccount" />
+                    </div>
+                </aura:if>  
+          </div>
+            <ul class="slds-grid slds-wrap slds-text-body_small slds-size_1-of-1 slds-p-top_x-small">
+
+                <li class="slds-item"><span class="bold">UPC: </span>{!v.projectServiceTarget.UPC}</li>
+                <li class="slds-item"><span class="bold">Item: </span>{!v.projectServiceTarget.StockCode}</li>
+                <li class="slds-item"><span class="bold">Type: </span>{!v.projectServiceTarget.TargetType}</li>
+                <li class="slds-item"><span class="bold">Mfr: </span>{!v.projectServiceTarget.AccountInfo}</li>
+                <aura:if isTrue="{!not(empty(v.projectServiceTarget.ProjectAccountId))}">
+                    <li class="slds-item"><span class="bold">Account: </span>{!v.projectServiceTarget.AccountName}</li>  
+                </aura:if>
+            </ul>             
+         </div>
+      </div>
+    </div> 
+</aura:component>

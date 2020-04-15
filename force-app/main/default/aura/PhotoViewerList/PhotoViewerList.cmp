@@ -1,0 +1,111 @@
+<aura:component controller='LightningGatewayController'  extends="c:Remotable">
+    <!-- attributes -->
+    <aura:attribute name="usage" type="string" default=""/>
+    <aura:attribute name="communityUrl" type="string" default=""/>
+    <aura:attribute name="namespace" type="string" default=""/>
+    <aura:attribute name="padding" type="integer" default="200"/>
+    <aura:attribute name="projectCount" type="integer" default="0"/>
+    <aura:attribute name="photos" type="List" default="[]"/>
+    <aura:attribute name="currentPhotoCount" type="integer" default="0" access="private"/>
+    <aura:attribute name="pagePhotos" type="List" default="[]"/>
+    <aura:attribute name="maxFavorites" type="integer" default="10"/>
+    <aura:attribute name="maxExports" type="integer" default="50"/>
+    <aura:attribute name="loading" type="boolean" default="false"/>
+    <aura:attribute name="exporting" type="boolean" default="false"/>
+    <aura:attribute name="hasMore" type="boolean" default="false"/>
+    <aura:attribute name="showCount" type="boolean" default="false"/>
+    <aura:attribute name="photoListSet" type="List" default="[]" access="private"/>
+    <aura:attribute name="action" type="String" default="" description="filter,showmore,exportimage, get"/>
+    <aura:attribute name="photoWidth" type="integer" default="100"/>
+    <aura:attribute name="photoHeight" type="integer" default="100"/>
+    <aura:attribute name="colSize" type="integer" default="0" access="private"/>
+    <aura:attribute name="timeoutId" type="integer" default="0" access="private"/>
+    <aura:attribute name="exportSelectCount" type="integer" default="50" access="private"/>
+    <aura:attribute name="loadedPhotoCount" type="integer" default="0" access="private"/>
+    <aura:attribute name="photoLists" type="Aura.Component[]"/>
+    <aura:attribute name="nextId" type="integer" default="0" access="private"/>
+    <aura:attribute name="containerWidth" type="integer" default="0" access="private"/>
+    <aura:attribute name="showMoreBusy" type="boolean" default="false" access="private"/>
+    <aura:attribute name="pptxPhotos" type="List" default="[]" access="private" />
+
+    <!-- events -->
+    <aura:registerEvent name="onShowMoreRequest" type="c:SimpleComponentEvent" />
+    <aura:registerEvent name="runPptxConversion" type="c:SimpleComponentEvent" />
+    <aura:handler name="runPptxConversion" event="c:SimpleComponentEvent" action="{! c.onRunPptxConversion }"/>
+    <aura:handler name="init" value="{! this }" action="{! c.onInit }"/>
+    <aura:handler name="change" value="{! v.photos }" action="{! c.onPhotosChanged }"/>
+    <aura:handler name="onBeginExport" event="c:SimpleComponentEvent"
+        action="{! c.onBeginExport }"/>
+    <aura:handler name="onCancelExport" event="c:SimpleComponentEvent"
+        action="{! c.onCancelExport }"/>
+      <aura:handler name="onPhotoClick"
+        event="c:SimpleComponentEvent" action="{! c.onPhotoClick }"/>
+    <aura:handler name="onGenerateZip" event="c:SimpleComponentEvent"
+        action="{! c.onGenerateZip }"/>
+    <aura:handler name="onExportToPPTRequest" event="c:SimpleComponentEvent"
+        action="{! c.onExportToPPT}"/>
+    <aura:handler name="onExportOnePhoto" event="c:SimpleComponentEvent"
+        action="{! c.onExportOnePhoto }"/>
+    <aura:handler name="destroy" value="{!this}" action="{! c.onDestroy }" />
+    <aura:handler name="pptxExportCompleted" event="c:SimpleComponentEvent" action="{! c.onPptxExportCompleted}" />
+    <aura:dependency resource="markup://c:PhotoViewerListRow"/>
+
+    <!-- html template -->
+    <div class="photo-viewer-list-container" aura:id="photoViewList" data-export="">
+        <aura:if isTrue="{! v.exporting}">
+            <div class="oh-export-spinner-container">
+                <lightning:spinner variant="brand"></lightning:spinner>
+            </div>
+        </aura:if>
+        <div class="oh-header">
+            <c:PhotoViewerListHeader projectCount="{! v.projectCount }"
+                loading="{! v.loading }"
+                photoCount="{! v.photos.length}"
+                hasMore="{! v.hasMore }"
+                showCount="{! v.showCount }"
+                ></c:PhotoViewerListHeader>
+        </div>
+        <div class="oh-body" aura:id="ohBody">
+            <aura:if isTrue="{! v.photoListSet.length > 0 }">
+                <div class="oh-photo-list">
+                    <aura:iteration items="{!v.photoLists}" var="photoList">
+                        {! photoList }
+                    </aura:iteration>
+                </div>
+                <aura:if isTrue="{! v.hasMore }">
+                <div class="oh-showmore-container">
+                    <div class="oh-col">
+                        <div class="oh-divider"></div>
+                    </div>
+                    <div class="oh-col-shrink">
+                        <aura:if isTrue="{! !v.showMoreBusy}">
+                            <lightning:button onclick="{! c.onShowMore }" label="Show More"></lightning:button>
+                        <aura:set attribute="else">
+                            <div class="slds-p-around_large" style="position:relative">
+                            <lightning:spinner variant="brand"></lightning:spinner>
+                            </div>
+                        </aura:set>
+                        </aura:if>
+                    </div>
+                    <div class="oh-col">
+                        <div class="oh-divider"></div>
+                    </div>
+                </div>
+                </aura:if>
+                <aura:set attribute="else">
+                    <aura:if isTrue="{! v.showCount}">
+                        <div class="oh-now-row">
+                            No results found.
+                        </div>
+                        <aura:set attribute="else">
+                            <div class="oh-not-show-count">
+                                Please use filters to select requested photos.
+                            </div>
+                        </aura:set>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+        </div>
+        <c:PhotoViewerPptxExporter photos="{! v.pptxPhotos}"/>
+    </div>
+</aura:component>

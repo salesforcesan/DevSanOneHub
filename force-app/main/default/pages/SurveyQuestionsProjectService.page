@@ -1,0 +1,64 @@
+<apex:page standardController="ProjectService__c"  extensions="SurveyQuestionProjectServiceController">
+    <apex:form >
+     <apex:pageBlock title="Survey Questions" mode="edit">
+        <apex:outputPanel id="pbsqTable">
+            <div class="cm-bt-pad-10">
+                <apex:outputPanel rendered="{!$ObjectType.Project__c.createable && showAddEditSQButton}">
+                <div class="cm-panel-container">
+                    <div class="cm-panel">
+                        <apex:outputPanel id="msg">
+                        <div class="cm-panel-error">
+                            <apex:pageMessages escape="false" id="messagesForSurveyQuestions"/>  
+                        </div>
+                        </apex:outputPanel>
+                        <div class="cm-panel-body">
+                           <label for="ddlEquipment" class="cm-label"><span class="assistiveText">*</span>Choose Question from Bank</label>
+                           <div class="cm-input cm-required cm-mg-rt-20">
+                                <apex:inputField id="qbInp" value="{!newsq.Question__c}"   label="Choose Question from Bank">
+                                        <apex:actionSupport event="onchange" reRender="pbsqTable" action="{!populateNewSBQData}"/>
+                                    </apex:inputField>
+                            </div>
+                            <div class="cm-input">
+                            <apex:commandButton id="btnAddQB" action="{!AddSurveyBankQuestion}" value="Add Question" status="loadingStatus"  reRender="msg,sectionQuestionBank , pbSection, messagesForSurveyQuestions" />
+                            </div>
+                        </div>
+                    </div>
+               </div>
+               </apex:outputPanel>
+              <apex:pageBlockSection showHeader="false" id="pbSection" columns="1"> 
+                <apex:actionRegion rendered="{!!surveyQuestions.empty}">
+                 <apex:pageblocktable value="{!questions}" var="a"  rendered="{!surveyquestions != null && $ObjectType.Project__c.createable && showAddEditSQButton}" columnsWidth="8%,4%,4%,60%,24%" style="border-bottom-width:0">   
+                    <apex:column HeaderValue="Reorder" rendered="{!$ObjectType.Project__c.createable && showAddEditSQButton}"> 
+                         <apex:commandButton id="up" value="Up" image="/img/arrowUp.gif" style="padding: 2px 3px;;border: 1px solid #aaa;margin: 0 2px;" rendered="{!IF(a.tq = false, true, false) && $ObjectType.ProjectServiceQuestion__c.updateable && a.fq == false && showAddEditSQButton}" action="{!MoveUp}" rerender="pbsqTable">  
+                                 <apex:param name="param_surveyQuestion_ID"  value="{!a.id}" assignTo="{!param_surveyQuestionID}"/>
+                        </apex:commandButton>
+                        <apex:commandButton id="down" value="Down" image="/img/arrowDown.gif" style="padding: 2px 3px;;border: 1px solid #aaa;margin: 0 2px;" rendered="{!a.tq = false && $ObjectType.ProjectServiceQuestion__c.updateable && a.lq == false && showAddEditSQButton}" action="{!MoveDown}" rerender="pbsqTable">  
+                                 <apex:param name="param_surveyQuestion_ID"  value="{!a.id}" assignTo="{!param_surveyQuestionID}"/>
+                        </apex:commandButton>
+                    </apex:column>
+                    <apex:column rendered="{!$ObjectType.Project__c.createable && showAddEditSQButton}"> 
+                        <apex:commandLink id="edit" value="Edit" rendered="{!a.tq = false && a.sqb == null && $ObjectType.ProjectServiceQuestion__c.updateable && showAddEditSQButton}" 
+                        action="{!URLFOR($Action.ProjectServiceQuestion__c.Edit,a.id,['id'= a.id, 'psid'=project_serviceID, 'saveURL'= project_serviceID, 'cancelURL'=project_serviceID,'savenewURL'=URLFOR($Action.ProjectServiceQuestion__c.New)])}"/>  
+                    </apex:column>
+                    <apex:column rendered="{!$ObjectType.Project__c.createable && showAddEditSQButton}"> 
+                         <apex:commandLink id="remove" value="Remove" rendered="{!a.tq = false && $ObjectType.ProjectServiceQuestion__c.deletable && showAddEditSQButton}" action="{!RemoveSurveyQuestion}" rerender="pbsqTable" onclick="if(!confirm('Are you sure?')){return false};">  
+                                 <apex:param name="param_surveyQuestion_ID"  value="{!a.id}" assignTo="{!param_surveyQuestionID}"/>
+                        </apex:commandLink>
+                    </apex:column>
+                    <apex:column id="sqText" value="{!a.qtext}" HeaderValue="Survey Question"/>                
+                    <apex:column id="sqType" value="{!a.qt}" HeaderValue="Question Type"/>
+                </apex:pageblocktable> 
+                <apex:pageblocktable value="{!questions}" var="a"  rendered="{!surveyquestions != null && showAddEditSQButton <> true}" columnsWidth="60%,40%" style="border-bottom-width:0">   
+                    <apex:column id="sqText" value="{!a.qtext}" HeaderValue="Survey Question"/>                
+                    <apex:column id="sqType" value="{!a.qt}" HeaderValue="Question Type"/>
+                </apex:pageblocktable> 
+                
+                </apex:actionRegion>   
+                <apex:outputText rendered="{!surveyQuestions.size=0}">There are no survey questions for this project service!</apex:outputText>
+              </apex:pageBlockSection>
+              
+          </div>
+     </apex:outputPanel>   
+    </apex:pageBlock>      
+    </apex:form>
+</apex:page>

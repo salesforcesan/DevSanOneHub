@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsParameterTruncated__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>it indicates if the parameter (40K) data is truncated or not</description>
+    <externalId>false</externalId>
+    <label>Is Parameter Truncated</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,249 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+    <aura:attribute name="question" type="Object" access="global" />
+    <aura:attribute name="startId" type="String" access="global" />
+    <aura:attribute name="parentId" type="String" access="global" />
+    <aura:attribute name="siblingId" type="String" access="global" />
+    <aura:attribute name="draggable" type="Boolean" access="global"/>
+    <aura:attribute name="editable" type="Boolean" access="global"/>
+    <aura:attribute name="disable" type="Boolean" access="global"/>
+    <aura:attribute name="surveyType" type="String" access="global" /> 
+    <aura:attribute name="targetGroup" type="Boolean" access="global" default="false" /> 
+    <aura:attribute name="enableMultiSelect" type="Boolean" access="global" default="true"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:registerEvent name="dragChange" type="c:dragChange" />
+    <aura:registerEvent name="DefinedResponsesPopover" type="c:DefinedResponsesPopover" />
+    <span> 
+        <div style="position:relative;width:100%;padding:10px;">
+            <article>
+                <div aura-id="questionListAura" class="scrolling oh-pad">
+                    <aura:iteration items="{!v.question}" var="question" indexVar="indx">                        
+                        
+                        <div id="{!question.ProjectServiceQuestionId + '_' + question.ParentID}"
+                             class="{!join(' ', and(v.surveyType == 'ProjectServiceQuestion',(question.ServiceQuestion)) ? 'none' : 'hand')}"                
+                             draggable="{!or(and(v.surveyType == 'ProjectServiceQuestion',(question.ServiceQuestion))) ? false : v.draggable}"
+                             ondragstart="{!and(v.surveyType == 'ProjectServiceQuestion',(question.ServiceQuestion)) ? false : c.dragStartHandler}"
+                             ondragend="{!and(v.surveyType == 'ProjectServiceQuestion',(question.ServiceQuestion)) ? false : c.dragEndHandler}"
+                             >
+                            
+                            <aura:if isTrue="{!v.enableMultiSelect}">
+                                <aura:if isTrue="{!or((question.QuestionType == 'Group'),or((question.QuestionType == 'Multi-Select List'),(question.QuestionType == 'Single-Select List')))}">
+                                    
+                                    <div id="{!question.ProjectServiceQuestionId + '_' + question.ParentID}" 
+                                         aura:id="{!question.ProjectServiceQuestionId + '_' + question.ParentID}"
+                                         ondrop="{!question.QuestionType == 'Group' ? false : c.dropHandler}" 
+                                         ondragover="{! c.dragOverHandler}"
+                                         class="{!join(' ','parent', ' oh-drag-border',  question.Active == false ? ' not-active-opacity' : '', question.QuestionType == 'Group' ? ' targetGroup' : '')}"
+                                         >  
+                                        <!-- RESPONSES BUTTON -->
+                                        <aura:if isTrue="{!question.DefinedResponseCount != 0}">
+                                            <div id="{!question.ProjectServiceQuestionId + '_responses'}" 
+                                                 class="responsesButtonContainer"   
+                                                 onclick="{!c.handleShowResponses}">                                          
+                                                <div class="responsesButton">
+                                                    Responses
+                                                </div>                             
+                                            </div>
+                                        </aura:if>
+                                        <aura:if isTrue="{!question.Active == false}">
+                                            <div class="responsesButtonContainer">                                          
+                                                <div class="responsesButton notActiveBG">
+                                                    Not active
+                                                </div>                             
+                                            </div>
+                                        </aura:if>
+                                        <aura:if isTrue="{!and(v.surveyType == 'ProjectServiceQuestion', question.ServiceQuestion == false)}">
+                                            <div class="addedButtonContainer">  <!--{!join(' ', !question.DefinedResponseCount != 0 ? 'addedButtonContainer' : 'responsesButtonContainer')}-->                                        
+                                                <div class="responsesButton addedBG">
+                                                    Question Bank Added
+                                                </div>                             
+                                            </div>
+                                        </aura:if>
+                                        <!-- BUTTON END -->
+                                        <aura:if isTrue="{! v.surveyType == 'ProjectServiceQuestion'}">
+                                            <c:ProjectSurveyQuestionCard question="{!question}"
+                                                                         editable="{!v.editable}"
+                                                                         disable="{!v.disable}"
+                                                                         remove="{!v.draggable}"
+                                                                         />
+                                            <aura:set attribute="else">
+                                                <c:SurveyQuestionCard question="{!question}" />
+                                            </aura:set>   
+                                        </aura:if>   
+                                        
+                                        <aura:if isTrue="{!question.children}">
+                                            <c:SurveyQuestionDraggable question="{!question.children}" 
+                                                                       draggable="{!v.draggable}"
+                                                                       editable="{!v.editable}"
+                                                                       disable="{!v.disable}"
+                                                                       startId="{!v.startId}" 
+                                                                       parentId="{!v.parentId}"
+                                                                       surveyType="{!v.surveyType}" />
+                                        </aura:if>   
+                                        
+                                    </div>
+                                    <aura:set attribute="else">
+                                        <div id="{!question.ProjectServiceQuestionId + '_' + question.ParentID}" 
+                                             aura:id="{!question.ProjectServiceQuestionId + '_' + question.ParentID}"
+                                             ondragover="{!c.dragOverHandler}"
+                                             class="{!join(' ','oh-drag-border',  question.Active == false ? ' not-active-opacity' : '')}"
+                                             >
+                                            <aura:if isTrue="{!question.DefinedResponseCount != 0}">
+                                                <div id="{!question.ProjectServiceQuestionId + '_responses'}" 
+                                                     class="responsesButtonContainer"   
+                                                     onclick="{!c.handleShowResponses}">                                          
+                                                    <div class="responsesButton">
+                                                        Responses
+                                                    </div>                             
+                                                </div>
+                                            </aura:if>
+                                            <aura:if isTrue="{!question.Active == false}">
+                                                <div class="responsesButtonContainer">                                          
+                                                    <div class="responsesButton notActiveBG">
+                                                        Not active
+                                                    </div>                             
+                                                </div>
+                                            </aura:if>
+                                            <aura:if isTrue="{!and(v.surveyType == 'ProjectServiceQuestion', question.ServiceQuestion == false)}">
+                                                <div class="addedButtonContainer">                                          
+                                                    <div class="responsesButton addedBG">
+                                                        Question Bank Added
+                                                    </div>                             
+                                                </div>
+                                            </aura:if>
+                                            
+                                            <aura:if isTrue="{! v.surveyType == 'ProjectServiceQuestion'}">
+                                                <c:ProjectSurveyQuestionCard question="{!question}"
+                                                                             editable="{!v.editable}"
+                                                                             disable="{!v.disable}"
+                                                                             remove="{!v.draggable}"
+                                                                             />
+                                                <aura:set attribute="else">
+                                                    <c:SurveyQuestionCard question="{!question}" />
+                                                </aura:set>   
+                                            </aura:if>   
+                                        </div>
+                                    </aura:set>
+                                </aura:if> 						                         
+                                <aura:set attribute="else">
+                                     <aura:if isTrue="{!or((question.QuestionType == 'Group'),(question.QuestionType == 'Single-Select List'))}">                                        
+                                        <div id="{!question.ProjectServiceQuestionId + '_' + question.ParentID}" 
+                                             aura:id="{!question.ProjectServiceQuestionId + '_' + question.ParentID}"
+                                             ondrop="{!question.QuestionType == 'Group' ? false : c.dropHandler}" 
+                                             ondragover="{! c.dragOverHandler}"
+                                             class="{!join(' ','parent', ' oh-drag-border',  question.Active == false ? ' not-active-opacity' : '', question.QuestionType == 'Group' ? ' targetGroup' : '')}"
+                                             >  
+                                            <!-- RESPONSES BUTTON -->
+                                            <aura:if isTrue="{!question.DefinedResponseCount != 0}">
+                                                <div id="{!question.ProjectServiceQuestionId + '_responses'}" 
+                                                     class="responsesButtonContainer"   
+                                                     onclick="{!c.handleShowResponses}">                                          
+                                                    <div class="responsesButton">
+                                                        Responses
+                                                    </div>                             
+                                                </div>
+                                            </aura:if>
+                                            <aura:if isTrue="{!question.Active == false}">
+                                                <div class="responsesButtonContainer">                                          
+                                                    <div class="responsesButton notActiveBG">
+                                                        Not active
+                                                    </div>                             
+                                                </div>
+                                            </aura:if>
+                                            <aura:if isTrue="{!and(v.surveyType == 'ProjectServiceQuestion', question.ServiceQuestion == false)}">
+                                                <div class="addedButtonContainer">  <!--{!join(' ', !question.DefinedResponseCount != 0 ? 'addedButtonContainer' : 'responsesButtonContainer')}-->                                        
+                                                    <div class="responsesButton addedBG">
+                                                        Question Bank Added
+                                                    </div>                             
+                                                </div>
+                                            </aura:if>
+                                            <!-- BUTTON END -->
+                                            <aura:if isTrue="{! v.surveyType == 'ProjectServiceQuestion'}">
+                                                <c:ProjectSurveyQuestionCard question="{!question}"
+                                                                             editable="{!v.editable}"
+                                                                             disable="{!v.disable}"
+                                                                             remove="{!v.draggable}"
+                                                                             />
+                                                <aura:set attribute="else">
+                                                    <c:SurveyQuestionCard question="{!question}" />
+                                                </aura:set>   
+                                            </aura:if>   
+                                            
+                                            <aura:if isTrue="{!question.children}">
+                                                <c:SurveyQuestionDraggable question="{!question.children}" 
+                                                                           draggable="{!v.draggable}"
+                                                                           editable="{!v.editable}"
+                                                                           disable="{!v.disable}"
+                                                                           startId="{!v.startId}" 
+                                                                           parentId="{!v.parentId}"
+                                                                           surveyType="{!v.surveyType}" />
+                                            </aura:if>   
+                                            
+                                        </div>
+                                        <aura:set attribute="else">
+                                            <div id="{!question.ProjectServiceQuestionId + '_' + question.ParentID}" 
+                                                 aura:id="{!question.ProjectServiceQuestionId + '_' + question.ParentID}"
+                                                 ondragover="{!c.dragOverHandler}"
+                                                 class="{!join(' ','oh-drag-border',  question.Active == false ? ' not-active-opacity' : '')}"
+                                                 >
+                                                <aura:if isTrue="{!question.DefinedResponseCount != 0}">
+                                                    <div id="{!question.ProjectServiceQuestionId + '_responses'}" 
+                                                         class="responsesButtonContainer"   
+                                                         onclick="{!c.handleShowResponses}">                                          
+                                                        <div class="responsesButton">
+                                                            Responses
+                                                        </div>                             
+                                                    </div>
+                                                </aura:if>
+                                                <aura:if isTrue="{!question.Active == false}">
+                                                    <div class="responsesButtonContainer">                                          
+                                                        <div class="responsesButton notActiveBG">
+                                                            Not active
+                                                        </div>                             
+                                                    </div>
+                                                </aura:if>
+                                                <aura:if isTrue="{!and(v.surveyType == 'ProjectServiceQuestion', question.ServiceQuestion == false)}">
+                                                    <div class="addedButtonContainer">                                          
+                                                        <div class="responsesButton addedBG">
+                                                            Question Bank Added
+                                                        </div>                             
+                                                    </div>
+                                                </aura:if>
+                                                
+                                                <aura:if isTrue="{! v.surveyType == 'ProjectServiceQuestion'}">
+                                                    <c:ProjectSurveyQuestionCard question="{!question}"
+                                                                                 editable="{!v.editable}"
+                                                                                 disable="{!v.disable}"
+                                                                                 remove="{!v.draggable}"
+                                                                                 />
+                                                    <aura:set attribute="else">
+                                                        <c:SurveyQuestionCard question="{!question}" />
+                                                    </aura:set>   
+                                                </aura:if>   
+                                            </div>
+                                        </aura:set>
+                                    </aura:if> 						                         
+                                </aura:set>
+                            </aura:if> 
+                            
+                            
+                            
+                            
+                        </div>
+                        
+                        
+                        <div class="ghost slds-hide hand" 
+                             id="{!question.ProjectServiceQuestionId + '_' + question.ParentID +  '_ghost'}" 
+                             aura:id="{!question.ProjectServiceQuestionId + '_' + question.ParentID +  '_ghost'}"
+                             ondrop="{!c.dropHandler}"
+                             ondragover="{!c.dragOverHandler}"
+                             >
+                            
+                            Drop Here to Order <!--{!question.ProjectServiceQuestionId} + '_' + {!question.ParentID} + '_ghost' - {!question.QuestionNumber}-->
+                        </div> 	
+                    </aura:iteration>
+                </div>
+            </article>
+        </div>
+    </span>
+</aura:component>

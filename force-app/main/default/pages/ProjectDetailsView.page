@@ -1,0 +1,530 @@
+<apex:page standardController="Project__c" extensions="ProjectDetailsViewControllerExt" standardStylesheets="false" sidebar="false" tabStyle="Upload_Products__tab" >
+    <head>
+        <style>
+            .pbTitle h3{
+            
+            margin:0 !important;
+            }
+            .proj-status {
+            font-weight: bold;
+            }
+            
+            .proj-status.plan {
+            color: #FF4500;
+            }
+            body .bRelatedList .bPageBlock .pbTitle
+            padding: 5px;
+            }
+            .tagit.ui-widget-content{
+            border:none;
+            }
+            ul.tagit li.tagit-choice-read-only {
+            font-weight:normal;
+            font-size:12px;
+            color:#000;
+            border:none;
+            height:13px;
+            background: #e5e5e5;
+            margin: 0 20px 0 0;
+            }
+            
+            ul.tagit li.tagit-choice-read-only:after {
+            border: 9px solid;
+            border-color: transparent transparent transparent #e5e5e5;
+            height: 0;
+            width: 0;
+            position: absolute;
+            right: -18px;
+            top: 0;
+            content: "";
+            display: inline-block;
+            }
+            
+            .ui-dialog{
+            position:absolute !important;
+            }
+            
+            .reserve-warning {
+            padding:8px 10px 0 10px;
+            line-height:1.6;
+            }
+            .reserve-warning span {
+            line-height:2.5;
+            display: block
+            }
+            #max_reserve{
+            margin-top: 19px;
+            vertical-align: middle;
+            position: relative;
+            bottom: 9px;
+            margin-right: 3px;
+            margin-left: 18px;
+            }
+            
+            .loading-gif {
+            position: fixed;
+            z-index: 999;
+            margin: auto;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            padding: 12px 55px;
+            background-color: #FFF;
+            box-shadow: 0 0px 3px #ccc;
+            border-radius: 2px;
+            }
+        </style>
+    </head>
+    <apex:stylesheet value="{!URLFOR($Resource.TagItCSS)}"/>
+    <apex:sectionHeader title="Project" subtitle="{!Project__c.name}" />
+    <chatter:feedWithFollowers entityId="{!proj.Id}"  />
+    <br/>
+    <apex:form >
+        <apex:actionStatus id="loadingStatus">
+            <apex:facet name="start">
+                <img class="loading-gif" src="/img/loading24.gif" width="24" height="24"  />
+            </apex:facet>
+        </apex:actionStatus>
+        
+        <apex:pageMessages showDetail="true" escape="false" />
+        
+        <apex:pageBlock id="pgb" title="Project Details" mode="maindetail">
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton action="{!edit}" id="btnEditProject" value="Edit" rendered="{!$ObjectType.Project__c.updateable && !hiddenMap['Project__c.Edit']}"/>
+                <input type="button" id="btnApproval" value="Review & Submit" class="btn" />
+                <apex:commandButton id="btnCancelProject"   value="Cancel Project" rendered="{!!hiddenMap['Project__c.Cancel']}" action="{!URLFOR($Page.cancelProject,null,[id=Project__c.id])}"/>
+                <apex:commandButton id="btnDelete"  value="Delete Project" rendered="{!!hiddenMap['Project__c.Delete']}" action="{!DeleteProjects}"/>
+                <apex:commandButton id="btnCloneProject"   value="Clone Project" action="{!CloneProject}"/>                
+                <apex:commandButton id="btnPhotos" value="View Project Photos" action="{!ViewProjectPhotos}" rendered="{!!hiddenMap['Project__c.ViewPhotos']}"/>
+                <apex:commandButton id="btnJobManual" value="Generate Job Manual(s)" action="{!GenerateJobManual}" rendered="{!!hiddenMap['Project__c.JobManual']}"/> 
+                <apex:commandButton id="btnViewProjectSummaryReport" value="View Project Summary Report" 
+                rendered="{!!hiddenMap['Project__c.viewReport']}" action="{!viewProjectSummaryReport}"/> 
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1" >
+                <apex:pageBlockSectionItem labelStyle="vertical-align: middle;" rendered="{!ProjectTag!=''}" >
+                    <apex:outputLabel value="Project Tags" for="TagField" />
+                    <input name="tags" id="TagField" style="display:none"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection columns="2" showHeader="false">
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Project Number" for="projectNumberId"/>
+                    <apex:outputText value="{!Project__c.ProjectNumber__c}" id="projectNumberId"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Project Status" for="projectStatusId"/>
+                    <apex:outputText value="{!Project__c.Status__c}" id="projectStatusId" styleClass="proj-status plan"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Type" for="projectTypeId"/>
+                    <apex:outputText value="{!Project__c.ProjectType__r.name}" id="projectTypeId"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Retailer" for="retailerName"/>
+                    <apex:outputText value="{!Project__c.Retailer__r.Name}" id="retailerName"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:outputField value="{!Project__c.ProjectScheduleOption__c}" styleClass="ProjectScheduleOption__c"/>
+                <apex:outputField value="{!Project__c.Opportunity__c}" styleClass="Opportunity__c"/>
+                <apex:outputField value="{!Project__c.Name}" styleClass="Name" />
+                <apex:outputField value="{!Project__c.Program__c}" styleClass="Program__c"/>
+                <apex:outputField value="{!Project__c.ProjectCycle__r.Name}" styleClass="StartDate__c" />
+                <apex:outputField value="{!Project__c.ExecutionSLA__c}"/>
+                <apex:outputField value="{!Project__c.StartDate__c}" styleClass="StartDate__c"/>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Project Owner" for="OwnerId"/>
+                    <apex:outputField value="{!Project__c.OwnerId}"/> 
+                </apex:pageBlockSectionItem>
+                <apex:outputField value="{!Project__c.EndDate__c}" styleClass="EndDate__c"/>
+                <apex:outputField value="{!Project__c.ProjectSeller__c}"/>
+                <apex:outputField value="{!Project__c.ProjectLaunchDate__c}" styleClass="ProjectLaunchDate__c"/>
+                <apex:outputField value="{!Project__c.SplitType__c}" />
+                <apex:outputField value="{!Project__c.NumberOfDays__c}" rendered="{!captureNumberOfDays}" />
+                <apex:outputField value="{!Project__c.BudgetedLocationsCount__c}" styleClass="EndDate__c"/>
+                <apex:outputField value="{!Project__c.IsLocked__c}" rendered="false"/>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection columns="2" showHeader="true" title="Date Information" collapsible="false">
+                <apex:outputField value="{!Project__c.BookedProjectStartDate__c}" />
+                <apex:outputField value="{!Project__c.BookedProjectEndDate__c}" />
+                <apex:outputField value="{!Project__c.LaunchedProjectStartDate__c}" />
+                <apex:outputField value="{!Project__c.LaunchedProjectEndDate__c}" />
+            </apex:pageBlockSection>
+            
+            
+            <div id="projectDisplaySummary">
+                <apex:include pageName="ProjectDisplaySummary" rendered="{!IF(Project__c.Status__c != 'Planning' && Project__c.Status__c != 'Pending', true, false)}"/>
+            </div>
+            <apex:pageBlockSection columns="2" showHeader="true" title="Audit Info" collapsible="false">
+                <apex:outputField value="{!Project__c.ProjectOrigin__c}" />
+                <apex:outputField value="{!Project__c.OriginID__c}" />
+                <apex:outputField value="{!Project__c.CreatedById}" />
+                <apex:outputField value="{!Project__c.LastModifiedById}" />
+                <apex:outputField value="{!Project__c.CreatedDate}" />
+                <apex:outputField value="{!Project__c.LastModifiedDate}" />
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+        <apex:inputHidden id="confirmReserve" />
+        <apex:inputHidden id="reserveWarning" value="{!reserveWarning}" />
+        <input type="hidden" id="hdnExceedBudgeted" value=""  />
+        <input type="hidden" id="hdnReserveWarning" value=""  />
+    </apex:form>
+    
+    <br/>
+    <apex:relatedList list="Project_Accounts__r" id="rlProjectAccounts" pageSize="10"/>
+    <br/>
+    <apex:relatedList list="ProjectServices__r" id="rlProjectServices" pageSize="10" />
+    <br/>
+    <apex:relatedList list="ProjectLocations__r" id="rlProjectLoc" />
+    <br/>
+    <apex:relatedList list="Jobs__r" id="rlJobs" pagesize="10"/>
+    <br/>
+    <apex:relatedList subject="{!Project__c}"  list="CombinedAttachments" pagesize="20"/>
+    
+    <!--<apex:relatedList subject="{!Project__c}"  list="CombinedAttachments" pagesize="20"/>-->
+    
+    <c:jQueryScripts includejqueryui="true" />
+    <script src="{!$Resource.TagIt}"></script>
+    
+    <script type="text/javascript">
+        var j$ = jQuery.noConflict(),
+            isPageUpdateable = {!isPageUpdateable},
+            hideCancelProjectButton = {!hiddenMap['Project__c.Cancel']},
+            //hideAddProjectServiceButton = {!hiddenMap['ProjectService__c.Add']},
+            isInPlanning = {!isInPlanning},
+            newLocationCount = {!newLocationCount},
+            apexJobName= "{!proj.ApexJobName__c}";
+    
+    j$(".relatedListIcon").hide();
+    //hide show more
+    if(j$(".pShowMore").length > 0){
+        var urlTemp  = 'ManageJobsLocations?projectid='+"{!proj.id}"+'&Obj=';
+        var urlManageJob = 'jobmanagement?id='+"{!proj.id}";
+        j$(".pShowMore a:contains('Show')").remove();
+        j$(".pShowMore").each(function(){
+            j$(this).html(j$(this).html().replace('|',''));
+            if(String(j$(this).closest("form").attr('name')).indexOf('ProjectLoc')!=-1)
+            {
+                j$(this).find("a:contains('Go to')").attr('href',urlTemp + 'ProjLoc');
+            }
+            else if(String(j$(this).closest(".bRelatedList").attr('id')).indexOf('rlJobs')!=-1)
+            {
+                j$(this).find("a:contains('Go to')").attr('href',urlManageJob);
+            }
+        });
+    }
+    
+    
+    j$('#btnApproval').toggle({!!hiddenMap['Project__c.Submit']});
+    
+    j$('[name$="addprojectservice"]').toggle({!showAddProjectServiceButton });
+    j$('[name$="deleteservices"]').toggle({!!hiddenMap['ProjectService__c.Delete']});
+    j$('[name$="cancelprojectservice"]').toggle({!!hiddenMap['ProjectService__c.Cancel']});
+    
+    var canAddLocations = {!!hiddenMap['ProjectLocation__c.Add']} && {!hasAddLocationsLeadTime};
+    //alert({!hasAddLocationsLeadTime});
+    j$('[name$="uploadlocations"]').toggle(canAddLocations);
+    j$('[name$="createjobs"]').toggle(canAddLocations);
+    
+    j$('[name$="deleteservices"]').toggle({!!hiddenMap['ProjectService__c.Delete']});
+    
+    if({!hiddenMap['ProjectService__c.Edit']}){
+        j$('[id$=rlProjectServices]').find(".actionLink:contains('Edit')").remove();
+        j$('[id$=rlProjectServices]').find(".dataRow .actionColumn").each(function(){
+            j$this = j$(this);
+            j$this.contents().filter(function () {return this.nodeType === 3 ;}).first().remove();
+            
+        });
+    }
+    if(!{!editProjectAccounts}){
+        j$('[id$=rlProjectAccounts]').find(".actionColumn").remove();
+        j$('[id$=rlProjectAccounts]').find(".btn").css("visibility","hidden");
+    }
+    //disable all fields when batch jobs run on project
+    if(apexJobName.length > 0){
+        j$('.btn').attr('disabled','disabled').addClass('btnDisabled'); 
+        j$('.actionLink').css('color','#666'); 
+        j$(".listRelatedObject a").click(function(e) {
+            e.preventDefault();
+        });
+    }
+    
+    //j$('[id$=rlProjectServices]').find(".actionLink:contains('Del')").remove();
+    //console.log(j$('[id$=rlProjectServices]').find(".actionLink:contains('Edit')").closest('td').html());
+    /*
+    var temp = j$('[id$=rlProjectServices]').find(".actionLink:contains('Edit')").closest('td').html();
+    if (typeof temp != "undefined") {
+        temp=temp.replace(/\|/g,'');    
+        j$('[id$=rlProjectServices]').find(".actionLink:contains('Edit')").closest('td').html(temp);    
+        j$('[id$=rlProjectServices]').find(".actionLink:contains('Edit')").remove();
+        
+        temp= j$('[id$=rlProjectServices]').find(".actionColumn").closest('th').html();
+        j$('[id$=rlProjectServices]').find(".actionColumn").closest('th').html(temp.replace('Action','')); 
+    }
+    */
+    //remove links, text from project service related list actionColumn
+    j$('[id$=rlProjectServices]').find(".actionLink").remove();
+    j$('[id$=rlProjectServices]').find(".actionColumn").closest('td, th').contents().filter(function(){
+        return this.nodeType === 3;
+    }).remove();
+    
+    
+    
+    
+    
+    //if project is submitted remove Delete links, hide reserve links if no lead time
+    if(!isInPlanning){
+        //hide check all box
+        j$('#allBox').hide();
+        j$('[id$=rlProjectLoc],[id$=rlJobs]').find(".actionLink:contains('Del')").remove();
+        j$('[id$=rlProjectLoc],[id$=rlJobs]').find(".dataRow .actionColumn").each(function(i){
+            j$(this).contents().filter(function () { return this.nodeType === 3;}).last().remove();
+        });
+        
+        //remove action header text if column doesn;t have links
+        /*
+        j$('[id$=rlProjectServices],[id$=rlProjectLoc],[id$=rlJobs]').find(".headerRow").each(function(){
+            j$this = j$(this);
+            if(j$this.next().find(".actionColumn").text()==""){
+                j$this.find(".actionColumn").text("");
+            }
+        });*/
+        
+        
+    }
+    
+    requireCssFile('{!URLFOR($Resource.resources,"jquery-ui.css")}');
+    function requireCssFile(filename) {
+        var fileref = document.createElement('link');
+        fileref.setAttribute('rel', 'stylesheet');
+        fileref.setAttribute('type', 'text/css');
+        fileref.setAttribute('href', filename);
+        document.getElementsByTagName('head')[0].appendChild(fileref);
+    }
+    
+    if (!isPageUpdateable) {
+        j$('#btnApproval').hide();
+        j$('[name$="addprojectservice"]').hide();
+        j$('[name$="cancelprojectservice"]').hide();
+        j$('[name$="uploadlocations"]').hide();
+    }
+    
+    
+    j$(document).ready(function() {
+        j$("input[title='New Project Account']").attr('value', 'Add Account');
+        var ProjectTagArr = "{!ProjectTag}";
+        var projArr = [] ;
+        projArr = ProjectTagArr.split(',');
+        j$('#TagField').val(projArr);
+        
+        j$('#TagField').tagit({
+            autocomplete: {delay: 0, minLength: 2 },
+            caseSensitive : false,
+            removeConfirmation : true,
+            allowSpaces : true,
+            readOnly :true
+        });
+        
+        
+        //hide locations jobs action column on all status
+        j$('[id$=rlProjectLoc],[id$=rlJobs]').find(".actionColumn").remove();
+        
+        
+     
+    });
+    
+    
+    j$("[id*=btnCloneProject]").click(function() {
+        j$('[id*="loadingStatus.start"]').show();
+        alert("Your clone request is now being processed. An email will be sent to you as soon as the process is complete.");
+    
+    });
+    
+    j$('#btnApproval').click(function() {
+        
+        j$('#iframeSubmitProjectModal').on("load", function() {
+            j$('#loading_div').remove();
+        });
+        var iframeURL = '{!URLFOR("/apex/SubmitProject?Id="+ Project__c.Id)}';
+        
+        var child_domain = iframeURL.substring(0, iframeURL.indexOf('/', 9));
+        var parent_domain = window.location.protocol + '//' + window.location.host;
+        
+        
+        iframeURL += '&parent_domain=' + parent_domain;
+        iframeURL += '&core.apexpages.devmode.url=1';
+        var height = Math.floor(screen.availHeight * 0.6);
+        var iframe_element = '<iframe id="iframeSubmitProjectModal" src="' + iframeURL + '" frameborder="0" height="' + height + '" width="100%" marginheight="0" marginwidth="0" scrolling="yes" />';
+        var loading_div = '<div id="loading_div" style="width:40px;height:28px;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto"><img src="/img/loading24.gif" /></div>';
+        
+        var j$modalDialog = j$('<div id="modal_div"></div>')
+        .html(iframe_element + loading_div)
+        .dialog({
+            autoOpen: false,
+            title: 'Project Completeness Results',
+            resizable: false,
+            width: 700,
+            minHeight: 120,
+            height: "auto",
+            autoResize: false,
+            modal: true,
+            show: {effect: 'fade', duration: 500},
+            hide: {effect: 'fade', duration: 500},
+            draggable: true,
+            buttons: [{
+                text: "Submit",
+                icons: {
+                    primary: "ui-icon-check"
+                },
+                click: function() {
+                    var currSrc = j$("#iframeSubmitProjectModal").attr("src") + "&stage=submit";
+                    j$("#iframeSubmitProjectModal").attr("src", currSrc);
+                }
+            },
+                      {
+                          text: "Close",
+                          icons: {
+                              primary: "ui-icon-refresh"
+                          },
+                          click: function() {
+                              j$(this).dialog("destroy").remove();
+                              document.location.reload(true);
+                          }
+                      }]
+        });
+        
+        
+        j$modalDialog.on("dialogclose", function(event, ui) {
+            j$(this).dialog("destroy").remove();
+            document.location.reload(true);
+        });
+        
+        j$modalDialog.parent().css({position:"fixed"}).end().dialog('open');
+        
+        j$('#iframeSubmitProjectModal').on("load", function() {
+            j$('#loading_div').remove();
+            if ( j$(this).contents().find("#pageSuccess").val() === "false" ) {
+                j$(".ui-dialog-buttonpane button:first-child").hide();
+            }
+        });
+        
+    });
+    
+    
+    
+    j$("input[name$='createjobs']").click(function() {
+        var budgetedLocations  = 0;
+        var projectLocationCount  = 0;
+        var reservedLocationCount  = 0;
+        var showBudgetedLocationsWarning = false;
+        if(j$("#hdnReserveWarning").val() != 'false' && budgetedLocations < projectLocationCount){
+            j$('<div></div>').appendTo('body')
+            .html('<div class="reserve-warning"><h4>Budgeted Locations and Location List do not match?</h4><div># of Budget Locations: ' + budgetedLocations + ' <br/># of Locations: ' + projectLocationCount + '<span>Are you sure you want to continue?</span></div></div>')
+            .dialog({
+                autoOpen: true,
+                title: 'Create Jobs',
+                resizable: false,
+                width: 480,
+                height: "auto",
+                autoResize: false,
+                modal: true,
+                draggable: true,
+                create: function (e, ui) {
+                    var pane = j$(this).dialog("widget").find(".ui-dialog-buttonpane")
+                    j$("<label><input id='max_reserve'  type='checkbox'/> Exceed budgeted</label>").prependTo(pane)
+                },
+                buttons: [{
+                    text: "Yes, Create",
+                    id: "btnReserveLoc",
+                    tabIndex: -1,
+                    click: function() {
+                        j$("#hdnReserveWarning").val('false');
+                        j$(this).dialog("destroy").remove();
+                        j$('input[name$=Reserve]').click();
+                    }
+                },
+                          {
+                              text: "Cancel",
+                              tabIndex: -1,
+                              click: function() {
+                                  j$(this).dialog("destroy").remove();
+                                  j$('#loading_div').remove();
+                              }
+                          }]
+            });
+        }
+        else{
+            
+            var iframeURL = '{!URLFOR($Page.ScheduleLocationsModal,null,[projectid=Project__c.Id])}';
+            var child_domain = iframeURL.substring(0, iframeURL.indexOf('/', 9));
+            var parent_domain = window.location.protocol + '//' + window.location.host;
+            iframeURL += '&parent_domain=' + parent_domain;
+            
+            if(j$("#hdnExceedBudgeted").val() == 'true'){
+                iframeURL += '&ExceedBudgeted=1';
+            }
+            iframeURL += '&core.apexpages.devmode.url=1';
+            
+            var iframe_element = '<iframe id="iframeScheduleLocationsModal" src="' + iframeURL + '" frameborder="0" style="height: 75px;" width="100%" marginheight="0" marginwidth="0" scrolling="no" />';
+            var loading_div = '<div id="loading_div" style="width:40px;height:28px;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto"><img src="/img/loading24.gif" /></div>';
+            
+            
+            var j$reserveDialog = j$('<div id="modal_div"></div>')
+            .html(iframe_element + loading_div)
+            .dialog({
+                autoOpen: true,
+                title: 'Create Jobs',
+                resizable: false,
+                width: 480,
+                height: 'auto',
+                autoResize: false,
+                modal: true,
+                draggable: true,
+                buttons: [{
+                    text: "Close",
+                    click: function() {
+                        j$(this).dialog("destroy").remove();
+                        window.location.href = window.location.href;
+                    }
+                }]
+            });
+            
+            j$reserveDialog.on("dialogclose", function(event, ui) {
+                j$(this).dialog("destroy").remove();
+                window.location.href = window.location.href;
+            });
+            
+            
+            j$('#iframeScheduleLocationsModal').on("load", function() {
+                j$('#loading_div').remove();
+                if ( j$(this).contents().find("#pageSuccess").val() === "false" ) {
+                    j$(".ui-dialog-buttonpane button:first-child").hide();
+                }
+            });
+            
+        }
+        
+        j$(document).on("change", "#max_reserve", function () {
+            if(this.checked){
+                j$("#hdnExceedBudgeted").val('true');
+            }
+        });
+        
+        
+    });
+    
+    
+    
+    j$("[id*=btnDelete]").click(function() {
+        var rtn =confirm("Do you want to delete the project ?");
+        return rtn;
+    });
+    </script>
+</apex:page>

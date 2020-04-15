@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PhotoViewerChainType__c</fullName>
+    <description>The chain type for the photo viewer filter. The type is the location type that is used to filter out the locations for that type.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The chain type for the photo viewer filter</inlineHelpText>
+    <label>PhotoViewerChainType</label>
+    <length>50</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

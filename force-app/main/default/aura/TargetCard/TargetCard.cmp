@@ -1,0 +1,44 @@
+<aura:component controller="LightningProjectServiceTargetsController" access="global" >
+	<ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />    
+    <aura:attribute name="target" type="ProjectServiceTargetWrapper" access="global" />	
+    <aura:attribute name="withSelector" type="Boolean" access="global" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <article class="slds-border_bottom slds-m-bottom_small slds-p-around_x-small slds-grid slds-clearfix">         
+          <div class="slds-checkbox--button slds-m-horizontal--x-small">
+              <div class="slds-align-start oh-circle-check slds-grid slds-grid--vertical-align-center" for="{!v.target.TargetId + 'checked'}">
+                  <input name="checkbox" type="checkbox" id="{!v.target.TargetId + 'checked'}" onclick="{!c.onCheck}" checked="{!v.target.Selected}"/>
+                  <label class="oh-label-color" for="{!v.target.TargetId + 'checked'}">
+                      <span class="slds-p-top--small slds-p-bottom--x-small">  
+                      </span>
+                  </label>
+              </div>
+          </div> 
+      <div class="slds-media__figure">
+          <div class="slds-box slds-box--x-small slds-float--left slds-m-around--x-small slds-p-around--x-small">   
+              <div class="img-container">
+                   <aura:renderIf isTrue="{! (v.target.ImageURL == null)}" >                     
+                       <i class="oh-icon oh-icon-product" aria-hidden="true"></i>   
+                       <aura:set attribute="else">
+                           <img src="{!v.target.ImageURL}" />
+                       </aura:set>                       
+                  </aura:renderIf>
+              </div>
+          </div>
+      </div>
+      <div class="slds-media__body">
+        <div class="slds-media slds-p-top--x-small">
+            <h2 class="slds-text-heading--medium slds-truncate oh-card-title">
+                {!v.target.TargetName}
+            </h2>
+        </div>
+        <div class="">
+              <ul class="slds-grid slds-wrap slds-text-body_small slds-size_1-of-1">
+                 <li class="slds-item slds-m-right_small">UPC: {!v.target.UPC}</li>    
+                 <li class="slds-item slds-m-right_small">Item Code: {!v.target.StockCode}</li>  
+              </ul>
+            <p class="slds-size_1-of-1 slds-text-body_small">Manufacturer: {!v.target.AccountInfo}</p> 
+        </div>        
+      </div>
+    </article>
+</aura:component>

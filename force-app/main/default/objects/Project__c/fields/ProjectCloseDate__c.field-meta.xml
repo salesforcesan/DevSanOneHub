@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProjectCloseDate__c</fullName>
+    <description>A field that indicates the close date and time for the Project.</description>
+    <externalId>false</externalId>
+    <formula>if(ISPICKVAL(Status__c,&#39;Canceled&#39;), NULL ,EndDate__c+ProjectGracePeriodDuration__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>The close date and time for the project.</inlineHelpText>
+    <label>Project Close Date</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

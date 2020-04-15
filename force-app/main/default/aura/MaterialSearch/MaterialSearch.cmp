@@ -1,0 +1,121 @@
+<aura:component controller="LightningProjectMaterialController" >
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <ltng:require styles="{!$Resource.oh_tools + '/oh-tools-style.css'}" />  
+    <aura:attribute name="view" type="String" default="chooseMethod"/>
+    <aura:attribute name="materials" type="Material__c[]" />
+    <aura:attribute name="selectedMaterialId" type="Id" />
+    <aura:attribute name="projectId" type="Id" />
+    <aura:attribute name="MaterialId" type="object" access="global" />
+    <aura:attribute name="showNoResultsMessage" type="Boolean" default="false" />
+    <aura:attribute name="disableAddButton" type="Boolean" default="true" />
+    <aura:registerEvent name="closeDialogEvent" type="c:SimpleComponentEvent"/>
+    <aura:registerEvent name="ProjectMaterialChange" type="c:ProjectMaterialChange" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+  	<div class="slds-is-relative">  
+    <div class="slds-grid slds-p-around--medium">
+        <div class="slds-p-right--medium slds-size--2-of-3" style="min-width:67%;">
+            <div class="slds-text-align--left slds-m-horizontal--medium">
+                <p class="slds-text-body--regular">Search for a material, select the material, then fill out the information to the right to add it to your service</p>
+            </div>
+            
+            
+            
+            <div class="slds-p-around--medium">
+                <div class="" aura:id="addMaterialSpinner" > 
+                    <lightning:spinner size="medium" variant="brand" />
+                </div>
+                <div class="slds-grid slds-grid--align-spread">                 
+                    <div class="slds-grow">
+                        <ui:inputText aura:id="searchText" placeholder="Enter Material Name or ID"  /> 
+                    </div>
+                    <div class="slds-m-left--x-small">
+                        <lightning:button class="btn-change" label="Search" onclick="{! c.handleSearch }" variant="Brand" /> 
+                    </div>
+                </div>
+            </div>
+            <div style="max-height: 200px; overflow:auto;" class="">           
+                <aura:iteration items="{!v.materials}" var="material">
+                    <article class="slds-box slds-p-around--small slds-grid slds-clearfix">
+                        <div class="slds-radio--button slds-m-horizontal--x-small">
+                            <div class="slds-align-start oh-circle-check slds-grid slds-grid--vertical-align-center" for="{!material.MaterialId + 'checked'}">
+                                <input type="radio"  name="checkbox" id="{!material.MaterialId + 'checked'}" onchange="{!c.onCheck}" />
+                                <label class="oh-label-color" for="{!material.MaterialId + 'checked'}">
+                                    <span class="slds-p-top--small slds-p-bottom--x-small">  
+                                    </span>
+                                </label>
+                            </div>
+                        </div> 
+                        <div class="slds-media__figure">
+                            <div class="slds-box slds-float--left slds-m-around--xx-small">   
+                                <div class="img-container">	
+                                    <i class="fa fa-cubes" aria-hidden="true"></i>   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-media slds-p-horizontal--small slds-p-top--small">
+                                <div class="slds-media slds-has-flexi-truncate">
+                                    <h2 title="{!material.MaterialName}" class="slds-text-heading--medium slds-truncate oh-card-title">
+                                        {!material.MaterialName}
+                                    </h2>
+                                </div>                
+                            </div>       
+                            <div class="slds-media slds-no-space slds-grow slds-p-horizontal--small">
+                                <div class="slds-text-body--small">
+                                    <ul class="slds-list--horizontal slds-wrap;">
+                                        <li class="slds-item">Fulfillment Center: {!material.FulfillmentCenterName} </li>                 
+                                    </ul>
+                                </div>          
+                            </div>
+                            <div class="slds-media slds-no-space slds-grow slds-p-horizontal--small">
+                                <div class="slds-text-body--small">
+                                    <ul class="slds-list--horizontal slds-wrap;">
+                                        <li class="slds-item">PMID: {!material.ExternalId} </li>                 
+                                    </ul>
+                                </div>          
+                            </div>
+                        </div>
+                    </article>
+                </aura:iteration>  
+                <aura:renderIf isTrue="{!v.showNoResultsMessage}">
+                    <div style="color:red">No Material matched your search criteria.</div>
+                </aura:renderIf>
+            </div>
+        </div>
+        <div class="slds-box slds-grid slds-grid--vertical slds-grow slds-size--1-of-3 slds-grid--align-end slds-p-bottom--medium">
+            <div class="slds-text-align--left">
+                <p class="slds-text-body--small" style="word-break:normal;">Fill in these attributes to populate your material data</p>
+            </div>
+            <div class="slds-p-top--small">
+                <ui:inputSelect class="height slds-picklist slds-p-around--x-small" aura:id="serviceSelector"  label="Service Title" required="true" />
+            </div>                                                        
+            <div class="slds-p-top--small">
+                <ui:inputNumber class="slds-input" aura:id="quantity" label="Quantity" required="true" />
+            </div>    
+             <div class="slds-p-top--small" >
+                <ui:inputSelect class="slds-input" aura:id="useType" label="Use Type" value="By Location"  >
+                    <ui:inputSelectOption text="By Rep" label="By Rep" value="By Rep"/>
+                    <ui:inputSelectOption text="By Location" label="By Location" value="By Location"/>                
+                 </ui:inputSelect>
+            </div>  
+             <div class="slds-p-top--small" >
+                <ui:inputSelect class="slds-input" aura:id="shipTo" label="Ship To"   >
+                    <ui:inputSelectOption text="Rep" label="Rep" value="Rep"/>
+                    <ui:inputSelectOption text="Location" label="Location" value="Location"/>               
+                 </ui:inputSelect>
+            </div> 
+             <div >          
+                <div class="slds-grid slds-grid--align-start slds-p-top--small">
+                    <!--<c:ModalCancelButton buttonLabel="Cancel" />-->
+                    <lightning:button class="slds-m-right--small" label="Cancel" onclick="{!c.close}"/>
+                    <lightning:button disabled="{!v.disableAddButton}" class="slds-m-left--small" label="Add" onclick="{! c.addMaterials }" variant="Brand" /> 
+                </div>
+            </div>
+        </div>
+       
+    </div>
+    <!--<hr class="slds-m-vertical-x-small"></hr>-->
+
+    </div>
+</aura:component>

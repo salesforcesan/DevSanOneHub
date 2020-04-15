@@ -1,0 +1,61 @@
+<aura:component >
+  <aura:attribute name="dialogId" type="String" default=""/>
+  <aura:attribute name="projectId" type="String" default=""/>
+  <aura:attribute name="showSchedule" type="Boolean" default="false" />
+  <aura:attribute name="searchByOneHubId" type="Boolean" default="true"/>
+  <aura:attribute name="locations" type="List" default="[]"/>
+  <aura:attribute name="locationChanged" type="Boolean"/>
+    <aura:attribute name="useGuidOptions" type="List" default="[
+    {'label': 'Use Location Number', 'value': '0'},
+    {'label': 'Use Location ID', 'value': '1'}
+    ]"/>
+    <aura:attribute name="useGuid" type="String" default=""/>
+    <aura:attribute name="guidSelectorDisabled" type="Boolean" default="false" />
+  <aura:attribute name="selFile" type="String" default="File Name/No file chosen" access="private"/>
+  <aura:attribute name="columns" type="List" default="[]" access="private"/>
+  <aura:registerEvent name="closeDialogEvent" type="c:SimpleComponentEvent"/>
+   <aura:registerEvent name="onRemoteRequest" type="c:RemoteActionRequestEvent"/>
+  <aura:handler event="c:ActionResponseSuccessAppEvent" action="{!c.onSuccess}"/>
+  <aura:handler event="c:ActionResponseErrorAppEvent" action="{!c.onError}"/>
+  <aura:handler name="change" value="{!v.locationChanged}" action="{!c.onLocationChanged}" />
+  <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+  <article class="container slds-is-relative">
+     <c:Notification aura:id="notification" class="no-flow"/>
+      <c:Spinner aura:id="busyIndicator" type="modal" size="medium">
+        <div>
+          <header>
+            <h2>Upload a file by clicking on the upload button then select the locations to add to your project. If the upload file has the schedule date information, please note that the supported date formats are YYYY-MM-dd and MM/dd/YYYY.</h2>
+          </header>
+          <div class="use-guid-container slds-p-around_x-small slds-border_bottom slds-p-left_large">
+             <c:RadioBoxGroup 
+                aura:id="guidSelector"
+                disabled="{! v.guidSelectorDisabled}"
+                options="{! v.useGuidOptions}"
+                value="{! v.useGuid}"
+                tooltip="A Retailer Account must be selected on Project Details to use Location Number."
+                class="oh-radio-group" />
+          </div>
+          <div class="upload-body">
+            <section class="date-input">
+              <input type="file" accept=".csv, text/csv, .txt, text/text" aura:id="inputFile" class="hide" name="file" placeholder="select a file" onchange="{!c.onChangeFile}"/>
+              <lightning:button variant="brand" iconName="utility:upload" label="Upload File" onclick="{!c.onSelectFile}"/>
+              <span class="oh-input-desc">{!v.selFile}</span>
+              <span class="row-count">Total Count: {!v.locations.length}</span>
+            </section>
+            <section class="grid">
+                <aura:if isTrue="{!v.locations.length > 0}">
+                  <aura:set attribute="else">
+                    <div class="no-file">There are no location file to upload.</div>
+                  </aura:set>
+                  <c:DataTable aura:id="dataTable" id="uploadFile" columns="{!v.columns}" canSelectAll="true" height="300"/>
+              </aura:if>
+            </section>
+          </div>
+          <footer>
+            <lightning:button label="Close" name="btnCancel" variant="neutral" onclick="{!c.onCancel}"/>
+            <lightning:button label="Add Selected Locations" name="btnAdd" variant="brand" onclick="{!c.onAdd}"/>
+          </footer>
+        </div>
+    </c:Spinner>
+  </article>
+</aura:component>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CheckoutTimeLocalText__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (ISBLANK(CheckoutTimeLocal__c),&#39;&#39;,TEXT(MONTH(DATEVALUE(CheckoutTimeLocal__c))) + &#39;/&#39; + TEXT(DAY(DATEVALUE(CheckoutTimeLocal__c))) + &#39;/&#39; + TEXT(YEAR(DATEVALUE(CheckoutTimeLocal__c))) + &#39; &#39; + IF (VALUE(MID(TEXT(CheckoutTimeLocal__c), 12, 2)) &lt;= 12,TEXT(VALUE(MID(TEXT(CheckoutTimeLocal__c), 12, 2))),TEXT(VALUE(MID(TEXT(CheckoutTimeLocal__c), 12, 2)) - 12)) + &#39;:&#39; + MID(TEXT(CheckoutTimeLocal__c), 15, 2) + &#39; &#39; + IF (VALUE(MID(TEXT(CheckoutTimeLocal__c), 12, 2)) &lt; 12,&#39;AM&#39;,&#39;PM&#39;))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Check-out Time Local Text</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

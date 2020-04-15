@@ -1,0 +1,31 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" controller="LightningProjectServiceController" access="global" >
+	<aura:attribute name="service" type="ProjServiceWrapper" access="global" />
+    <aura:attribute name="ProjServiceID" type="Id" access="global" />
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <aura:attribute name="Title" default="Service Details" type="string" access="global" /> 
+    <aura:attribute name="iconClass" default="fa-handshake-o" type="string" access="global" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> 
+    
+    <section>
+        <div class="section-header slds-p-bottom--x-small slds-p-horizontal--small">
+            <h2 class="page-title">
+                {!v.service.ServiceTitle}
+            </h2>
+            <p class="page-subtitle">
+                {!v.service.Name}&nbsp;-&nbsp;{!v.service.ServiceName}
+            </p>
+        </div>
+    </section>
+    <section class="services-bar" style="background-color: #EAF6FC; border-top: 1px solid #0070D2; border-bottom: 1px solid #0070D2;" >
+        <div class="slds-media">
+            <div class="slds-media" 
+                 style="text-align:left;">
+                <div class="services-bar-icon">
+                    <i class="{!'fa ' + v.iconClass + ' slds-p-vertical--small'}" aria-hidden="true"></i>
+                </div>
+                <h3 class="services-bar-title slds-grid--align-spread">{!v.Title}</h3>
+            </div>
+        </div>
+	</section>   
+</aura:component>

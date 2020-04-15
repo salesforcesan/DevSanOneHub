@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UpdateJobsFlag__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>To show &quot;Create Jobs&quot; button in scheduled state when services are modified.</description>
+    <externalId>false</externalId>
+    <label>Update Jobs Flag</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,70 @@
+<aura:component >
+  <aura:attribute name="projectId" type="String" default=""/>
+  <aura:attribute name="dialogId" type="String" default=""/>
+  <aura:attribute name="searchByOneHubId" type="Boolean" default="true"/>
+  <aura:attribute name="locations" type="list" access="private"/>
+  <aura:attribute name="isSelectAll" type="Boolean" access="private"/>
+  <aura:attribute name="captureDataTableRendered" type="String" default="" access="private"/>
+  <!-- events definition area -->
+  <aura:registerEvent name="closeDialogEvent" type="c:SimpleComponentEvent"/>
+  <aura:handler event="c:ActionResponseSuccessAppEvent" action="{!c.onSuccess}"/>
+  <aura:handler event="c:ActionResponseErrorAppEvent" action="{!c.onError}"/>
+  <aura:registerEvent name="actionRequest" type="c:ActionRequestAppEvent"/>
+  <aura:registerEvent name="onRemoteRequest" type="c:RemoteActionRequestEvent"/>
+  <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+  <aura:handler name="dataTableRendered" event="c:SimpleComponentEvent" action="{!c.onDataTableRendered}"/>
+  <!-- UI definition -->
+  <article class="container slds-is-relative">
+    <c:Notification aura:id="notification" class="no-flow"/>
+    <c:Spinner aura:id="searchLocation_busyIndicator" type='modal' size="medium">
+      <section class="search-location-body">
+        <div class="slds-grid">
+          <div class="columns-8">
+            <div class="slds-m-bottom--small">
+               <ui:outputText value="{!join(' ',v.locations.length, 'results')}" class="slds-form-element slds-m-right--medium"/>
+            </div>
+            <c:DataTable aura:id="dataTable" id="searchLocation" canSelectAll="true" height="300" data="{!v.locations}"/>
+            <div class="slds-p-top--small">
+              <lightning:button variant="brand" label="Add selected locations" class="slds-m-right--small" onclick="{!c.clickAddLocations}"/>
+              <lightning:button variant="neutral" label="Close" onclick="{!c.clickCancel}"/>
+            </div>
+          </div>
+          <div class="columns-4">
+            <div class="side-panel slds-m-left--medium">
+              <div class="header slds-p-left--x-small">
+                <lightning:icon iconName="utility:filterList" size="small" class="icon-filter-small"/>
+                <h2 class="small-head slds-p-left--x-small">Filters:</h2>
+              </div>
+              <div class="body slds-p-around--large">
+                <div class="slds-form-element">
+                  <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">
+                    <ui:inputText label="search" placeholder="Location Number or Name" aura:id="inputSearchKeyword"/>
+                  </div>
+                </div>
+                <!-- input group -->
+                <lightning:input type="text" name="city" label="City" aura:id="inputCity"/>
+                <lightning:layout horizontalAlign="spread" multipleRows="true">
+                  <lightning:layoutItem flexibility="grow" class="half-width">
+                    <div class="slds-m-right--x-small">
+                      <c:StateDropDownList aura:id="inputState" defaultValue=""/>
+                    </div>
+                  </lightning:layoutItem>
+                  <lightning:layoutItem flexibility="grow" class="half-width">
+                    <div class="slds-m-right--x-small">
+                      <lightning:input type="text" name="zipCode" label="Postal Code" aura:id="inputZipCode"/>
+                    </div>
+                  </lightning:layoutItem>
+                </lightning:layout>
+                  <lightning:input type="text" name="retailerBanner" label="Retailer Banner" aura:id="storeType" class="slds-m-bottom--x-small"/>
+              </div> <!-- end of body -->
+              <div class="footer slds-text-align--center slds-p-around--small">
+                <lightning:button label="Filter" variant="brand" class="slds-m-right--small" onclick="{!c.clickFilter}"/>
+                <lightning:button label="Clear" variant="neutral" onclick="{!c.clickClear}"/>
+              </div>
+            </div> <!-- end of side panel -->
+          </div>
+        </div>
+      </section>
+    </c:Spinner>
+  </article>
+</aura:component>

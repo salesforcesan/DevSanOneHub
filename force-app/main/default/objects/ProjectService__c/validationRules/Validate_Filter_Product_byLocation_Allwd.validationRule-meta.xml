@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_Filter_Product_byLocation_Allwd</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND (CheckDistribution__c == true,  Service__r.AllowDistribution__c == false)</errorConditionFormula>
+    <errorDisplayField>CheckDistribution__c</errorDisplayField>
+    <errorMessage>Filtering products by location is not allowed for this service template.</errorMessage>
+</ValidationRule>

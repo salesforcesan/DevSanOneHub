@@ -1,0 +1,20 @@
+<aura:component controller="LightningSurveyQuestionsController" implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+    
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />    
+    <aura:attribute name="questions" type="List" access="global" />
+    <aura:attribute name="service" type="Object" access="global" />
+    <aura:attribute name="servicename" type="string" access="global" />
+    <aura:attribute name="servicetitle" type="string" access="global" />
+    <aura:attribute name="serviceId" type="Id" />  
+    <aura:attribute name="questionId" type="String"/>
+    <aura:attribute name="question" type="Object"/>
+    <aura:attribute name="surveyTemplateVersion" type="String"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />    
+    <aura:if isTrue="{!v.surveyTemplateVersion == 'V2'}">
+        <c:ServiceQuestionTemplateBuilderv2 recordId='{! v.recordId}' />
+        <aura:set attribute="else">  
+            <c:ServiceQuestionTemplateBuilder recordId='{! v.recordId}' />
+        </aura:set>
+    </aura:if>
+</aura:component>

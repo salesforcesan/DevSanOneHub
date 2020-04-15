@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Invalid_Material</fullName>
+    <active>true</active>
+    <errorConditionFormula>Material__c = null || Material__c = &#39;&#39;</errorConditionFormula>
+    <errorMessage>Invalid Material. Please select a valid material.</errorMessage>
+</ValidationRule>

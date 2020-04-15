@@ -1,0 +1,34 @@
+<apex:page standardController="ProjectAccount__c" extensions="AddEditProjectAccountExt" >
+<apex:sectionHeader title="Project Account" subtitle="{!project.Name}" />
+<c:Breadcrumb backtoid="{!project.Id}" />
+<apex:pageMessages showDetail="false" escape="false" />
+
+  <apex:form >
+  
+  <apex:pageBlock mode="edit">
+       <apex:pageBlockButtons >
+            <apex:commandButton id="projectsave" value="Save" action="{!save}"/>
+            <apex:commandButton id="projectcancel" value="Cancel" action="{!cancel}" />
+        </apex:pageBlockButtons>
+     <apex:pageBlockSection title="Account Details" columns="1" collapsible="false">
+        <apex:pageBlockSectionItem >    
+            <apex:outputLabel for="account" value="{!$ObjectType.ProjectAccount__c.fields.Account__c.label}" /> 
+            <apex:inputField id="account" value="{!ProjectAccount__c.Account__c}" />
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >  
+             <apex:outputLabel for="billto" value="{!$ObjectType.ProjectAccount__c.fields.BillToAddress__c.label}" /> 
+            <apex:inputField id="billto" value="{!ProjectAccount__c.BillToAddress__c}" required="true" />
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem rendered="{!ShowSplitAmount }" > 
+            <apex:outputLabel for="Split" value="{!$ObjectType.ProjectAccount__c.fields.SplitValue__c.label}" />
+            <apex:inputField id="Split" value="{!ProjectAccount__c.SplitValue__c}" />
+        </apex:pageBlockSectionItem>
+      
+        
+        
+        
+      </apex:pageBlockSection>
+  </apex:pageBlock>
+      <apex:inputHidden id="project" value="{!ProjectAccount__c.Project__c}" /> 
+  </apex:form>
+</apex:page>

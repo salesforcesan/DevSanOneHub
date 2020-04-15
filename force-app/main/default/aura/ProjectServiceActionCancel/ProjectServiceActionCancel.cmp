@@ -1,0 +1,63 @@
+<aura:component controller="LightningProjectServiceController" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="projectId" type="String" default="" access="private"/>
+    <aura:attribute name="service" type="object" default="{}" access="private" />
+    <aura:attribute name="cancelReasons" type="List" default="[]" access="private" />
+    <aura:attribute type="String" name="callbackresult" default="NONE"></aura:attribute>
+    <aura:attribute type="String" name="callbackmessage"></aura:attribute>
+    <aura:registerEvent name="refreshProject" type="c:EventProjectRefresh" />
+    <div class="action-container">
+        <lightning:spinner size="medium" variant="brand" aura:id="spinner" class="oh-margin slds-hide" />
+        <h1 id="title" class="slds-text-heading_medium title">Cancel Service</h1>
+        <hr class="slds-m-vertical_medium" style="margin-left:-2rem;margin-right:-2rem;"></hr>
+        <div style="margin-left:-2rem;margin-right:-2rem;">
+         <c:Notification aura:id="notification" class="no-flow" message="Are you sure you want to cancel the Service? The cancel action selected may not result in all jobs/tickets being canceled due to configured lead times not being met. Continue with this action to cancel all jobs/tickets that can be canceled." hideCloseButton="True" visible="true" type="warning"/>
+        </div>  
+        <div class="slds-form--horizontal slds-m-top--medium slds-m-right--medium main-body">
+            <div class="slds-is-relative">
+                <div class="slds-hide" style="min-height:100px" aura:id="displaySpinner">
+                    <lightning:spinner size="medium" variant="brand" />
+                </div>
+            </div>
+            <div class="slds-form-element">
+                <label class="slds-form-element__label">Service Title</label>
+                <div class="slds-form-element__control">
+                    <label class="slds-form-element__label"><b>{!v.service.title}</b></label>
+                </div>
+            </div>
+            <div class="slds-form-element">
+                <label class="slds-form-element__label">Service Status</label>
+                <div class="slds-form-element__control">
+                    <label class="slds-form-element__label"><b>{!v.service.status}</b></label>
+                </div>
+            </div>
+            <div class="slds-form-element">
+                <label class="slds-form-element__label">
+                    <abbr class="slds-required" title="required">*</abbr>Cancel Reason</label>
+                <div class="slds-form-element__control">
+                    <div>
+                        <ui:inputSelect required="true" class="dynamic" value="{!v.service.reason}" aura:id="projectCancelReason">
+                            <aura:iteration items="{!v.cancelReasons}" var="cancelReason">
+                                <ui:inputSelectOption text="{!cancelReason}" label="{!cancelReason}" />
+                            </aura:iteration>
+                        </ui:inputSelect>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form-element">
+                <label class="slds-form-element__label">Cancel Reason Comment</label>
+                <div class="slds-form-element__control">
+                    <ui:inputTextArea aura:id="cancelReasonComment" maxlength="255" placeholder="Enter comments" value="{!v.service.comment}" class="slds-textarea" rows="5" />
+                </div>
+            </div>
+        </div>
+        <div class="slds-m-bottom--medium centered">
+            <ui:button aura:id="btnYes" class="slds-button slds-button_brand slds-p-horizontal_x-small" label="Cancel Service" press="{!c.cancelButtonClicked}" />
+        </div>
+    </div>
+    <style>
+        .modal-body {
+        overflow: hidden;
+        }
+    </style>
+</aura:component>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Active__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>A checkbox that indicates whether this Attribute is active (this field must not be selected if the attribute is to be deleted or turned off).</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Select this box if the attribute active.</inlineHelpText>
+    <label>Active</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

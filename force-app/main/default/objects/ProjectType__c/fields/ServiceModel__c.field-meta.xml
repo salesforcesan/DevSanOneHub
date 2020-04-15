@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ServiceModel__c</fullName>
+    <externalId>false</externalId>
+    <label>Service Model</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Continuity</fullName>
+                <default>false</default>
+                <label>Continuity</label>
+            </value>
+            <value>
+                <fullName>Retail On Demand(Merchandising)</fullName>
+                <default>false</default>
+                <label>Retail On Demand(Merchandising)</label>
+            </value>
+            <value>
+                <fullName>Remodel</fullName>
+                <default>false</default>
+                <label>Remodel</label>
+            </value>
+            <value>
+                <fullName>Reset</fullName>
+                <default>false</default>
+                <label>Reset</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

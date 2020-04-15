@@ -1,0 +1,5 @@
+Dear {!JobAttemptWorker__c.SupervisorFirstName__c}  {!JobAttemptWorker__c.SupervisorLastName__c},
+Assignment cancelled for {!JobAttemptWorker__c.WorkerFirstName__c} {!JobAttemptWorker__c.WorkerLastName__c}  [EmployeeId: {!JobAttemptWorker__c.WorkerEmployeeId__c}] at Store {!JobAttemptWorker__c.LocationName__c}/{!JobAttemptWorker__c.LocationNumber__c}/{!JobAttemptWorker__c.LocationCity__c}/{!JobAttemptWorker__c.LocationState__c} for project {!JobAttemptWorker__c.ProjectTitle__c} with an estimated time of {!JobAttemptWorker__c.EstimatedMinutes__c} minutes scheduled on {!JobAttemptWorker__c.ScheduledDate__c}.
+
+
+Thank you.

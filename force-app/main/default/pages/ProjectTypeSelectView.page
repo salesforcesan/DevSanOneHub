@@ -1,0 +1,60 @@
+<apex:page standardController="Project__c" extensions="CreateEditProjectExt" action="{!redirect}" >
+    <style type="text/css">
+        .borderClass {
+            border-color: red;
+            border-width: 2px;
+            border-style: solid;
+        }
+         .errorLabel {
+            color: red;              
+        }
+
+</style>
+    <apex:sectionHeader title="Project" subtitle="New Project" />
+    <apex:messages />
+    <apex:form id="createEditForm">
+        <apex:pageBlock mode="edit" title="Select Project Type" id="projectBlock">
+            <apex:messages title="Error: Invalid Data. Review all error messages below to correct your data." />
+            <apex:pageBlockButtons >
+                <apex:commandButton id="projectcreate" value="Next" action="{!next}" />
+                <apex:commandButton id="projectcancel" value="Cancel" action="{!cancel}" immediate="true" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel title="Project Types" value="Project Types"></apex:outputLabel>
+                    <apex:outputPanel layout="block">
+                        <apex:selectList size="1" value="{! project.ProjectType__c}" id="projectType" required="true">
+                            <apex:selectOption itemValue="None" itemLabel="Select One"/>
+                            <apex:selectOptions value="{!projectTypes}"/>
+                        </apex:selectList>
+                        <span id="ProjServiceerror" class="errorLabel">Please select a project type.</span>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+      <c:jQueryScripts />
+    <script>
+        $(document).ready(function() {
+                    $(".errorLabel").hide(); 
+                    
+                                
+                    $("input[id$=projectcreate]").click(function() {       
+                        var returnVal = true;
+                              
+                        if ($("[id*=projectType]").val().toLowerCase() == 'none') {
+                            $("[id*=ProjServiceerror]").show();
+                            $("[id*=projectType]").addClass('borderClass');
+                            returnVal = false;
+                        } else {
+                            $("[id*=projectType]").removeClass('borderClass');
+                            $("[id*=ProjServiceerror]").hide();
+                        }
+                                           
+                        
+                        return returnVal;
+                    });
+            
+            });
+     </script>
+</apex:page>

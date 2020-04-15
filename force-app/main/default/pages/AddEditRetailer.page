@@ -1,0 +1,121 @@
+<apex:page standardController="Retailer__c" extensions="AddEditRetailerExt" sidebar="true" >
+<c:jQueryUICSS />
+<c:jQueryScripts includejQueryUI="true" />
+<script src="{!$Resource.multidatespickerJS}"></script>
+<apex:stylesheet value="{!URLFOR($Resource.JqueryTimepicker, '/jquery.timepicker.css')}" />
+<style>
+/*.ui-datepicker .ui-datepicker-calendar .ui-state-highlight a {
+    background: #743620 none;
+    color: white;
+}*/
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
+    font-weight:normal;
+    background: #fff;
+    border: 1px solid transparent;
+}
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
+color:#0073ea;
+}
+.ui-datepicker .ui-datepicker-calendar .ui-state-highlight a {
+            background: #0073ea;
+            color: white;
+            border: 1px solid #0073ea;
+        }
+        
+       .ui-datepicker th{
+           font-weight:normal;
+       }
+        .ui-datepicker-calendar td {
+            border: 1px solid transparent;
+        }
+        
+.bEditBlock.bPageBlock .detailList tr td, .bEditBlock.bPageBlock .detailList tr th {
+    border-bottom: 1px solid rgb(236, 236, 236);
+    height: 18px;
+}
+
+span.ui-state-default{  
+  color: green;
+}
+    
+</style>
+       
+ 
+        
+<apex:form >
+    <apex:pageMessages />
+    <input type="hidden" id="altField"></input>  
+    
+    
+<apex:sectionHeader title="Edit Retailer" subtitle="{!IF(ISBLANK(Retailer.Name), 'New Retailer', Retailer.Name)}" />
+<div class="bPageTitle" style="padding-top: 0;">
+        <div class="ptBreadcrumb">&nbsp;«&nbsp;<apex:outputLink value="{!URLFOR($Action.Retailer__c.Tab, $ObjectType.Retailer__c)}">Back to Retailers</apex:outputLink> 
+        </div>
+    </div> 
+<apex:pageBlock mode="edit">
+
+    <apex:pageBlockButtons location="top">
+        <apex:commandButton id="save" action="{!save}" value="Save" />
+        <apex:commandButton id="btnCancel" action="{!cancel}" value="Cancel" immediate="true"  html-formnovalidate="formnovalidate" />
+    </apex:pageblockButtons>
+    
+    <apex:pageblockSection title="Retailer Details" columns="1" collapsible="false">
+    
+    <apex:pageBlockSectionItem >    
+    <apex:outputLabel for="name" value="Retailer Name"></apex:outputLabel> 
+    <apex:inputField id="name" value="{!Retailer.Name}" required="true" />  
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem rendered="{!mode='add'}" >    
+    <apex:outputLabel for="name" value="Retailer Code"></apex:outputLabel> 
+    <apex:inputField id="name" value="{!Retailer.OneHubRetailerId__c}" />  
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem rendered="{!mode='edit'}" >    
+    <apex:outputLabel for="name" value="Retailer Code"></apex:outputLabel> 
+    <apex:outputField value="{!Retailer.OneHubRetailerId__c}" />  
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem >    
+    <apex:outputLabel for="name" value="Logo URL"></apex:outputLabel> 
+    <apex:inputField id="name" value="{!Retailer.LogoURL__c}" />  
+    </apex:pageBlockSectionItem> 
+    
+    <apex:pageBlockSectionItem >    
+    <apex:outputLabel for="name" value="Logo Height"></apex:outputLabel> 
+    <apex:inputField id="name" value="{!Retailer.LogoHeight__c}" />  
+    </apex:pageBlockSectionItem> 
+    
+    <apex:pageBlockSectionItem >    
+    <apex:outputLabel for="userID" value="User Info"></apex:outputLabel> 
+    <apex:inputField id="userID" value="{!Retailer.User__c}" />  
+    </apex:pageBlockSectionItem> 
+    
+     <apex:pageBlockSectionItem >    
+    <apex:outputLabel for="isMaterialReqd" value="Material Required"></apex:outputLabel> 
+    <apex:inputField id="isMaterialReqd" value="{!Retailer.isMaterialReqd__c}" />  
+    </apex:pageBlockSectionItem>    
+ 
+    <apex:pageBlockSectionItem >    
+    
+    <apex:outputLabel for="TargetAcquiredDefault" value="Target Acquired Default (Purchased/Donated/Kitted)"></apex:outputLabel> 
+    <apex:inputField id="TargetAcquiredDefault" value="{!Retailer.TargetAcquiredDefault__c}" />  
+    </apex:pageBlockSectionItem>    
+    
+    <apex:pageBlockSectionItem > 
+        <apex:outputLabel for="JobCancelLeadTime" value="Job Cancel Lead Time"></apex:outputLabel> 
+        <apex:inputField id="JobCancelLeadTime" value="{!Retailer.ProjectCancelLeadTime__c}" />  
+    </apex:pageBlockSectionItem>    
+
+    <apex:pageBlockSectionItem >     
+        <apex:outputLabel for="FulfillmentLeadTime" value="Fulfillment Lead Time"></apex:outputLabel> 
+        <apex:inputField id="FulfillmentLeadTime" value="{!Retailer.FulfillmentLeadTime__c}" />          
+    </apex:pageBlockSectionItem>    
+</apex:pageblockSection>
+</apex:pageBlock>
+</apex:form>
+
+
+
+
+</apex:page>

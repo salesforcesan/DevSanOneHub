@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MaterialCount__c</fullName>
+    <externalId>false</externalId>
+    <label>Material Count</label>
+    <summaryFilterItems>
+        <field>JobMaterial__c.Status__c</field>
+        <operation>notEqual</operation>
+        <value>Canceled</value>
+    </summaryFilterItems>
+    <summaryForeignKey>JobMaterial__c.Job__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

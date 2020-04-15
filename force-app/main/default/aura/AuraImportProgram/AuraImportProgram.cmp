@@ -1,0 +1,81 @@
+<aura:component extends="c:AuraImportProgramLibrary" controller="lwcProgramController" implements="force:hasRecordId">
+  <!-- public-->
+  <aura:attribute name="custStyle" type="String" default="height: 400px;" />
+  <aura:attribute name="height" type="Integer" default="400" />
+
+  <!-- private -->
+  <aura:attribute name="steps" type="List" default="[]" access="private" />
+  <aura:attribute name="isConnected" type="Boolean" default="false" access="private" />
+  <aura:attribute name="file" type="Object" default="null" access="private" />
+  <aura:attribute name="validatedResult" type="List" default="[]" access="private" />
+  <aura:attribute name="appState" type="Integer" default="1" access="private" />
+  <aura:attribute name="step1Class" type="String" default="slds-is-expanded" access="private" />
+  <aura:attribute name="step2Class" type="String" default="slds-is-collapsed" access="private" />
+  <aura:attribute name="step3Class" type="String" default="slds-is-collapsed" access="private" />
+  <aura:attribute name="nextEnabled" type="Boolean" default="false" access="private" />
+  <aura:attribute name="title" type="String" default="Import Jobs - Loading" access="private" />
+  <aura:attribute name="busyAlternativeText" type="String" default="Processing..." access="private" />
+  <aura:attribute name="showSubmitButton" type="Boolean" default="false" access="private" />
+  <aura:attribute name="showClose" type="Boolean" default="false" access="private" />
+  <aura:attribute name="isAppBusy" type="Boolean" default="false" access="private" />
+  <aura:attribute name="fileError" type="String" default="" access="private" />
+  <aura:attribute name="projects" type="Object" default="{}" access="private" />
+  <aura:attribute name="datasource" type="Object" default="{}" access="private" />
+
+  <!-- step footer -->
+  <aura:attribute name="hideSteps" type="Boolean" default="false" />
+  <aura:attribute name="schemaAnalysis" type="List" default="[]" />
+
+  <!-- event -->
+  <aura:registerEvent name="closeEvent" type="c:SimpleComponentEvent" />
+  <aura:registerEvent name="fileContentEvent" type="c:SimpleComponentEvent" />
+  <aura:registerEvent name="fileInvalidEvent" type="c:SimpleComponentEvent" />
+  <aura:handler name="fileInvalidEvent" event="c:SimpleComponentEvent" action="{!c.onFileInvalid}" />
+  <aura:handler name="fileContentEvent" event="c:SimpleComponentEvent" action="{!c.onFileContentReady}" />
+  <aura:handler name="change" value="{!v.height}" action="{!c.onHeightChanged}" />
+  <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+  <aura:handler name="stepFooterEvent" event="c:SimpleComponentEvent" action="{!c.onStepFooterEvent}" />
+  <aura:handler name="step1Event" event="c:SimpleComponentEvent" action="{!c.onStep1Event}" />
+  <aura:handler name="step2Event" event="c:SimpleComponentEvent" action="{!c.onStep2Event}" />
+  <aura:handler name="step3Event" event="c:SimpleComponentEvent" action="{!c.onStep3Event}" />
+
+  <!-- template -->
+  <div class="oh-container slds-theme_default slds-is-relative">
+    <!-- header -->
+    <c:AuraDialogHeader title="{!v.title}"></c:AuraDialogHeader>
+    <!-- body -->
+    <div class="slds-scrollable_y" style="{!v.custStyle}">
+      <div class="{!v.step1Class}">
+        <c:AuraImportProgramStep1 custStyle="{!v.custStyle}" results="{!v.schemaAnalysis}" projects="{!v.projects}"
+          error="{!v.fileError}">
+        </c:AuraImportProgramStep1>
+      </div>
+      <div class="{!v.step2Class}">
+        <aura:if isTrue="{!v.datasource != null}">
+          <c:AuraImportProgramStep2 aura:id="step2Control" custStyle="{!v.custStyle}" projects="{!v.projects}"
+            chunkSize="{!v.datasource.chunkSize}" helps="{!v.datasource.guides}" schemas="{!v.datasource.schemas}">
+          </c:AuraImportProgramStep2>
+        </aura:if>
+      </div>
+      <div class="{!v.step3Class}">
+        <c:AuraImportProgramStep3 aura:id="step3Control" projects="{!v.projects}" custStyle="{!v.custStyle}">
+        </c:AuraImportProgramStep3>
+      </div>
+    </div>
+    <!-- footer -->
+    <c:AuraDialogStepFooter hideSteps="{!v.hideSteps}" nextEnabled="{!v.nextEnabled}" stepDefs="{!v.steps}">
+      <aura:if isTrue="{!v.showSubmitButton}">
+        <lightning:button variant="warning" class="slds-m-right_x-small" title="Cancel" label="Cancel"
+          onclick="{!c.onCancel}"></lightning:button>
+        <lightning:button variant="brand" onclick="{!c.onSubmit}" title="Next Step" label="Submit">
+        </lightning:button>
+      </aura:if>
+      <aura:if isTrue="{!v.showClose}">
+        <lightning:button variant="warning" class="slds-m-right_x-small" title="Close" label="Close"
+          onclick="{!c.onClose}"></lightning:button>
+      </aura:if>
+    </c:AuraDialogStepFooter>
+    <!-- spinner -->
+    <c:AuraSpinner size="large" visible="{!v.isAppBusy}" alternativeText="{!v.busyAlternativeText}"></c:AuraSpinner>
+  </div>
+</aura:component>

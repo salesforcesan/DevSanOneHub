@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>prevent_negative_values_Number_of_Worker</fullName>
+    <active>true</active>
+    <errorConditionFormula>NumberOfWorkers__c &lt;0</errorConditionFormula>
+    <errorMessage>Number Of Workers Field  not accept  zero and negative numbers.</errorMessage>
+</ValidationRule>

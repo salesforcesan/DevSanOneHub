@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disallow_schdate_change_diff_from_PLdate</fullName>
+    <active>true</active>
+    <description>Do not allow a scheduled date that is different from a project location scheduled date in case of a bundled project</description>
+    <errorConditionFormula>AND(Project__r.BundleServices__c,ISCHANGED(JobScheduledDate__c), JobScheduledDate__c !=  ProjectLocation__r.LocationScheduledDate__c)</errorConditionFormula>
+    <errorMessage>Job Scheduled date has to match the location scheduled date in case of bundled work.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_Estimated_Minutes</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(EstimatedMinutes__c &lt; 0,  EstimatedMinutes__c &gt; 1440)</errorConditionFormula>
+    <errorDisplayField>EstimatedMinutes__c</errorDisplayField>
+    <errorMessage>Estimated Minutes cannot be less than 0 or more than 1440</errorMessage>
+</ValidationRule>

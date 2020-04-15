@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>KeepAssignment__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (OR(ISPICKVAL( KeepAssignmentOverride__c, &#39;No Override&#39;),ISBLANK(TEXT(KeepAssignmentOverride__c))), Project__r.KeepAssignment__c, IF (ISPICKVAL(KeepAssignmentOverride__c, &#39;Yes&#39;),TRUE,FALSE) )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Keep Assignment</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

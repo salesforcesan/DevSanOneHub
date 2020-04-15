@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disallow_canceled_job_status_change</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(TEXT(PRIORVALUE(JobStatus__c)) = &#39;Canceled&#39;, TEXT(JobStatus__c) != &#39;Canceled&#39;)</errorConditionFormula>
+    <errorMessage>Cannot update the status of a canceled job.</errorMessage>
+</ValidationRule>

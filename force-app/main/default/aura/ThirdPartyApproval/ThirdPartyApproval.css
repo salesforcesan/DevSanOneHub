@@ -1,0 +1,19 @@
+.THIS.thirdparty-list-container {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 16px;    
+    overflow: hidden;
+}
+.THIS .oh-body {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    padding:0;
+}
+.THIS .oh-body .oh-not-show-count {
+    margin: 10px 0;
+    background-color: #ffb75d;
+    padding: 10px;
+    border-radius: 4px;
+}

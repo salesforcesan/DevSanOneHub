@@ -1,0 +1,32 @@
+<aura:component controller="LightningProjectServiceController">
+    <aura:attribute name="dialogId" type="String" default=""/>
+    <aura:attribute name="projectServiceId" type="String" default=""/>
+    <aura:attribute name="projectId" type="String" default=""/>
+    <aura:attribute name="reasons" type="List" default="[]"/>
+    <aura:registerEvent name="cancelServiceEvent" type="c:SimpleComponentEvent"/>
+    <aura:registerEvent name="closeDialogEvent" type="c:SimpleComponentEvent"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <div class="slds slds-is-relative" style="overflow-y:scroll;">
+        <div class="" aura:id="displaySpinner" > 
+            <lightning:spinner size="medium" variant="brand" />
+        </div>
+        <div class="cancel-confirmation-container">
+            <c:Notification aura:id="notification" class="no-flow"/>
+            <div class="slds-m-around--large">
+                <div class="slds-form-element ">
+                    <label class="slds-form-element__label"><abbr class="slds-required" title="required">*</abbr>Cancel Reason</label>
+                    <div class="slds-form-element__control">
+                        <div>
+                            <ui:inputSelect required="true" aura:id="serviceCancelReason"/>                    
+                        </div>
+                    </div>            
+                </div>
+                <lightning:textarea name="comment" label="Comment" placeholder="any comment for the selected reason." class="textarea slds-m-top--medium" aura:id="comment"/>
+            </div>
+            <footer>
+                <lightning:button label="Cancel" name="btnCancel" variant="neutral" onclick="{!c.onCancel}"/>
+                <lightning:button label="Submit" name="btnSubmit" variant="brand" onclick="{!c.onSubmit}"/>
+            </footer>
+        </div>
+    </div>
+</aura:component>

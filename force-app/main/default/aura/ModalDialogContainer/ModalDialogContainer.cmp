@@ -1,0 +1,44 @@
+<aura:component access="global">
+<aura:attribute name="id" type="String" default=""/>
+<aura:attribute name="size" type="String" default="" description="small,medium,x-medium,large"/>
+<aura:attribute name="title" type="String" default="Dialog"/>
+<aura:attribute name="brand" type="String" default="none" description="error, warning, info, success, none"/>
+<aura:attribute name="isLarge" type="Boolean" default="false"/>
+<aura:attribute name="isDirectional" type="Boolean" default="false"/>
+<aura:attribute name="showFooter" type="Boolean" default="false"/>
+<aura:attribute name="style" type="String" default="" access="private"/>
+<aura:attribute name="leftButtonLabel" type="String" default="Cancel"/>
+<aura:attribute name="rightButtonLabel" type="String" default="Save"/>
+<aura:attribute name="themeClass" type="String" default="" access="private"/>
+<aura:method name="show" action="{!c.onShow}" access="public"/>
+<aura:method name="close" action="{!c.onClose}" access="public"/>
+<aura:handler name="closeDialogEvent" event="c:SimpleComponentEvent" action="{!c.onClose}" includeFacets="true"/>
+<aura:registerEvent name="dialogModalSaveComponentEvent" type="c:SimpleComponentEvent"/>
+<div aura:id="dialog" role="dialog" tabindex="-1" aria-labelledby="{!join('_',v.id,'header')}" 
+    class="slds-modal slds-modal--medium" data-value="{!v.size}">
+    <div class="slds-modal__container" style="{!v.size == 'large' ? 'width:90%;max-width:90%;' : (v.size == 'x-medium' ? 'width:75%;max-width:75%;' : (v.size == 'small' ? 'width:40rem;max-width:40rem;' : 'width:50%;max-width:50%;'))}">
+    <div class="{!join(' ', 'slds-modal__header', v.themeClass)}">
+      <lightning:buttonIcon onclick="{!c.onClose}"
+        iconName="utility:close"
+        alternativeText="Close"
+        variant="bare"
+        class="slds-modal__close slds-button--icon-inverse"
+        />
+      <h2 id="{!join('_',v.id,'header')}" class="slds-text-heading--medium">{!v.title}</h2>
+    </div>
+    <div class="slds-modal__content">
+        {!v.body}
+    </div>
+    <aura:if isTrue="{!v.showFooter}">
+        <div class="{!join(' ',
+                'slds-modal__footer',
+                v.isDirectional?'slds-modal__footer--directional':'')}">
+            <lightning:button onclick="{!c.onCancel}" label="{!v.leftButtonLabel}" variant="neutral"/>
+            <lightning:button onclick="{!c.onSave}" label="{!v.rightButtonLabel}" variant="brand"/>
+        </div>
+    </aura:if>
+  </div>
+</div>
+<div aura:id="dialogBackDrop" class="slds-backdrop"></div>
+<aura:unescapedHtml value="{!v.style}"/>
+</aura:component>

@@ -1,0 +1,745 @@
+.THIS .zeroBG {
+	background:#ffcb4e;    
+}
+
+.THIS .oh-inverse {
+    color:white !important;
+}
+
+.THIS .warningCont {
+    top:40%;
+    right:0;
+    width:25%;
+    min-width:250px;
+    position:sticky;
+    z-index:100;
+    align-self: flex-start;
+    margin-left:1rem;
+}
+/* border:1px solid #DDD;
+    border-radius:5px;
+    padding:.8rem;
+    margin:.5rem;
+    background-color:white;
+*/
+.THIS .slds-button.slds-button_destructive {
+    background-color:orange;
+    outline:0;
+    border:0;
+    box-shadow:0;
+}
+
+.THIS td .slds-button[disabled] svg, 
+.THIS td .slds-button:disabled svg {
+    fill: #4bca81;
+}
+.THIS td .slds-button[disabled] svg.slds-button__icon, 
+.THIS td .slds-button:disabled svg.slds-button__icon {
+    width:1.4rem;
+    height:1.4rem;
+    padding:0;
+}
+
+.THIS .warningColumnErrors {
+    width:100%;
+    flex:1 auto;
+    padding-left:20px;
+    border-left:1px solid #DDD;
+}
+
+.THIS .errorColumnErrors {
+    width:100%;
+    flex:1 auto;
+}
+
+.THIS h1 {
+    color:#16325C;
+    font-weight:regular;
+    font-size:.9rem;
+    padding:10px;
+}
+
+.THIS .zIndex {
+    z-index:98;
+}
+
+.THIS hr {
+    margin-top:1.2rem;
+    margin-bottom:1.2rem;
+}
+
+.THIS .cStrike_multiLookup .slds-form-element__control .sl-search-icon {
+    top:15px;
+}
+
+.THIS .slds-lookup__menu {
+    position:relative;
+}
+
+.THIS .errorColor {
+    color:darkred;
+}
+
+.THIS .errorCircle {
+    width:1.5rem;
+    height:1.5rem;
+    border-radius:5px;
+    color:white;
+    background-color:darkred;
+    text-align:center;
+    vertical-align:middle;
+    line-height:1.5rem;
+    margin:.2rem;
+}
+
+.THIS .filterHeaderColumn {
+    width:25%;
+    min-width:100px;
+    max-width:200px;
+}
+
+.THIS h3.oh-headline {
+    color:white;
+    font-size:1.2rem;
+	font-weight:300;
+}
+
+.THIS .textColor {
+    color:#FFF;
+}
+
+.THIS .oh-advanced-checks {
+    align-items:center;
+    font-size:.8rem;
+    line-height:1.2rem;
+    font-weight:300;
+}
+
+.THIS .oh-checkbox-column {
+    width:20%;
+    min-width:150px;
+    max-width:200px;
+}
+
+.THIS .slds-dropdown-trigger button.slds-button {
+    background-color:transparent;
+}
+
+.THIS .slds-section__title .slds-section__title-action-icon {
+   transform: rotate(0deg);
+   transform-origin: 45%;
+}
+
+.THIS .showErrors .arrow {
+    transition:all .2s ease;
+}
+
+.THIS .arrowDown svg {
+    fill: rgb(62, 62, 60);
+}
+
+.THIS .hideErrs {
+    height:0;
+    overflow:hidden;
+    transition:all 0.4s ease-in-out;
+}
+.THIS .slds-datepicker.slds-dropdown {
+    top:30px !important;
+    left:0px !important;
+}
+
+.THIS .expandFilters {
+    padding-top: .75rem;
+    overflow: hidden;
+    visibility: visible;
+    opacity: 1;
+    height: auto;
+}
+
+.THIS .hideErrs.expand {
+    height:auto;
+      transition:all 0.4s ease-in-out;
+}
+
+.THIS .toggleSection {
+    overflow:visible;
+    transform: translateY(0px);
+    transition:all 0.45s ease;
+    height:auto;
+}
+
+.THIS .toggleArrow {
+    width: initial;
+    height: initial;
+    -webkit-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: -webkit-transform .4s ease-in-out;
+    transition: transform .32s ease-in-out;
+    display: inline-table;
+}
+
+.THIS .toggleArrowDown {
+    width: initial;
+    height: initial;
+    -webkit-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    -webkit-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    -webkit-transition: -webkit-transform .4s ease-in-out;
+    transition: transform .32s ease-in-out;
+    display: inline-table;
+}
+
+.THIS .slds-section {
+    margin-top:0;
+    padding-top:0;
+}
+
+.THIS .circleBorder {
+    border:1px solid rgba(194, 57, 52, 1);
+    border-radius:50%;
+    width:3em;
+    height:3em;
+    line-height:2em;
+    text-align:center;
+    padding:.2rem 0;
+    vertical-align:middle;
+}
+
+.THIS .showErrors {
+    text-decoration:underline;
+    color:rgba(194, 57, 52, 1);
+    font-size:.8rem;
+    font-weight:300;
+}
+
+.THIS .showErrors:hover {
+    color:darkred;
+}
+
+.THIS    .oh-icon-name {
+    display:block;
+    font-size: .8rem;
+    line-height:1.2rem;
+}
+
+.THIS button {
+    outline:0;
+    box-shadow:0;
+}
+
+.THIS .oh-selectAll label:hover {
+    color: #FFF;
+    text-align: center;
+    background-color: #0070D2;
+    transition:all .3s ease;
+}
+
+.THIS .oh-input .slds-input {
+    height:2.9em;
+}
+
+.THIS .oh-checkbox .slds-checkbox_add-button .slds-checkbox_faux {
+    width:6.5rem;
+    height:3em;
+    /*background-color:rgba(0, 160, 221, 1.0);*/
+}
+
+.THIS .oh-checkbox .slds-checkbox_add-button .slds-checkbox_faux:hover {
+   /* background-color: #0070D2;*/
+}
+
+.THIS .oh-checkbox .slds-checkbox_add-button .slds-checkbox_faux:before, .THIS .oh-checkbox .slds-checkbox_add-button .slds-checkbox_faux:after {
+    /*background:#FFF;*/
+}
+
+.THIS .oh-checkbox .slds-checkbox_add-button .slds-checkbox_faux svg {
+    /*fill:#FFF;*/
+}
+
+.THIS .redbg {
+    background:white;
+    padding:10px;
+    border-radius:5px;
+    border: 2px solid rgba(194, 57, 52, 1);
+    color:rgba(194, 57, 52, 1);
+    height:100%;
+}
+
+.THIS .background-error thead th span svg, 
+.THIS .background-error .slds-icon-text-default {
+    fill: darkred;
+}
+
+.THIS .background-error tbody tr.slds-hint-parent:hover {
+    background-color:rgba(250, 180, 180, 1);
+}
+
+.THIS .background-error, .THIS .background-error .slds-table,
+.THIS .background-error thead th span, .THIS .background-error .slds-table_header-fixed_container, 
+.THIS .background-error .slds-table--header-fixed_container {
+    /*background-color: rgba(250, 180, 180, 1);*/
+    color: darkred;
+}
+
+.THIS .background-error .slds-is-sortable .slds-th__action:hover, 
+.THIS .background-error .slds-is-sortable .slds-th__action:focus, 
+.THIS .background-error .slds-is-sortable.slds-has-focus .slds-th__action, 
+.THIS .background-error .slds-is-sortable.slds-has-focus .slds-th__action:hover, 
+.THIS .background-error .slds-is-sortable.slds-has-focus .slds-th__action:focus {
+   /* background-color:rgba(250, 180, 180, 1);*/
+    color:darkred;
+}
+
+.THIS .background-error table tbody tr td:nth-child(2),
+.THIS .background-error table tbody tr td:nth-child(3),
+.THIS .background-error table thead tr th:nth-child(2),
+.THIS .background-error table thead tr th:nth-child(3) {
+    max-width:115px !important;
+    width:15%;
+    min-width: 15% !important;
+}
+
+.THIS .background-error table tbody tr td:nth-child(1) {
+    width:65%;
+    max-width:600px !important;
+    min-width:400px !important;
+    
+}
+
+.THIS .oh-selectAll label svg {
+    fill: #FFF;
+}
+/*
+.THIS .visibility {
+    visibility:hidden;
+}*/
+
+.THIS .oh-selectAll label:hover svg {
+    fill: #FFF;
+}
+
+.THIS    .oh-topic:focus {
+    background-color: #4BCA81;
+    color: #FFF;
+    text-align: center;
+}
+
+.THIS .oh-topic label {
+    display: flex;
+    align-items:center;
+    width: 6em;
+    max-width: 6em;
+    max-height: 2em;
+    font-size: 1.5rem;
+    color: #0070D2;
+    text-align: center;
+    line-height: .875rem;
+    margin: .4em;
+    height: 2.5em;
+    padding: .1rem .2rem;
+    border-radius: 0.25rem;
+    border: 1px solid #d8dde6; 
+    background:rgba(255, 255, 255, 1.0);
+    transition:all .3s ease;
+}
+
+.THIS .oh-topic [type="checkbox"]:checked + label, .THIS .oh-topic [type="checkbox"]:checked ~ label {
+    background: #4BCA81;
+    color: #FFF;
+}
+
+.THIS .slds-checkbox-button [type="checkbox"] {
+  width: 1px;
+  height: 1px;
+  border: 0;
+  clip: rect(0 0 0 0);
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute; }
+
+.THIS .oh-topic [type="checkbox"] {
+    width: 1px;
+    height: 1px;
+    border: 0;
+    clip: rect(0 0 0 0);
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute; 
+}
+
+ .THIS .oh-icon-name {
+        font-size: .7rem;
+    	padding-left:.25rem;
+    }
+
+.THIS .dashed-border {
+    border:1px dashed rgba(180,180,180,.3);
+    border-radius:4px;
+    padding:0 .4rem;
+    margin-right:.3rem;
+}
+
+/*.THIS .dashed-border:last-child {
+    border-right:0;
+    margin-right:0;
+}*/
+
+
+
+.THIS .slds-box {
+    background:white;
+    padding:.6rem;
+}
+
+.THIS .label-text {
+    color: rgb(112, 110, 107);
+    font-size: .75rem;
+}
+
+
+
+.THIS .slds-input[readonly] {
+    border-color: rgb(221, 219, 218);
+}
+
+.THIS .oh-blue {
+    color:rgba(0, 160, 221, 1.0);
+    transition:color .3s ease;
+}
+
+
+
+.THIS .oh-blue:hover {
+    color:#0070D2;
+    transition:color .3s ease;
+}
+
+.THIS .date .slds-hide {
+    display:block;
+}
+
+.THIS .date .slds-input {
+    width:100%;
+    min-width:300px;
+}
+
+.THIS .slds-form_horizontal .slds-form-element__control {
+  width: 100%; 
+}
+
+.THIS .slds-form-element {
+    width:100%;
+}
+
+.THIS .oh-blue-button {
+    border-radius:.25rem;
+    background:rgba(0, 160, 221, 1.0);
+    padding:1em;
+    width:7em;
+    height:3em;
+    min-width:8em;
+    color:#FFF;
+    text-align:center;
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+    align-items:center;
+    transition:background .3s ease;    
+}
+
+.THIS .oh-blue-button:hover {
+    background:#0070D2;
+    transition:background .3s ease; 
+}
+
+.THIS .oh-blue-button:disabled {
+    background:rgb(236, 235, 234);
+    border:1px solid rgb(201, 199, 197);
+    box-shadow:0;
+    outline:0;
+    cursor:not-allowed;
+    transition:background .3s ease; 
+}
+
+.THIS .oh-green-button {
+    border-radius:.25rem;
+    background: #4BCA81;
+    padding:1em;
+    width:7em;
+    height:3em;
+    min-width:8em;
+    color:#FFF;
+    text-align:center;
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+    align-items:center;
+    transition:background .3s ease;    
+}
+
+.THIS .uploadText {
+    font-size:.75rem;
+    color:grey;
+}
+/*
+.THIS .uploadText .slds-icon_container {
+    width:.8rem !important;
+    height:.8rem !important;
+    padding:.1rem!important;
+    line-height:1rem;
+}*/
+.THIS .greenBtn {
+    background: #4BCA81;
+    border:none;
+    transition:background .3s ease;
+}
+
+.THIS .greenBtn:hover, .THIS .greenBtn:active {
+    background: darkgreen;
+    transition:background .3s ease;
+    border:none;
+}
+
+.THIS .and-border {
+    margin:0rem 0rem;
+    padding:1rem;
+    height:1em;
+    line-height:1em;
+    /*border-left:1px solid lightgrey;
+    border-right:1px solid lightgrey;*/
+    text-transform:uppercase;
+    text-align:center;
+    width:5em;
+    vertical-align:middle;
+    font-size:.85rem;
+    color:lightgrey;
+}
+
+.THIS .or-border {
+    width:2em;
+    height:3em;
+    line-height:3em;
+    text-transform:uppercase;
+    text-align:center;
+    vertical-align:middle;
+    font-size:.85rem;
+    color:lightgrey;
+}
+
+.THIS .slds-form_horizontal .slds-form-element>.slds-form-element__legend, 
+.THIS .slds-form_horizontal .slds-form-element>.slds-form-element__label {
+    width:1%;
+}
+
+.THIS .date lightning-input[lightning-input_input] {
+    display: block;
+    width: 50%;
+}
+
+.THIS .oh-selectAll .slds-checkbox_add-button .slds-checkbox_faux:before, 
+.THIS .oh-selectAll .slds-checkbox_add-button .slds-checkbox_faux:after, 
+.THIS .oh-selectAll .slds-checkbox--add-button .slds-checkbox_faux:before, 
+.THIS .oh-selectAll .slds-checkbox--add-button .slds-checkbox_faux:after {
+    width:1.1rem;
+    height:.2rem;
+}
+
+.THIS .closeButton {
+ 	width:900px; 
+    height:50px;
+}
+
+.THIS .drawer {
+    height: calc(100% - 170px);
+    max-height: calc(100% - 191px);
+    overflow-y:hidden;
+    position: fixed;
+    white-space: nowrap;
+    z-index: 7500;
+    top: 181px;
+    left: 0px;
+    width: 950px;
+    
+    overflow-x: hidden;
+    transition: all .4s ease;
+}
+.THIS .drawer-hide {
+    overflow-y:hidden;
+    width: 0px;
+    transition: all .4s ease; 
+}
+.THIS .drawer-content {
+    padding:20px;
+    max-height:98%;
+    overflow:auto;
+    white-space:normal;
+    display: inline-block;
+    background-color: #55698e;
+    height: 100%;
+    width: 900px;
+    border-radius: 0px 4px 4px 0px;
+}
+.THIS .oh-resolve-grey {
+    background:rgba(180,180,180,.3);
+}
+
+.THIS .greyIcon svg {
+    fill:grey;
+}
+
+.THIS .oh-resolution label {
+  position: relative;
+  cursor: pointer;
+  padding: 0 .2rem;
+  display: block;
+  min-height:5em;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  text-align: left;
+}
+
+.THIS .oh-resolution-container {
+  min-height: 285px;
+  height: 285px;
+  max-height: 285px;
+  overflow-y: auto;
+}
+
+.THIS .oh-footer {
+  margin-top: 0px;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  background-color: white;
+  width: 100%;
+  padding: .5rem;
+  border-radius: 0 0 .25rem .25rem;
+}
+
+.THIS .oh-resolution [type="radio"] + label:before,
+.THIS .oh-resolution [type="radio"] ~ label:before {
+  position: absolute;
+  top: 25%;
+  margin-left: 1rem;
+  font-family: FontAwesome;
+  display: inline-block;
+  height: 2.5rem;
+  width: 2.5rem;
+  color: #FFF;
+  font-size: 1.25rem;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 2.5rem;
+  border-radius: 50%;
+  background-color: #54698D;
+  font-weight: 300;
+  content: "\f067";
+  /*f2b5*/
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/*
+.THIS input[type=radio] {
+  display: none;
+}*/
+
+.THIS .oh-resolution [type="radio"]:checked + label,
+.THIS .oh-resolution [type="radio"]:checked ~ label {
+  background-color: #EAF6FC;
+}
+
+.THIS .oh-resolution [type="radio"] + label:hover,
+.THIS .oh-resolution [type="radio"] ~ label:hover {
+  background-color: #EAF6FC;
+}
+
+.THIS .oh-resolution [type="radio"]:checked + label:before,
+.THIS .oh-resolution [type="radio"]:checked ~ label:before {
+  background-color: #4BCA81;
+  font-weight: 300;
+  content: "\f00c";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.THIS .oh-icon-plus {
+ 	margin-top:80%;
+    margin-bottom:10px;
+    height:100%;
+    text-align:center;
+    padding:.2rem;
+    font-size:.8rem;
+    color:rgb(62, 62, 60);
+}
+
+.THIS .oh-icon-margin {
+    margin-right:4rem;
+}
+
+.THIS .oh-resolution {
+  width: 100%;
+}
+
+.THIS label .resolution-text {
+  display: inline-block;
+  width: 80%;
+  text-align: left;
+    line-height:1.3rem;
+    vertical-align:middle;
+  padding: 1rem .5rem 1rem .5rem;
+}
+
+.THIS label .resolution-text .resolution-title {
+  font-size: 1rem;
+  color: #0070D2;
+}
+
+
+.THIS .originalSize {
+    max-height:0rem;
+    height:0;
+    overflow:hidden;
+    transition:all .1s ease;
+    background:white;
+    border-radius:4px;
+    box-shadow:0 0 0 rgba(0,0,0,.5);
+
+}
+
+.THIS .absolutePaste {
+    position:absolute;
+    z-index:10;
+    right:3;
+    top:-10;
+    width:100%;
+    margin:0;
+    padding:0;
+}
+
+.THIS .button-toggle {
+    position:absolute;
+    z-index:500;
+    right:0;
+    padding-right:10px;
+    top:-15;
+}
+
+.THIS .togglePaste {
+    max-height:25rem;
+    height:100%;
+    transition:all .5s ease;
+}
+
+.THIS .slds-textarea {
+    min-height:160px;
+}

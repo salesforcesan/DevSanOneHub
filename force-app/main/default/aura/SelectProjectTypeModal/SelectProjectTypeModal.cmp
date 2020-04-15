@@ -1,0 +1,47 @@
+<aura:component controller="LightningProjectController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" /> 
+    
+    
+    <aura:attribute name="selectedProjectTypeId" type="String"/>
+    <aura:attribute name="selectedProjectTypeName" type="String"/>
+    
+	<aura:attribute name="projecttypes" type="List"/>    
+    <aura:attribute name="recordtypes" type="Map"/>
+    
+	<aura:attribute name="ns" type="String"/>        
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <aura:registerEvent name="closeDialogEvent" type="c:SimpleComponentEvent"/>
+    
+    <c:Spinner aura:id="addProjectServicesSpinner" type='modal' size="medium">
+        <div class="slds slds-is-relative">
+            <div class="slds-clearfix">
+                <div class="slds-p-around--small">
+                    <p class="slds-text-align--center slds-text-color--weak">Choose a project type by clicking on the project type</p>
+                </div>
+                <hr/>
+                <div class="oh-add-service-container">
+                    <aura:iteration items="{!v.projecttypes}" var="projecttype">    
+                        <div class="slds-radio--button">
+                            <div class="oh-add-service" for="{!'projecttype' + projecttype.Id + '-' + projecttype.Name}">
+                              <input type="radio"  name="projecttypes" id="{!'projecttype' + projecttype.Id + '-' + projecttype.Name }" onclick="{!c.handleClick}" />
+                              <label for="{!'projecttype' + projecttype.Id + '-' + projecttype.Name}">
+                                <span class="oh-icon-service"></span>
+                                <span class="service-text">
+                                  <span class="service-title">{!projecttype.Name}</span><br/>
+                                </span>
+                              </label>
+                            </div>
+                        </div>
+                        <hr></hr>
+                    </aura:iteration> 
+                </div>
+                <div class="oh-footer slds-border--top">          
+                    <div class="slds-grid slds-grid--align-end slds-m-right--large">
+                        <lightning:button class="slds-m-around--small" label="Cancel" onclick="{!c.close}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </c:Spinner>
+</aura:component>

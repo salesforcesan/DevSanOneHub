@@ -1,0 +1,38 @@
+<apex:page standardController="Job__c" recordSetVar="Jobs"  extensions="CancelJobExt" sidebar="true" showHeader="true">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<apex:sectionHeader title="Cancel Job(s)" subtitle="{!projObj.Name}" />
+<c:Breadcrumb backtoid="{!projObj.Id}" />
+<apex:pageMessage rendered="{!errorMessage<>null}"  summary="{!errorMessage}" severity="FATAL" strength="2" /> 
+<apex:form >
+    <script> 
+         $(document).ready(function() {               
+                    
+                 $("[id*=btnSave]").click(function(){
+                     if(($.trim($('.messageText').text()).length) > 0)   
+                     {                     
+                         alert($.trim($('.messageText').text())); 
+                         return false;
+                     }
+                     else
+                     { 
+                         return(confirm(" Do you want to cancel the selected Job(s)? "));                 
+                     }
+                 });
+         });
+    </script>     
+    <apex:pageBlock >    
+        <apex:pageBlockButtons >
+            <apex:commandButton id="btnSave" action="{!Cancel }" value="Save Changes"/>
+            <apex:commandButton id="btnCancel" action="{!DoNotCancel}" immediate="true" value="Cancel & Go Back"/>
+        </apex:pageBlockButtons>     
+        
+        <apex:pageBlockSection title="Information" collapsible="false" columns="1">  
+            <apex:outputField value="{!projObj.Name}" />
+            <apex:outputField value="{!projObj.Status__c}" />             
+            <apex:inputTextarea label="Selected Jobs" value="{!jobName}" disabled="true" cols="150" />  
+            <apex:inputField id="reason" value="{!j.JobCanceledReason__c}" required="true" />  
+        </apex:pageBlockSection>       
+    </apex:pageBlock> 
+</apex:form>
+</apex:page>

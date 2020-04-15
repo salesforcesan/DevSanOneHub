@@ -1,0 +1,148 @@
+.THIS .hide {
+  display: none;
+  opacity: 0;
+  transition: all 0.5s ease-out;
+}
+
+.THIS .show {
+  display: inline;
+  opacity: 1;
+  transition: all 0.5s ease-in;
+}
+
+.THIS.card-container .card:hover {
+  border: 1px solid #bbb;
+}
+
+.THIS a.view-detail:hover,
+.THIS a.view-detail:visited,
+.THIS a.view-detail:focus {
+  text-decoration: none !important;
+}
+
+
+/*
+.THIS.card-container .card:hover .gray {
+  color: rgba(0, 0, 0, 0.64);
+}*/
+
+.THIS .card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  padding-left: 40px;
+}
+
+.THIS .pl-card-tooltip {
+  position: absolute;
+  margin-top: -50px;
+  margin-left: -20px;
+  display: none;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.5s ease-out, transform 0.1s !important;
+}
+
+.THIS .card .slds-grid>div:hover .pl-card-tooltip {
+  display: inline-block;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.5s ease-in, transform 0.1s !important;
+}
+
+.THIS .card-select {
+  border: 1px solid rgb(194, 57, 52);
+}
+
+.THIS .inline-block {
+  display: inline-block !important;
+}
+
+.THIS .blue {
+  color: rgb(0, 112, 210);
+  font-weight: 300;
+  font-size: 1rem;
+}
+
+.THIS .blue-border {
+  border-color: rgb(0, 112, 210);
+}
+
+.THIS .schdule-date {
+  min-width: 10rem;
+  display: block;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  padding: 4px;
+}
+
+.THIS .schdule-date .oh-edit {
+  display: none;
+}
+
+.THIS .schdule-date:hover {
+  border: 1px solid #ddd;
+}
+
+.THIS .schdule-date:hover .oh-edit {
+  display: inline;
+}
+
+.THIS .green {
+  color: #4bca81
+}
+
+.THIS .red {
+  color: #c23934;
+}
+
+.THIS .blue-label {
+  color: #54698d !important;
+}
+
+.THIS .gray {
+  color: rgba(0, 0, 0, 0.24);
+}
+
+.THIS .card-checkbox {
+  position: absolute;
+  margin-left: -30px;
+}
+
+.THIS .card-checkbox .slds-form-element__label {
+  display: none;
+}
+
+.THIS .horizontal-list {
+  list-style-type: none;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.THIS .horizontal-list > li:last-child {
+  flex-grow: 1;
+}
+
+.THIS .dashed,
+.THIS .dotted {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.THIS .link-underline {
+  text-decoration: underline;
+}
+
+.THIS .link-underline:hover {
+  color: rgba(0, 0, 0, 64);
+}
+
+.THIS .card .slds-icon--xx-small {
+  width: 0.875rem !important;
+  height: 0.875rem !important;
+}
+
+.THIS .slds-grid > div {
+  width: 20%;
+}

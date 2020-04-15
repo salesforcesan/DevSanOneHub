@@ -1,0 +1,144 @@
+<aura:component controller='LightningGatewayController' extends="c:Remotable" implements="force:lightningQuickActionWithoutHeader,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+	
+    <!-- ATTRIBUTES -->
+    <aura:attribute name="errors" type="List" default="[]" />
+    <aura:attribute name="warnings" type="List" default="[]"/>
+    <aura:attribute name="project" type="Object" access="global" />
+    <aura:attribute name="accountErrors" type="List" default="[]"/>
+    <aura:attribute name="serviceErrors" type="List" default="[]"/>
+    <aura:attribute name="locationErrors" type="List" default="[]"/>
+    <aura:attribute name="jobErrors" type="List" default="[]"/>
+    <aura:attribute name="surveyErrors" type="List" default="[]"/>
+    <aura:attribute name="isLoaded" type="Boolean" />
+    <aura:attribute name="status" type="String" />
+  	 
+    <!-- EVENTS -->
+    <aura:registerEvent name="refreshProject" type="c:EventProjectRefresh"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <!-- RESOURCES -->
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    
+    <div>
+        <div class="oh-outer-container">
+            <div class=""  aura:id="submitSpinner" >
+                <lightning:spinner size="medium" variant="brand" />
+            </div> 
+            <h2 id="title" class="slds-text-heading_medium slds-text-align_center">Submit Project</h2>    
+            <hr class="slds-m-vertical_small"/>
+            <div class="slds-grid slds-size_1-of-1 slds-grid_align-end">
+                <lightning:button variant="brand" 
+                                  onclick="{!c.submitProject}" 
+                                  disabled="{!or(v.status == 'ERROR',v.isLoaded == false) ? true : false}" 
+                                  aura:id="Submit" 
+                                  label="Submit Project"/>
+            </div>
+            
+            <aura:if isTrue="{!v.isLoaded}">
+                <!-- ERRORS -->
+                <aura:if isTrue="{!v.errors.length > 0}">
+                    <div class="oh-header-red slds-p-horizontal_small slds-p-vertical_x-small slds-m-vertical_small">
+                        <div style="padding:.2rem;border-radius:.2rem;background:#C23934;color:white;"> 
+                            <c:SubmitProjectIconMessage icon="fa-exclamation-triangle" message="Errors" iconColor="white" />
+                        </div>
+                       <aura:iteration items="{!v.errors}" var="error">
+                            <p class="slds-m-vertical_x-small">{!error}</p> 
+                       </aura:iteration>      
+                    </div>
+                </aura:if>
+                
+                <!-- WARNINGS -->
+                 <aura:if isTrue="{!v.warnings.length > 0}">
+                    <div class="oh-header-orange slds-p-horizontal_small slds-p-vertical_x-small slds-m-bottom_small">
+                        <div style="padding:.2rem;border-radius:.2rem;background:#F39E58;color:white;"> 
+                             <c:SubmitProjectIconMessage icon="fa-exclamation-triangle" message="Warnings" iconColor="white" />
+                        </div>
+                       <aura:iteration items="{!v.warnings}" var="warning">
+                            <p class="slds-m-vertical_x-small">{!warning}</p> 
+                       </aura:iteration>        
+                    </div>
+                </aura:if>
+                
+                <!-- ACCOUNTS VALIDATION -->
+                <div class="slds-m-top_medium">
+                    <div class="{! v.accountErrors.length == 0 ? 'oh-header slds-p-around_small slds-m-bottom_x-small' : 'oh-header-red slds-p-around_small slds-m-bottom_x-small'}">
+                        <h2 class="oh-title">{! v.accountErrors.length == 0 ? 'Accounts' : 'Account Errors'}</h2>   
+                    </div>
+                     <aura:if isTrue="{!v.accountErrors.length == 0}" >
+                         <c:SubmitProjectIconMessage icon="fa-check" message="Check Passed" iconColor="green" />
+                         <aura:set attribute="else">
+                             <c:SubmitProjectIconMessage icon="fa-exclamation-triangle" message="Errors" iconColor="red" />
+                             <aura:iteration items="{!v.accountErrors}" var="error">
+                                <p class="slds-m-vertical_x-small slds-m-left_small">{!error}</p> 
+                             </aura:iteration>  
+                         </aura:set>
+                    </aura:if>
+                </div>
+                
+                <!-- PROJECT SERVICE VALIDATION -->
+                <div class="slds-m-top_medium">
+                    <div class="{!v.serviceErrors.length == 0 ? 'oh-header slds-p-around_small slds-m-bottom_x-small' : 'oh-header-red slds-p-around_small slds-m-bottom_x-small'}">
+                        <h2 class="oh-title">{! v.serviceErrors.length == 0 ? 'Services' : 'Service Errors'}</h2>   
+                    </div>
+                     <aura:if isTrue="{!v.serviceErrors.length == 0}" >
+                         <c:SubmitProjectIconMessage icon="fa-check" message="Check Passed" iconColor="green" />
+                         <aura:set attribute="else">
+                             <c:SubmitProjectIconMessage icon="fa-exclamation-triangle" message="Errors" iconColor="red" />
+                             <aura:iteration items="{!v.serviceErrors}" var="error">
+                                <p class="slds-m-vertical_x-small slds-m-left_small">{!error}</p> 
+                             </aura:iteration>  
+                         </aura:set>
+                    </aura:if>
+                </div>
+                
+                <!-- PROJECT LOCATION VALIDATION -->
+                <div class="slds-m-top_medium">
+                    <div class="{!v.locationErrors.length == 0 ? 'oh-header slds-p-around_small slds-m-bottom_x-small' : 'oh-header-red slds-p-around_small slds-m-bottom_x-small'}">
+                        <h2 class="oh-title">{! v.locationErrors.length == 0 ? 'Locations' : 'Location Errors'}</h2>   
+                    </div>
+                     <aura:if isTrue="{!v.locationErrors.length == 0}" >
+                         <c:SubmitProjectIconMessage icon="fa-check" message="Check Passed" iconColor="green" />
+                         <aura:set attribute="else">
+                             <c:SubmitProjectIconMessage icon="fa-exclamation-triangle" message="Errors" iconColor="red" />
+                             <aura:iteration items="{!v.locationErrors}" var="error">
+                                <p class="slds-m-vertical_x-small slds-m-left_small">{!error}</p> 
+                             </aura:iteration>
+                         </aura:set>
+                    </aura:if>
+                </div>
+                
+                <!-- JOBS VALIDATION -->
+                <div class="slds-m-top_medium">
+                    <div class="{!v.jobErrors.length == 0 ? 'oh-header slds-p-around_small slds-m-bottom_x-small' : 'oh-header-red slds-p-around_small slds-m-bottom_x-small'}">
+                        <h2 class="oh-title">{! v.jobErrors.length == 0 ? 'Jobs' : 'Job Errors'}</h2>   
+                    </div>
+                     <aura:if isTrue="{!v.jobErrors.length == 0}" >
+                         <c:SubmitProjectIconMessage icon="fa-check" message="Check Passed" iconColor="green" />
+                         <aura:set attribute="else">
+                             <c:SubmitProjectIconMessage icon="fa-exclamation-triangle" message="Errors" iconColor="red" />
+                             <aura:iteration items="{!v.jobErrors}" var="error">
+                                <p class="slds-m-vertical_x-small slds-m-left_small">{!error}</p> 
+                             </aura:iteration>
+                         </aura:set>
+                    </aura:if>
+                </div>
+                
+                 <!-- SURVEY RESPONSE VALIDATION -->
+                <div class="slds-m-top_medium">
+                    <div class="{!v.surveyErrors.length == 0 ? 'oh-header slds-p-around_small slds-m-bottom_x-small' : 'oh-header-red slds-p-around_small slds-m-bottom_x-small'}">
+                        <h2 class="oh-title">{! v.surveyErrors.length == 0 ? 'Survey Defined Responses' : 'Survey Defined Response Errors'}</h2>   
+                    </div>
+                     <aura:if isTrue="{!v.surveyErrors.length == 0}" >
+                         <c:SubmitProjectIconMessage icon="fa-check" message="Check Passed" iconColor="green" />
+                         <aura:set attribute="else">
+                             <c:SubmitProjectIconMessage icon="fa-exclamation-triangle" message="Errors" iconColor="red" />
+                             <aura:iteration items="{!v.surveyErrors}" var="error">
+                                <p class="slds-m-vertical_x-small slds-m-left_small">{!error}</p> 
+                             </aura:iteration>
+                         </aura:set>
+                    </aura:if>
+                </div>
+        	</aura:if><!-- response loaded condition -->
+        </div>	
+    </div>
+</aura:component>

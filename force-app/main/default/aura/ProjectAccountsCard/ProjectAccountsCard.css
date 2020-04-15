@@ -1,0 +1,52 @@
+.THIS .slds-item {
+	margin-right:1.5rem;
+}
+
+
+.THIS .oh-icon-button {
+    border:0;
+    box-shadow:0;
+    outline:0;
+    background-color:transparent;
+}
+
+.THIS .oh-card-title {
+    font-weight:300; 
+    font-size:1.03rem; 
+    color:#0070D2;
+  }
+
+.THIS .slds-box {
+    background:#FFF;
+}
+
+.THIS .oh-primary-tag {
+    background:#0070D2;
+    width:110%;
+    margin:-1rem -1rem .5rem -1rem;
+    padding:.2rem;
+    text-align:center;
+    color:#fff;
+    font-weight:400;
+    font-size:.75rem;
+}
+
+.THIS .oh-primary-holder {
+    background:#EAF6FC;
+    padding:1em 0;
+    width:100%;
+    border-top:1px solid #0070D2;
+}
+
+  .THIS .oh-primary-tab {
+    background:#0070D2;
+    padding:.3em;
+    width:15em;
+    margin-left:12px;
+    margin-top:-1.15em;
+    border-radius:0px 0px 5px 5px;
+    text-align:center;
+    color:#fff;
+    font-weight:400;
+    font-size:.75rem;
+  }

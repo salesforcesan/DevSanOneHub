@@ -1,0 +1,780 @@
+<apex:page standardController="ProjectLocation__c"  extensions="ManageJobsLocationsExt"  >
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+<c:Notify />
+<apex:stylesheet value="{!URLFOR($Resource.TagItCSS)}"/>
+<style>
+    .activeTab {
+        background: #fff;
+        font-size: 12px;
+        padding: 5px 10px;
+        font-weight: bold;
+    }
+    
+    .inactiveTab {
+        background-color: #eee;
+        color: black;
+        background-image: none;
+        cursor: pointer
+    }
+    
+    .rich-tabpanel-content  {
+        font-size:12px;
+    }
+
+    .loading-gif {
+        position: fixed;
+        z-index: 999;
+        margin: auto;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        padding: 12px 55px;
+        background-color: #FFF;
+        box-shadow: 0 0px 3px #ccc;
+        border-radius: 2px;
+    }
+
+    .container
+    {
+      overflow:auto; 
+      width:600px;   
+    }
+    
+    .colsStyle
+    {
+        word-break: break-all;
+    }
+    
+    .selectedTag{
+        color:red;
+    }
+    
+    .unselectedTag{
+        color:blue;
+    }    
+    
+    .pgBlkCss{
+        width:500px;
+    }
+    
+    .float_center {
+      float: right;
+      position: relative;
+      left: -50%; /* or right 50% */
+      text-align: left;
+      width:200px;
+    }
+    
+    .panelRow{
+      width:50px;    
+    }
+    
+    ul.tagit li.tagit-choice-read-only{
+        padding:0 !important;
+        border:none;
+        margin-top:6px;
+    }
+    ul.tagit li.tagit-choice a.tagit-label{
+        background: #e5e5e5 !important;
+        color: #444 !important;
+        font-weight: normal;
+        font-size: 12px;
+        padding:3px 8px !important;
+        border-radius:2px;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    
+    ul.tagit li.tagit-choice a.tagit-label.selectedTag{
+        background: #0089e0 !important;;
+        color: #fff !important;
+    }
+    .tagit.ui-corner-all{
+        border:none;
+        margin:5px 0;
+    }
+
+    .apexp .detailList .list td, .apexp .detailList .list th, .apexp .editPage .bPageBlock .detailList .list tr td, .apexp .editPage .bPageBlock .detailList .list tr th {
+        border-bottom: none;
+        border-left: none;
+    }
+    .apexp .detailList .list .headerRow th{
+    border-bottom-width: 1px;
+    }
+    hr.section{
+        border: 0;height: 1px;background: #eee;
+        margin:10px 0;
+    }
+    input.include{
+        border: none;
+    }
+    input.delete-icon:hover{
+        background-position: left 0;
+        
+    }
+    #location_count{
+        float: right;
+        margin-top: -21px;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    #Err_location_count{
+        float: right;
+        margin-top: -21px;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    .apexp .detailList .list td.grayed{
+        color:#666;
+    }
+    #btnDelete{
+        margin-bottom:10px;
+        margin-top:-25px;
+        //margin-left:125px;
+        float: right;
+    }
+    
+    #btnExport, #btnCancel, #btnUnreserve, #strCancelReason, #btnSetScheduleDate{
+        margin-bottom:10px;
+        margin-top:-25px;
+        //margin-left:125px;
+        float: right;
+    } 
+    
+   
+    .col1 {width:40px; text-align:center;}
+    .col2 {text-align:center;}
+    
+    pbstyle {        
+            border:0.8px solid black;
+    }
+    .status-reason{
+        color: #015ba7 !important;
+        text-decoration: underline;
+    }
+    
+    .red{
+        color:red;
+    }
+    .ui-datepicker table{
+        font-size:12px;
+    }
+    .ui-widget.ui-widget-content{
+        /*margin:0 auto;*/
+    }
+    #setschedule-dialog{
+        /*text-align:center;*/
+    }
+    .ui-datepicker-today .ui-state-default{
+   border: 1px solid #c5c5c5;
+    background: #f6f6f6;
+    font-weight: normal;
+    color: #454545;
+}
+.ui-datepicker-today .ui-state-default.ui-state-highlight.ui-state-active{
+    border: 1px solid #003eff;
+    background: #007fff;
+    font-weight: normal;
+    color: #ffffff;
+}
+</style>
+
+<apex:form >
+    <apex:actionStatus id="loadingStatus">
+        <apex:facet name="start">
+        <img class="loading-gif" src="/img/loading24.gif" width="24" height="24"  />
+        </apex:facet>
+    </apex:actionStatus>
+    <apex:sectionHeader title="Project" subtitle="{!projectName}" />
+    <c:Breadcrumb backtoid="{!projectId}"/>
+    <input type="hidden" id="hdnVal" name ="hdnVal" value="1" class="location-ids"/>
+        <apex:pageBlock mode="maindetail">
+            <apex:pageBlockSection collapsible="false" columns="1"    >
+                <apex:pageBlockSectionItem >  
+                <apex:panelGrid columns="4" columnClasses="col1, col2" id="grd11" cellspacing="10px" width="100%"  >
+                    <apex:outputLabel value="Location #" for="LocationNum"  style="float: left;width:150px;"/>                                    
+                    <textarea id="LocationNum" class="textBox" style="max-width:977px;width:100%;height:80px;float: left;"></textarea>     
+                    </apex:panelGrid>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection collapsible="false" columns="2"   >
+                  <apex:pageBlockSectionItem >   
+                    <apex:panelGrid columns="2" columnClasses="col1, col2" id="grd11" cellspacing="10px"  > 
+                        <apex:outputLabel value="State" for="State"  style="float: left;width:150px;"/>                                    
+                        <apex:outputPanel >
+                        <select id="State" class="textBox" >
+                            <option value="NONE">--NONE--</option>                        
+                            <option value="AL">AL</option>
+                            <option value="AK">AK</option>
+                            <option value="AR">AR</option>
+                            <option value="AS">AS</option>
+                            <option value="AZ">AZ</option>
+                            <option value="CA">CA</option>
+                            <option value="CO">CO</option>
+                            <option value="CT">CT</option>
+                            <option value="DC">DC</option>
+                            <option value="DE">DE</option>
+                            <option value="FL">FL</option>
+                            <option value="FM">FM</option>
+                            <option value="GA">GA</option>
+                            <option value="GU">GU</option>
+                            <option value="HI">HI</option>
+                            <option value="IA">IA</option>
+                            <option value="ID">ID</option>
+                            <option value="IL">IL</option>
+                            <option value="IN">IN</option>
+                            <option value="KS">KS</option>
+                            <option value="KY">KY</option>
+                            <option value="LA">LA</option>
+                            <option value="MA">MA</option>
+                            <option value="MD">MD</option>
+                            <option value="ME">ME</option>
+                            <option value="MH">MH</option>
+                            <option value="MI">MI</option>
+                            <option value="MN">MN</option>
+                            <option value="MO">MO</option>
+                            <option value="MP">MP</option>
+                            <option value="MS">MS</option>
+                            <option value="MT">MT</option>
+                            <option value="NC">NC</option>
+                            <option value="ND">ND</option>
+                            <option value="NE">NE</option>
+                            <option value="NH">NH</option>
+                            <option value="NJ">NJ</option>
+                            <option value="NM">NM</option>
+                            <option value="NV">NV</option>
+                            <option value="NY">NY</option>
+                            <option value="OH">OH</option>
+                            <option value="OK">OK</option>
+                            <option value="OR">OR</option>
+                            <option value="PA">PA</option>
+                            <option value="PR">PR</option>
+                            <option value="PW">PW</option>
+                            <option value="RI">RI</option>
+                            <option value="SC">SC</option>
+                            <option value="SD">SD</option>
+                            <option value="TN">TN</option>
+                            <option value="TX">TX</option>
+                            <option value="UT">UT</option>
+                            <option value="VA">VA</option>
+                            <option value="VI">VI</option>
+                            <option value="VT">VT</option>
+                            <option value="WA">WA</option>
+                            <option value="WI">WI</option>
+                            <option value="WV">WV</option>
+                            <option value="WY">WY</option>
+                        </select>
+                        </apex:outputPanel>
+                        <apex:outputLabel value="Job Filter" for="Status" style="float: left;width:150px;"/>  
+                        <select id="Status" class="textBox">
+                            <option value="">--NONE--</option>                        
+                            <option value="Reserve">Locations with jobs</option>                            
+                            <option value="UnReserve">Locations without jobs</option>
+                        </select>
+                        <apex:outputLabel value="Show Scheduled Only" for="chkShowScheduled" style="float: left;width:150px;"/>                                          
+                        <input type="checkbox"  id="chkShowScheduled" style="float:left;" />
+                    </apex:panelGrid> 
+                  </apex:pageBlockSectionItem>
+                  <apex:pageBlockSectionItem >                                            
+                    <apex:panelGrid columns="2" columnClasses="col1, col2" id="grd2" cellspacing="10px" >
+                        <apex:outputLabel value="Postal Code" for="Zip" style="float: left;width:150px;"/>  
+                        <input type="text" id="Zipcode" class="textBox"/>  
+                            <apex:outputLabel value="City" for="City" style="float: left;width:150px;"/>
+                        <input type="text" id="City" class="textBox"/>  
+                   </apex:panelGrid>                   
+                  </apex:pageBlockSectionItem>
+                 
+               </apex:pageBlockSection>             
+        </apex:PageBlock>
+        <div id="Err_location_count"></div>
+        
+        <apex:PageBlock mode="detail"> 
+            <apex:pageBlockSection columns="8" collapsible="false" >  
+            <apex:inputField id="CancelReason" value="{!ProjectLocation__c.CancelReason__c}" required="true" rendered="{!showCancelButton}"  />
+            <!--
+            <apex:outputLabel id="strCancelReason" value="Reason for Cancellation" for="CancelReason" style="float: left;width:150px;"/>  
+            <select id="CancelReason" class="textBox">
+                <option value="No Product">No Product</option>                            
+                <option value="Item Not Approved">Item Not Approved</option>                            
+            </select>
+            -->
+            </apex:pageBlockSection> 
+            <br/><br/>
+            
+            <apex:pageBlockSection columns="1" collapsible="false" > 
+                 
+                 <input type="button" id="btnSetScheduleDate" value=" Set Schedule Date " class="btn" style="float: left;"  /> 
+                 <input type="submit" id="btnExport" value=" Export Table data into Excel " class="btn" style="float: left;"   /> 
+                 <input type="submit" id="btnCancel" value="Cancel" class="btn"  style="float: left;"  /> 
+                 <input type="submit" id="btnDelete" value="Delete" class="btn" style="float: left;"  />
+                 
+                 
+                 <div id="location_count"></div> 
+                 <div id="dvData">
+                 <table cellspacing="0" cellpadding="0" border="0" id="searchResults" class="list ">
+                    <tbody>
+                        <tr class="headerRow ">
+                            <th><input type="checkbox" id='chkAll' /></th> 
+                            <th id="TableHeader">TableHeader</th>
+                            <th>Location Number</th>
+                            <th>Location Name</th>
+                            <th>Address</th>                             
+                            <th>City</th>  
+                            <th>State</th>
+                            <th>Postal Code</th>  
+                            <th id="scheduleDateCol">Scheduled Date</th>
+                            <th>Status</th>
+                            <th id="statusInfoColumn">Status Info</th>
+                        </tr>                  
+                    </tbody>
+                </table>
+                </div>                 
+            </apex:pageBlockSection>      
+        </apex:PageBlock>
+   
+    </apex:form>
+   
+    <div id="setschedule-dialog" title="Reschedule Locations">
+        <div style="line-height:1.8">
+            <div><b>Project Window: </b>
+            <apex:outputText value="{0, date, MM/dd/yy}">
+                <apex:param value="{!proj.StartDate__c}" /> 
+            </apex:outputText> to
+            <apex:outputText value="{0, date, MM/dd/yy}">
+                <apex:param value="{!proj.EndDate__c}" /> 
+            </apex:outputText>
+            </div>
+            <div><b>Project Number of Days:</b> {!proj.NumberOfDays__c}</div>
+            <h1 style="line-height:2.4">Select a schedule date:</h1>
+            <br/>
+            <div id="schduleDatepicker"></div>
+            <div class="jobs-request-results">
+                <span class="jobs-request-errorInfo"></span>
+            </div>
+            <div class="jobs-request-progress">
+            </div>
+        </div>
+    </div>
+    
+    <c:jQueryUICSS />
+    <script src="{!$Resource.TagIt}"></script> 
+    <script src="/soap/ajax/26.0/connection.js"></script> 
+    <script src="/js/functions.js"></script> 
+    <script src="/soap/ajax/24.0/apex.js"></script> 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> 
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script> 
+    <script src="{!$Resource.momentJS}"></script>
+
+    
+    <script type="text/javascript">
+        var j$ = jQuery.noConflict();   
+        var  showScheduledate = {!showScheduledate};
+        function CSVExporter(containerId){
+            var _id = containerId, _separator = ',',
+                _data = [], _self = this;
+                
+            function toCsvFormat(col) {
+               if(!col) return '""';
+               return ['"', col.replace(/"/g,'""'),'"'].join(''); 
+            }    
+
+            this.addHeader = function() {
+                var header = [];
+                j$(_id + ' tbody tr.headerRow th').each(function(){
+                    header.push(toCsvFormat(j$(this).text()));
+                });
+                _data.push(header.join(_separator) + '\n');
+                return _self;
+            };
+
+            this.addBody = function() {
+                var cols;
+                j$(_id + ' tbody tr:not(.headerRow').each(function(){
+                    cols = [];
+                    j$(this).children('td').each(function(){
+                        cols.push(toCsvFormat(j$(this).text()));
+                    });
+                    _data.push(cols.join(_separator) + '\n');
+                });
+                return _self;
+            };
+
+            this.download = function(fileName) {
+                var content= _data.join('');
+                var a = document.createElement('a');
+                var mimeType= 'application/octet-stream;charset=utf-8';
+                var rawFile;
+
+                if (navigator.msSaveBlob) {
+                    return navigator.msSaveOrOpenBlob(
+                      new Blob(
+                        [csvContent],
+                        { type: mimeType } ),
+                      fileName
+                    );
+                }
+                if('download' in a) {
+                    var blob = new Blob(
+                        [content],
+                        {type: mimeType}
+                    );
+                    rawFile = URL.createObjectURL(blob);
+                    a.setAttribute('download', fileName);
+                } else {
+                    rawFile= ['data:',mimeType,',', encodeURIComponent(content)].join('');
+                    a.setAttribute('target','_blank');
+                }
+                
+                a.href = rawFile;
+                a.setAttribute('style','display:none');
+                document.body.appendChild(a);
+                window.setTimeout(function(){
+                    if (a.click) {
+                        a.click();
+                    } else if (document.createEvent) {
+                        var evtObj = document.createEvent('MouseEvent');
+                        evtObj.initEvent('click', true, true);
+                        a.dispatchEvent(evtObj);
+                    }
+                    document.body.removeChild(a);
+                }, 100);
+            };
+
+            CSVExporter.prototype.export = function(fileName) {
+                _self.addHeader()
+                    .addBody()
+                    .download(fileName);
+            };
+        }
+
+
+        if(j$('#searchResults >tbody >tr').length==0){
+            j$('#searchResults').hide();
+            j$('[id*="resultDIV"]').hide();
+        }
+        else{
+            j$('#searchResults').show();
+            j$('[id*="resultDIV"]').show();
+        }
+        
+        j$('.textBox').change(function() {
+                ajaxCall();
+        });
+          
+        j$('#chkShowScheduled').change(function() {
+            ajaxCall();
+        });
+        
+        j$(document).keypress(function(e) {
+            if(e.which == 13) {
+                ajaxCall();
+                return false;
+            }            
+        });
+        
+        j$(document).ready(function() {
+            ajaxCall();
+            
+            j$('[id*="btnCancel"]').val("Cancel Project Location(s)");
+            j$('[id*="btnDelete"]').val("Delete Project Location(s)");
+            
+            if ({!showCancelButton}){
+                j$('[id*="btnCancel"]').show(); 
+                j$('[id*="CancelReason"]').show(); 
+            }
+            else{
+                j$('[id*="btnCancel"]').hide();
+                j$('[id*="CancelReason"]').hide();                 
+            }
+            
+           
+            
+                         
+            if ({!showDeleteButton}){
+                j$('[id*="btnDelete"]').show();
+            }
+            else{
+                j$('[id*="btnDelete"]').hide();
+            }
+           
+       
+        });
+ 
+        j$("#btnExport").click(function(e) { 
+            e.preventDefault();
+            (new CSVExporter('#dvData')).export('Project_Locations.csv');
+            
+        });
+
+
+        
+        j$("#chkAll").click(function(){
+            j$('input:checkbox').not(this).not('#chkShowScheduled').prop('checked', this.checked).trigger("change");
+        });
+      
+               
+            
+        /*      
+        j$('body').on('change', '.include', function() {
+            if(j$(this).is(":checked")) {
+               j$(this).closest('tr').find('td').removeClass('grayed');
+            }
+            else{
+                j$(this).closest('tr').find('td').addClass('grayed');
+            }
+            
+            
+        });
+        */
+        
+        function buildLocationIds(){
+            var locationIds = [];
+            j$(".include:checked").each(function(){
+                locationIds.push(j$(this).attr('data-id'));   
+            });
+            j$('.location-ids').val(locationIds.join(','));
+            
+        }   
+        
+        
+        j$('#btnCancel,#btnDelete').click(function() {
+            return CancelDelete(this.id);    
+        });
+        
+        
+        function requireCssFile(filename) {
+            var fileref = document.createElement('link');
+            fileref.setAttribute('rel', 'stylesheet');
+            fileref.setAttribute('type', 'text/css');
+            fileref.setAttribute('href', filename);
+            document.getElementsByTagName('head')[0].appendChild(fileref);
+        }
+
+        function CancelDelete(buttonClicked) {
+        
+            buildLocationIds();
+            var reason = j$('[id*="CancelReason"]').val();
+            if(reason == undefined){
+                reason = '';
+            }
+            var operation = buttonClicked.indexOf('Delete')>0?'Delete':'Cancel';  
+            if(reason == '' && operation == 'Cancel'){
+                notif({msg: 'Cancel reason is required',  type: "error",  position: "center", clickable: true});
+                return false;
+            }
+            if(j$('.location-ids').val() == '' ){
+                if(operation=='Delete')
+                    notif({msg: 'No location(s) to Delete',  type: "error",  position: "center", clickable: true});
+                else
+                    notif({msg: 'No location(s) to Cancel',  type: "error",  position: "center", clickable: true});
+                return false;                    
+            }            
+            
+                      
+            
+            if(!confirm(" Do you want to " + operation + " the selected Project Location(s)? "))
+            {
+                return false;
+            }
+            //j$('#searchResults td').parent().remove();
+            //j$('#searchResults').hide();
+            j$('[id*="resultDIV"]').hide();   
+            
+            j$('[id*="loadingStatus.start"]').show();
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.ManageJobsLocationsExt.Cancel}', j$('.location-ids').val(),"{!projectId}",operation,reason, function(result, event){                   
+                    if (event.status) {   
+                        ajaxCall();
+                        console.log('io:'+event.result.indexOf('progress'));
+                        if(event.result.indexOf('progress') > -1){
+                            window.location.href = '{!URLFOR($Page.ProjectDetailsView,null,[id=projectId])}';
+                        }
+                        setTimeout(function(){ 
+                        notif({msg: event.result,  type: (event.result.indexOf("exist") == -1 ? "success" : "warning"),  position: "center", clickable: true});
+                        }, 1000);
+                        
+                    }
+                    else{                    
+                        ajaxCall();          
+                        setTimeout(function(){ 
+                        notif({msg: event.result,  type: "error",  position: "center", clickable: true});
+                        }, 1000);
+                        
+                    }    
+                }
+                
+            ); 
+            
+            return false;    
+        };
+        
+
+        function ajaxCall(){
+            //j$('#searchResults td').parent().remove();            
+            j$('[id*="loadingStatus.start"]').show();
+            var showScheduledOnly = '';
+            if(showScheduledate && document.getElementById('chkShowScheduled').checked){
+                showScheduledOnly = 'yes';
+            }
+            Visualforce.remoting.timeout = 120000;
+            Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ManageJobsLocationsExt.getLocations}',
+            j$('[id*="State"]').val(),j$('[id*="City"]').val(),j$('[id*="Zip"]').val(), "{!projectId}", j$('[id*="LocationNum"]').val(), j$('[id="Status"]').val(), showScheduledOnly, 
+            function(result, event){                             
+               var LocID="";                         
+               j$('#TableHeader').text('Project Location Name');
+               j$("#chkAll").attr('checked', false);        
+               if (event.status) {     
+                    if(result.length > 0) {
+                        j$('#searchResults').show();
+                        j$('[id*="resultDIV"]').show();
+                        j$('#location_count').html(result.length + ' Project Location(s) returned');
+                        j$('#Err_location_count').hide();
+                    }
+                    else {
+                        j$('#location_count').show();
+                        j$('#searchResults').hide();
+                        j$('[id*="resultDIV"]').hide();
+                        j$('#location_count').html('No Project Location(s) returned');
+                    }    
+                   
+                    var rowsHtml = [];
+                    //console.log(JSON.stringify(result));
+                    j$.each(result, function (index,value) { 
+                        //console.log(JSON.stringify(value));
+                        var  st='',statusReason = '';
+                        
+                        if(typeof value.{!NAMESPACE}Status__c!="undefined" || typeof value.{!NAMESPACE}JobStatus__c!="undefined" )
+                        {
+                            if(value.{!NAMESPACE}Status__c!=null)
+                                st = value.{!NAMESPACE}Status__c;
+                            else if(value.{!NAMESPACE}JobStatus__c!=null)
+                                st = value.{!NAMESPACE}Jobstatus__c;   
+                        }
+
+                        if(typeof value.{!NAMESPACE}StatusComments__c!= "undefined"){
+                            statusReason = value.{!NAMESPACE}StatusComments__c;                          
+                        } 
+                        //console.log('aaaaaaaaa::::{!NAMESPACE}StatusComments__c'+ value.{!NAMESPACE}StatusComments__c);
+                        if(statusReason == ''){
+                            statusReason = '--';
+                        }
+                            
+                        rowsHtml.push("<tr><td> <input class='include' data-id='");
+                        rowsHtml.push(value.Id);
+                        rowsHtml.push("'  type='checkbox' /></td><td>");
+                        rowsHtml.push(value.Name);
+                        rowsHtml.push("</td><td>");
+                        rowsHtml.push(value.{!NAMESPACE}Location__r.{!NAMESPACE}LocationNumber__c);
+                        rowsHtml.push("</td><td>");
+                        rowsHtml.push(value.{!NAMESPACE}Location__r.Name);
+                        rowsHtml.push("</td><td>");
+                        rowsHtml.push(value.{!NAMESPACE}Location__r.{!NAMESPACE}Address__c);
+                        rowsHtml.push("</td><td>");
+                        rowsHtml.push(value.{!NAMESPACE}Location__r.{!NAMESPACE}City__c);
+                        rowsHtml.push("</td><td>");
+                        rowsHtml.push(value.{!NAMESPACE}Location__r.{!NAMESPACE}State__c);
+                        rowsHtml.push("</td><td>");
+                        rowsHtml.push(value.{!NAMESPACE}Location__r.{!NAMESPACE}PostalCodeName__c);
+                        rowsHtml.push("</td><td>");
+                        if(showScheduledate){
+                            rowsHtml.push(value.{!NAMESPACE}LocationScheduledDate__c);
+                            rowsHtml.push("</td><td>");
+                        }
+                        rowsHtml.push(st); 
+                        rowsHtml.push("</td><td>");
+                        rowsHtml.push(statusReason);
+                        rowsHtml.push("</td>");
+                        
+                    }); 
+                    
+                    j$('#searchResults tr:not(".headerRow")').remove();
+                    j$('#searchResults tr:last').after(rowsHtml.join(''));
+                    //j$('.location-ids').val(LocID);
+                    if(!showScheduledate){
+                        j$("#scheduleDateCol").remove();
+                    }
+                    j$('[id*="loadingStatus.start"]').hide();
+    
+               }
+               else{
+                    notif({msg: event.result,  type: "error",  position: "center", clickable: true});
+                    j$('[id*="loadingStatus.start"]').hide();
+               }    
+ 
+            }
+            );
+                     
+        }    
+        
+        function getSelectedLocIds(){
+            var ids = [];
+            j$('input.include:checked').each(function(){            
+                ids.push(j$(this).data('id').substring(0,15));
+            });
+            return ids;
+        }
+        var j$setscheduleDialog = j$("#setschedule-dialog").dialog({
+            autoOpen: false,
+            height: 430,
+            width: 400,
+            modal: true,
+            buttons: [{
+                text: "Set Schedule Date",
+                click: function(){
+                    var selectedDate = j$('#schduleDatepicker').val();
+                    var j$this = j$(this);
+                    var ids = getSelectedLocIds();
+                    j$this.parent().find(".jobs-request-confirmation").hide();
+                    j$('[id*="loadingStatus.start"]').show();
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.ManageJobsLocationsExt.setScheduleDate}', ids.join(","), '{!projectId}', selectedDate, 
+                    function(result, event){
+                       if (event.status) {   
+                           j$('[id*="loadingStatus.start"]').hide();
+                           if(event.result.indexOf('progress') > -1){
+                                window.location.href = '{!URLFOR($Page.ProjectDetailsView,null,[id=projectId])}';
+                           }
+                           else{
+                                j$setscheduleDialog.dialog("close");
+                                if(event.result.indexOf('Error') > -1){
+                                    notif({msg: event.result,  type: "info",  position: "center", clickable: true});
+                                }
+                                else{
+                                    ajaxCall();
+                                    notif({msg: event.result,  type: "success",  position: "center", clickable: true});
+                                }
+                                
+                           }
+                       }
+                       else{
+                           j$('[id*="loadingStatus.start"]').hide();
+                           console.log('FAILED:' + JSON.stringify(event));
+                           notif({msg: 'Error processing your request',  type: "error",  position: "center", clickable: true});
+                       }
+                    }, { timeout: 120000}
+
+                    );
+                }
+            }]
+        });
+        if({!showSetSchedule} ){
+            j$('#btnSetScheduleDate').show();
+        }
+        else{
+            j$('#btnSetScheduleDate').hide();
+        }
+        j$('#btnSetScheduleDate').click(function(){
+            if(j$('input.include:checked').length == 0){
+                //alert('Please select a location');
+                return;
+            }
+            j$setscheduleDialog.dialog("open");
+            var initdate = "{!scheduleWindowStartDate}".split("-");
+            var fromDate = new Date(initdate[0], initdate[1] - 1, initdate[2]);
+            initdate = "{!scheduleWindowEndDate}".split("-");
+            var toDate = new Date(initdate[0], initdate[1] - 1, initdate[2]);
+            j$("#schduleDatepicker").datepicker({minDate: fromDate, maxDate: toDate});
+        });
+    </script>
+</apex:page>

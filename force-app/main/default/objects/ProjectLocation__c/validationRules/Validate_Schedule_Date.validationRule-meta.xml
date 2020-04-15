@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_Schedule_Date</fullName>
+    <active>true</active>
+    <description>Schedule date should be within the project window</description>
+    <errorConditionFormula>AND( UPPER(Project__r.ProjectScheduleOptionCode__c) == &#39;USER&#39;,NOT(ISBLANK(LocationScheduledDate__c)), OR( Project__r.EndDate__c - LocationScheduledDate__c &lt; (Project__r.NumberOfDays__c - 1), Project__r.EndDate__c &lt; LocationScheduledDate__c, Project__r.StartDate__c &gt; LocationScheduledDate__c))</errorConditionFormula>
+    <errorMessage>Schedule date should be within the project window.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,71 @@
+/* Salesforce Design System v0.3.5 */
+/* ---------------------------------------------------------------------------
+ Copyright (c) 2015, salesforce.com, inc. All rights reserved.
+ Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. Neither the name of salesforce.com, inc. nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+// @TODO: THESE WILL BE PULLED FROM DESIGN TOKENS EVENTUALLY
+
+// When things pop, punch, rise, sink, you can multiply the elevation change by this factor
+$elevation-scaling-factor: 1.0;
+$frames-per-second: 60;
+
+// How many frames per grid unit, have to add "s" to convert to seconds
+$duration-frames-unit: 3s;
+
+// Sizing
+$square-icon-x-small-content: 0.5rem;
+$square-icon-x-small-boundary: 1.25rem;
+
+// max width for popups
+$max-popup: 20rem; // currently used on the popup dialog
+
+// Nubbin size - used on tooltips and popups
+$square-tooltip-nubbin: $spacing-medium;
+
+// @TODO - remove reference as these will be come deprecated
+$min-breakpoint-medium: 48em;
+$max-breakpoint-medium: 47.9375em;
+
+// z-index
+$z-index-toast:    10000;
+$z-index-modal:    9000;
+$z-index-overlay:  8000;
+$z-index-dropdown: 7000;
+$z-index-dialog:   6000;
+$z-index-popup:    5000;
+$z-index-default:  1;
+$z-index-deepdive: -99999;
+
+// Grid
+$grid: (
+  "small": (
+    "breakpoint": 320px,
+    "columns": 2,
+  ),
+  "medium": (
+    "breakpoint": 640px,
+    "columns": 6,
+  ),
+  "large": (
+    "breakpoint": 980px,
+    "columns": 12
+  )
+);
+
+// Border
+$color-border-inverse: #fff;
+
+// Scrollable
+$color-shadow-cover: $color-background-alt;
+$color-shadow-cover-transparent: rgba($color-shadow-cover, 0);
+$color-shadow: rgba(black, .125);
+$color-shadow-transparent: rgba(black, 0);
+
+// Shadows
+$shadow-cover-start: 30%;
+$shadow-cover-end: 70%;
+
+// Tabs
+$line-height-tab: 3rem;

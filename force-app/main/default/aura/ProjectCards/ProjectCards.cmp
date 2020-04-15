@@ -1,0 +1,40 @@
+<aura:component controller="LightningProjectController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}"/>
+    
+    <!--ATTRIBUTES DECLARATION -->
+    <aura:attribute name="projects" type="Object" access="global" />
+    <aura:attribute name="statusFilters" type="Object" access="global" />
+    <aura:attribute name="formFilters" type="Object" access="global" />
+    <aura:attribute name="projectnumber" type="string" access="global" />
+    <aura:attribute name="projecttitle" type="string" access="global" />
+    <aura:attribute name="projectowner" type="string" access="global" />
+    
+    <!--PUBLISHER -->
+    <aura:registerEvent name="showProjectCardInModal" type="c:EventDisplayModal" />
+    
+    <!--EVENT LISTENER -->
+    <aura:handler event="c:ProjectFormFiltersChanged" action="{!c.handleProjectFormFiltersChanged}"/>
+    <aura:handler event="c:ProjectStatusFiltersChanged" action="{!c.handleProjectStatusFiltersChanged}"/>
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="c:EventConfirm" action="{!c.reportConfirm}"/>
+    <aura:handler event="aura:locationChange" action="{!c.update}"/>
+    
+    
+    <div class="slds-is-relative" style="width:100%;">
+        <div class="oh-spinner oh-component-spinner-wrap" aura:id="projectCardsSpinner" > 
+            <lightning:spinner size="medium" variant="brand" />
+        </div>
+        <aura:iteration items="{!v.projects}" var="project">
+            <span class="card-iteration">
+            	<c:ProjectCard project="{!project}" />
+            </span>
+        </aura:iteration>
+        <article class="{!v.projects.length == 0 ? 'slds-card' : 'slds-hide'}">
+            <div class="slds-card__body">
+                There are no results for this search.
+            </div>
+        </article>
+        &nbsp;
+    </div>
+    
+</aura:component>

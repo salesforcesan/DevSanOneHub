@@ -1,0 +1,40 @@
+/* Salesforce Design System v0.3.5 */
+.tooltip {
+  // TODO: Abstract similarities with .dialog
+  border-radius: $border-radius-medium;
+  width: $max-popup;
+  z-index: $z-index-dialog;
+
+  &__content:after,
+  &__body {
+    background: $color-background-inverse;
+  }
+
+  &__content { // no z-index should be placed on this element so the pseudo-elements can be positioned
+    position: relative; // this allows the pseudo-elements to be positioned within
+    text-align: left;
+  }
+
+  &__body {
+    border-radius: $border-radius-medium;
+    padding: $spacing-x-small $spacing-small;
+    font-size: $font-size-small;
+    color: $color-text-inverse;
+  }
+}
+
+.nubbin--top .tooltip__content {
+  @include nubbin(top);
+}
+
+.nubbin--bottom .tooltip__content {
+  @include nubbin(bottom);
+}
+
+.nubbin--left .tooltip__content {
+  @include nubbin(left);
+}
+
+.nubbin--right .tooltip__content {
+  @include nubbin(right);
+}

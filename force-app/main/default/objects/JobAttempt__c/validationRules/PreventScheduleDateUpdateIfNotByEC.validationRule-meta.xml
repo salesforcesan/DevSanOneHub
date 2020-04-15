@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PreventScheduleDateUpdateIfNotByEC</fullName>
+    <active>true</active>
+    <description>To prevent  scheduledate if the user does not belong to an Execution Company</description>
+    <errorConditionFormula>AND(Job__r.Project__r.ProjectScheduleOption__r.Code__c != &#39;EC&#39;,ISCHANGED(AttemptScheduledDate__c),CONTAINS($User.Username,&quot;salesforce.integration&quot;))</errorConditionFormula>
+    <errorMessage>Schedule Date update is not allowed for this Scheduling option</errorMessage>
+</ValidationRule>

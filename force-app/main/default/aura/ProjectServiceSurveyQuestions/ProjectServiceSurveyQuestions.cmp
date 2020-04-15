@@ -1,0 +1,304 @@
+<aura:component extends="c:UISecurity" controller="LightningSurveyQuestionsController" implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <!--ATTRIBUTES DECLARATION -->
+    <aura:attribute name="questions" type="List" access="global" />
+    <aura:attribute name="filteredQuestions" type="List" access="global" />
+    <aura:attribute name="projectservice" type="Object" access="global" />
+    <aura:attribute name="servicename" type="string" access="global" />
+    <aura:attribute name="servicetitle" type="string" access="global" />
+    <aura:attribute name="serviceId" type="Id" />
+    <aura:attribute name="surveyscore" type="Integer" />
+    <aura:attribute name="surveyscorethreshold" type="Integer" />
+    <aura:attribute name="surveyscorewarning" type="Integer" />
+    <aura:attribute name="surveyscoredrpercent" type="Decimal" />
+    <aura:attribute name="surveyscoretqpercent" type="Decimal" />
+    <aura:attribute name="surveyscoreqpercent" type="Decimal" />
+    <aura:attribute name="surveyscorejumppercent" type="Decimal" />
+    <aura:attribute name="issurveyscoreerror" type="Boolean" />
+    <aura:attribute name="issurveyscorewarning" type="Boolean" />
+    <aura:attribute name="surveyscoredata" type="Map" access="global" default='{"minValue":0,"lowSegmentMax":50,"medSegmentMax":75,"highSegmentMax":100,"gaugeValue":0}' />
+    <aura:attribute name="questionId" type="String" />
+    <aura:attribute name="question" type="Object" />
+    <aura:attribute name="removepsqid" type="String" />
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="targets" type="List" default="[]"/> 
+    <!--PUBLISHER -->
+    <aura:registerEvent name="showAddQuestionInModal" type="c:EventDisplayModal" />
+    <aura:registerEvent name="showSurveyPreviewModal" type="c:EventDisplayModal" />
+    <!--EVENT LISTENER -->
+    <aura:handler name="addNewQuestion" event="c:EventAddNewQuestion" action="{!c.handleAddNewQuestion}" />
+    <aura:handler name="editSurveyQuestion" event="c:EventEditSurveyQuestion" action="{!c.handleEditSurveyQuestion}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="c:EventConfirm" action="{!c.handleConfirm}" />
+    <aura:handler name="messageBoxEvent" event="c:SimpleComponentEvent" action="{!c.onMessageBoxEvent}" />
+    <c:Notification aura:id="notification" class="no-flow" />
+    <c:MessageBox aura:id="messageBox" />
+    <c:ModalDialogContainer aura:id="modalDialog" />
+    <section class="slds-p-around--small">
+        <div class="slds-media">
+            <p class="slds-media__body">
+                Once a question is added select the question to view the response. You may, also, edit or delete a question with icons to the right of the question.
+            </p>
+        </div>
+        <div class="slds-is-relative">
+            <div aura:id="ProjectServiceQuestions__c.Edit" class="hide">
+                <button data-uielement="" class="slds-button slds-button--brand slds-m-vertical--large" onclick="{!c.showAddQuestionModal}"><i class="fa fa-plus slds-m-right--x-small" aria-hidden="true"></i>Add Question</button>
+            </div>
+            <div  aura:id="ProjectServiceQuestions__c.TestSurvey" class="button-container hide">
+                <button data-uielement="" class="slds-button slds-button_neutral slds-m-vertical--large" onclick="{!c.showPreviewSurveyModal}"><i class="fa fa-external-link" aria-hidden="true"></i>&nbsp;&nbsp;Test Survey</button>
+            </div>
+            <div class="button-container">
+                <button data-uielement="" class="slds-button slds-button_neutral slds-m-vertical--large" onclick="{!c.exportSurvey}"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;&nbsp;Export Survey</button>
+            </div>
+            <!--survey complexity gauge and popover start -->
+            <div class="slds-float_right" style="width:20%;margin-right:1rem;">
+                <div class="slds-grid slds-grid_align-end">
+                    <div style="width:90%;max-width:150px;">
+                        <c:strike_chart type="gauge" data="{!v.surveyscoredata}" title="Survey Complexity" lowLabel="Good" medLabel="Complex" highLabel="Too Complex" />
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid_align-end" style="margin-top:-1.3rem;padding:0 2rem 1.5rem 0;">
+                    <c:strike_popover variant="base" placement="left" theme="info" withClose="false">
+                        <aura:set attribute="popoverBody">
+                            <div>% of Questions Added: {!v.surveyscoreqpercent}</div>
+                            <hr class="slds-m-vertical_x-small"></hr>
+                            <div>% of Jumps Added: {!v.surveyscorejumppercent}</div>
+                            <hr class="slds-m-vertical_x-small"></hr>
+                            <div>% of Defined Responses Added: {!v.surveyscoredrpercent}</div>
+                            <hr class="slds-m-vertical_x-small"></hr>
+                            <div>% of Targets Added: {!v.surveyscoretqpercent}</div>
+                        </aura:set>
+                        <aura:if isTrue="{!v.issurveyscorewarning == True}">
+                            <i class="fa fa-info-circle" style="color:#ffb75d;"></i>
+                        </aura:if>
+                        <aura:if isTrue="{!v.issurveyscoreerror == True}">
+                            <i class="fa fa-info-circle" style="color:#c23934;"></i>
+                        </aura:if>
+                        <aura:if isTrue="{!and(v.issurveyscorewarning == False, v.issurveyscoreerror == False )}">
+                            <i class="fa fa-info-circle" style="color:#54698D;"></i>
+                        </aura:if>
+                    </c:strike_popover>
+                </div>
+            </div>
+            <!--survey complexity gauge and popover end -->
+        </div>
+    </section>
+    <section class="slds-grid" style="border-top:1px solid #D8DDE6; border-bottom:1px solid #D8DDE6;width:100%;">
+        <div class="slds-col slds-tile survey-title slds-p-around--medium">
+            <p class="slds-truncate" title="Service Questions">
+                Service Questions Added
+            </p>
+            <p class="slds-text-body--small">
+                Survey Question
+            </p>
+        </div>
+        <div>
+            <div class="slds-hide spinner" style="min-height:100px" aura:id="spinner">
+                <lightning:spinner size="medium" variant="brand" />
+            </div>
+        </div>
+        <div class="slds-col slds-no-flex slds-p-horizontal--medium">
+            <button class="slds-button slds-button--neutral slds-m-top--medium" style="height:40px;" onclick="{!c.toggleAccAll}">Expand/Hide Responses</button>
+        </div>
+    </section>
+    <div class="pcard-container">
+        <ui:scrollerWrapper class="question-section">
+            <div>
+                <section>
+                    <aura:iteration items="{!v.questions}" var="question">
+                        <aura:if isTrue="{!question.IsFirstItemQuestion == True}">
+                            <div class="top-blue-target">
+                                &nbsp;Target Questions
+                            </div>
+                        </aura:if>
+                        <div class="oh-accordion slds-grid" id="accordion">
+                            
+                            <div class="readonly slds-grid--vertical-align-center slds-m-right_x-small" style="width:1.6rem;">
+                                <p class="slds-m-top--xx-small slds-text-align_right">Q {!question.QuestionNumber}</p>
+                            </div>
+                            <div class="slds-grid slds-grid_vertical">
+                            <aura:if isTrue="{!question.QuestionType == 'Yes/No'}">
+                                <div class="slds-media__figure oh-icon-survey slds-icon slds-icon_circle slds-icon_large">
+                                    <i class="fa fa-balance-scale" aria-hidden="true"></i>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!question.QuestionType == 'Barcode'}">
+                                <div class="slds-media__figure oh-icon-survey slds-icon slds-icon_circle slds-icon_large">
+                                    <i class="fa fa-barcode" aria-hidden="true"></i>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!question.QuestionType == 'Number'}">
+                                <div class="slds-media__figure oh-icon-survey slds-icon slds-icon_circle slds-icon_large">
+                                    <i class="fa fa-calculator" aria-hidden="true"></i>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!question.QuestionType == 'Text'}">
+                                <div class="slds-media__figure oh-icon-survey slds-icon slds-icon_circle slds-icon_large">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!question.QuestionType == 'Single-Select List'}">
+                                <div class="slds-media__figure oh-icon-survey slds-icon slds-icon--circle slds-icon_large">
+                                    <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!question.QuestionType == 'Multi-Select List'}">
+                                <div class="slds-media__figure oh-icon-survey slds-icon slds-icon_circle slds-icon_large">
+                                    <i class="fa fa-list-ul" aria-hidden="true"></i>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!question.QuestionType == 'Photo'}">
+                                <div class="slds-media__figure oh-icon-survey slds-icon slds-icon_circle slds-icon_large" style="position:relative;">
+                                    <i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i>
+                                    <aura:if isTrue="{!question.AILabelId != null}">
+                                    	<div class="aiCircle">ai</div>
+                                    </aura:if>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!question.QuestionType == 'Signature'}">
+                                <div class="slds-media__figure oh-icon-survey slds-icon slds-icon_circle slds-icon_large">
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!question.QuestionType == 'Date'}">
+                                <div class="slds-media__figure oh-icon-survey slds-icon slds-icon_circle slds-icon_large">
+                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!question.QuestionType == 'Time'}">
+                                <div class="slds-media__figure oh-icon-survey slds-icon slds-icon_circle slds-icon_large">
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!question.QuestionType == 'Currency'}">
+                                <div class="slds-media__figure oh-icon-survey slds-icon slds-icon_circle slds-icon_large">
+                                    <i class="fa fa-usd" aria-hidden="true"></i>
+                                </div>
+                            </aura:if>
+                                
+                                    <aura:if isTrue="{!question.IsExceptionQuestion == True}">
+                                      <div class="oh-survey-exception slds-m-top_x-small slds-m-left_x-small readonly">
+                                        <lightning:icon iconName="utility:priority" variant="error" size="x-small" />
+                                       </div>
+                                   </aura:if>
+                               
+                            </div>
+                            <div class="slds-media__body slds-grid-align-spread">
+                                <div class="oh-survey-question slds-grid slds-has-flexi-truncate slds-grid--vertical-align-center">
+                                    <p>{!question.QuestionText}</p>
+                                </div>
+                                <div class="oh-survey-question slds-grid slds-has-flexi-truncate slds-grid--vertical-align-center">
+                                <p class="slds-text-body--small slds-m-top--none">{!question.QuestionTitle}</p>
+                                </div>
+                               <p class="slds-text-body_small">{!question.QuestionType}
+                                <aura:if isTrue="{!and(question.QuestionType == 'Number', question.MinValue != null)}">
+                                    <span class="slds-m-left_medium slds-text-color_inverse-weak">
+                            			<i class="fa fa-arrow-circle-down slds-m-right_xx-small" aria-hidden="true"></i>
+                                        <span class="slds-text-color_weak">Min ({!question.MinValue})</span> 
+                                        <i class="fa fa-arrow-circle-up slds-m-right_xx-small slds-m-left_small" aria-hidden="true"></i>
+                                        <span class="slds-text-color_weak">Max ({!question.MaxValue})</span>
+                                    </span>
+                            	</aura:if>
+                                </p>
+                            </div>
+                                
+                            
+                            
+                            <div aura:id="ProjectServiceQuestions__c.Optional" class="slds-grid-align-end oh-survey-options slds-p-left--large slds-border--left slds-m-right--medium">
+                                <lightning:input name="{!question.ProjectServiceQuestionId}" type="checkbox" label="Optional" disabled="{!!question.IsOptionEditable}" value="{!question.Optional}" checked="{!question.Optional}" aura:id="OptionalQuestion" onchange="{! c.onOptionChanged}"/>
+                            </div>
+                            <div aura:id="ProjectServiceQuestions__c.Active" class="slds-grid-align-end oh-survey-edit slds-m-right--medium readonly">
+                                <aura:if isTrue="{!question.CanRemove == False}">
+                                    <lightning:input type="toggle" name="ToggleQuestion" aura:id="ToggleQuestion" label=" " checked="true" disabled="true" class="oh-toggle" />
+                                    <aura:set attribute="else">
+                                        <lightning:input type="toggle" name="ToggleQuestion" value="{!question.ProjectServiceQuestionId}" aura:id="ToggleQuestion" label=" " checked="{!question.Active}"  onchange="{!c.handleQuestionActiveChange}" />
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                            <aura:if isTrue="{!question.JumpToAction == 'BRANCH'}">
+                                <div class="slds-grid-align-end oh-survey-edit slds-m-right--medium readonly  oh-icon-logic">
+                                    <p>{!question.JumpToAction}</p>
+                                </div>
+                                <aura:set attribute="else">
+                                    <div class="slds-grid-align-end oh-survey-edit slds-m-right--medium readonly">
+                                        <p>{!question.JumpToAction}</p>
+                                    </div>
+                                </aura:set>
+                            </aura:if>
+                            <div class="slds-grid-align-end oh-survey-edit slds-m-right--small">
+                                <aura:if isTrue="{!question.QuestionNumber != 0}">
+                                    <div aura:id="ProjectServiceQuestions__c.Edit" class="hide slds-col--bump-left">
+                                        <button class="slds-button slds-button--brand slds-grid--align-end" type="button" onclick="{!c.showEditQuestionModal}" id="{!question.ProjectServiceQuestionId}">Edit</button>
+                                    </div>
+                                    <aura:set attribute="else">
+                                        <div>
+                                            <p></p>
+                                        </div>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                            <div class="slds-grid-align-end oh-survey-edit slds-m-right--medium">
+                                <aura:if isTrue="{!question.ServiceQuestion == False}">
+                                    <div aura:id="ProjectServiceQuestions__c.Remove" class="hide">
+                                        <button class="slds-button slds-button--destructive slds-grid--align-end" type="button" onclick="{!c.removeProjectServiceQuestion}" id="{!question.ProjectServiceQuestionId}">Remove</button>
+                                    </div>
+                                    <aura:set attribute="else">
+                                        <div>
+                                            <p></p>
+                                        </div>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <aura:if isTrue="{!or(question.QuestionType == 'Single-Select List', question.QuestionType == 'Multi-Select List')}">
+                                <div class="response-container">
+                                    <aura:iteration items="{!question.DefinedResponses}" var="definedResponse">
+                                        <div class="slds-grid slds-grid--align-spread slds-m-horizontal--x-large">
+                                            <p class="slds-size-_-2-of-3">
+                                                <span class="panel-check">
+                                                    <aura:if isTrue="{!definedResponse.Active}">
+                                                        <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+                                                        <aura:set attribute="else">
+                                                            <i class="fa fa-minus fa-fw" aria-hidden="true" style="color:#f4f6f9;"></i>
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </span> {!definedResponse.DefinedResponseText}
+                                                <span class="slds-p-left--medium">{!definedResponse.ExceptionCode}</span>
+                                            </p>
+                                            <aura:if isTrue="{!and(question.QuestionType == 'Single-Select List', question.JumpToAction == 'BRANCH')}">
+                                                <div class="slds-p-top-_-small slds-p-left-_-medium oh-icon-logic">
+                                                    <ui:inputSelect class="oh-picklist-disabled" aura:id="{!definedResponse.DefinedResponseId}JumpToQuestions" multiple="false" value="{!definedResponse.JumpToQuestion}" disabled="True">
+                                                        <aura:iteration items="{!definedResponse.AllowedJumpToQuestions}" var="jtq">
+                                                            <ui:inputSelectOption class="" text="{!jtq.Text}" label="{!jtq.Label}" />
+                                                        </aura:iteration>
+                                                    </ui:inputSelect>
+                                                </div>
+                                            </aura:if>
+                                        </div>
+                                        <hr></hr>
+                                    </aura:iteration>
+                                </div>
+                            </aura:if>
+                        </div>
+                        <aura:if isTrue="{!question.IsLastItemQuestion == True}">
+                            <div class="bottom-blue-target">
+                                &nbsp;Target Questions
+                            </div>
+                        </aura:if>
+                    </aura:iteration>
+                </section>
+                <aura:if isTrue="{!v.questions.length == 0}">
+                    <article class="slds-card">
+                        <div class="slds-card__body">
+                            There are no results for this search.
+                        </div>
+                    </article>
+                </aura:if>
+            </div>
+            <div>
+                <c:SurveyPreview questions="{!v.questions}" />
+            </div>
+        </ui:scrollerWrapper>
+    </div>
+</aura:component>

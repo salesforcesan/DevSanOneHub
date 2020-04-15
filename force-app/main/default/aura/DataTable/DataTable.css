@@ -1,0 +1,120 @@
+.THIS {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.THIS .show {
+  display: inline-block;
+}
+
+.THIS .hide {
+  display: none;
+}
+
+.THIS .datatable-row-fade-out {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+
+.THIS .datatable-row-fade-in {
+  opacity: 1;
+  transition: opacity 1s ease-in;
+}
+
+.THIS .grid-checkbox .slds-form-element__label {
+  display: none;
+}
+
+.THIS .table {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  background-color: #fff;
+}
+
+.THIS .checkbox {
+  padding: 2px;
+  border: 1px solid rgb(216, 221, 230);
+  border-radius: 0.125rem;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  background-color: #fff;
+}
+
+.THIS .checkbox:focus,
+.THIS .checkbox:hover,
+.THIS .checkbox:visited,
+.THIS .checkbox:active {
+  text-decoration: none;
+}
+
+.THIS .checkbox i {
+  display: none;
+  flex-grow: 1;
+  font-size: 11px;
+  color: #1589ee;
+}
+
+.THIS .tr .checkbox.checked i {
+  display: flex;
+}
+
+.THIS .tr {
+  display: table-row;
+}
+
+.THIS .tr:last-child {
+  border-bottom: 0;
+}
+
+.THIS .tbody .tr:hover {
+  background-color: #eee;
+}
+
+.THIS .align-center {
+  text-align: center;
+}
+
+.THIS .th {
+  display: table-cell;
+  border-bottom: 1px solid #ddd;
+}
+
+.THIS .thead {
+  display: table-header-group;
+  position: relative;
+  z-index: 10;
+  background-color: transparent;
+  border: 1px solid red;
+}
+
+.THIS .slds-checkbox--faux:hover {
+  cursor: pointer;
+}
+
+.THIS .tbody {
+  display: table-row-group;
+}
+
+.THIS .tbody .tr:first-child>td {
+  margin-top: 30px;
+}
+
+.THIS .td {
+  display: table-cell;
+  padding: 6px 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.THIS .slds-scrollable::-webkit-scrollbar-track,
+.THIS .slds-scrollable--y::-webkit-scrollbar-track {
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.THIS .slds-scrollable::-webkit-scrollbar-thumb,
+.THIS .slds-scrollable--y::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.2);
+  border-radius: 0.5rem;
+  box-shadow: none;
+}

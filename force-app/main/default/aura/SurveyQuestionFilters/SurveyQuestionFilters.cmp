@@ -1,0 +1,70 @@
+<aura:component controller="LightningSurveyQuestionsController" implements="flexipage:availableForAllPageTypes" access="global">
+	<ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />    
+    <aura:attribute name="questions" type="List" access="global" />
+    
+
+    <aura:registerEvent name="questionFiltersChanged" type="c:EventSurveyQuestionFiltersChanged"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+     <div class="slds-box">
+        <div class="slds-grid">
+          <div class="slds-media__figure slds-m-left--small">
+            <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+          </div>
+          <div class="slds-media__body">
+            <p class="slds-text-heading--small">Filters</p>
+          </div>
+        </div>
+        <hr class="slds-m-vertical--xx-small"></hr>
+            <fieldset class="slds-form--compound">
+                
+                <div class="slds-form-element__group">
+                    
+                    <!-- Question Text -->
+                    <div class="slds-form-element__row slds-p-top--small slds-border--bottom">
+                        <div class="slds-form-element slds-size--1-of-1">
+                            <label class="slds-form-element__label" for="QuestionText">Question Text</label>
+                            <div class="slds-form-element__control">
+                                <ui:inputText class="slds-input slds-form-element__label" aura:id="QuestionText" label="" keypress="{!c.keyPress}" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question Type -->
+                    <div class="slds-form-element__row slds-p-top--small">
+                        <div class="slds-form-element slds-size--1-of-1">
+                            <label class="slds-form-element__label" for="QuestionType">Question Type</label>
+                            <div class="slds-form-element__control">
+                                <ui:inputSelect aura:id="QuestionType" multiple="false">
+                                    <ui:inputSelectOption text="None" label="None" value="true"/>
+                                    <ui:inputSelectOption text="Text" label="Text"/>
+                                    <ui:inputSelectOption text="Yes/No" label="Yes/No"/>
+                                    <ui:inputSelectOption text="Number" label="Number"/>
+                                    <ui:inputSelectOption text="Photo" label="Photo"/>
+                                    <ui:inputSelectOption text="Signature" label="Signature"/>
+                                    <ui:inputSelectOption text="Single-Select List" label="Single-Select List"/>
+                                    <ui:inputSelectOption text="Multi-Select List" label="Multi-Select List"/>
+                                    <ui:inputSelectOption text="Multi Select Target" label="Multi Select Target"/>
+                                </ui:inputSelect>                      
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-form-element__row slds-p-top--small">
+                        <div class="slds-form-element slds-size--1-of-1">
+                            <label class="slds-form-element__label" for="TargetQuestion">Target Questions</label>
+                            <div class="slds-form-element__control">
+								<lightning:input type="toggle" name="TargetQuestion" aura:id="TargetQuestion" label=" " value="" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="slds-button--group slds-p-top--large">
+                    <ui:button aura:id="btnClearFilter" class="slds-button slds-p-horizontal--x-small slds-m-right--x-small" label="Clear" press="{!c.clearFilter}"/>
+                    <ui:button aura:id="btnApplyFilter" class="slds-button slds-button--brand slds-p-horizontal--medium" label="Filter Questions" press="{!c.applyFilter}"/>   
+                </div>                
+            </fieldset>
+
+
+   </div>
+</aura:component>

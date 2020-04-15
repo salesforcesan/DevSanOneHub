@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DeleteServices</fullName>
+    <availability>online</availability>
+    <description>New screen to delete selected services</description>
+    <displayType>massActionButton</displayType>
+    <height>600</height>
+    <linkType>page</linkType>
+    <masterLabel>Delete Service(s)</masterLabel>
+    <openType>sidebar</openType>
+    <page>DeleteProjectService</page>
+    <protected>false</protected>
+    <requireRowSelection>true</requireRowSelection>
+</WebLink>

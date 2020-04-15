@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Quantity_not_equal_to_zero_or_gt_99999</fullName>
+    <active>true</active>
+    <errorConditionFormula>Quantity__c &lt;= 0  || Quantity__c &gt; 99999</errorConditionFormula>
+    <errorMessage>Quantity cannot be less that or equal to zero (0) or greater than 99999.</errorMessage>
+</ValidationRule>

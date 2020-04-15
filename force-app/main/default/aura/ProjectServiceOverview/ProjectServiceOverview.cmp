@@ -1,0 +1,43 @@
+<aura:component controller="LightningProjectServiceController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+  <aura:attribute name="serviceId" type="Id" />
+  <aura:attribute name="service" type="ProjServiceWrapper" /> 
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
+  <c:Notification aura:id="notification" class="no-flow"/>
+    
+    <div class="slds-p-bottom-small">
+      <c:SectionHeader Title="Service Overview" iconClass="fa-handshake-o" ProjServiceID="{!v.serviceId}" />
+    </div>
+ 
+   	<div class="slds-is-relative">
+        <div class="slds-hide" style="min-height:100px" aura:id="Spinner">
+            <lightning:spinner size="medium" variant="brand" />
+        </div>
+    </div>
+    
+    <div >  
+        <article>
+            <section class="slds-grid slds-grid--pull-padded">
+                <div class="slds-large-size--1-of-4 slds-medium-size--1-of-4 slds-size--1-of-3" style="text-align:left;">
+                    <div class="slds-p-horizontal--small slds-p-top--medium">            
+                       <span><i class="fa fa-group slds-p-horizontal--small" style="font-size:1rem;"></i></span>
+                       <span class="service-detail-rep">{!v.service.NumberOfWorkers} Reps</span>
+                    </div>
+                    <div class="slds-p-horizontal--small slds-p-top--medium">
+                       <span><i class="fa fa-clock-o slds-p-horizontal--small" style="font-size:1rem;"></i></span>
+                       <span class="service-detail-rep">{!v.service.EstimatedMinutes} Minutes</span>
+                    </div>
+                </div>
+                <div class="slds-p-horizontal--small slds-large-size--3-of-4 slds-medium-size--3-of-4 slds-size--2-of-3">
+                    <p class="slds-p-top--medium">
+                        Service Objective: {!v.service.ServiceObjective} 
+                    <!--</p>
+                    <p class="slds-p-top-medium">-->
+                     
+                    </p>
+                </div>
+            </section>
+         </article>
+    </div>
+
+
+</aura:component>

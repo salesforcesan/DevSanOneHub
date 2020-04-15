@@ -1,0 +1,19 @@
+<aura:component >
+    <aura:attribute name="percentComplete" type="Object" access="global" />
+    <aura:attribute name="percentSla" type="Object" access="global" />
+    <aura:attribute name="metricLabel" type="Object" access="global" />
+    <aura:attribute name="barCompleteStyle" type="Object" access="global" />
+    <aura:attribute name="barSlaRemainingStyle" type="Object" access="global" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <div>
+        <div class="bar-container">
+            <div class="bar-chart">
+                <div class="bar-complete" style="{!v.barCompleteStyle}"></div>
+                <div class="bar-slaRemaining" style="{!v.barSlaRemainingStyle}"></div>
+            </div>
+            <div class="bar-metric">{!v.percentComplete}% {!v.metricLabel}</div>
+        </div>
+    </div>
+
+</aura:component>

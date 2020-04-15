@@ -1,0 +1,42 @@
+<aura:component extends="c:Remotable" controller="ImportRequestController">
+    <aura:attribute name="dialogId" type="String" default="" />
+    <aura:attribute name="parentId" type="String" required="true"/>
+    <aura:attribute name="importRequestService" type="String" required="true"/>
+    <aura:attribute name="attachmentName" type="String" required="true"/>
+    <aura:attribute name="jobName" type="String" required="true"/>
+    <aura:attribute name="pageInstruction" type="String" required="true"/>
+    <aura:attribute name="chunkSize" type="Integer" default="5000" access="private" />
+    <aura:attribute name="titles" type="string" default='' access="private" />
+    <aura:attribute name="channelOpened" type="Boolean" default="false" access="private" />
+    <aura:attribute name="channels" type="Object" default="[]" access="private" />
+    <aura:attribute name="selFile" type="String" default="File Name/No file chosen" access="private" />
+    <aura:registerEvent name="closeDialogEvent" type="c:SimpleComponentEvent" />
+    <aura:registerEvent name="importDataRequest" type="c:SimpleComponentEvent" />
+    <aura:registerEvent name="endImportData" type="c:SimpleComponentEvent" />
+    <aura:handler name="importDataRequest" type="c:SimpleComponentEvent" action="{!c.onImportData}" />
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+    <article class="container  slds-p-around_medium">
+        <c:Spinner aura:id="busyIndicator" type="modal" size="medium">
+            <div class="import-container">
+                <div style="margin-bottom:0.2cm; margin-left: -1rem; margin-right:-1rem;">
+                    <c:Notification aura:id="notification" />
+                </div>
+                <header class="slds-m-bottom_medium">
+                    <h2>{!v.pageInstruction}</h2>
+                </header>
+                <div class="slds-grid slds-grid_align-center">
+                    <div class="slds-grid slds-grid_vertical">
+                        <div class="slds-grid">
+                            <input type="file" accept=".csv,text/csv" aura:id="inputFile" class="hide" name="file" placeholder="select a file" onchange="{!c.onChangeFile}" />
+                            <lightning:button variant="brand" class="slds-m-right_small" iconName="utility:upload" label="Import File" onclick="{!c.onSelectFile}" />
+                            <lightning:button label="Cancel" class="slds-grid_align-center" name="btnCancel" variant="neutral" onclick="{!c.onCancel}" />
+                        </div>
+                        <div class="slds-grid slds-grid_vertical slds-m-top_small">
+                            <span class="oh-input-desc">{!v.selFile}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:Spinner>
+    </article>
+</aura:component>

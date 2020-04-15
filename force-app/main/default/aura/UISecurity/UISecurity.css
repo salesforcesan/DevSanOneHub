@@ -1,0 +1,28 @@
+/*toggleCss.css*/
+
+.THIS .toggle {
+  display: none;
+}
+
+.THIS .hide {
+  display: none;
+  opacity: 0;
+  transition: all 0.5s ease-out;
+}
+
+.THIS .show {
+  display: initial;
+  opacity: 1;
+  transition: all 0.5s ease-in;
+}
+
+.THIS .readonly {
+  pointer-events: none;
+  opacity: 0.4;
+  tabindex: -1;
+}
+
+.THIS .notreadonly {
+  pointer-events: auto;
+  opacity: 1;
+}

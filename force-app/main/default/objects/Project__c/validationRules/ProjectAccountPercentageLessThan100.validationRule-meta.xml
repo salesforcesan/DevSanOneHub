@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProjectAccountPercentageLessThan100</fullName>
+    <active>true</active>
+    <description>Project accounts sum must be less than 100 %</description>
+    <errorConditionFormula>AND(TEXT(SplitType__c)=&quot;Percentage (%)&quot;, AccountSplitSUM__c &gt; 100)</errorConditionFormula>
+    <errorMessage>The split of project accounts does not add up to 100%.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RequestedLocationsCount__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Number of locations requested for approval for the project, this number should match the # of Budgeted Locations in most cases.</inlineHelpText>
+    <label>Requested Locations Count</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X3PL_Business_Approvers_Job</fullName>
+    <filterScope>Queue</filterScope>
+    <label>3PL Business Approvers</label>
+    <queue>X3PL_Business_Approvers</queue>
+    <sharedTo>
+        <allInternalUsers/>
+    </sharedTo>
+</ListView>

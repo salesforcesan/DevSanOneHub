@@ -1,0 +1,120 @@
+<aura:component extends="c:UISecurity" controller="LightningPSCertificationController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <ltng:require styles="{!$Resource.oh_tools + '/oh-tools-style.css'}" />
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <aura:attribute name="certId" type="Id" access="global"  />
+    <aura:attribute name="serviceId" type="Id" access="global"  />
+    <aura:attribute name="projectId" type="Id" access="global"  />
+    <aura:attribute name="returnData" type="PSCertViewModalWrapper"/>
+    <aura:attribute name="ns" type="String" access="global" />        
+    <aura:attribute name="selectedCert" type="String" default="" />
+    <aura:handler event="c:EventConfirm" action="{!c.deleteCert}"/>
+    <aura:handler name="messageBoxEvent" event="c:SimpleComponentEvent" action="{!c.handleMessageBoxEvent}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <c:MessageBox aura:id="messageBox"/>
+    
+    
+    <div class="slds-is-relative">
+        <c:Notification aura:id="notification" class="no-flow slds-m-bottom--medium"/>
+        
+    </div>
+    <div>
+        <div class="slds-is-relative slds-size_1-of-1 pad-right slds-grid" style="overflow:hidden;">
+            <div class="slds-card slds-size_8-of-12 slds-p-around_medium" style="margin-right:12px;">
+                <div class="" aura:id="Spinner">
+                    <lightning:spinner size="medium" variant="brand" />
+                </div>
+                
+                <div class="slds-m-bottom_small">
+                    <c:SectionHeaderProject Title="Service Certifications" iconClass="fa-certificate" />
+                </div>  
+                
+                <section class="slds-p-bottom_large">
+                    <div class="slds-media">            
+                        <h4 class="slds-text-body_regular slds-m-around_x-small">To select a certification, choose one from the drop down and click ‘Add Certification’. To remove a certification, click on the red ‘X’ in the upper right corner of the icon.</h4>
+                    </div>
+                </section> 
+                
+                <section class="add-cert-section hide" aura:id="Project__c.RL_Certifications.Add">
+                    <div class="slds-grid slds-wrap slds-grid_pull-padded">
+                        <div class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                            
+                            <aura:if isTrue="{!v.serviceId != null}">
+                                <c:strike_lookup value="{!v.selectedCert}"
+                                                 label="Certifications"
+                                                 object="{!v.ns + 'Certification__c'}"
+                                                 searchField="Name"
+                                                 order="Name"
+                                                 filter="{! 'Id NOT in (SELECT ' + v.ns + 'Certification__c FROM ' + v.ns + 'ProjectServiceCertification__c WHERE ' + v.ns + 'ProjectService__c = \'' + v.serviceId + '\')'}"
+                                                 placeholder="Enter certification name"
+                                                 iconName="custom:custom12"
+                                                 limit="5"
+                                                 loadingMessage="Loading..."
+                                                 errorMessage="Invalid input"
+                                                 aura:id="CertsList"
+                                                 class="slds-m-bottom--x-small" />
+                            </aura:if> 
+                            
+                        </div>
+                        <div class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                            
+                            <div class="add-certification-button">
+                                <!--<aura:if isTrue="{!v.returnData.AvailableCerts.length>0}">-->
+                                <div>
+                                    <button class="slds-button slds-button_brand" 
+                                            onclick="{!c.AddCert}" 
+                                            disabled="{!!v.selectedCert}" 
+                                            id="add">
+                                        <lightning:icon iconName="utility:add" variant="inverse" size="x-small" class="slds-m-right_x-small"/>Add&nbsp;Certification</button>
+                                </div>
+                                <!-- </aura:if>--> 
+                            </div>
+                            
+                        </div>
+                    </div>
+                </section>
+                
+                <hr/>
+                
+                <section style="width:100%;">
+                    <aura:iteration items="{!v.returnData.SelectedCerts}" var="cert">            
+                        <div class="slds-is-relative slds-box slds-media slds-grid_align-start slds-is-expanded slds-m-bottom_small" style="width:100%;">
+                            <aura:if isTrue="{!cert.IsLocked==false}">
+                                <div class="icon-close-container">
+                                    <div>
+                                        <button class="oh-icon-button slds-text-body_small">
+                                            <i class="oh-icon oh-icon-close red-alert" id="{!cert.RecordID}" aria-hidden="true" onclick="{!c.handleDeleteCertClick}"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <aura:set attribute="else">                            
+                                    <div class="icon-close-container">
+                                        <div class="oh-icon-button slds-text-body_small slds-m-right_x-small">
+                                            <i class="fa fa-lock gray" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </aura:set>
+                            </aura:if>
+                            <div class="slds-media__figure">
+                                <i class="fa fa-certificate fa-2x grey" aria-hidden="true"></i>
+                            </div>
+                            <div class="slds-media__body">
+                                <h4 class="slds-text-body_regular slds-truncate">{!cert.CertificationName}</h4>
+                            </div>
+                            
+                        </div>
+                    </aura:iteration>
+                </section>
+                
+            </div>
+            <div class="slds-size_4-of-12 slds-card slds-p-around_medium" style="margin-top:0;">
+                <div class="slds-p-bottom_medium">
+                    <c:SectionHeaderProject Title="Chatter" iconClass="fa-commenting-o" />
+                </div>
+                <div class="slds-p-horizontal_small">
+                    <forceChatter:publisher context="RECORD" recordId="{!v.projectId}" />
+                    <forceChatter:feed type="Record" subjectId="{!v.projectId}"/>
+                </div>
+            </div>  
+        </div>
+    </div>      
+</aura:component>

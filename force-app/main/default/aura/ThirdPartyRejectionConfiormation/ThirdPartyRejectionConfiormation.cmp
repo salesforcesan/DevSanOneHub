@@ -1,0 +1,26 @@
+<aura:component >
+  <aura:attribute name="dialogId" type="String" default=""/>
+  <aura:registerEvent name="rejectionworkerEvent" type="c:SimpleComponentEvent"/>
+  <aura:registerEvent name="closeDialogEvent" type="c:SimpleComponentEvent"/>
+   <div style="margin-bottom:35px;padding-bottom:25px;padding-top:5px;">
+         <c:Notification aura:id="notificationPopup" class="no-flow" message="Are you sure you want to Reject the Worker." hideCloseButton="True" visible="true" type="warning"/>
+   </div>
+  
+  <article class="cancel-confirmation-container">
+     
+      <c:Notification aura:id="notification" class="no-flow"/>
+      <br></br>
+     
+      <c:Spinner aura:id="busyIndicator" type="modal" size="medium">
+        <div>
+         <div class="cancel-confirmation-body">
+           <lightning:textarea name="comment" label="Comment" placeholder="any comment for the selected worker." class="textarea" aura:id="comment"/>
+          </div>
+          <footer>
+            <lightning:button label="Cancel" name="btnCancel" variant="neutral" onclick="{!c.onCancel}"/>
+            <lightning:button label="Submit" name="btnSubmit" variant="brand" onclick="{!c.onSubmit}"/>
+          </footer>
+      </div>
+    </c:Spinner>
+  </article>
+</aura:component>

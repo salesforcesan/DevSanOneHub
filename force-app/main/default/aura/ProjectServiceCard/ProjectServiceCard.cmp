@@ -1,0 +1,82 @@
+<aura:component extends="c:UISecurity" controller="LightningProjectController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="service" type="Object" access="global" />
+    <aura:dependency resource="markup://force:navigateToSObject" type="EVENT"/>
+    <aura:dependency resource="markup://force:navigateToURL" type="EVENT"/>
+    <aura:handler event="c:EventConfirm" action="{!c.handleConfirm}"/>
+    <ltng:require styles="{!$Resource.oh_tools + '/oh-tools-style.css'}" />
+	<c:MessageBox aura:id="messageBox"/>
+    <div>
+    	<div class="slds-is-relative slds-box oh-service-card slds-m-bottom--small slds-size--1-of-1" onclick="{!c.goToProjectServiceInstructions}" style="overflow:hidden;">
+            
+                <div class="slds-hide" aura:id="projectServiceCardSpinner" > 
+                    <lightning:spinner size="medium" variant="brand" />
+                </div>
+                <section class="slds-grid">
+                    <div class="section-header slds-p-bottom--x-small slds-p-horizontal--x-small slds-truncate" style="overflow:hidden;">
+                        <p class="page-title slds-truncate slds-wrap">
+                            {!v.service.ServiceTitle}&nbsp;
+                        </p>
+                        <p class="page-subtitle">
+                            {!v.service.Name}&nbsp;-&nbsp;{!v.service.ServiceName}
+                        </p>
+                    </div>
+                </section>
+                <div class="slds-border--bottom card-marg">
+                </div>    
+                <article>
+                    <section class="slds-grid slds-grid--pull-padded">
+                        <div class="slds-grid slds-large-size--1-of-1 slds-medium-size--1-of-1 slds-size--1-of-1 oh-icons" style="text-align:left;">
+                            <div class="slds-p-left--small slds-p-right--medium slds-p-top--medium">            
+                                <span><i class="fa fa-group fa-lg slds-p-left--small"></i></span>
+                                <span class="service-detail-rep">{!v.service.NumberOfWorkers} Reps</span>
+                            </div>
+                            <div class="slds-p-left--small slds-p-right--medium slds-p-top--medium">
+                                <span><i class="fa fa-clock-o fa-lg slds-p-left--small"></i></span>
+                                <span class="service-detail-rep">{!v.service.EstimatedMinutes} Minutes</span>
+                            </div>
+                            <div class="slds-p-left--small slds-p-right--medium slds-p-top--medium">
+                                <span><i class="fa fa-bullseye fa-lg slds-p-left--small"></i></span>
+                                <span class="service-detail-rep">{!v.service.NumberOfTargets} Targets</span>
+                            </div>
+                        </div>
+                        <!--<div class="slds-p-horizontal-small slds-large-size-3-of-4 slds-medium-size-3-of-4 slds-size-2-of-3">
+                            <p class="slds-p-top-medium">
+                                Service Objective: {!v.service.ServiceObjective} 
+                                </p>
+                        <p class="slds-p-top-medium">
+                                
+                            </p>
+                        </div>-->
+                    </section>
+                </article>
+        </div>
+	</div>
+<!--<div>
+    	<div class="slds-is-relative slds-grid slds-grid_align-spread slds-p-vertical_small slds-box" onclick="{!c.goToProjectServiceInstructions}" style="overflow:hidden;width:100%;">
+            
+                <div class="slds-hide" aura:id="projectServiceCardSpinner" > 
+                    <lightning:spinner size="medium" variant="brand" />
+                </div>
+                	<div class="slds-grid slds-grid_vertical slds-m-right_medium slds-truncate" style="width:100%;">
+                      <div class="title slds-truncate slds-wrap" sytle="width:100%;">{!v.service.ServiceTitle}</div>
+                      <div>{!v.service.Name}&nbsp;-&nbsp;{!v.service.ServiceName}</div>
+                    </div>
+                    <div class="slds-grid slds-grid_align-end slds-m-right_medium icons">
+                      <div class="slds-grid slds-grid_vertical" style="width:5rem;">            
+                        <span><i class="fa fa-group fa-lg"></i></span>
+                        <p class="slds-text-body_small slds-m-top_xx-small">{!v.service.NumberOfWorkers} Rep(s)</p>
+                      </div>
+                      <div class="slds-grid slds-grid_vertical" style="width:5rem;">            
+                        <span><i class="fa fa-clock-o fa-lg"></i></span>
+                        <p class="slds-text-body_small slds-m-top_xx-small">{!v.service.EstimatedMinutes} Min(s)</p>
+                      </div>
+                      <div class="slds-grid slds-grid_vertical" style="width:5rem;">            
+                        <span><i class="fa fa-bullseye fa-lg"></i></span>
+                        <p class="slds-text-body_small slds-m-top_xx-small">{!v.service.NumberOfTargets} Target(s)</p>
+                      </div>
+                    </div>
+            	
+        </div>
+	</div>-->
+</aura:component>

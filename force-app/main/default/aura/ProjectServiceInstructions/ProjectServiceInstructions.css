@@ -1,0 +1,106 @@
+.THIS .psbar-panel {
+    padding: 30px 30px 12px 30px;
+}
+
+.THIS .future-filter {
+    display: none !important;
+}
+
+.THIS .oh-neg-margin {
+    margin-top: -4rem;
+}
+
+.THIS .slds-size_1-of-1.pad-right {
+    padding-right:12px;
+}
+
+.THIS .oh-pad-left {
+    padding-left: 2.4rem;
+}
+
+.THIS .oh-icon-button {
+    border:0;
+    box-shadow:0;
+    outline:0;
+    background-color:transparent;
+}
+
+.THIS .icon-close-container {
+    position:absolute;
+    right:3px;
+    top:4px;
+}
+
+.THIS .icon-close {
+    margin-top: .3rem;
+    position:absolute;
+    right:5%;
+    color:#C23934;
+    z-index:1000;
+}
+
+.THIS input[type="number"] label, .THIS textarea {
+    font-size: .75rem;
+    color:#54698D;
+}
+
+.THIS .oh-textarea {
+    width: 100%;
+}
+
+.THIS input[placeholder] {
+    font-size: .75rem;
+    color:#54698D;
+    line-height:1rem;
+}
+
+.THIS input[type="file"] {
+
+}
+
+.THIS uiInput--textarea {
+    width:100%;
+}
+
+.THIS .uiInput--checkbox input, .THIS input.uiInput--checkbox {
+    display: inline-block;
+    margin-left:.5rem;
+}
+
+
+.THIS label.uiLabel-left.form-element__label.uiLabel {
+    line-height:1rem;
+    margin-bottom:.5rem;
+}
+
+
+.THIS .oh-textarea .uiInput.uiInputTextArea.uiInput--default.uiInput--textarea {
+    width:100% !important;
+}
+
+.THIS .markreadonly {
+  pointer-events: none !important;
+  opacity: 0.4;
+  tabindex: -1;  
+}
+
+.THIS .marknotreadonly {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.THIS #spnr{
+    align-content: center;
+    text-align: center;
+    vertical-align: middle;
+    position: absolute;
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    
+}
+.THIS .job-manual-tooltip {
+    left: 79px;
+    top: 17px;
+}

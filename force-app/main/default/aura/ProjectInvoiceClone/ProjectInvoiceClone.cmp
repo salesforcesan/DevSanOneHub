@@ -1,0 +1,82 @@
+<aura:component controller="LightningProjectInvoiceController" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId">
+    <aura:attribute name="isClonable" type="Boolean" default="true" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <aura:attribute type="String" name="callbackresult" default="NONE"></aura:attribute>
+    <aura:attribute type="String" name="callbackmessage"></aura:attribute>
+    <aura:registerEvent name="refreshProjectInvoice" type="c:EventProjectInvoiceRefresh"/>    
+    <aura:attribute name="clonereasons" type="List" />
+    <aura:attribute name="projectInvoice" type="Object" default="{Name:'Testing..',Status:'',CloneReason:'',CloneReasonComment:'testing...'}" />
+    <div style="height:100%;min-height:210px;display:flex;flex-direction:column;width:100%;position:relative;">
+        <div><lightning:spinner size="medium" variant="brand" aura:id="spinner" class="oh-margin slds-hide"/></div> 
+        <h1 id="title" class="slds-text-heading_medium title">Clone Project Invoice</h1>    
+        <hr class="slds-m-vertical_medium" style="margin-left:-2rem;margin-right:-2rem;"></hr> 
+        <p class="slds-text-body_regular slds-text-color_weak" style="margin-bottom:auto;"> 
+            <aura:if isTrue="{!v.callbackresult == 'SUCCESS' }">
+                <c:Notification aura:id="notification" class="no-flow" message="{!v.callbackmessage}" visible="true" hideCloseButton="True" type="success"/>
+            </aura:if>
+            <aura:if isTrue="{!v.callbackresult == 'ERROR' }">
+                <c:Notification aura:id="notification" class="no-flow" message="{!v.callbackmessage}" visible="true" hideCloseButton="True" type="error"/>
+            </aura:if>
+            <aura:if isTrue="{!v.callbackresult == 'NONE' }">
+                <div style="margin-left:-2rem;margin-right:-2rem;">
+                    <c:Notification aura:id="notification" class="no-flow" message="Are you sure you want to clone the project invoice?" hideCloseButton="True" visible="true" type="warning"/>
+                </div>
+            </aura:if>
+        </p>
+        
+        <div class="slds-form--horizontal slds-m-top--medium slds-m-right--medium main-body">
+            <div class="slds-is-relative">
+                <div class="slds-hide" style="min-height:100px" aura:id="displaySpinner">
+                    <lightning:spinner size="medium" variant="brand" />
+                </div>
+            </div>
+            
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+                    <span><label class="slds-form-element__label">Project Invoice Title (Invoice that is being cloned)</label></span>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12">
+                    <span><label><b>{!v.projectInvoice.Name}</b></label></span>
+                </div>
+            </div>
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+                    <span><label class="slds-form-element__label">Project Invoice Status (Invoice that is being cloned)</label></span>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12">
+                    <span class=""><label><b>{!v.projectInvoice.Status}</b></label></span>
+                </div>
+            </div>
+            
+            <div class="slds-form-element">
+                <label class="slds-form-element__label">
+                    <abbr class="slds-required" title="required">*</abbr>Clone Reason</label>
+                <div class="slds-form-element__control">
+                    <div>
+                        <ui:inputSelect required="true" class="dynamic"  value="{!v.projectInvoice.CloneReasonCode}" aura:id="projectInvoiceCloneReasonCode">
+                            <aura:iteration items="{!v.clonereasons}" var="clonereason">
+                                <ui:inputSelectOption text="{!clonereason.value}" label="{!clonereason.label}" />
+                            </aura:iteration>
+                        </ui:inputSelect>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form-element">
+                <label class="slds-form-element__label">Comment</label>
+                <div class="slds-form-element__control">
+                    <ui:inputTextArea aura:id="cloneReasonComment" maxlength="255" placeholder="Enter comments" value="{!v.projectInvoice.CloneReasonComment}" class="slds-textarea" rows="5" />
+                </div>
+            </div>
+        </div>
+        
+        <div class="slds-has-divider_top slds-m-top_medium oh-button-foot" style="margin-left:-2rem;margin-right:-2rem;margin-top:auto;">                 
+            <div class="slds-p-vertical_medium slds-p-right_medium" style="width:100%;">
+                <div class="slds-grid slds-grid_align-center">
+                    <ui:button aura:id="btnYes" class="slds-button slds-button_brand slds-p-horizontal_x-small" label="Clone Project Invoice" press="{!c.cloneButtonClicked}"/>   
+                </div>
+            </div>
+        </div>                  
+        
+    </div>
+</aura:component>

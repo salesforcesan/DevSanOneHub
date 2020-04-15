@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JobCanceledReason__c</fullName>
+    <description>A picklist that indicates reasons why a job was canceled.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The reason that the job was canceled.</inlineHelpText>
+    <label>Canceled Reason</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Supplier Requested</fullName>
+                <default>false</default>
+                <label>Supplier Requested</label>
+            </value>
+            <value>
+                <fullName>Retailer Requested</fullName>
+                <default>false</default>
+                <label>Retailer Requested</label>
+            </value>
+            <value>
+                <fullName>No Product</fullName>
+                <default>false</default>
+                <label>No Product</label>
+            </value>
+            <value>
+                <fullName>Item not approved</fullName>
+                <default>false</default>
+                <label>Item not approved</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

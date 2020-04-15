@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="">
+	<aura:attribute type="List" name="responses" />
+    <aura:attribute type="String" name="questionTitle" />
+</aura:event>

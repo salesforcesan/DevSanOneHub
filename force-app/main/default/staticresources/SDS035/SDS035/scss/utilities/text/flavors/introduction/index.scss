@@ -1,0 +1,14 @@
+/* Salesforce Design System v0.3.5 */
+.text-introduction {
+  padding-bottom: $spacing-x-large;
+  font: {
+    size: $font-size-large;
+    weight: $font-weight-light;
+  }
+
+
+
+  @include mq-medium-min {
+    font-size: $font-size-x-large;
+  }
+}

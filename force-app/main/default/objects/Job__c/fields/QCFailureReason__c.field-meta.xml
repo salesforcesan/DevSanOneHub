@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>QCFailureReason__c</fullName>
+    <description>The field that indicates the reason for the failure of QC.</description>
+    <externalId>false</externalId>
+    <formula>Text(ActiveJobAttempt__r.QCFailureReasonCode__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Why the QC test failed</inlineHelpText>
+    <label>QC Failure Reason</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

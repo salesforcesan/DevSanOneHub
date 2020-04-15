@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OneHubRetailerId__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>An entry field the unique ID number that identifies this OneHub retailer.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Enter the ID number for this OneHub retailer.</inlineHelpText>
+    <label>One Hub Retailer Id</label>
+    <length>25</length>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

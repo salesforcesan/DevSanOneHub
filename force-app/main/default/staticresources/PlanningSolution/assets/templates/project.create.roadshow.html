@@ -1,0 +1,172 @@
+<div class="cm-form-wizard" data-id="{{projectId}}" data-type-id="{{projectTypeId}}">
+    <div class="main" role="main">
+        <!-- page header -->
+        <section aria-labelledby="pageHeader">
+            <div class="anchor anchor--obj-home">
+                <nav class="m-bottom--xx-small" role="navigation">
+                    <p id="bread-crumb-label" class="assistive-text">Create Project</p>
+                    <ol class="breadcrumb list--horizontal" aria-labelledby="bread-crumb-label">
+                        <li class="list__item text-heading--label"><a href="#" title="Accounts">{{fromPageTitle}}</a></li>
+                        <li class="list__item text-heading--label cm-list-item-disabled">{{pageTitle}}</li>
+                    </ol>
+                </nav>
+                <div class="grid">
+                    <div class="col has-flexi-truncate">
+                        <h1 class="text-heading--medium">{{pageTitle}} - <span class="label label--warning">{{{projectType}}}</span></h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- page body -->
+        <section aria-labelledby="formBody">
+            <div class="cm-form">
+                <div class="cm-form-body">
+                    <form method="POST" id="formNewProject" autocomplete="off" action="#" class="form--horizontal small-size--1-of-1 medium-size--6-of-6 large-size--10-of-12">
+                        <div class="form-element is-required">
+                            <label class="form-element__label" for="projectTitle">Project Title</label>
+                            <div class="form-element__control">
+                                <input id="projectTitle" class="input size--11-of-12" type="text" required aria-label="text-input" placeholder="Project Title" label="Project Title" aria-describedby="projectTitleError" value="{{projectTitle}}" />
+                                <span class="form-element__help">The project title is required</span>
+                            </div>
+                        </div>
+                        <div class="form-element is-required">
+                            <label class="form-element__label" for="projectRetailer">Retailer</label>
+                            <div class="form-element__control">
+                                <div class="lookup cm-lookup" data-select="single" data-scope="single" data-typeahead="true">
+                                    <div class="form-element">
+                                        <div class="lookup__control input-has-icon input-has-icon--right cm-input-lookup size--2-of-3">
+                                            <svg aria-hidden="true" class="input__icon cm-input-icon">
+                                                <use xlink:href="{{resourcePath}}/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                                            </svg>
+                                            <input id="projectRetailer" data-id="{{projectRetailerId}}" class="input" required="1" type="text" aria-label="lookup" label="Lookup Retailer" aria-haspopup="true" aria-autocomplete="list" placeholder="Search a Retailer" role="combobox" value="{{{projectRetailerName}}}" />
+                                            <span class="form-element__help">The Retailer is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="lookup__menu cm-lookup-menu hide" role="listbox" id="projectRetailerLookup">
+                                        <ul class="lookup__list" role="presentation">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-element is-required">
+                            <label class="form-element__label" for="projectClient">Client</label>
+                            <div class="form-element__control">
+                                <div class="lookup cm-lookup" data-select="single" data-scope="single" data-typeahead="true">
+                                    <div class="form-element">
+                                        <div class="lookup__control input-has-icon input-has-icon--right cm-input-lookup size--2-of-3">
+                                            <svg aria-hidden="true" class="input__icon cm-input-icon">
+                                                <use xlink:href="{{resourcePath}}/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                                            </svg>
+                                            <input id="projectClient" data-id="{{projectClientId}}" required="1" class="input" type="text" aria-label="lookup" label="Lookup Client" aria-haspopup="true" aria-autocomplete="list" placeholder="Search a Client" role="combobox" value="{{{projectClientName}}}" />
+                                            <span class="form-element__help">The Client is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="lookup__menu cm-lookup-menu hide" role="listbox" id="projectClientLookup">
+                                        <ul class="lookup__list" role="presentation">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-element is-required">
+                            <label class="form-element__label" for="projectStartDate">Start Date</label>
+                            <div class="form-element__control">
+                                <div class="input-has-icon input-has-icon--right size--1-of-3 cm-input-lookup">
+                                    <svg aria-hidden="true" class="input__icon cm-input-icon">
+                                        <use xlink:href="{{resourcePath}}/assets/icons/utility-sprite/svg/symbols.svg#event"></use>
+                                    </svg>
+                                    <input id="projectStartDate" class="input" required data-role="date" type="text" aria-label="text-input" label="Project Start Date" value="{{projectStartDate}}" pattern="\d{1,2}/\d{1,2}/\d{4}"/>
+                                    <span class="form-element__help">The Start Date is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-element is-required">
+                            <label class="form-element__label" for="projectEndDate">End Date</label>
+                            <div class="form-element__control">
+                                <div class="input-has-icon input-has-icon--right size--1-of-3 cm-input-lookup">
+                                    <svg aria-hidden="true" class="input__icon cm-input-icon">
+                                        <use xlink:href="{{resourcePath}}/assets/icons/utility-sprite/svg/symbols.svg#event"></use>
+                                    </svg>
+                                    <input id="projectEndDate" class="input" required pattern="\d{1,2}/\d{1,2}/\d{4}" data-role="date" type="text" aria-label="text-input" label="Project End Date" value="{{projectEndDate}}" />
+                                    <span class="form-element__help">The End Date is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-element">
+                            <label class="form-element__label" for="projectDays"># of Days</label>
+                            <div class="form-element__control">
+                                <span id="projectDays" class="input size--1-of-3 cm-disabled" type="text" aria-label="text-input" label="# of Days">{{projectDays}}</span>
+                            </div>
+                        </div>
+                        <div class="form-element">
+                            <label class="form-element__label" for="projectSalesGoal">Sales Goal</label>
+                            <div class="form-element__control">
+                                <div class="size--5-of-6"><span class="cm-form-element-tips">($ amount of combined sales over the duration of the Roadshow)</span></div>
+                                <input id="projectSalesGoal" class="input size--1-of-3" type="text" aria-label="text-input" label="Sales Goal" value="{{projectSalesGoal}}" />
+                            </div>
+                        </div>
+                        <div class="form-element">
+                            <label class="form-element__label" for="projectApprover">Approver</label>
+                            <div class="form-element__control">
+                                <div class="lookup cm-lookup" data-select="single" data-scope="single" data-typeahead="true">
+                                    <div class="form-element">
+                                        <div class="lookup__control input-has-icon input-has-icon--right cm-input-lookup size--2-of-3">
+                                            <svg aria-hidden="true" class="input__icon">
+                                                <use xlink:href="{{resourcePath}}/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                                            </svg>
+                                            <input id="projectApprover" class="input" type="text" aria-label="lookup" label="Lookup Client" aria-haspopup="true" aria-autocomplete="list" placeholder="Search an Approver" role="combobox" data-id="{{projectApproverId}}" value="{{projectApproverName}}" />
+                                        </div>
+                                    </div>
+                                    <div class="lookup__menu cm-lookup-menu hide" role="listbox" id="projectApproverLookup">
+                                        <ul class="lookup__list" role="presentation">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-element is-required">
+                            <label class="form-element__label" for="projectBudgetLocations"># of Budgeted Locations</label>
+                            <div class="form-element__control">
+                                <input id="projectBudgetLocations" required="1" class="input size--2-of-3" type="text" aria-label="text-input" placeholder="# of Budgeted Locations" label="Responsor" value="{{projectBudgetLocations}}" />
+                                <span class="form-element__help">The Number of Budgeted Locations is required</span>
+                            </div>
+                        </div>
+                        <div class="form-element is-required">
+                            <label class="form-element__label" for="projectPallets"># of Pallets</label>
+                            <div class="form-element__control">
+                                <input id="projectPallets" required="1" class="input size--2-of-3" type="text" aria-label="text-input" placeholder="# of Pallets" label="Responsor" value="{{projectPallets}}" />
+
+                                 <span class="form-element__help">The Number of Pallets is required</span>
+                            </div>
+                        </div>
+                        <div class="form-element">
+                            <label class="form-element__label" for="projectDescription">Description</label>
+                            <div class="form-element__control">
+                                <textarea id="projectDescription" placeholder="Project Description" class="textarea size--11-of-12" aria-label="Description">{{projectDescription}}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-element">
+                            <label class="form-element__label" for="canReschedule"><span class="form-element__label">Can Reschedule</span></label>
+                            <div class="form-element__control">
+                                <label class="checkbox" for="canReschedule">
+                                    <input type="checkbox" id="canReschedule" label="Checkbox Label" {{{canRescheduleChecked}}}/>
+                                    <span class="checkbox--faux"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="cm-form-footer form--horizontal">
+                    <div class="form-element size--1-of-2 small-size--1-of-1 medium-size--5-of-6 large-size--8-of-12">
+                        <label class="form-element__label" for="projectButtons"></label>
+                        <div class="form-element__control">
+                            <button class="button button--brand" value="1">Submit</button>
+                            <button class="button button--neutral" value="0">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

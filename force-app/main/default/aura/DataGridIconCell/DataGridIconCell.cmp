@@ -1,0 +1,6 @@
+<aura:component >
+  <aura:attribute name="field" type="object" default=""/>
+  <td role="gridcell" class="left-gap-40">
+    <i class="{!v.field.__class}"></i>
+  </td>
+</aura:component>

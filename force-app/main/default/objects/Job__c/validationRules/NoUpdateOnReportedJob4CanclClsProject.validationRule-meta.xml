@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NoUpdateOnReportedJob4CanclClsProject</fullName>
+    <active>true</active>
+    <description>A reported job cannot be updated when the project is either closed or canceled.</description>
+    <errorConditionFormula>AND(
+Lower(TEXT(PRIORVALUE(JobStatus__c))) == &#39;reported&#39;,
+OR(
+Lower(ProjectStatus__c) == &#39;closed&#39;,
+Lower(ProjectStatus__c) == &#39;canceled&#39;
+)
+)</errorConditionFormula>
+    <errorMessage>A reported job cannot be updated when the project is either closed or canceled.</errorMessage>
+</ValidationRule>

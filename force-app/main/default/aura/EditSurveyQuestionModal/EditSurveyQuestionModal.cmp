@@ -1,0 +1,247 @@
+<aura:component controller="LightningSurveyQuestionsController" implements="flexipage:availableForAllPageTypes" access="global">
+    
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />    
+    <aura:attribute name="questions" type="List" access="global" />
+    <aura:attribute name="options" type="List" access="global" />
+    <aura:attribute name="recordid" type="String" access="global" />
+    <aura:attribute name="question" type="Object" access="global" />
+    <aura:attribute name="hiddenElement" type="Map" access="global" />
+    <aura:attribute name="selectedValue" type="String" access="PRIVATE"/>
+    <aura:attribute name="securityDisabled" type="Boolean" default="false" />
+    <aura:attribute name="isProjectService" type="Boolean" default="false" />
+    <aura:registerEvent name="closeDialogEvent" type="c:SimpleComponentEvent"/>
+    <aura:registerEvent name="editSurveyQuestion" type="c:EventEditSurveyQuestion" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="pcard-container">
+       
+        <section class="slds-grid slds-border_bottom slds-border_top slds-p-around_medium" style="width:100%;">
+            
+            <!--<ui:spinner aura:id="spinner"/> -->
+            <div class="slds-grid slds-p-left--x-small" id="questiondiv" style="width:100%">           
+                <aura:if isTrue="{!v.question.QuestionType == 'Yes/No'}">
+                    <div class="slds-media__figure oh-icon-survey slds-icon_container slds-icon_container--circle">
+                        <i class="fa fa-balance-scale fa-lg" aria-hidden="true"></i>
+                    </div>
+                </aura:if>    
+                <aura:if isTrue="{!v.question.QuestionType == 'Number'}">
+                    <div class="slds-media__figure oh-icon-survey slds-icon_container slds-icon_container--circle">
+                        <i class="fa fa-calculator fa-lg" aria-hidden="true"></i>
+                    </div>
+                </aura:if>    
+                <aura:if isTrue="{!v.question.QuestionType == 'Text'}">
+                    <div class="slds-media__figure oh-icon-survey slds-icon_container slds-icon_container--circle">
+                        <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
+                    </div>
+                </aura:if>    
+                <aura:if isTrue="{!v.question.QuestionType == 'Single-Select List'}">
+                    <div class="slds-media__figure oh-icon-survey slds-icon_container slds-icon_container--circle">
+                        <i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>
+                    </div>
+                </aura:if>    
+                <aura:if isTrue="{!v.question.QuestionType == 'Multi-Select List'}">
+                    <div class="slds-media__figure oh-icon-survey slds-icon_container slds-icon_container--circle">
+                        <i class="fa fa-list-ul fa-lg" aria-hidden="true"></i>
+                    </div>
+                </aura:if>    
+                <aura:if isTrue="{!v.question.QuestionType == 'Photo'}">
+                    <div class="slds-media__figure oh-icon-survey slds-icon_container slds-icon_container--circle">
+                        <i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i>
+                    </div>
+                </aura:if>    
+                <div class="slds-grid--vertical-align-right">
+                    <div class="oh-survey-question slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                        <p>{!v.question.QuestionText}</p>
+                    </div>
+                    <p class="slds-text-body--small">{!v.question.QuestionTitle}</p>
+                    <p class="slds-text-body--small">{!v.question.QuestionType}</p>
+                </div> 
+                
+                <div class="slds-col--bump-left">
+                    <!--<aura:if isTrue="{!or(v.question.QuestionType == 'Single-Select List',v.question.QuestionType == 'Multi-Select List')}">-->
+                    
+                    <ui:inputSelect class="oh-picklist" disabled="{!v.securityDisabled}" aura:id="JumpToActions" multiple="false" value="{!v.question.JumpToAction}">
+                        <aura:iteration items="{!v.question.AllowedJumpToActions}" var="jta">
+                            <aura:if isTrue="{!jta.Text == v.question.JumpToAction}">
+                                <ui:inputSelectOption class="oh-picklist-option" text="{!jta.Text}" label="{!jta.Label}" value="true"/>
+                                <aura:set attribute="else">
+                                    <ui:inputSelectOption class="oh-picklist-option" text="{!jta.Text}" label="{!jta.Label}"/>
+                                </aura:set>    
+                            </aura:if>
+                        </aura:iteration>
+                    </ui:inputSelect>
+                    
+                    <!--</aura:if>-->
+                </div>
+            </div> 
+        </section>
+         <aura:if isTrue="{!and(v.question.IsProjectServiceQuestion == true,v.question.HintLock == true)}"> 
+                
+                <div aura:id="questionHint" class=" slds-p-horizontal_medium slds-p-vertical_small slds-size_1-of-1">
+                    <lightning:textarea label="Question Hint" name="Question Hint" aura:id="qHint" value="{!v.question.HintQuestion}" disabled="true"/>
+                </div> 
+                
+                <aura:set attribute="else">
+                    
+                    <div aura:id="questionHint" class=" slds-p-horizontal_medium slds-p-vertical_small slds-size_1-of-1">
+                        <lightning:textarea label="Question Hint" name="Question Hint" aura:id="qHint" value="{!v.question.HintQuestion}" maxlength="255" />
+                    </div> 
+                </aura:set>
+            </aura:if> 
+            
+            <aura:if isTrue="{!v.question.IsServiceQuestion == True}"> 
+                <div aura:id="hintLock" class="slds-p-horizontal_medium slds-p-vertical_small slds-size_1-of-1">
+                    <lightning:input type="checkbox" label="Hint Lock" name="" aura:id="qHlock" checked="{!v.question.HintLock}" />
+                </div>
+            </aura:if>
+        
+        <aura:if isTrue="{!or(v.question.QuestionType == 'Single-Select List',v.question.QuestionType == 'Multi-Select List')}">
+            
+            <hr class="slds-m-vertical--none slds-p-vertical--none" style="background-color:#0070D2;"></hr>
+            <section class="oh-labels" style="margin-top:-.2rem; margin-bottom:-.2rem;">
+                <div class="slds-grid slds-p-around--x-small slds-text-color--weak slds-text-body--small">
+                    <aura:if isTrue="{!v.question.IsServiceQuestion == True}">
+                        <div class="slds-media__figure slds-p-horizontal--xx-small slds-border--right" style="max-width:70px;">
+                            <div class="slds-grid">
+                                <div>
+                                    <p>Can Remove</p>
+                                </div>
+                                <div style="margin-left:0rem;">
+                                    <c:strike_tooltip placement="right"
+                                                      text="Gives Project Builder the ability to toggle active and inactive state">
+                                        <lightning:icon iconName="utility:info" size="xx-small"/>
+                                    </c:strike_tooltip>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:if>
+                    <div class="slds-media__figure slds-p-horizontal--xx-small slds-border--right" style="width:85px;">
+                        <p>Active</p>
+                    </div>
+                    <div class="slds-media__body" style="width:60%;min-width:200px;">
+                        <p>Question Response</p>
+                    </div>      
+                    <div class="slds-p-horizontal--small slds-col--bump-left">
+                        <aura:if isTrue="{!and(v.question.QuestionType == 'Single-Select List',v.question.JumpToAction == 'BRANCH')}">
+                            <p>Conditional Logic</p>
+                        </aura:if> 
+                    </div>
+                </div>
+            </section>
+            <hr class="slds-m-vertical--none slds-p-vertical--none" style="background-color:#0070D2;"></hr>
+            <ui:scrollerWrapper class="question-section">
+                <section>
+                    <aura:if isTrue="{!or(v.question.QuestionType == 'Single-Select List',v.question.QuestionType == 'Multi-Select List')}">     
+                        <aura:iteration items="{!v.question.DefinedResponses}" var="definedResponse">  
+                            <div class="slds-p-horizontal--medium slds-p-vertical--small">
+                                <div class="slds-grid" style="width:100%;"> 
+                                    
+                                    <aura:if isTrue="{!v.question.IsProjectServiceQuestion == false}"> 	
+                                        <div class="slds-p-right--small slds-border--right slds-m-right--small">                
+                                            <div class="slds-grid--vertical-align-center">
+                                                <lightning:input type="checkbox" label=" " name="ActiveResponse"  checked="{!definedResponse.Active}" aura:id="ActiveResponse" disabled="{!v.securityDisabled}"/>                        
+                                            </div>
+                                        </div>
+                                    </aura:if>
+                                    
+                                    <aura:if isTrue="{!v.question.IsServiceQuestion == True}"> 
+                                        <div class="slds-p-right--small slds-border--right slds-m-right--small">
+                                            <div class="slds-media__figure">                
+                                                <div aura:id = "ProjectServiceQuestionsDR__c.CanRemove" class="slds-grid-_-vertical-align-center">
+                                                    <lightning:input type="checkbox" label=" " name="CanRemoveDefinedResponse"  checked="{!definedResponse.CanRemove}" aura:id="CanRemoveDR" disabled="{!v.securityDisabled}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </aura:if>
+                                    
+                                    <aura:if isTrue="{!v.question.IsServiceQuestion == True}"> 
+                                        <div class="slds-media__figure">
+                                            <lightning:input type="toggle" name="ToggleQuestion" aura:id="TargetQuestion" label=""  checked="{!definedResponse.Active}" disabled="{!v.securityDisabled}"/>
+                                        </div>
+                                    </aura:if>
+                                    
+                                    <div class="slds-p-right--small slds-border--right slds-m-right--small">
+                                        <aura:if isTrue="{!v.question.IsProjectServiceQuestion == True}"> 
+                                            <aura:if isTrue="{!definedResponse.CanRemove == False}">
+                                                <lightning:input type="toggle" name="ToggleQuestion" aura:id="TargetQuestion" label=" " checked="{!definedResponse.Active}" disabled="true"/>
+                                            </aura:if>  
+                                            <aura:if isTrue="{!definedResponse.CanRemove == True}">
+                                                <lightning:input type="toggle" name="ToggleQuestion" aura:id="TargetQuestion" label=" " checked="{!definedResponse.Active}" disabled="{!v.securityDisabled}"/>
+                                            </aura:if>
+                                        </aura:if>
+                                    </div>
+                                    
+                                    <div class="slds-has-flex-truncate slds-wrap">
+                                        <p class="slds-text-body--small">{!definedResponse.DefinedResponseText} 
+                                            <aura:if isTrue="{!v.question.IsExceptionQuestion == True}"> 
+                                                <span class="slds-p-left--small">{!definedResponse.ExceptionCode}</span>
+                                            </aura:if>
+                                        </p>
+                                    </div>
+                                    
+                                    <!--
+                                    <aura:if isTrue="{!v.question.IsExceptionQuestion == True}"> 
+                                        <div class="slds-col-bump-left">
+                                            <p class="slds-text-body-small">{!definedResponse.ExceptionCode}</p>
+                                        </div>
+                                    </aura:if>-->
+                                    
+                                    <div class="slds-col--bump-left">
+                                        <aura:if isTrue="{!and(v.question.QuestionType == 'Single-Select List',v.question.JumpToAction == 'BRANCH')}">
+                                            <ui:inputSelect class="oh-picklist" disabled="{!v.securityDisabled}" aura:id="{!definedResponse.DefinedResponseId}JumpToQuestions" multiple="false" value="{!definedResponse.JumpToQuestion}">
+                                                <aura:iteration items="{!definedResponse.AllowedJumpToQuestions}" var="jtq">
+                                                    <aura:if isTrue="{!jtq.Text == definedResponse.JumpToQuestion}">
+                                                        <ui:inputSelectOption class="oh-picklist-option" text="{!jtq.Text}" label="{!jtq.Label}" value="true"/>
+                                                        <aura:set attribute="else">
+                                                            
+                                                            <ui:inputSelectOption class="oh-picklist-option" text="{!jtq.Text}" label="{!jtq.Label}"/>
+                                                        </aura:set>    
+                                                    </aura:if>
+                                                </aura:iteration>
+                                            </ui:inputSelect>
+                                        </aura:if>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <hr class="slds-m-vertical--none"></hr>
+                        </aura:iteration>    
+                    </aura:if>
+                </section>
+            </ui:scrollerWrapper>
+        </aura:if>
+        <aura:if isTrue="{!v.question.QuestionType == 'Number'}">
+            <div class="slds-grid slds-wrap slds-grid--pull-padded slds-p-around--large">
+                <div aura:id="min" class=" slds-p-horizontal--medium slds-p-bottom--medium slds-size--1-of-2">
+                    <lightning:input type="number" name="Min Value" aura:id="minVal" label="Min Value" value="{!v.question.MinValue}" disabled="{!v.securityDisabled}" />
+                </div> 
+                <div aura:id="max" class=" slds-p-horizontal--medium slds-p-bottom--medium slds-size--1-of-2">
+                    <lightning:input type="number" name="Max Value" aura:id="max" label="Max Value" value="{!v.question.MaxValue}" disabled="{!v.securityDisabled}"/>
+                </div>
+            </div>
+            
+        </aura:if>
+        <aura:if isTrue="{!and(v.question.QuestionType == 'Photo',v.isProjectService)}">
+            <div class="slds-grid slds-grow slds-p-around_large">
+                <div class="slds-p-bottom_medium slds-size_1-of-1">
+                    <lightning:select name="model" label="Select an AI Model:" aura:id="aiModel" value="{!v.selectedValue}" onchange="{!c.modelChange}">
+                        <option text="--None--" value="" />
+                        <aura:iteration items="{!v.options}" var="option">
+                            <option text="{!option.Name}" value="{!option.Id}" selected="{!option.Selected}" />
+                        </aura:iteration>
+                    </lightning:select>
+                </div> 
+            </div>
+            
+        </aura:if>
+        <div class="slds-grid slds-grid--align-end">                 
+            <div class="slds-button--group slds-p-vertical--small slds-p-right--medium">
+                <ui:button aura:id="btnSave" class="slds-button slds-button--brand slds-p-horizontal--x-small" label="Save Changes" press="{!c.saveChanges}"/>   
+            </div>
+        </div>
+        
+        
+    </div>
+    
+</aura:component>

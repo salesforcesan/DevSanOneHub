@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AllowDistribution__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>when adding Distribution Check service, set flag so that distribution repository is checked at each Location.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Checking Allow Distribution will add the attributes to the service level for the user to specify using Distribution  check.</inlineHelpText>
+    <label>Allow Product Filtering by Location</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

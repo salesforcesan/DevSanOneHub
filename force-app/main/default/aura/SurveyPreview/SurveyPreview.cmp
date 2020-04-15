@@ -1,0 +1,41 @@
+<aura:component controller="LightningSurveyQuestionsController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />    
+    
+    <!--ATTRIBUTES DECLARATION -->
+    <aura:attribute name="questions" type="List" access="global" />
+    
+    <aura:attribute name="previewElements" type="List" access="global" />
+    <aura:attribute name="tree" type="List" access="global" />
+    
+    <aura:attribute name="treeConfig" type="Map" default="{'labelProperties': ['text'], 'expandProperties': ['children'], 'isSelectable': false, 'isNodeSelectionEnabled': false, 'expandLevel': 1}" />
+    
+    <!--PUBLISHER -->
+    
+    <div> 
+        <div class="drawer drawer-hide" aura:id="panel">
+            
+            <div class="drawer-tab-container" >
+                <div class="drawer-tab-spacer"></div>
+                <div class="drawer-tab" onclick="{!c.togglePreview}">
+                    <div class="drawer-tab-text">
+                        Preview
+                    </div>
+                </div>
+            </div>
+            <div class="drawer-content slds-p-bottom--medium" aura:id="content"> 
+                <div class="drawer-title">
+                    <button class="slds-button" onclick="{!c.togglePreview}">
+                        <i class="oh-icon oh-icon-close drawer-title-close" aria-hidden="true"></i>
+                    </button>
+                    <span class="drawer-title-text">
+                        Survey Hierarchy
+                    </span>
+                </div>
+                <!--<ui_tree:Tree items="{!v.tree.children}" config="{!v.treeConfig}" />-->
+                <c:Tree items="{!v.tree.children}" config="{!v.treeConfig}" />
+            </div>
+        </div>
+    </div>
+    
+</aura:component>

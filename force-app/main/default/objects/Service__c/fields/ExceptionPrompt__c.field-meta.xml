@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExceptionPrompt__c</fullName>
+    <defaultValue>&quot;Were you able to do the work?&quot;</defaultValue>
+    <description>Text for the prompt asking about the execution status of the service.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Text for the prompt asking about the execution status of the service.</inlineHelpText>
+    <label>Exception Prompt</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

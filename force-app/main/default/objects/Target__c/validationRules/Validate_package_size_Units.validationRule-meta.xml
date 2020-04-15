@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_package_size_Units</fullName>
+    <active>false</active>
+    <errorConditionFormula>NOT(
+   OR(
+      ISPICKVAL(PackageSizeUnits__c,&#39;count&#39;),
+      ISPICKVAL(PackageSizeUnits__c,&#39;lb&#39;),
+      ISPICKVAL(PackageSizeUnits__c,&#39;oz&#39;),
+      ISPICKVAL(PackageSizeUnits__c,&#39;pint&#39;),
+      ISPICKVAL(PackageSizeUnits__c,&#39;gallon&#39;),
+      ISPICKVAL(PackageSizeUnits__c,&#39;quart&#39;)
+ )
+)</errorConditionFormula>
+    <errorMessage>Invalid Package Size Units</errorMessage>
+</ValidationRule>

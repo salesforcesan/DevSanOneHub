@@ -1,0 +1,106 @@
+<aura:component extends="c:UISecurity" controller="LightningJobsController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <aura:dependency resource="markup://c:BulkImporter" />
+    <aura:attribute name="jobs" type="List" default="" />
+    <aura:attribute name="project" type="Object" default="" />
+    <aura:attribute name="exportJobReportUrl" type="String" default="" />
+    <aura:attribute name="namespace" type='String' default="" access="private"/>
+    <aura:attribute name="showCard" type="Boolean" default="true" access="private" />
+    <aura:attribute name="pageCount" type="Integer" default="0" access="private" />
+    <aura:attribute name="rowCount" type="String" default="0" access="private" />
+    <aura:registerEvent name="publishRemoteActionRequestAppEvent" type="c:ActionRequestAppEvent" />
+    <aura:handler name="showSpinnerEvent" event="c:SimpleComponentEvent" action="{!c.handleShowSpinnerEvent}" />
+    <aura:handler event="c:ActionResponseSuccessAppEvent" action="{!c.subscribeRemoteActionSuccessAppEvent}" />
+    <aura:handler event="c:ActionResponseErrorAppEvent" action="{!c.subscribeRemoteActionErrorAppEvent}" />
+    <aura:attribute name="jobIdToRemove" type="String" default="" access="private" />
+    <aura:attribute name="canDeleteJob" type="Boolean" default="false" access="private" />
+    <aura:attribute name="canCancelJob" type="Boolean" default="false" access="private" />
+    <aura:attribute name="canReattemptJob" type="Boolean" default="false" access="private" />
+    <aura:attribute name="subscribers" type="List" default="[]" access="private" />
+    <aura:attribute name="canBundleCancelJob" type="Boolean" default="false" access="private" />
+    <aura:attribute name="canBundleReattemptJob" type="Boolean" default="false" access="private" />
+    <aura:handler name="checkOneJobEvent" event="c:SimpleComponentEvent" action="{!c.handleCheckOneJobEvent}" />
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+    <aura:registerEvent name="showCancelJobsInModal" type="c:EventDisplayModal" />
+    <aura:handler event="c:EventConfirm" action="{!c.ConfirmDeletedJobs}" />
+    <aura:handler name="messageBoxEvent" event="c:SimpleComponentEvent" action="{!c.onMessageBoxEvent}" />
+    <aura:handler name="removeOneJobEvent" event="c:SimpleComponentEvent" action="{!c.onDeleteOneJob}" />
+    <aura:handler event="c:EventJobsRefresh" action="{!c.reloadJobs}" />
+    <aura:handler name="endImportData" event="c:SimpleComponentEvent" action="{!c.onEndImportJobs}" />
+    <c:MessageBox aura:id="messageBox" />
+    <!--aura:registerEvent name="showReAttemptJobsInModal" type="c:EventDisplayModal" /-->
+    <c:ProjectJobsActionProxy aura:id="projectJobActionProxy" />
+    <div class="container">
+        <c:ModalDialogContainer aura:id="modalDialog" title="Application Dialog" size="medium" />
+        
+        <lightning:layout class="of-hidden slds-is-relative">
+            <c:Spinner aura:id="busyIndicator" size="medium" type="modal" />
+            <lightning:layoutItem size="12" class="slds-card jobs slds-p-around_medium oh-margin-right">
+                <div class="main-panel">
+                    <!-- header -->
+                    <div class="slds-m-bottom--small">
+                        <c:SectionHeaderProject Title="Manage Jobs" iconClass="fa-group" />
+                    </div>
+                    <div class="slds-is-relative slds-grid slds-grid_align-end" style="margin-top:-1rem;">
+                        <c:ProjectManageJobsFilter aura:id="manageJobFilter" projectId="{!v.project.Id}" />
+                    </div>
+                    <div style="margin-bottom:0.2cm;margin-top:.5rem;">
+                        <c:Notification aura:id="notification" />
+                    </div>
+                    <!-- error message -->
+                    <!-- button header -->
+                    <div class="slds-m-bottom--small slds-grid" style="margin-top:1.25rem;">
+                        <span aura:id="Job__c.Delete" class="hide">
+                            <lightning:button label="Remove Selected" iconName="utility:close"  variant="destructive" class="slds-m-right--small" onclick="{!c.onDelete}"/>
+                        </span>
+                        <span aura:id="Job__c.Delete" class="hide">
+                            <lightning:button label="Remove All" iconName="utility:close" variant="destructive" class="slds-m-right--small" onclick="{!c.onClickRemoveAll}"/>
+                        </span>
+                        <aura:if isTrue="{!v.project.IsBundleService}">
+                            <span aura:id="Job__c.BundledCancel" class="hide">
+                                <lightning:button label="Cancel Selected" onclick="{!c.removeSelected}"  iconName="utility:dash" variant="destructive" class="slds-m-right--small" /> 
+                            </span>
+                            <aura:set attribute="else">
+                                <span aura:id="Job__c.Cancel" class="hide">
+                                    <lightning:button label="Cancel Selected" onclick="{!c.removeSelected}"  iconName="utility:dash" variant="destructive" class="slds-m-right--small" /> 
+                                </span>
+                            </aura:set>
+                        </aura:if>
+                        
+                    </div>
+                    <aura:if isTrue="{!v.jobs.length > 0}">
+                        <div class="slds-grid slds-p-vertical_x-small">
+                            <div aura:id="Job__c.ExportJob">
+                                <a href="{!v.exportJobReportUrl}" class="slds-m-right_small" target="__blank">Export Jobs</a>
+                            </div>
+                            <div aura:id="Job__c.ImportJob" class="hide">
+                                <span class="slds-m-right_small">&bull;</span>
+                                <a href="javascript:void(0);" aura:id="btnImportJobs" class="slds-m-right_small" onclick="{!c.onClickImportJobs}">Import Jobs</a>
+                            </div>
+                        </div>
+                    </aura:if>
+                    <!-- datagrid/card title action bar -->
+                    <div class="slds-m-bottom--small">
+                        <lightning:layout horizontalAlign="spread" verticalAlign="center">
+                            <lightning:layoutItem >
+                                <form class="slds-form--inline">
+                                    <lightning:input class="slds-m-right--medium slds-m-left--small" type="checkbox" label="(select all)" aura:id="chkSelectAll" name="chkSelectAll" onchange="{!c.clickSelectAll}" />
+                                    <ui:outputText value="{!join(' ',v.pageCount, 'of', v.rowCount)}" class="slds-form-element" />
+                                </form>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>
+                    <!-- datacard -->
+                    <aura:if isTrue="{!v.jobs.length > 0}">
+                        <c:ProjectJobsCard jobs="{!v.jobs}" visible="{!v.showCard}" aura:id="jobCard" removeJobAppEventId="removeSelectedjobs" projectId="{!v.project.Id}" />
+                    </aura:if>
+                    <!-- end of main panel -->
+                </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="4">
+                <!-- end of side panel -->
+            </lightning:layoutItem>
+        </lightning:layout>
+        <!--c:Modal1 title="Cancel Job(s)"/-->
+    </div>
+</aura:component>

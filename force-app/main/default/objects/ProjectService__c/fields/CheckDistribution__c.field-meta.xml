@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CheckDistribution__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Adding Distribution Check service, set flag so that distribution repository is checked at each Location.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Select to create Target questions only for Products in distribution (PDS) at the rep&#39;s location.</inlineHelpText>
+    <label>Filter Targets by Location</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION" description="Event template">
+    <!--pass the updated project -->
+    <aura:attribute name="projectInvoice" type="Object"/>
+    <aura:attribute name="origin" type="String" default="default"/>
+</aura:event>

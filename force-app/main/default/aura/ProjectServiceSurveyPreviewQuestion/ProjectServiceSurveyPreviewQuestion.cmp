@@ -1,0 +1,130 @@
+<aura:component controller="LightningSurveyQuestionsController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />    
+    
+    <!--ATTRIBUTES DECLARATION -->
+    <aura:attribute name="currentQuestion" type="Object" access="global" />
+    <aura:attribute name="error" type="Boolean" default="false" access="global" />
+    <aura:attribute name="selectedResponse" type="String" default="" access="global" />
+    <aura:attribute name="updatedInputs" type="List" default="" access="global" />
+    <aura:attribute name="updatedInput" type="String" default="" access="global" />
+    <aura:attribute name="isLastQuestion" type="Boolean" default="false" access="global" />
+    <aura:attribute name="startNumber" type="Integer" />
+    
+    <!-- EVENT REGISTER -->
+    <aura:registerEvent name="EventResponseSelectedV2" type="c:EventResponseSelectedV2"/>
+    <aura:if isTrue="{!or(v.currentQuestion.QuestionType == 'Single-Select List',or(v.currentQuestion.QuestionType == 'Yes/No',v.currentQuestion.QuestionType == 'Multi-Select List'))}">
+        <fieldset class="slds-form-element">
+            <legend class="slds-form-element__legend slds-form-element__label">{!v.currentQuestion.QuestionIndentation}. {!v.currentQuestion.QuestionText}</legend>
+            <div class="slds-form-element__control slds-p-top_small">
+                <aura:iteration items="{!v.currentQuestion.DefinedResponses}" var="response" indexVar="index">
+                    <aura:if isTrue="{!response.Active}">
+                        <span class="slds-radio">
+                            <lightning:input type="radio" name="responses" label="{!response.DefinedResponseText}" 
+                                             onchange="{!c.inputChangeRadio}" 
+                                             value="{!response.DefinedResponseText}"
+                                             checked="{!response.DefinedResponseText  == v.selectedResponse ? true : false}" 
+											/>
+                        </span>
+                    </aura:if>
+                </aura:iteration>
+            </div>
+        </fieldset>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.currentQuestion.QuestionType == 'Multi Select Target'}">
+        <fieldset class="slds-form-element">
+            <legend class="slds-form-element__legend slds-form-element__label">{!v.currentQuestion.QuestionIndentation}. {!v.currentQuestion.QuestionText}</legend>
+            <div class="slds-form-element__control">
+                <aura:iteration items="{!v.currentQuestion.DefinedResponses}" var="response" indexVar="index">
+                    <aura:if isTrue="{!response.Active}">
+                        <span class="slds-checkbox">
+                             <lightning:input type="checkbox" name="responses" checked="false" label="{!response.DefinedResponseText}" 
+                                              value="{!response.DefinedResponseText}" 
+                                              onchange="{!c.inputChangeMulti}" />
+                                             
+                        </span>
+                    </aura:if>
+                </aura:iteration>
+            </div> 
+        </fieldset>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.currentQuestion.QuestionType == 'Text'}">
+        <fieldset class="slds-form-element">
+            <label class="slds-form-element__label">{!v.currentQuestion.QuestionIndentation}. {!v.currentQuestion.QuestionText}</label>
+            <div class="slds-form-element__control">
+                  <lightning:input type="text" onchange="{!c.inputChange}" name="textResponse" value="{!v.updatedInput}" label="" />
+            </div>
+        </fieldset>
+    </aura:if>
+    <aura:if isTrue="{!v.currentQuestion.QuestionType == 'Time'}">
+        <fieldset class="slds-form-element">
+            <label class="slds-form-element__label" for="{!v.currentQuestion.QuestionId}">{!v.currentQuestion.QuestionIndentation}. {!v.currentQuestion.QuestionText}</label>
+            <div class="slds-form-element__control">
+                 <lightning:input type="time" onchange="{!c.inputChange}" name="textResponse" value="{!v.updatedInput}" label="" />
+            </div>
+        </fieldset>
+    </aura:if>
+    <aura:if isTrue="{!v.currentQuestion.QuestionType == 'Date'}">
+        <fieldset class="slds-form-element">
+            <label class="slds-form-element__label" for="{!v.currentQuestion.QuestionId}">{!v.currentQuestion.QuestionIndentation}. {!v.currentQuestion.QuestionText}</label>
+          		<lightning:input type="date" onchange="{!c.inputChange}" name="textResponse" value="{!v.updatedInput}" label="" />
+        </fieldset>
+    </aura:if>
+    <aura:if isTrue="{!v.currentQuestion.QuestionType == 'Currency'}">
+        <fieldset class="slds-form-element">
+            <label class="slds-form-element__label" for="{!v.currentQuestion.QuestionId}">{!v.currentQuestion.QuestionIndentation}. {!v.currentQuestion.QuestionText}</label>
+            <div class="slds-form-element__control">
+                <lightning:input type="number" onchange="{!c.inputChange}" name="numberResponse" formatter="currency" value="{!v.updatedInput}" label="" />
+            </div>
+        </fieldset>
+    </aura:if>
+    <aura:if isTrue="{!v.currentQuestion.QuestionType == 'Number'}">
+        <fieldset class="slds-form-element">
+            <label class="slds-form-element__label" for="{!v.currentQuestion.QuestionId}">{!v.currentQuestion.QuestionIndentation}. {!v.currentQuestion.QuestionText}</label>
+            <div class="slds-form-element__control">
+                <lightning:input type="number" onchange="{!c.inputNumberChange}" min='0' name="numberResponse" value="{!v.updatedInput}" label="" />
+            </div>
+            <aura:if isTrue="{!v.error}">
+                    <div class="slds-form-element__help" id="error-message-unique-id">
+                        Please enter a number between {!v.currentQuestion.MinValue} and {!v.currentQuestion.MaxValue}
+                    </div>
+            </aura:if>
+        </fieldset>
+    </aura:if>
+    <aura:if isTrue="{!or(or(v.currentQuestion.QuestionType == 'Photo', v.currentQuestion.QuestionType == 'Signature'), v.currentQuestion.QuestionType == 'Barcode')}">
+        <fieldset class="slds-form-element">
+            <label class="slds-form-element__label" for="{!v.currentQuestion.QuestionId}">{!v.currentQuestion.QuestionIndentation}. {!v.currentQuestion.QuestionText}</label>
+            <div class="slds-form-element__control">
+                <lightning:buttonIcon class="slds-button answer-button slds-button_neutral slds-m-around_small" iconName="utility:photo" value="{!v.updatedInput}" onclick="{!c.inputChangePhoto}" /> 
+                <lightning:buttonIcon class="slds-button answer-button slds-button_neutral slds-m-around_small" iconName="utility:attach" value="{!v.updatedInput}" onclick="{!c.inputChangePhoto}" /> 
+            </div>
+        </fieldset>
+    </aura:if>
+	  <div class="survey-footer slds-p-vertical_x-large slds-p-horizontal_small" style="width:100%;display:flex;flex:1;justify-content:flex-end;">
+            <div class="slds-grid slds-grid_align-spread" style="width:100%;">
+                <aura:if isTrue="{!v.currentQuestion.QuestionNumber > v.startNumber}">
+            		<lightning:buttonIcon class="slds-button slds-button_brand slds-button__center oh-button"
+                                      onclick="{!c.previousQuestionHandler}" 
+                                      iconName="utility:chevronleft"
+                                      alternativeText="previous"
+                                      variant="bare-inverse"/>
+                    <aura:set attribute="else">
+                    	<div style="width:40px;">
+                        	&nbsp;
+                        </div>
+                    </aura:set>
+				</aura:if>    	
+				<aura:if isTrue="{!not(v.isLastQuestion)}">
+  					<lightning:buttonIcon class="slds-button slds-button_brand slds-button__center oh-button"
+                                      onclick="{!c.nextQuestionHandler}" 
+                                      iconName="utility:chevronright"
+                                      alternativeText="next"
+                                      disabled="{!and(or(not(empty(v.selectedResponse)),v.currentQuestion.Optional),not(v.error)) ? false : true}"
+                                      variant="bare-inverse"/>
+                 </aura:if>
+                
+            </div>
+        </div>     
+</aura:component>

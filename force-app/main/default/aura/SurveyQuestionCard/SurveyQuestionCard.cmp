@@ -1,0 +1,130 @@
+<aura:component controller="LightningSurveyQuestionsControllerv2" >
+    <aura:attribute name="question" type="List" access="global" />
+    <aura:attribute name="id" type="String" access="global" />
+    <aura:attribute name="draggable" type="boolean" access="global" default="true" />
+    <aura:attribute name="showException" type="boolean" access="private" />
+    <aura:attribute name="showCanRemove" type="boolean" access="private" />
+    <aura:attribute name="showOptional" type="boolean" access="private" />
+    <aura:attribute name="tooltipStyle" type="String" access="private" />
+    <aura:attribute name="showBack" type="Boolean" access="global" default="true" />
+    
+    <aura:registerEvent name="refreshQuestionsEvent" type="c:SimpleComponentEvent"/> 
+ 	<aura:registerEvent name="EventSurveyQuestionCard" type="c:EventSurveyQuestionCard"/>      
+
+    <div class="child-group" 
+         style="width:100%;padding:0;margin:0;">       
+        <div class="card list-group" 
+             style="position:relative;width:100%;">
+            <div class="survey-item" aura:id="surveyCard"> 
+                <!-- CARD FRONT -->                                             
+                <div class="slds-grid card-front"  style="align-items:center;position:relative;">
+                    <span class="slds-media" style="align-items:center;justify-content:space-between;">
+                        <span class="slds-media_figure">
+                            <span class="number-box">
+                                {!v.question.QuestionIndentation}
+                            </span>
+                        </span>
+                        <span class="slds-media_body slds-truncate" style="max-width:750px;min-height:35px;">
+                            <span class="question-title">{!v.question.QuestionText}</span> - 
+                            <span class="question-type">{!v.question.QuestionType}</span>
+                            <div class="slds-grid rule" style="align-items:center;" aura:id = "ProjectServiceQuestions__c.Edit"> 
+                                <aura:if isTrue="{!not(empty(v.question.ServiceQuestionRuleList))}">
+                                    <div onclick="{!c.showEditServiceQuestionModal}" class="rule-hover slds-truncate"> 
+                                        (Rule:
+                                        <lightning:icon iconName="utility:internal_share" size="x-small" class="slds-m-horizontal_xx-small purple" />
+                                        <span class="slds-truncate" style="color:grey;">
+                                            <aura:iteration items="{!v.question.ServiceQuestionRuleList}" var="rules" >
+                                               <span> - {!rules.RuleText}&nbsp;&nbsp;</span>
+                                            </aura:iteration>
+                                        </span>
+                                        )
+                                    </div>
+                                </aura:if>
+                            </div>
+                        </span>
+                    </span>
+                    <div class="slds-col_bump-left grey" style="align-items:center;" >  
+                          <aura:if isTrue="{!v.question.IsExceptionQuestion}">
+                            <div style="position: absolute; top: 20%; right: 205px;" class="oh-popover_container" tabindex="0" onmouseover="{!c.toggleException}" onmouseout="{!c.toggleException}">
+                                <div class="{!'slds-popover slds-popover_tooltip slds-nubbin_right ' + if(v.showException, '', ' oh-hidden')}" role="tooltip" style="{!v.tooltipStyle}">
+                                    <div class="slds-popover__body">
+                                        Exception Question
+                                    </div>
+                                </div>
+                                <lightning:icon iconName="utility:lower_flag" size="x-small" class="red" />
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!v.question.Optional}">
+                            <div style="position: absolute; top: 20%; right: 155px;" class="oh-popover_container" tabindex="0" onmouseover="{!c.toggleOptional}" onmouseout="{!c.toggleOptional}">
+                                <div class="{!'slds-popover slds-popover_tooltip slds-nubbin_right ' + if(v.showOptional, '', ' oh-hidden')}" role="tooltip" style="{!v.tooltipStyle}">
+                                    <div class="slds-popover__body">
+                                        Optional
+                                    </div>
+                                </div>
+                                <lightning:icon iconName="utility:signpost" size="x-small" />
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!v.question.CanRemove}">
+                            <div style="position: absolute; top: 20%; right: 105px;" class="oh-popover_container" tabindex="0" onmouseover="{!c.toggleCanRemove}" onmouseout="{!c.toggleCanRemove}">
+                                <div class="{!'slds-popover slds-popover_tooltip slds-nubbin_right ' + if(v.showCanRemove, '', ' oh-hidden')}" role="tooltip" style="{!v.tooltipStyle}">
+                                    <div class="slds-popover__body">
+                                        Can Remove
+                                    </div>
+                                </div>
+                                <lightning:icon iconName="utility:undelete" size="x-small" />
+                            </div>
+                        </aura:if>                     
+                         <div class="ellipsis-button">
+                            <button class="slds-button" onclick="{!c.slideInCard}" >
+                                <i class="fa fa-ellipsis-h fa-2x"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- CARD BACK -->
+                <div class="card-back slds-grid" onclick="" style="align-items:center;justify-content:space-between;width:70%;">
+                    <div class="slds-grid" style="align-items:center;width:75%;justify-content:space-between;">
+                        <div aura:id = "ProjectServiceQuestions__c.Optional">
+                            <lightning:input type="checkbox" label="Optional" name="OptionalQuestion" value="{!v.question.Optional}" checked="{!v.question.Optional}" aura:id="OptionalQuestion" onchange="{!c.onOptionalChange}" />                        
+                        </div>
+                        
+                        <div aura:id = "ProjectServiceQuestions__c.CanRemove">
+                            <lightning:input type="checkbox" label="Can Remove" name="CanRemoveQuestion" value="{!v.question.CanRemove}" checked="{!v.question.CanRemove}" aura:id="CanRemoveQuestion" onchange="{!c.onCanRemoveChange}" />
+                        </div>
+                        
+                        <div aura:id="ProjectServiceQuestions__c.Edit">
+                            <button class="slds-button" type="button" onclick="{!c.showEditQuestionModal}" 
+                                    id="{!v.question.ProjectServiceQuestionId}" 
+                                    style="text-align:center;">                                  
+                                <i class="fa fa-pencil fa-2x" 
+                                   style="color:#4BCA81;font-size:1.2rem;margin:0;padding:-.2rem 0"></i>
+                                <p class="label-size">Edit</p>
+                            </button>                
+                        </div>
+                        <div aura:id = "ProjectServiceQuestions__c.Edit">
+                            <button class="slds-button" type="button" onclick="{!c.removeSurveyQuestion}" 
+                                    id="{!v.question.ProjectServiceQuestionId}"
+                                    style="text-align:center;">
+                                <i class="fa fa-minus-circle" 
+                                   style="color:red;font-size:1.2rem;margin:0;padding:0;"></i>
+                                <p class="label-size">delete</p>
+                            </button>                
+                        </div>                       
+                    </div>
+                    <div class="slds-col_bump-left" style="align-items:center;margin-top:.15rem;">
+                        <button class="slds-button" onclick="{!c.slideOutCard}" >
+                            <i class="fa fa-arrow-right fa-2x"></i>
+                        </button>
+                    </div>
+                </div>
+                <!--CARD BACK END-->
+            </div> 
+        </div>
+        
+    </div>
+        
+    <div class="slds-hide" aura:id="spinner">
+        <lightning:spinner size="medium" variant="brand" />
+    </div>    
+    
+</aura:component>

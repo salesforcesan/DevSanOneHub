@@ -1,0 +1,11 @@
+.oh-step-header h2 {
+  font-size: 1rem;
+}
+
+.oh-step-section {
+  border: 1px solid transparent;
+}
+
+.oh-list-box {
+  border-top: 1px solid #4bca81;
+}

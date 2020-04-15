@@ -1,0 +1,592 @@
+<aura:component extends="c:Remotable" controller="LightningReservationController" implements="flexipage:availableForRecordHome,force:hasRecordId,flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="record" type="Object" />
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="sortedBy" type="String" default="Name"/>
+    <aura:attribute name="sortedDirection" type="String" default="asc"/>
+    <aura:attribute name="selectedLocationsDetails" type="Object" />
+    <aura:attribute name="selectedLocations" type="List" />
+    <aura:attribute name="selectedRows" type="List" />
+    <aura:attribute name="importedJSON" type="List" />
+    <aura:attribute name="pasteList" type="List" default="" />
+    <aura:attribute name="filename" type="String" />
+    <aura:attribute name="locationsNotFound" type="List" />
+    <aura:attribute name="filters" type="String" access="public" default="" />
+    <aura:attribute name="selectAllFinderChecked" type="Boolean" default="false" />
+    <aura:attribute name="ns" type="String" access="global" default=""/>
+    
+    <!-- warning attributes -->
+    <aura:attribute name="warnings" type="List" />
+     <aura:attribute name="showWarnings" type="Boolean" />
+    
+    <!-- error attributes -->
+    <aura:attribute name="errorData" type="Object"/>
+    <aura:attribute name="resolutionTabs" type="Object" />
+    <aura:attribute name="resolutionData" type="List" />
+    <aura:attribute name="locId" type="String" />
+    <aura:attribute name="resolutionDate" type="String" />
+    <aura:attribute name="selectedResolutionClub" type="String" />
+    <aura:attribute name="selectedError" type="Object" />
+    <aura:attribute name="currentLocation" type="List" />
+    <aura:attribute name="locations" type="List" />
+    <aura:attribute name="errorColumns" type="List"/>
+    <aura:attribute name="errorSortedBy" type="String" default="Name"/>
+    <aura:attribute name="errorSortedDirection" type="String" default="asc"/>
+    <aura:attribute name="endIteration" type="Integer" default="10" />
+    
+    
+    <aura:attribute name="reservationRecord" type="Object" access="global"/>
+    <aura:attribute name="recordError" type="String" access="global" />    
+    
+    <aura:attribute name="showFilters" type="Boolean" default="true"/>
+    <aura:attribute name="showList" type="Boolean" default="false"/>
+    <aura:attribute name="totalLocationsCount" type="Integer" access="public" />
+    <aura:attribute name="requestedCount" type="Integer" access="public" />
+    <aura:attribute name="requestedDate" type="Date" access="public" />    
+    <aura:attribute name="requestedService" type="String" access="public" />        
+    <aura:attribute name="targetFields" type="String[]" default="" access="public" />
+ 
+    <force:recordData aura:id="record"
+        layoutType="FULL"
+        mode="VIEW"
+        recordId="{!v.recordId}"
+        targetError="{!v.recordError}"
+        targetRecord="{!v.record}"
+        targetFields="{!v.reservationRecord}"
+		recordUpdated="{!c.recordUpdated}"                      
+        fields="{!v.targetFields}"
+    />
+    <ltng:require styles="{!$Resource.oh_tools + '/oh-tools-style.css'}" />
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.value}" action="{!c.handleValueChangeSize}"/>
+    <!--<aura:handler name="selectedLocation" event="c:LocationMapSelected" action="{!c.handleLocationSelected}"/>-->
+    
+    <div style="position:relative;">
+        <div class="slds-hide"  aura:id="loadingSpinner" >
+            <lightning:spinner size="medium" variant="brand" class="zIndex" />
+        </div> 
+    
+        <!-- Paste Window -->
+        <div class="absolutePaste">
+            <div class="originalSize" aura:id="togglePaste" onblur="{!c.togglePaste}">
+                <div class="slds-box slds-m-around_small slds-is-relative" style="box-shadow:0px 0px 5px #e8e8e8;margin:.2rem;width:100%:">
+                    <div class="button-toggle">
+                        <lightning:buttonIcon iconName="utility:close" variant="bare" size="medium" alternativeText="paste" iconClass="" onclick="{!c.togglePaste}" />
+                    </div>
+                        <lightning:textarea aura:id="pasteClubs" label="Paste Clubs" name="paste" class="slds-m-vertical_small" style="flex:1 auto;min-height:170px;" placeholder="Paste comma separated or single column list of Club #s" />
+
+                    <div class="slds-grid slds-grid_align-end">
+                        <div class="slds-m-right_small slds-p-horizontal_small">
+                           <lightning:button label="Clear" variant="Base" class="" onclick="{!c.clearPasteTextarea}" /> 
+                        </div>
+                        <lightning:button label="Add to Filters" variant="Success" class="oh-inverse" onclick="{!c.addPasteClubs}" />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ERROR CLUBS -->
+        
+        <div class="slds-grid showLists"  style="width:100%;order:1;" aura:id="lists">
+            <aura:if isTrue="{!v.errorData.length > 0}">
+                <div class="redbg slds-grid" style="flex-direction:column;width:100%;margin-bottom:20px;">
+                    <div class="slds-grid" style="align-items:center;width:100%;">
+                        <div class="circleBorder slds-m-right_small">
+                            <lightning:icon iconName="utility:warning" variant="error" size="small" />
+                        </div>
+                        <div>
+                            <div style="font-size:1rem;font-weight:300;">
+                                You have <span style="font-weight:bold;font-size:1.2rem;">{!v.errorData.length}</span> club(s) with issues
+                            </div>
+                            <div onclick="{!c.toggleErrors}" class="slds-grid" >
+                                <span aura:id="showErrors" class="toggleArrowDown" style="margin:0;padding:0;margin-right:.5rem;">
+                                    <lightning:icon iconName="utility:chevrondown" variant="error" size="x-small" class="arrow" />
+                                </span>
+                                <span class="showErrors" >View my club(s) with issues</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div aura:id="dataErrors" data-collapsed="true" class="hideErrs slds-section slds-is-collapsed">
+                          <div class="slds-border_bottom slds-p-vertical_x-small" style="margin:0;">                                                 
+                                <div class="slds-grid slds-grid_align-spread" style="align-items:center;">
+                                        <div style="width:68px;;min-width:68px;" class="slds-p-right_small slds-m-right_medium" >
+                                            &nbsp;
+                                        </div>
+                                        <div style="width:100%;flex:1;">
+                                             <p class="errorColor"> Errors</p> 
+                                        </div>
+                                         <div style="width:100%;flex:1;padding-left:20px;">
+                                             <p style="color:orange;"> Warnings</p> 
+                                        </div>
+                                        <div style="width:200px;min-width:200px;">
+                                            &nbsp;
+                                        </div>
+                              </div>
+                        </div>
+                        <aura:iteration items="{!v.errorData }" start="0" end="{!v.endIteration}" var="error"> 
+                            
+                            <div class="slds-border_bottom slds-p-vertical_x-small" style="margin:0;">                                                 
+                                <div class="slds-grid slds-grid_align-spread" style="align-items:flex-start;">
+                                        <div style="width:68px;" class="slds-p-right_small slds-border_right  slds-m-right_medium" >
+                                            <p class="errorColor"> #{!error.LocationNumber}</p>    
+                                        </div>
+                                          <aura:if isTrue="{!error.NumberofErrorMessages > 0}">
+                                        <div style="" class="errorColumnErrors">
+                                             <div style="display:flex; align-items:center;cursor:pointer" >
+                                                <aura:if isTrue="{!error.NumberofErrorMessages > 1}">
+                                                <div class="errorCircle">{!error.NumberofErrorMessages}</div>
+                                               
+                                                 <div style="color:darkred;text-decoration:underline;" onclick="{!c.showErrorList}" data-id="{!error.LocationId+'error'}">
+                                                     Toggle Error Messages
+                                                 </div>
+                                                </aura:if>
+                                                  <aura:if isTrue="{!error.NumberofErrorMessages == 1}">
+                                                    <aura:iteration items="{!error.ReservationErrorMessageList}" var="errorList" indexVar="indx">
+                                                        <div>
+                                                            <p class="errorColor"><span style="color:grey;">{!indx+1}.</span>&nbsp; {!errorList}</p>    
+                                                        </div>
+                                                    </aura:iteration>
+                                                </aura:if>
+                                            </div>
+                                            <aura:if isTrue="{!error.NumberofErrorMessages > 1}">
+                                             <div aura:id="" id="{!error.LocationId+'error'}" class="slds-hide">
+                                              <aura:iteration items="{!error.ReservationErrorMessageList}" var="errorList" indexVar="indx">
+                                                <div>
+                                                    <p class="errorColor"><span style="color:grey;">{!indx+1}.</span>&nbsp; {!errorList}</p>    
+                                                </div>
+                                            </aura:iteration>
+                                            </div>
+                                            </aura:if>
+                                        </div>
+                                        </aura:if>
+                                        <aura:if isTrue="{!error.NumberofWarningMessages > 0}">
+                                         <div class="warningColumnErrors">
+                                             <div style="display:flex; align-items:center;cursor:pointer">
+                                                 <aura:if isTrue="{!error.NumberofWarningMessages > 1}">
+                                                 <div class="errorCircle" style="background-color:orange;">
+                                                     {!error.NumberofWarningMessages}
+                                                 </div>
+                                                  <div style="color:orange;text-decoration:underline;" onclick="{!c.showErrorList}" data-id="{!error.LocationId+'warning'}">
+                                                     Toggle Warning Messages 
+                                                   </div>
+                                                 </aura:if>
+                                                 <aura:if isTrue="{!error.NumberofWarningMessages ==  1}">
+                                                     <aura:iteration items="{!error.ReservationWarningMessageList}" var="messageList" indexVar="indx">
+                                                            <p style="color:orange;"><span style="color:grey;">{!indx+1}.</span>&nbsp; {!messageList}</p>    
+                                                    </aura:iteration>
+                                                 </aura:if>
+                                              </div>
+                                             <aura:if isTrue="{!error.NumberofWarningMessages > 1}">
+                                                 <div class="slds-hide" id="{!error.LocationId+'warning'}">
+                                             <aura:iteration items="{!error.ReservationWarningMessageList}" var="messageList" indexVar="indx">
+                                                    <p style="color:orange;"><span style="color:grey;">{!indx+1}.</span>&nbsp; {!messageList}</p>    
+                                            </aura:iteration>
+                                                </div>
+                                             
+                                             </aura:if>
+
+                                        </div>
+                                        </aura:if>
+                                    <div class="slds-grid slds-grid_align-end " style="align-items:flex-start;">
+                                        <aura:if isTrue="{!error.IsResolvable}">
+                                            <div  style="width:110px;">
+                                                <lightning:button variant="neutral" iconName="utility:replace" label="Resolve" value="{!error.LocationId}" onclick="{! c.errorResolve }" />
+                                            </div>
+                                        </aura:if>
+                                        <aura:if isTrue="{!error.IsOverridable}">
+                                            <div class="slds-m-left_small" style="width:110px;">
+                                                <lightning:button variant="neutral" iconName="utility:error" label="Override" value="{!error.LocationId}" onclick="{! c.errorOverride }" />
+                                            </div>
+                                        </aura:if>
+                                    </div>
+                                </div>                    
+                            </div>	
+                        </aura:iteration>
+                        <aura:if isTrue="{!lessthan(v.endIteration,v.errorData.length)}">
+                            <div class="slds-grid slds-grid_align-center slds-m-around_small">
+                                <lightning:button label="Show Next 10" variant="Neutral" onclick="{!c.showMore}"/>
+                            </div>
+                        </aura:if>
+                        <!--
+                            <lightning:datatable 
+                                                 data="{!v.errorData}" 
+                                                 columns="{!v.errorColumns}" 
+                                                 keyField="Id"
+                                                 hideCheckboxColumn="true"
+                                                 class="background-error" 
+                                                 sortedBy="{!v.errorSortedBy }"
+                                                 sortedDirection="{!v.errorSortedDirection }"                     
+                                                 onsort="{!c.errorUpdateColumnSorting}"
+                                                 onrowaction="{!c.handleErrorActions}" />
+       -->
+                    </div>             
+                </div>
+                
+            </aura:if>
+            
+            <!-- ERROR RESOLUTION -->
+            
+            <div class="drawer drawer-hide slds-grid slds-grid_vertical" style="flex:1;" aura:id="panel"><!---->
+                <div class="closeButton slds-grid slds-grid_align-end">
+                    <button class="slds-button" onclick="{!c.toggleResolution}">
+                        <lightning:icon iconName="utility:close" variant="brand" />
+                    </button>
+                </div>
+                <div class="drawer-content">
+                    
+                    <div class="drawer-title slds-border_bottom textColor">
+                        <h3 class="oh-headline" sytle="font-size:1.2rem;"><lightning:icon iconName="utility:warning" variant="inverse" class="slds-m-right_x-small"/>Resolve Error</h3>
+                    </div>
+                    <p class="textColor slds-p-vertical_small">Select date and either current club if available or new club then press resolve selected button to add to your available list.</p>
+                    <div class="slds-p-top_medium" >
+                  <!--   <aura:if isTrue="{!v.resolutionTabs.length > 0}">
+                                   <div style="width:100%;max-width:900px;height:220px;padding-bottom:12px;border-radius:5px;">
+                                        <c:LocationMap currentLocation="{!v.currentLocation}" locations="{!v.locations}" />
+                                    </div>
+                        </aura:if>-->
+                        <lightning:tabset variant="scoped" onselect="{! c.handleSelectTab }" aura:id="resolutionTabset" >
+                            <aura:iteration items="{! v.resolutionTabs }" var="tab">
+                                <lightning:tab label="{! tab.label }" id="{! tab.id }">
+                                    <p>Club Resolving:</p>
+                                    <div class="slds-media oh-resolve-grey slds-border_bottom" style="align-items:center;">
+                                        <div class="slds-media_figure slds-p-around_small" >
+                                            <lightning:icon iconName="utility:warning" size="small" variant="warning" class="greyIcon" />
+                                        </div>
+                                      
+                                        <div class="slds-media_body">
+                                            <p class="errorLocationTitle">Club#: {!v.selectedError[0].LocationNumber}</p>
+                                            <p>Address: {!v.selectedError[0].LocationAddress}</p>
+                                        </div>
+                                  
+                                    </div>
+                                    <fieldset class="slds-form-element"> 
+                                        <aura:iteration items="{! tab.content }" var="content" indexVar="indx">
+                                            <div class="slds-border_bottom" style="margin:0;"> 
+                                                <div class="slds-radio_button" style="position:relative;">
+                                                    <div class="oh-resolution" for="{!content.LocationId}">
+                                                        <input type="radio"  name="content" id="{!content.LocationId}" onclick="{!c.handleClick}" aura:id="{!content.LocationNumber}"/>
+                                                        <label for="{!content.LocationId}">
+                                                            <span class="oh-icon-margin"></span>
+                                                            <span class="resolution-text">
+                                                                <span class="resolution-title"> Club#: {!content.LocationNumber} &nbsp;<span class="oh-icon-plus">({!content.Proximity} miles)</span></span><br/>
+                                                                Address: {!content.LocationAddress}
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>	
+                                        </aura:iteration>
+                                        
+                                        <div class="slds-grid slds-grid_align-end">
+                                            <div class="slds-p-vertical_medium">
+                                                <lightning:button variant="brand" label="Resolve Club with Selected" title="Resolve Club" onclick="{! c.handleResolve }" />
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </lightning:tab>
+                            </aura:iteration>
+                        </lightning:tabset>
+                        <aura:if isTrue="{!v.resolutionTabs.length == 0}">
+                            <p style="color:#55698e;padding:10px;border-radius:5px;background-color:#ffcb4e;margin-top:20px;"> There are no alternate Clubs to resolve within a week of the selected date.</p>
+                            
+                        </aura:if>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+   
+        <!-- FIlters -->
+        <h3 class="slds-section__title" style="background: rgb(243, 242, 242);order:3;" onclick="{!c.toggleFilter}"> <!--showAdvancedFilter-->
+            <button class="slds-button slds-section__title-action">
+                <span aura:id="arrowDownTop" class="toggleArrow" style="margin:0;padding:0;margin-right:.5rem;">
+                    <lightning:icon iconName="utility:chevrondown" size="xx-small" class="arrowDown" />
+                </span>
+                <span class="test-id__section-header-title slds-truncate">Filters</span>
+            </button>
+        </h3>
+        <div class="slds-section toggleSection slds-is-open" style="order:4;" aura:id="filters" >
+            <div class="slds-section__content">
+                <div style="width:100%;" class="slds-p-bottom_small slds-border_bottom">
+                    <div class="slds-grid" style="width:100%;flex:1;align-items:center;">
+                        <div class="filterHeaderColumn slds-m-right_x-small">
+                            <h1>Select Date</h1>
+                        </div>
+                        <div class="slds-p-around_x-small date slds-grid slds-grow" style="width:100%;">
+                            <lightning:input type="date" label="" required="true" value="{!v.requestedDate}" aura:id="requestedDate" />                 
+                        </div>
+                    </div>
+                    <div class="slds-grid">
+                        <hr style="width:45%;"/>
+                        <div class="and-border" style="width:10%;">AND</div>
+                        <hr style="width:45%;" />
+                    </div>
+                    <div class="slds-grid slds-grow slds-grid_align-center" style="width:100%;flex-direction:column;">
+                        <div class="slds-grid slds-grow" style="width:100%;">
+                            <div class="filterHeaderColumn">
+                                <h1>Choose a method for selecting your Clubs</h1>
+                            </div>
+                            <div class="slds-grid slds-grid_vertical-align-start slds-grid_vertical-stretch" style="width:100%;">
+                                <div class="slds-p-around_small dashed-border slds-m-around_medium" style="position:relative;width:120px;align-items:center">
+                                    <div class="slds-hide"  aura:id="uploadSpinner" >
+                                        <lightning:spinner size="medium" variant="brand" />
+                                    </div> 
+
+                                    <p class="slds-m-top_x-small slds-m-bottom_xx-small" style="font-size:.75rem;text-align:left;">Upload Club #s</p>
+                                    <aura:if isTrue="{!v.importedJSON.length == 0}">
+                                        <div>
+                                            <input type="file" accept=".csv, text/csv, .txt, text/text" aura:id="upload" class="slds-hide" name="file" placeholder="select a file" onchange="{!c.uploadClubs}"/>    
+                                            <button onclick="{!c.selectUpload}" class="oh-blue-button" disabled="" aura:id="uploadButton">
+                                                <lightning:icon iconName="utility:upload" variant="inverse" size="small" />
+                                            </button>
+                                        </div>
+                                        <aura:set attribute="else">       
+                                            <div>
+                                                <button class="oh-green-button" disabled="">
+                                                    <lightning:icon iconName="utility:check" variant="inverse" size="small" />
+                                                </button>  
+                                                <p class="uploadText slds-m-top_x-small" style="line-height:102%;font-weight:bold;">{!v.importedJSON.length} Clubs</p>
+                                                <div class="slds-grid slds-m-top_xx-small slds-truncate" style="align-items:center;max-width:120px;">
+                                                    <a href="JavaScript:Void(0);" 
+                                                       onclick="{!c.clearUpload}" class="uploadText" style="color:red;margin-left:0;">
+                                                        <lightning:icon iconName="utility:close" size="xx-small" variant="error" class="slds-m-right_xx-small"/>
+                                                    </a>
+                                                    <div style="color:#0070D2;font-size:.7rem;line-height:1rem;vertical-align:middle;max-width:100px;" class="slds-truncate">{!v.filename}</div>	
+                                                </div>
+                                            </div>
+                                        </aura:set>
+                                    </aura:if>
+                                </div>
+                                <div class="slds-p-around_small dashed-border slds-m-around_medium" style="width:120px;align-items:center;">
+                                    <p class="slds-m-top_x-small slds-m-bottom_xx-small" style="font-size:.75rem;coilor:#54698D;">Paste Clubs</p> 
+                                    
+ 									<aura:if isTrue="{!v.pasteList.length == 0}">
+                                        <div>
+                                          	<button class="oh-blue-button" onclick="{!c.openPaste}" aura:id="pasteButton" disabled="">
+                                                <lightning:icon iconName="utility:list" variant="inverse" size="small"  />
+                                            </button>                
+                                        </div>
+                                        <aura:set attribute="else">       
+                                            <div>
+                                                <button class="oh-green-button" disabled="">
+                                                    <lightning:icon iconName="utility:check" variant="inverse" size="small" />
+                                                </button>  
+                                                <p class="uploadText slds-m-top_x-small" style="line-height:102%;font-weight:bold;">{!v.pasteList.length} Clubs</p>
+                                                <div class="slds-grid slds-m-top_xx-small slds-truncate" style="align-items:center;max-width:120px;">
+                                                    <a href="JavaScript:Void(0);" 
+                                                       onclick="{!c.clearPaste}" class="uploadText" style="color:red;margin-left:0;">
+                                                        <lightning:icon iconName="utility:close" size="xx-small" variant="error" class="slds-m-right_xx-small"/>
+                                                    </a>
+                                                    <div style="color:#0070D2;font-size:.7rem;line-height:1rem;vertical-align:middle;max-width:100px;" class="slds-truncate">Clear Clubs</div>	
+                                                </div>
+                                            </div>
+                                        </aura:set>
+                                    </aura:if>                                  
+                                    
+                                </div>	
+                                <div class="slds-grid slds-grid_vertical slds-p-around_small dashed-border slds-m-around_medium" style="width:120px;align-items:center;">
+                                    <div class="slds-p-around_x-small oh-checkbox" >
+                                        <p class="label-text slds-m-bottom_xx-small">Select All Clubs</p>
+                                        <lightning:input type="checkbox-button" label="Select All Clubs" name="Select All" checked="" aura:id="selectAll" onchange="{!c.selectAllFinder}" />
+                                    </div>            
+                                </div>
+                                <div class="slds-grid slds-grid_vertical slds-p-around_small dashed-border slds-m-around_medium" style="width:120px;align-items:center;">
+                                    <div class="slds-p-around_x-small oh-input" style="max-width:150px;">
+                                        <lightning:input type="number" label="# of Clubs" disabled="" value="{!v.requestedCount}" aura:id="numberOfLocations" />
+                                    </div>             
+                                </div>
+                                
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="slds-grid">
+                        <hr style="width:100%;"/>
+                        <!--<div class="and-border" style="width:10%;">OR</div>
+                        <hr style="width:45%;" />-->
+                    </div>
+                    <div class="slds-grid slds-grow" style="width:100%;margin-bottom:2rem;" >
+                        <div class="filterHeaderColumn">
+                                                      <h1>Choose additional filters for your Clubs</h1>  
+                        </div>
+                        <div class="slds-grid slds-grid_vertical" style="flex:1;width:90%;" >
+                             <!-- <fieldset class="slds-form-element slds-grid" style="flex:1;">
+                                  <div class="slds-form-element__control">
+                                    <div class="slds-checkbox-button" style="flex-wrap:wrap;">
+                                      <div class="slds-grid" style="flex-wrap:wrap;">  
+                                      <div class="oh-topic" for="beerWet">
+                                        <input name="checkbox" type="checkbox" id="beerWet" checked="" aura:id="beerWet" />
+                                        <label for="beerWet">
+                                          <span>
+                                            <i class="oh-icon oh-icon-beer_wet slds-p-top_small slds-p-bottom_x-small" aria-hidden="true"></i>
+                                          </span>
+                                          <span class="oh-icon-name">Beer - Wet</span>
+                                        </label>
+                                      </div>
+                                      <div class="oh-topic" for="beerDry">
+                                        <input name="checkbox" type="checkbox" id="beerDry" checked="" aura:id="beerDry" />
+                                        <label for="beerDry">
+                                          <span>
+                                            <i class="oh-icon oh-icon-beer_dry slds-p-top_small slds-p-bottom_x-small" aria-hidden="true"></i>
+                                          </span>
+                                          <span class="oh-icon-name">Beer - Dry</span>
+                                        </label>
+                                      </div>
+                                        </div>
+                                        <div class="slds-grid" style="flex-wrap:wrap;"> 
+                                      <div class="oh-topic" for="wineWet">
+                                        <input name="checkbox" type="checkbox" id="wineWet" checked="" aura:id="wineWet" />
+                                        <label for="wineWet">
+                                          <span>
+                                            <i class="oh-icon oh-icon-wine_wet slds-p-top_small slds-p-bottom_x-small" aria-hidden="true"></i>
+                                          </span>
+                                          <span class="oh-icon-name">Wine - Wet</span>
+                                        </label>
+                                      </div>
+                                      <div class="oh-topic" for="wineDry">
+                                        <input name="checkbox" type="checkbox" id="wineDry" checked=""  aura:id="wineDry" />
+                                        <label for="wineDry">
+                                          <span>
+                                            <i class="oh-icon oh-icon-wine_dry  slds-p-top_small slds-p-bottom_x-small" aria-hidden="true"></i>
+                                          </span>
+                                          <span class="oh-icon-name">Wine - Dry</span>
+                                        </label>
+                                      </div>
+                                        </div>
+                                        <div class="slds-grid" style="flex-wrap:wrap;"> 
+                                      <div class="oh-topic" for="spiritsWet">
+                                        <input name="checkbox" type="checkbox" id="spiritsWet" checked=""  aura:id="spiritsWet" />
+                                        <label for="spiritsWet">
+                                          <span>
+                                            <i class="oh-icon oh-icon-spirits_wet  slds-p-top_small slds-p-bottom_x-small" aria-hidden="true"></i>
+                                          </span>
+                                          <span class="oh-icon-name">Spirits - Wet</span>
+                                        </label>
+                                      </div>
+                                      <div class="oh-topic" for="spiritsDry">
+                                        <input name="checkbox" type="checkbox" id="spiritsDry" checked="" aura:id="spiritsDry" />
+                                        <label for="spiritsDry">
+                                          <span>
+                                            <i class="oh-icon oh-icon-spirits_dry  slds-p-top_small slds-p-bottom_x-small" aria-hidden="true"></i>
+                                          </span>
+                                          <span class="oh-icon-name">Spirits Dry</span>
+                                        </label>
+                                      </div>
+                                        </div>
+                                      <div class="oh-topic" for="foodPairing">
+                                        <input name="checkbox" type="checkbox" id="foodPairing" checked="" aura:id="foodPairing" />
+                                        <label for="foodPairing">
+                                          <span>
+                                            <i class="fa fa-apple slds-p-top_small slds-p-bottom_x-small" aria-hidden="true"></i>
+                                          </span>
+                                          <span class="oh-icon-name">Food Pairing</span>
+                                        </label>
+                                      </div>
+                                    </div>
+                                  </div>
+                            </fieldset>-->
+                                <c:strike_multiLookup aura:id="searchText"
+                                                      class="visibility"
+                                                      value="" 
+                                                      label="" 
+                                                      object="Topic" 
+                                                      searchField="Name" 
+                                                      subtitleField="Description"
+                                                      order="Name"
+                                                      placeholder="Enter Name of Additional Filter Attributes" 
+                                                      iconName="standard:topic" 
+                                                      limit="5" 
+                                                      loadingMessage="Loading..." 
+                                                      errorMessage="Invalid input"
+                                                      />
+                                
+                        </div>
+                        <span class="slds-grid slds-grid_align-end" style="width:25%;">
+                            
+                            <div class="slds-p-around_x-small slds-p-top_medium">
+                                <lightning:button label="Find Clubs" aura:id="findClubsButton" onclick="{!c.findClubs}" variant="brand" />
+                            </div>
+                            <!--  <span class="slds-p-around_x-small">
+                        <lightning:button label="advanced filters" onclick="{!c.advancedFiltersToggle}" variant="bare" class="oh-blue"/>
+                   </span>-->
+                        </span> 
+                    </div>
+                    
+                </div> 
+                
+            </div>
+        </div>
+                 
+        <div>
+            <h3 class="slds-section__title" style="background: rgb(243, 242, 242);order:-5;" onclick="{!c.toggleAvailableClubs}">
+                <button class="slds-button slds-section__title-action ">
+                    <span aura:id="arrowDown" class="toggleArrow" style="margin:0;padding:0;margin-right:.5rem;">
+                        <lightning:icon iconName="utility:chevrondown" size="xx-small" class="arrowDown"/>
+                    </span>
+                    <span class="test-id__section-header-title slds-truncate">{!v.data.length} Available Clubs</span>
+                </button>
+            </h3>
+            <!-- AVAILABLE CLUBS -->
+            
+            <div class="slds-section slds-is-open toggleSection" aura:id="availableClubs" >
+                 
+                <div class="slds-section__content">  
+                    <aura:if isTrue="{!v.data.length > 0}"> 
+                        <div class="slds-grid slds-grid_align-end slds-p-around_x-small" style="width:100%;">
+                            <lightning:button label="Reserve Clubs" iconName="utility:forward" iconPosition="left"  class="greenBtn" variant="brand" onclick="{!c.reserveSelected}"/>
+                        </div>
+
+                        <div class="slds-grid" style="width:100%;" aura:id="dataTableContainer">
+                         
+                            <div class="slds-m-top_small dataCont" style="{!(v.showWarnings ? 'width'+':'+'73%' : 'width'+':'+'100%' )}"><!-- -->
+                                <lightning:datatable aura:id="dataTable"
+                                                     data="{!v.data }" 
+                                                     columns="{!v.columns }" 
+                                                     keyField="Id"
+                                                     rowNumberOffset="0"
+                                                     hideCheckboxColumn=""
+                                                     selectedRows="{!v.selectedRows }"
+                                                     onrowselection="{!c.selectedLocations }"
+                                                     sortedBy="{!v.sortedBy }"
+                                                     sortedDirection="{!v.sortedDirection }"                     
+                                                     onsort="{!c.updateColumnSorting}"
+                                                     onrowaction="{!c.handleRowActions}"
+                                                     class="normal" />
+                            </div>
+                               <!-- WARNINGS UI -->
+                            <aura:if isTrue="{!v.showWarnings}" >
+                                <div class="slds-box warningCont" aura:id="warningContainer">
+                                    <div style="cursor:pointer;position:absolute;right:0;top:0;padding:.5rem;" onclick="{!c.closeWarnings}">
+                                        <lightning:icon iconName="utility:close" size="x-small" variant="brand" />
+                                    </div>
+                                           <h2 style="color:grey;">
+                                               {!v.warnings[0].NumberofWarningMessages} Warnings for Club# {!v.warnings[0].LocationNumber}
+                                           </h2>
+                                    <hr style="margin-top:.8rem;
+                                               margin-bottom:.8rem;"/>
+                                 <aura:iteration items="{!v.warnings[0].ReservationWarningMessageList }" var="warnings" indexVar="indx">
+                                       <div > 
+                                            <div style="color:orange;margin-bottom:.5rem;">
+                                             <span style="color:grey;">{!indx+1}.</span>&nbsp;{!warnings} 
+                                             </div>
+                                       </div>	
+                                 </aura:iteration>
+                                 </div>
+                            </aura:if>   
+                        </div>
+                        
+        <!--endlist-->
+                        <aura:set attribute="else">
+                             <lightning:badge label="There are no Clubs available based on your filter selections" class="zeroBG"/>
+                        </aura:set>
+                    </aura:if> 
+                </div>
+
+            </div>
+        </div>
+
+        <!-- end available clubs -->
+    </div>
+                           
+</aura:component>

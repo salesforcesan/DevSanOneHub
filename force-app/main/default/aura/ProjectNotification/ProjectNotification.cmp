@@ -1,0 +1,51 @@
+<aura:component access="global">
+    <aura:attribute name="class" type="String" default="" description="The class attribute applies to the outmost container."/>
+    <aura:attribute name="message" type="string" default="" description="The message to show"/>
+    <aura:attribute name="error" type="string" default="" description="deprecated. do not use it"/>
+    <aura:attribute name="position" type="String" default="relative" description="relative, absolute"/>
+    <aura:attribute name="autoHide" type="Boolean" default="false"/>
+    <aura:attribute name="hideCloseButton" type="Boolean" default="false"/>
+    <aura:attribute name="type" type="string" default="info" description="The accepted value is info,warning,error,success."/>
+    <aura:attribute name="visible" type="Boolean" default="false"/>
+    <aura:attribute name="duration" type="Integer" default="3000"/>
+    <aura:attribute name="recId" type="Id" />
+    <aura:attribute name="isPendingchanges" type="Boolean" default="false"/>
+    <aura:attribute name="isOOCFChanges" type="Boolean" default="false"/>
+    <aura:registerEvent name="EventPendingProjectChanges" type="c:EventPendingProjectChanges"/>
+    <aura:registerEvent name="EventPendingOOCF" type="c:EventPendingOOCF"/> 
+    <aura:handler name="change" value="{!v.visible}" action="{!c.onChangeVisible}"/>
+    <aura:method name="show" action="{!c.onShow}">
+        <aura:attribute name="message" type="String"/>
+        <aura:attribute name="messageType" type="String" default="info"/>
+        <aura:attribute name="autoHide" type="Boolean" default="false"/>
+        <aura:attribute name="duration" type="Integer" default="3000"/>
+    </aura:method>
+    <aura:method name="close" action="{!c.onClose}"/>
+    <div class="{!join(' ','notification-container', v.class, v.position, v.visible ? 'notify-show' : 'notify-hide')}" aura:id="notification">
+        <div class="{!'slds-notify slds-size_1-of-1 slds-notify--alert slds-grid_align-center slds-theme--' + v.type}" role="{!v.type}">
+            <aura:if isTrue="{!!v.hideCloseButton}">
+                <lightning:buttonIcon onclick="{!c.onClose}" iconName="utility:close" variant="bare" class="slds-button slds-notify__close slds-button--icon-inverse notify-close-icon" alternativeText="close" size="medium"/>
+            </aura:if>
+            <span class="slds-assistive-text">Close</span>
+            <div class="slds-text-align_center"><!--slds-grid slds-grid_align-center slds-size_9-of-12-->
+                <h2 style="test-align:center;">{!v.message}</h2>
+            </div>
+            <aura:if isTrue="{!(v.isPendingchanges == true) || (v.isOOCFChanges  == true)}">
+                <div class="slds-grid oh-buttons-absolute slds-m-left_medium">
+                    <aura:if isTrue="{!v.isPendingchanges}"> 
+                        <div class="slds-m-horizontal_x-small">
+                            <button class="slds-button slds-button_neutral" onclick="{!c.releasechangesButtonClicked}" id="edit" style="text-decoration:none;text-overflow:clip;min-width:175px;">Release Changes</button>
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!v.isOOCFChanges}"> 
+                        <div class="slds-m-horizontal_x-small"> 
+                            <button class="slds-button slds-button_neutral" onclick="{!c.releaseoocfButtonClicked}" id="oocf" style="text-decoration:none;text-overflow:ellipsis;min-width:150px">Release Changes</button>
+                        </div>
+                    </aura:if>
+                    
+                </div>
+            </aura:if>
+        </div>
+        
+    </div>
+</aura:component>

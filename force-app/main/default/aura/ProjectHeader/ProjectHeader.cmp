@@ -1,0 +1,114 @@
+<aura:component extends="c:UISecurity" controller="LightningProjectController" implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global" >
+    
+    <aura:dependency resource="markup://force:navigateToComponent" type="EVENT"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="securityelements" type="String" access="global" />
+    <!-- ATTRIBUTES DECLARATION -->
+    <aura:attribute name="project" type="Object" access="global" />
+    <aura:attribute name="projectTags" type="Object" access="global" />
+    <aura:attribute name="showControls" type="Boolean" access="global" default="false" />
+    <aura:attribute name="isDeleteMode" type="Boolean" access="global" default="false" />
+    <aura:attribute name="isCloneMode" type="Boolean" access="global" default="false" />
+    <!-- PUBLISHER -->
+    
+    <!-- EVENT LISTENER -->    
+    <aura:handler event="c:EventProjectRefresh" action="{!c.updateComponent}"/>    
+    <aura:handler event="c:EventConfirm" action="{!c.handleConfirm}"/> 
+    <aura:handler name="messageBoxEvent" event="c:SimpleComponentEvent" action="{!c.onMessageBoxEvent}"/>
+    <c:Notification aura:id="notify" class="no-flow" type="warning"/>
+    <c:MessageBox aura:id="messageBox"/>
+    
+    <div>  
+        <aura:if isTrue="{!v.uisecuritymessage.length > 0 }">
+            <c:Notification aura:id="notification" class="no-flow" message="{!v.uisecuritymessage}" visible="true" type="warning"/>
+        </aura:if>
+    </div>
+    <div class="slds-is-relative">
+        <div class="spinner slds-hide" style="min-height:100px" aura:id="displaySpinner">
+            <lightning:spinner size="medium" variant="brand" />
+        </div>
+    </div>
+    <div class="slds-page-header slds-m-top--small background-header slds-p-top--small" role="banner">
+        <div class="slds-grid">
+            <div class="slds-has-flexi-truncate slds-grid slds-grid--vertical">
+                <h1 class="project-title slds-truncate">{!v.project.Name}</h1> 
+                <div  class="slds-grid">
+                    <ul class="slds-list--horizontal slds-m-top--x-small" style="flex-wrap:wrap;">
+                        <li class="slds-item slds-p-right--medium">{!v.project.ProjectNumber}</li>
+                        <li class="slds-item slds-p-horizontal--medium">{!v.project.ProjectTypeName}</li> 
+                        <li class="slds-item slds-p-horizontal--medium">{!v.project.BudgetedLocationsCount} Budgeted Locations</li> 
+                        <aura:if isTrue="{!v.project.Program != null}">
+                            <aura:set attribute="else">
+                                <li class="slds-item slds-p-horizontal--medium">{!v.project.Program}</li>
+                            </aura:set>
+                        </aura:if>
+                        <!--<li class="slds-item slds-p-horizontal-medium">{!v.project.OwnerName}</li>-->
+                    </ul>
+                </div>
+            </div>
+            <div class="slds-col slds-no-flex slds-grid slds-grid--vertical slds-align-bottom">
+                <div class="slds-grid slds-grid--align-end project-owner slds-m-bottom--small">{!v.project.OwnerName}</div>
+                <div class="slds-grid ">
+                    <div aura:id="Project__c.ReleaseChanges" class="hide slds-m-right--x-small">
+                        <aura:if isTrue="{! and(v.pendingchanges == true,v.releasependingchangesrequest == false)}"> 
+                            <button class="slds-button slds-button--neutral" onclick="{!c.releasechangesButtonClicked}" id="edit">Release Pending Changes</button>
+                        </aura:if>
+                    </div>
+                    <div aura:id="Project__c.OOCF" class="slds-m-right--x-small">                        
+                        <aura:if isTrue="{!v.project.OutOfCycleFulfillment}"> 
+                            <button class="slds-button slds-button--neutral" onclick="{!c.releaseoocfButtonClicked}" id="oocf">Send to Fulfillment</button>
+                        </aura:if>
+                    </div>
+                    <div aura:id="Project__c.Submit" class="hide slds-m-right--x-small">
+                        <button class="slds-button slds-button--neutral slds-not-selected" aria-live="assertive" id="approval" onclick="{!c.submitForApprovalButtonClicked}">
+                            <span class="slds-text-not-selected">Review and Submit</span>
+                        </button>
+                    </div>
+                    <aura:if isTrue="{!v.project.IsJobManualRegenReqd}">
+                        <div class="hide slds-m-right--x-small">
+                            <button class="slds-button slds-button--neutral slds-not-selected" aria-live="assertive" id="approval" onclick="{!c.GenerateJobManualHandler}">
+                                <span class="slds-text-not-selected">Generate Job Manual</span>
+                            </button>
+                        </div>       
+                    </aura:if>
+                    <div aura:id="Project__c.Edit" class="hide slds-m-right--x-small">
+                        <button class="slds-button slds-button--neutral" onclick="{!c.editButtonClicked}" id="edit">Edit Project</button>
+                    </div>
+                    
+                    <div aura:id="dropHeader" class="slds-dropdown-trigger" tabindex="0">
+                        <button class="slds-button slds-button--icon-border-filled" aria-haspopup="true" onblur="{!c.hideDropdown}" onclick="{!c.toggleDropdown}" title="More Actions" >
+                            <i class="fa fa-caret-down fa-lg" aria-hidden="true"></i>  
+                            <span class="slds-assistive-text">Show More</span>
+                        </button>
+                        <div class="slds-dropdown slds-dropdown--right" tabindex="0">
+                            <div class="slds-dropdown__list slds-grid slds-grid--vertical" role="menu">
+                                <div aura:id="Project__c.Cancel" class="hide slds-dropdown__item" role="presentation"  tabindex="0">
+                                    <a href="javascrip:void(0);" class="slds-not-selected" role="menuitem" tabindex="0" aria-live="assertive"  id="cancel" onclick="{!c.cancelButtonClicked}">
+                                        <span class="slds-text-not-selected">Cancel Project 1 2</span>
+                                    </a>								                        
+                                </div>
+                                
+                                <div aura:id="Project__c.Delete" class="hide slds-dropdown__item" role="presentation"  tabindex="0">
+                                    <a href="javascrip:void(0);" class="" role="menuitem" id="delete" onclick="{!c.deleteButtonClicked}">Delete Project</a>                              
+                                </div>
+                                
+                                
+                                <div aura:id="Project__c.Clone" class="hide slds-dropdown__item" role="presentation"  tabindex="0">
+                                    <a href="javascrip:void(0);" class="" role="menuitem" onclick="{!c.cloneButtonClicked}" id="clone">Clone Project 1 2</a>
+                                </div>
+                                
+                                
+                                <aura:if isTrue="{!v.project.DetailReportURL}">
+                                    <div aura:id="viewDetailReport" class="slds-dropdown__item" role="presentation"  tabindex="0">
+                                        <a target="_blank" href="{!v.project.DetailReportURL}" class="" role="menuitem"  id="detailReport">View Detail Report</a>
+                                    </div>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </div>                      
+                </div>	
+            </div>
+        </div>
+    </div>
+</aura:component>

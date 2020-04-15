@@ -1,0 +1,74 @@
+<aura:component extends="c:UISecurity" controller="LightningProjectEquipmentController" implements="force:appHostable,force:hasRecordId" access="global" >
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <ltng:require styles="{!$Resource.oh_tools + '/oh-tools-style.css'}" />
+    <aura:attribute name="service" type="Object" access="global" />
+    <aura:attribute name="projectId" type="Id"  />
+    <aura:attribute name="uid" type="String"  />
+    <aura:attribute name="tools" type="EquipmentWrapper[]"/>   
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="message" type="Object" default=""/> 
+    <aura:attribute name="securityDisabled" type="Boolean" default="true" />
+    
+    <div class="slds-is-relative">
+        <div class="slds-hide spinner" style="min-height:100px" aura:id="Spinner">
+            <lightning:spinner size="medium" variant="brand" />
+        </div>
+    </div>
+    <div>
+    <div class="slds-is-relative slds-size_1-of-1 pad-right slds-grid" style="overflow:hidden;">
+        <div class="slds-card slds-size_8-of-12 slds-p-around_medium" style="margin-right:12px;">
+            
+            <div class="slds-m-bottom_small">
+                 <c:SectionHeaderProject Title="Service Tools" iconClass="fa-wrench"/>
+            </div>
+            <!--
+            <div class="slds-p-bottom_small">
+                <c:SectionHeader Title="Service Tools" iconClass="fa-wrench" ProjServiceID="{!v.recordId}" />
+            </div>-->
+            <c:Notification aura:id="notification" class="no-flow"/>
+            
+            <section class="slds-p-around--small slds-p-bottom--large">
+                <div class="slds-media ">
+                    <p class="slds-media__body">
+                        To select a tool, click on the icon and the color will change to green signifying it has been selected.  To remove a tool, click on the icon to remove color.
+                    </p>
+                </div>
+            </section>    
+            <div>
+                <center><abbr class="slds-required" title="required">{!v.message}</abbr></center>           
+            </div>
+            <section class="slds-grid slds-p-around--x-small" >
+                <fieldset>        
+                    <div class="slds-grid readonly" style="max-width:680px;" aura:id="Project__c.RL_Tools">
+                        <div class="slds-checkbox" style="flex-wrap:wrap; display:flex;border:0;border-radius:0;background-clip: padding-box;" aura:id="parentDiv" >                    
+                            <aura:iteration items="{!v.tools}" var="tool">
+                                <div class="oh-tool-box" for="{!'tool'+tool.Id+v.uid}">
+                                    <input type="checkbox" id="{!'tool' + tool.Id + v.uid}" onclick="{!c.handleClick}" checked="{!tool.IsActive? 'checked':'false'}" />
+                                    
+                                        <label class="oh-label-color" for="{!'tool'+tool.Id+v.uid}" title="{!tool.Name}" style="{!tool.IsActive? 'background: #4BCA81;color: #FFF;':''}">
+                                            <span class="slds-p-top--small slds-p-bottom--xx-small oh-icon-tool">
+                                                <i class="{!tool.ToolIconClass}" aria-hidden="true"></i>
+                                            </span>
+                                            <span class="oh-icon-tool-name slds-wrap">{!tool.Description}</span>
+                                        </label>                            
+
+                                </div>                        
+                            </aura:iteration>
+                        </div>
+                    </div>
+                </fieldset>
+            </section>   
+            
+        </div>
+        <div class="slds-size_4-of-12 slds-card slds-p-around_medium" style="margin-top:0;">
+            <div class="slds-p-bottom--medium">                
+                <c:SectionHeaderProject Title="Chatter" iconClass="fa-commenting-o" />
+            </div>
+            <div class="slds-p-horizontal--small">
+                <forceChatter:publisher context="RECORD" recordId="{!v.projectId}" />
+                <forceChatter:feed type="Record" subjectId="{!v.projectId}"/>
+            </div>
+        </div>  
+    </div>
+	</div>    
+</aura:component>

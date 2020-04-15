@@ -1,0 +1,55 @@
+<aura:component controller='LightningGatewayController' extends="c:Remotable" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:dependency resource="markup://c:PhotoViewerFilter"/>
+    <!-- app state -->
+    <aura:attribute name="usage" default="Project Builder" type="String" access="global" description="project builder or community viewer or Internal User or Retailer"/>
+    <aura:attribute name="usagePB" type="boolean" default="false"/>
+    <aura:attribute name="projectId" type="String" default=""/>
+    <aura:attribute name="filter" type="Map" default="" access="private"/>
+    <aura:attribute name="expandFilter" type="boolean" default="true"/>
+    <aura:attribute name="hasMore" type="boolean" default="false"/>
+    <aura:attribute name="showCount" type="boolean" default="false"/>
+    <aura:attribute name="appState" type="Map" access="private" description="photo viewer application state store"/>
+    <aura:attribute name="action" type="String" access="private" default="" description="filter,showmore"/>
+    <aura:attribute name="communityUrl" type="String" default="" access="private"/>
+    <aura:attribute name="onInitState" type="boolean" default="true" access="private"/>
+    <aura:attribute name="showBusy" type="boolean" default="false" access="private" />
+    <aura:attribute name="noneOverrideCursor" type="Integer" default="0" access="private"/>
+    <aura:attribute name="overrideCursor" type="Integer" default="0" access="private"/>
+    <aura:attribute name="filterPlaceholder" type="Aura.Component[]"/>
+    <!-- event handlers -->
+    <aura:handler name="init" value="{!this}" action="{! c.onInit }"/>
+    <aura:handler name="onToggleFilter"
+        event="c:SimpleComponentEvent" action="{! c.onToggleFilter }"/>
+    <aura:handler name="onFilterChanged"
+        event="c:SimpleComponentEvent" action="{! c.onFilterChanged }"/>
+    <aura:handler name="onFilterClear" event="c:SimpleComponentEvent" action="{! c.onFilterClear }"/>
+    <aura:handler name="onLoadNextPage" event="c:SimpleComponentEvent"
+        action="{! c.onLoadNextPage }"/>
+    <aura:handler name="onShowMoreRequest" event="c:SimpleComponentEvent" action="{! c.onShowMore }"/>
+
+    <!-- html area -->
+    <div class="{!v.usagePB ? 'photo-viewer-container-pb' : 'photo-viewer-container'}">
+        <div class="{!v.usagePB ? 'slds-m-bottom_small oh-filters-pb filter-order-pb' : 'slds-m-bottom_small oh-filters filter-order'}">
+            {!v.filterPlaceholder}
+        </div>
+        <div class="{!v.usagePB ? 'oh-photos-pb photos-order-pb' : 'oh-photos photos-order'}">
+        <c:PhotoViewerList aura:id="photoList"
+            usage = "{! v.usage }"
+            communityUrl = "{! v.communityUrl }"
+            hasMore = "{! v.hasMore }"
+            showCount = "{! v.showCount }"
+            namespace = "{! v.appState.namespace }"
+            projectCount="{! v.appState.projectCount }"
+            loading="{! v.showBusy }"
+            photos="{! v.appState.photos }"
+            maxExports = "{! v.appState.maxExports }"
+            maxFavorites = "{! v.appState.maxFavorites }"
+            ></c:PhotoViewerList>
+        </div>
+         <aura:if isTrue="{! v.showBusy }">
+            <div>
+                <lightning:spinner class="oh-spinner" aura:id="spinner" variant="brand" size="large" alternativeText="processing..."></lightning:spinner>
+            </div>
+        </aura:if>
+    </div>
+</aura:component>

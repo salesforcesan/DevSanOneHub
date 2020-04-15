@@ -1,0 +1,96 @@
+<aura:component controller="LightningSurveyQuestionsControllerv2" implements="flexipage:availableForAllPageTypes" access="global">
+    
+    <aura:attribute name="operationType" type="String" access="global" />
+    
+    <aura:attribute name="serviceQuestionRuleID" type="String" access="global" />
+    
+    <aura:attribute name="squestionId" type="String" access="global" />
+    <aura:attribute name="parentsquestionId" type="String" access="global" />
+    <aura:attribute name="operator" type="String" access="global" />
+    <aura:attribute name="operators" type="List" />
+    <aura:attribute name="definedResponses" type="List" access="global" />
+    <aura:attribute name="parentSqObject" type="Object" access="global" />
+    <aura:attribute name="selectedValue" type="String" />    
+    
+    <aura:registerEvent name="closeDialogEvent" type="c:SimpleComponentEvent"/>        
+    <aura:registerEvent name="SurveyQuestionrule" type="c:EventSurveyQuestionRules" />        
+    
+    <c:Notification aura:id="nt" class="no-flow"/>
+    <c:MessageBox aura:id="messageBox"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />   
+    
+    <div style ="margin:20px;">
+        <form class="slds-form_stacked">
+             <div class="slds-grid slds-border_bottom slds-p-bottom_small" id="questiondiv" style="width:100%">           
+                <aura:if isTrue="{!v.parentSqObject.QuestionType == 'Yes/No'}">
+                    <div class="slds-media__figure oh-icon-survey slds-icon_container slds-icon_container_circle">
+                        <i class="fa fa-balance-scale fa-lg" aria-hidden="true"></i>
+                    </div>
+                </aura:if>    
+                <aura:if isTrue="{!v.parentSqObject.QuestionType == 'Number'}">
+                    <div class="slds-media__figure oh-icon-survey slds-icon_container slds-icon_container_circle">
+                        <i class="fa fa-calculator fa-lg" aria-hidden="true"></i>
+                    </div>
+                </aura:if>    
+                <aura:if isTrue="{!v.parentSqObject.QuestionType == 'Text'}">
+                    <div class="slds-media__figure oh-icon-survey slds-icon_container slds-icon_container_circle">
+                        <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
+                    </div>
+                </aura:if>    
+                <aura:if isTrue="{!v.parentSqObject.QuestionType == 'Single-Select List'}">
+                    <div class="slds-media__figure oh-icon-survey slds-icon_container slds-icon_container_circle">
+                        <i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>
+                    </div>
+                </aura:if>    
+                <aura:if isTrue="{!v.parentSqObject.QuestionType == 'Multi-Select List'}">
+                    <div class="slds-media__figure oh-icon-survey slds-icon_container slds-icon_container_circle">
+                        <i class="fa fa-list-ul fa-lg" aria-hidden="true"></i>
+                    </div>
+                </aura:if>    
+                <aura:if isTrue="{!v.parentSqObject.QuestionType == 'Photo'}">
+                    <div class="slds-media__figure oh-icon-survey slds-icon_container slds-icon_container_circle">
+                        <i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i>
+                    </div>
+                </aura:if>    
+                <div class="slds-grid_vertical-align-right">
+                    <div class="oh-survey-question slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                        <p>{!v.parentSqObject.QuestionText}</p>
+                    </div>
+                    <p class="slds-text-body_small">{!v.parentSqObject.QuestionTitle}</p>
+                    <p class="slds-text-body_small">{!v.parentSqObject.QuestionType}</p>
+                </div> 
+            </div>
+         
+            <br></br>
+            
+            <aura:iteration items="{!v.parentSqObject.DefinedResponses}" var="definedResponse">
+                <div class ="slds-grid slds-m-vertical_small" style="align-items:center;font-size:.72rem;width: 100%;">
+                    <div class="slds-m-right_x-small"> 
+                        <ui:inputCheckbox aura:id="cboxRow" 
+                                          label="" 
+                                          text="{!definedResponse.DefinedResponseText}" 
+                                          value="{!definedResponse.IsDefinedResponseSelected}" />
+                    </div>                     
+                    <p>{!definedResponse.DefinedResponseText}</p>
+                </div>  
+            </aura:iteration>
+        </form>
+        
+        <div class="oh-button-foot" style="margin-top:auto;">                 
+            <div class="slds-p-vertical_medium slds-p-right_medium" style="width:100%;">
+                <div class="slds-grid slds-grid_align-end">                      
+                    <lightning:button iconName="utility:close" label="Cancel" variant="neutral" 
+                                      onclick="{! c.closeModalDialog }" class="slds-m-right_small"/> 
+                    <ui:button aura:id="btnAddRule" class="slds-button  slds-button--brand slds-p-horizontal--small" 
+                               label="Save Rule" 
+                               press="{!c.AddRule}"/>                     
+                </div>
+            </div>
+        </div>
+        <div class="slds-button--group slds-p-vertical--small slds-p-right--medium slds-size--1-of-4" >
+            
+        </div>
+    </div>
+    
+    
+</aura:component>

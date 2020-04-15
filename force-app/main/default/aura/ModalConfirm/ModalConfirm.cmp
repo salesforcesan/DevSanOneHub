@@ -1,0 +1,28 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+
+    <!-- ATTRIBUTES DECLARATION -->
+    <aura:attribute name="message" default="" type="String"/>
+    <aura:attribute name="confirmButtonLabel" default="Yes" type="String"/>
+    <aura:attribute name="confirmEventKey" default="" type="String"/>
+    
+    <!-- PUBLISHER -->
+    
+    <!-- EVENT LISTENER -->
+    <aura:registerEvent name="hideModal" type="c:EventHideModal"/>
+    <aura:registerEvent name="eventConfirm" type="c:EventConfirm"/>
+    
+    <div>
+        <div class="slds-modal__content slds-p-around--medium">
+            <div>
+                <p class="slds-text-align--center"><aura:unescapedHtml value="{!v.message}" /></p>
+            </div>
+        </div>
+        <div class="slds-modal__footer">
+            <div class="button-group">
+                <c:ModalCancelButton buttonLabel="Cancel" />
+                <button class="slds-button slds-button--brand" onclick="{!c.fireConfirmEvent}">{!v.confirmButtonLabel}</button>
+            </div>
+        </div>
+    </div>
+	
+</aura:component>

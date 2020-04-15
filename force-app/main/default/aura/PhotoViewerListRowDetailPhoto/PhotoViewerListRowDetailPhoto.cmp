@@ -1,0 +1,215 @@
+<aura:component extends="c:Remotable" controller='LightningGatewayController'>
+    <!-- properties -->
+    <aura:attribute name="id" type="String" default=""/>
+    <aura:attribute name="usage" type="String" default=""/>
+    <aura:attribute name="isSuperUser" type="Boolean" default="false"/>
+    <aura:attribute name="favoriteTitle" type="String" default="" access="private"/>
+    <aura:attribute name="showBusy" type="boolean"
+        default="true" access="private"/>
+    <aura:attribute name="showMore" type="boolean"
+        default="false" access="private"/>    
+    <aura:attribute name="invalidPhoto" type="String" default="" access="private"/>
+    <aura:attribute name="photo" type="Map" access="private"/>
+    <aura:attribute name="formClass" type="String" access="private" default="oh-form"/>
+
+    <!-- events -->
+    <aura:registerEvent name="onMarkFavoriteEventRaised" type="c:SimpleComponentEvent"/>
+    <aura:registerEvent name="onExportOnePhoto" type="c:SimpleComponentEvent"/>
+    <aura:handler name="change" value="{! v.id }" action="{! c.onIdChanged }"/>
+    <aura:handler name="init" value="{!this}" action="{! c.onInit}"/>
+
+    <!-- html template -->
+    <div class="photo-container">
+        <aura:if isTrue="{! v.showBusy }">
+        <!-- if true -->
+        <div class="oh-content">
+            <lightning:spinner variant="inverse" alternativeText="loading..." class="oh-busy" size="large"/>
+        </div>
+        <!-- else -->
+            <aura:set attribute="else">
+        <div class="slds-grid">
+            <div class="slds-col slds-size_6-of-12 oh-left">
+                <div class="{! v.formClass }">
+                    <div class="slds-grid" style="height: 100%;">
+                        <div class="slds-col slds-align-middle slds-size_9-of-12">
+                            <div class="oh-image-container">
+                                <div class="oh-image-content">
+                                    <aura:if isTrue="{!v.photo.error != 1}">
+                                        <img src="{! v.photo.url}"/>
+                                        <aura:set attribute="else">
+                                            <img class="oh-photo-image-has-error"
+                                                src="{! v.invalidPhoto}" title="Invalid Photo"/>
+                                            <!--  <lightning:icon size="large" iconName="utility:error" alternativeText="Invalid Photo" variant="error" class="oh-photo-image-has-error"/> -->
+                                        </aura:set>
+                                    </aura:if>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-align-bottom slds-size_3-of-12">
+                            <div class="oh-image-actionbar">
+                                <div class="oh-button-group">
+                                 <!--    <div class="oh-button-item">
+                                        <lightning:button onclick="{! c.onSendEmail }" label="EMAIL" class="oh-button" variant="base" iconName="utility:email" title="Send Email"></lightning:button>
+                                    </div> -->
+                                    <div class="oh-button-item">
+                                        <lightning:button onclick="{! c.onExport }" label="EXPORT" class="oh-button" variant="base" iconName="utility:logout" title="Export"></lightning:button>
+                                    </div>
+                                    <div class="oh-button-item">
+                                        <aura:if isTrue="{! v.isSuperUser }">
+                                        <lightning:button
+                                            aura:id="btnFavorite"
+                                            onclick="{! c.onMarkFavorite }"
+                                            label="FAVORITE" class="{! v.photo.favorite == 1 ? 'oh-button oh-warn' : 'oh-button' }"
+                                            variant="base"
+                                            disabled="{! v.isSuperUser ? false : true }"
+                                            iconName="utility:favorite" title="{! v.favoriteTitle }"></lightning:button>
+                                        </aura:if>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-size_6-of-12 oh-right">
+                <div class="{! v.formClass }">
+                    <div class="oh-form-header slds-m-bottom_medium">
+                        <div class="oh-title slds-p-bottom_x-small slds-m-bottom_x-small">
+                            <span>{! v.photo.title || 'Photo Detail' }</span>
+                        </div>
+                        <div class="oh-sub-title">
+                            <span>{! v.photo.question}</span>
+                        </div>
+                    </div>
+                    <div class="oh-form-body slds-m-bottom_medium">
+                        <div class="slds-grid slds-m-bottom_small">
+                            <div class="slds-col slds-size_4-of-12">
+                              <span class="oh-label" title="Project">Project</span>
+                              <span class="oh-value" title="{! v.photo.project }">{! v.photo.project }</span>
+                            </div>
+                             <div class="slds-col slds-size_4-of-12">
+                                <span class="oh-label" title="Project Number">Project #</span>
+                              <span class="oh-value" title="{! v.photo.projectNumber }">{! v.photo.projectNumber }</span>
+                            </div>
+                            <div class="slds-col slds-size_4-of-12">
+                                <span class="oh-label" title="Service">Service</span>
+                              <span class="oh-value" title="{! v.photo.service }">{! v.photo.service }</span>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-m-bottom_small">
+                            <div class="slds-col slds-size_4-of-12">
+                                <span class="oh-label" title="Location">Location</span>
+                              <span class="oh-value" title="{! v.photo.location }">{! v.photo.location }</span>
+                            </div>
+                            <div class="slds-col slds-size_4-of-12">
+                                <span class="oh-label" title="Location #">Location #</span>
+                              <span class="oh-value" title="{! v.photo.locationNumber }">{! v.photo.locationNumber }</span>
+                            </div>
+                             <div class="slds-col slds-size_4-of-12">
+                                <span class="oh-label" title="Target">Target</span>
+                              <span class="oh-value" title="{! v.photo.target }">{! v.photo.target }</span>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-m-bottom_small">
+                            <div class="slds-col slds-size_4-of-12">
+                                <span class="oh-label" title="City">City</span>
+                              <span class="oh-value" title="{! v.photo.city }">{! v.photo.city }</span>
+                            </div>
+                            <div class="slds-col slds-size_4-of-12">
+                                <span class="oh-label" title="State">State</span>
+                              <span class="oh-value" title="{! v.photo.state }">{! v.photo.state }</span>
+                            </div>
+                            <div class="slds-col slds-size_4-of-12">
+                                <span class="oh-label" title="Banner">Banner</span>
+                                <span class="oh-value" title="{! v.photo.banner}">{! v.photo.banner}</span>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-m-bottom_small">
+                            <div class="slds-col slds-size_4-of-12">
+                               <span class="oh-label" title="Reported Date">Reported Date</span>
+                              <span class="oh-value" title="{! v.photo.photoDate }">{! v.photo.photoDate }</span>
+                            </div>
+                            <div class="slds-col slds-size_4-of-12">
+                                <aura:if isTrue="{! v.isSuperUser }">
+                                    <span class="oh-label" title="Rep Name">Rep Name</span>
+                                    <span class="oh-value" title="{! v.photo.repName }">{! v.photo.repName }</span>
+                                </aura:if>
+                            </div>
+                            <div class="slds-col slds-size_4-of-12">
+                            </div>
+                        </div>
+                        <div class="slds-m-bottom_small">
+                            <a href="javascript:void(0)" class="oh-title1 slds-p-bottom_x-small slds-m-bottom_x-small" onclick="{! c.onShowMore}">
+                                <span class="slds-m-right_x-small">
+                                    <aura:if isTrue="{!v.showMore}">
+                                        <c:svg class="slds-icon"                             xlinkHref="{! $Resource.slds213 + '/assets/icons/utility-sprite/svg/symbols.svg#chevrondown'}" ariaHidden="true"/>
+                                        <aura:set attribute="else">
+                                            <c:svg class="slds-icon"                             xlinkHref="{! $Resource.slds213 + '/assets/icons/utility-sprite/svg/symbols.svg#chevronright'}" ariaHidden="true"/>
+                                        </aura:set>
+                                    </aura:if>
+                                </span>
+                                <span>More Detail</span>
+                            </a>
+                        </div>
+                        <aura:if isTrue="{! v.showMore}">
+                            <div class="slds-grid slds-m-bottom_small">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <span class="oh-label" title="Project Start Date">Project Start Date</span>
+                                    <span class="oh-value" title="{! v.photo.startDate }">{! v.photo.startDate }</span>
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <span class="oh-label" title="Project End Date">Project End Date</span>
+                                    <span class="oh-value" title="{! v.photo.endDate }">{! v.photo.endDate }</span>
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                </div>
+                            </div>
+                            <aura:if isTrue="{! v.isSuperUser == true}">
+                                <div class="slds-grid slds-m-bottom_small">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <span class="oh-label" title="External Attempt Id">Axis Ticket#</span>
+                                    <span class="oh-value" title="{! v.photo.externalId }">{! v.photo.externalId }</span>
+                                </div>                                
+                                <div class="slds-col slds-size_8-of-12">
+                                </div>
+                            </div>
+                                <aura:if isTrue="{! v.photo.error == 1}">
+                                <div class="slds-grid slds-m-bottom_small">
+                                    <div class="slds-col slds-size_4-of-12">
+                                        <span class="oh-label" title="Has Error">Has Error</span>
+                                        <span class="oh-value" title="{! v.photo.error != 1 ? 'No': 'Yes' }">{! v.photo.error != 1 ? 'No': 'Yes' }</span>
+                                    </div>
+                                    <div class="slds-col slds-size_8-of-12">
+                                        <span class="oh-label" title="Error Message">Error Message</span>
+                                        <span class="oh-value" title="{! v.photo.message }">{! v.photo.message }</span>
+                                    </div>
+                                </div>
+                            </aura:if>
+                            </aura:if>
+                        </aura:if>
+                    </div>
+                    <div class="oh-form-footer hide">
+                        <div class="oh-title slds-m-bottom_medium slds-p-bottom_medium">
+                            <span>Related Locations</span>
+                        </div>
+                        <div class="oh-h-scroller">
+                            <aura:if isTrue="{! v.photo.locations == null || v.photo.locations.length == 0 }">
+                                <div class="oh-no-locations">No related locations</div>
+                                <aura:set attribute="else">
+                                    <aura:iteration items="{! v.photo.locations }" var="loc">
+                                        <a href="javascript:void(0)" class="oh-loc-image">
+                                            <img src="{! loc }"/>
+                                        </a>
+                                    </aura:iteration>
+                                </aura:set>
+                            </aura:if>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </aura:set>
+        </aura:if>
+        <!-- end if -->
+    </div>
+</aura:component>

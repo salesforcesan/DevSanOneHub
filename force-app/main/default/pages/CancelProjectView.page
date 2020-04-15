@@ -1,0 +1,39 @@
+<apex:page standardController="Project__c" extensions="CancelProjectExt" sidebar="false" showHeader="true">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<apex:pageMessage rendered="{!errorMessage<>null}"  summary="{!errorMessage}" severity="FATAL" strength="2" />
+<apex:form >
+    <script>
+         $(document).ready(function() {
+             $("[id*=btnSave]").click(function(){
+                 if(($.trim($('.messageText').text()).length) > 0)
+                 {
+                     alert($.trim($('.messageText').text()));
+                     return false;
+                 }
+                 else
+                 {
+                     return(confirm(" Do you want to cancel the selected Project(s)? "));
+                 }
+             });
+         });
+    </script>
+
+    <apex:pageBlock >
+        <apex:pageBlockButtons >
+            <!-- shahin had to remove action="{!SetStatus}"  -->
+            <apex:commandButton id="btnSave" value="Save Changes"/>
+            <apex:commandButton id="btnCancel" action="{!cancel}" value="Cancel & Go Back"/>
+        </apex:pageBlockButtons>
+
+        <apex:pageBlockSection title="Information" collapsible="false" columns="1">
+            <apex:outputField value="{!Project__c.Name}" />
+            <apex:outputField value="{!Project__c.Status__c}" />
+            <apex:inputField id="reason" value="{!Project__c.CancelReason__c}"  />  
+            <apex:inputtextarea id="reasonc" value="{!Project__c.CancelReasonComment__c}" required="true"  cols="150" /> 
+            
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+
+</apex:form>
+</apex:page>

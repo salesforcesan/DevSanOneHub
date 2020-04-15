@@ -1,0 +1,6 @@
+<aura:documentation>
+	<aura:description>
+    	<p>This component is called from <code>ProjectAuditHistory</code> parent component. It is receiving <code>TimelineEntryList</code> and <code>TimelineTitle</code> values and further initiating another child component <code>TimelineEntry</code>.
+    	</p>
+    </aura:description>
+</aura:documentation>

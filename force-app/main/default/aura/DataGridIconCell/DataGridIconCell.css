@@ -1,0 +1,21 @@
+.THIS {}
+
+.THIS .green {
+  color: #4bca81
+}
+
+.THIS .red {
+  color: #c23934;
+}
+
+.THIS .blue {
+  color: #54698d;
+}
+
+.THIS .gray {
+  color: rgba(0, 0, 0, 0.24);
+}
+
+.THIS.left-gap-40 > i {
+  margin-left: 1.5rem;
+}

@@ -1,0 +1,26 @@
+.THIS .bar-container {
+    position: relative;
+}
+.THIS .bar-chart {
+    height: 26px;
+    border: 1px solid #D8DDE6;
+}
+.THIS .bar-complete {
+    float: left;
+    height: 24px;
+    background-color: #04844B;
+    min-width: 2%;
+}
+.THIS .bar-slaRemaining {
+    float: left;
+    height: 24px;
+    background-color: #D8D8D8;
+}
+.THIS .bar-metric {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 1px;
+    color: #4A4A4A;
+    font-size: .8em;
+}

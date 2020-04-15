@@ -1,0 +1,8 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <aura:registerEvent name="hideModal" type="c:EventHideModal"/>
+	<aura:attribute name="buttonLabel" type="String" default="Cancel" access="global" />
+    
+    <button class="slds-button slds-button--neutral" onclick="{!c.hideModal}">{!v.buttonLabel}</button>
+
+</aura:component>

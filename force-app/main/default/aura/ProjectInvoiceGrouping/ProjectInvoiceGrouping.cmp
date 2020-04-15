@@ -1,0 +1,112 @@
+<aura:component implements="flexipage:availableForAllPageTypes,lightning:availableForFlowScreens,force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="LightningProjectInvoiceController" access="global">
+    <!--flexipage:availableForAllPageTypes,-->
+    <aura:attribute name="fullData" type="Object" />
+    <aura:attribute name="invoices" type="List" />
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="sortedBy" type="String" default="Name"/>
+    <aura:attribute name="sortedDirection" type="String" default="asc"/>
+    <aura:attribute name="selectedRowsDetails" type="Object" />
+    <aura:attribute name="selectedGroup" type="String" />
+    <aura:attribute name="selectedInvoices" type="List" />
+    <aura:attribute name="selectedRows" type="List" />
+    <aura:attribute name="selectedRowsCount" type="Integer" default="0" />
+    <aura:attribute name="hasInvoices" type="Boolean" />
+    <aura:attribute name="ns" type="String" default="" />
+    <aura:attribute name="availableGroupedInvoices" type="List" />
+    <aura:attribute name="initialGroupedCount" type="Integer" default="0" />
+    <aura:attribute name="groupedInvoiceSelected" type="String" />
+    <aura:attribute name="filter" type="String" default=""/>
+    <aura:handler event="force:refreshView" action="{!c.doInit}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <!--- enableInfiniteLoading  -->
+    <aura:attribute name="enableInfiniteLoading" type="Boolean" default="true"/>
+    <aura:attribute name="initialRows" type="Integer" default="50"/>
+    <aura:attribute name="rowsToLoad" type="Integer" default="10"/>
+    <aura:attribute name="totalNumberOfRows" type="Integer" default="50"/>
+    <aura:attribute name="loadMoreStatus" type="String" default="Loading .... "/>
+    <aura:attribute name="showRowNumberColumn" type="Boolean" default="false"/>
+    <aura:attribute name="rowNumberOffset" type="Integer" default="0"/>
+    <aura:attribute name="rowsToAdd" type="Integer" default="10"/>
+    <aura:attribute name="loading" type="Boolean" default="false" />
+    <aura:attribute name="currentCount" type="Integer" default="10"/>
+    
+    <lightning:navigation aura:id="navService" /> 
+    
+    <div class="slds-card slds-p-around_medium" style="position:relative;height:100%;min-height:800px;">
+        <div aura:id="lilspin">
+            <lightning:spinner  size="medium" variant="brand"/>
+        </div>
+         <div class="slds-grid slds-m-bottom_medium" style="width:100%;flex:1 auto;align-items:flex-end;">
+                <div style="width:50%;">
+                    <lightning:select name="model" label="Select an available invoice for grouping:" aura:id="groupedInvoices" value="{!v.selectedGroup}" onchange="{!c.getInvoices}">
+                        <option text="--None--" value="" />
+                        <aura:iteration items="{!v.availableGroupedInvoices}" var="option">
+                            <option text="{!option.Name + ' : ' + option.Description}" value="{!option.Id}" selected="{!option.Selected}" />
+                        </aura:iteration>
+                    </lightning:select>
+                </div> 
+             
+             	<div class="slds-grid slds-p-left_medium" style="width:50%;align-items:center;">
+                    <p>or</p>
+                     <div  class="slds-m-left_x-small" id="group">
+                        <lightning:button value="group" label="Create New Invoice for Grouping" iconName="standard:text_template" iconPosition="left"  variant="neutral" onclick="{!c.createGroupedInvoice}" />
+                    </div>
+                </div>
+        </div>
+       <aura:if isTrue="{!v.invoices.length > 0}">
+            <div class="slds-grid slds-grid_align-spread slds-p-bottom_x-small" style="align-items:center;position:relative;">
+                <div>
+                    <lightning:badge label= "{!'Invoices: '+ v.selectedRowsCount + ' selected of ' + v.invoices.length + ' available'}" />
+                </div>
+                <div class="slds-grid">
+                    <div  class="slds-m-left_x-small" id="group">
+                        <lightning:button value="group" label="Group Selected Invoices" iconName="standard:environment_hub" iconPosition="left"  variant="brand" onclick="{!c.addToGroupedHandler}" />
+                    </div>
+                </div>
+            </div>
+           <h2>Key fields and values that must match group invoice selected:</h2>
+            <div class="slds-grid slds-p-bottom_medium" style="align-items:center;position:relative;">
+				<p class="slds-m-right_small"><span style="font-weight:bold;">Account: </span>{!v.invoices[0].AccountName}</p>
+                <p class="slds-m-right_small"><span style="font-weight:bold;">Bill To Contact: </span>{!v.invoices[0].BillToContactName}</p>
+                <p class="slds-m-right_small"><span style="font-weight:bold;">Lawson Code: </span>{!v.invoices[0].LawsonCompanyCode}</p>
+                 <p class="slds-m-right_small"><span style="font-weight:bold;">Invoice Type: </span>Must be Post Execution</p>
+            </div>
+            <div class="slds-box">
+                <aura:if isTrue="{!v.initialGroupedCount > 0}">
+                <div class="slds-m-bottom_medium">
+                    <div class="groupedWarning slds-is-relative">
+                        <p>WARNING: Invoices pre-selected are already a part of this grouped invoice. <br/>If you deselect and group the selection it will remove any deselected invoices from the grouped invoice.</p>
+                        <lightning:buttonIcon iconName="utility:close"  variant="bare-inverse" title="close" alternativeText="Close Message" onclick="{!c.closeWarningHandler}"  class="buttonIcon"/>
+                    </div>
+                </div>
+                </aura:if>
+                <lightning:datatable 
+                                     data="{! v.invoices }" 
+                                     columns="{! v.columns }" 
+                                     keyField="Id"
+                                     selectedRows="{! v.selectedRows }"
+                                     onrowselection="{! c.updateSelectedInvoices }"
+                                     sortedBy="{! v.sortedBy }"
+                                     sortedDirection="{! v.sortedDirection }"                     
+                                     onsort="{!c.updateColumnSorting}"
+                                     enableInfiniteLoading="false"
+                                     />
+
+                
+            </div>       
+           <aura:set attribute="else">
+                <aura:if isTrue="{!not(empty(v.selectedGroup))}">
+                <div>
+                    <lightning:badge label="There are no available invoices to be grouped based on the selection." />
+                </div>
+                    <aura:set attribute="else">
+                    <div>
+                        <lightning:badge label="Please select an invoice from the picklist to return a list of available invoices." />
+                    </div>
+                    </aura:set>
+                </aura:if>
+            </aura:set>
+        </aura:if>
+    </div> 
+</aura:component>

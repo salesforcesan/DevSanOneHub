@@ -1,0 +1,44 @@
+<apex:page standardController="Project__c" extensions="CancelProjectExt">
+<c:jQueryScripts includejQueryUI="true" />
+<apex:sectionHeader title="Cancel Project" subtitle="{!projObj.Name}" />
+<c:Breadcrumb backtoid="{!projObj.Id}" />
+
+<apex:pageMessages showDetail="false" escape="false" />
+<apex:pageMessage rendered="{!errorMessage<>null}"  summary="{!errorMessage}" severity="FATAL" strength="2" /> 
+    <apex:form >    
+    <apex:pageBlock >    
+        <apex:pageBlockButtons >
+            <apex:commandButton id="btnSave" action="{!cancelProj }" value="Cancel Project"/>
+            <apex:commandButton id="btnCancel" action="{!DoNotCancel}" value="Do not Cancel" immediate="true" html-formnovalidate="formnovalidate"/>
+        </apex:pageBlockButtons>     
+
+        <apex:pageBlockSection title="Information" collapsible="false" columns="1">  
+            <apex:outputField value="{!Project__c.Name}" />
+            <apex:outputField value="{!Project__c.Status__c}" />   
+            <apex:inputField id="reason" value="{!Project__c.CancelReason__c}" required="true" />
+            <apex:inputTextArea id="reasonc" value="{!Project__c.CancelReasonComment__c}"  cols="40" /> 
+            <input type="hidden" id="hdnCancelReason" name="hdnCancelReason"/>
+        </apex:pageBlockSection>       
+    </apex:pageBlock> 
+    </apex:form>
+    <script> 
+        var j$ = jQuery.noConflict();
+        j$(document).ready(function() {               
+             j$("[id*=btnSave]").click(function(){
+                 if(j$("[id*=reason]").val() == ""){
+                     alert("Cancel reason is required");
+                     return false;
+                 }
+                 if(j$("[id*=reason]").val() == "Other" && j$("[id*=reasonc]").val() == ""){
+                     alert("Cancel reason comment is required");
+                     return false;
+                 }
+                 return(confirm("Do you want to cancel the selected project?"));
+             });
+             
+             j$("[id*=reason]").on("change", function(){
+                 j$("[id*=hdnCancelReason]").val(j$("[id*=reason]").val());  
+             });
+         });
+    </script>   
+</apex:page>

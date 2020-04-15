@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsSurveyScoreExceedThreshold__c</fullName>
+    <externalId>false</externalId>
+    <formula>SurveyComplexityScore__c &gt;= $Setup.SurveyScoreSettings__c.SurveyScoreThreshold__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Is Survey Score Exceed Threshold</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

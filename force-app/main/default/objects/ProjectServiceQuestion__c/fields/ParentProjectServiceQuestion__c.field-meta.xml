@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ParentProjectServiceQuestion__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Parent Project Service Question</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Parent Project Service Question</inlineHelpText>
+    <label>Parent Project Service Question</label>
+    <referenceTo>ProjectServiceQuestion__c</referenceTo>
+    <relationshipLabel>Project Service Questions</relationshipLabel>
+    <relationshipName>ParentProjectServiceQuestion</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

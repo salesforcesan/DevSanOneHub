@@ -1,0 +1,90 @@
+.THIS html, .THIS body {
+    height : 100%;
+    width  : 100%;
+    overflow-x: hidden;
+}
+.THIS .drawer {
+    height: calc(100% - 170px);
+    max-height: calc(100% - 191px);
+    overflow-y:auto;
+    position: fixed;
+    white-space: nowrap;
+    z-index: 7500;
+    top: 181px;
+    right: 0px;
+    width: 650px;
+    
+    overflow-x: hidden;
+    transition: all .4s ease;
+}
+.THIS .drawer-hide {
+    overflow-y:hidden;
+    width: 25px;
+    transition: all .4s ease; 
+}
+.THIS .drawer-content {
+    max-height:97%;
+    overflow:auto;
+    white-space:normal;
+    display: inline-block;
+    background-color: #55698e;
+    color: white;
+    height: 100%;
+    width: 625px;
+    border-radius: 3px 0 0 3px;
+}
+.THIS .drawer-tab-container {
+    display: inline-block;
+    vertical-align:top;
+    width: 28px;
+    background: transparent;
+}
+.THIS .drawer-tab-spacer {
+    height: 170px;
+}
+.THIS .drawer-tab {
+    height: 75px;
+    background: #55698E;
+    cursor: pointer;
+    border-bottom: none;
+    white-space: nowrap;
+    border-radius: 3px 0 0 3px;
+}
+
+
+.THIS .drawer-tab-text {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform:rotate(-90deg);
+    transform-origin: 127% 144%;
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    margin-bottom:-.2rem;
+    color: white;
+    font-size: 14px;
+}
+.THIS .drawer-title {
+    border-bottom: 1px solid white;
+    padding: 9px 9px 6px 9px;
+}
+.THIS .oh-icon-close__override {
+    position: relative;
+    right: 0;
+    color: white;
+}
+.THIS .drawer-title-close {
+    color: white;
+    font-size: 14px;
+}
+.THIS .drawer-title-text {
+    font-size: 18px;
+    margin-left: 16px;
+}
+.THIS .drawer-questions {
+	padding: 12px 6px 6px 60px;
+}
+
+.THIS .response-container {
+    margin-left: 30px;
+}

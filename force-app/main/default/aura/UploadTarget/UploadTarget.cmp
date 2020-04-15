@@ -1,0 +1,108 @@
+<aura:component controller="LightningProjectServiceTargetsController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <!--ICON FONTS-->
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <ltng:require styles="{!$Resource.oh_tools + '/oh-tools-style.css'}" />
+    
+    <aura:attribute name="mapTargets" type="List" default="[]"/>
+    <aura:attribute name="targets" type="List" default="[]"/> 
+    <aura:attribute name="targetIds" type="List" default="[]"/> 
+    <aura:attribute name="targetsKeys" type="List" default="[]"/> 
+    <aura:attribute name="editMode" type="Boolean"  default="false" />
+    <aura:attribute name="selectedTargets" type="List" />
+    <aura:attribute name="selectAll" type="Boolean" />
+    
+    <!--FIELDS FOR FILTERS-->
+    <aura:attribute name="targetsToAdd" type="List" />
+    <aura:attribute name="selectedUseType" type="String" default="Primary" />
+    <aura:attribute name="selectedUseTypeUpdate" type="String" default="" />
+    <aura:attribute name="selectedAccount" type="String" />
+    <aura:attribute name="selectedAccountUpdate" type="String" />
+    <aura:attribute name="selectedTargetType" type="String" />
+    <aura:attribute name="searchIds" type="String" />
+    <aura:attribute name="projectAccounts" type="List" />    
+    <aura:attribute name="targetTypes" type="List"  default="Product" />
+    
+    <aura:attribute name="recordId" type="Id" default ="a0n19000002f7RiAAI" />  
+    <aura:attribute name="projectId" type="Id"  default ="a0s11000004KMd1AAG" /> 
+    <aura:attribute name="ns" type="String" default="" />
+
+    <!--EVENT HANDLERS-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="force:refreshView" action="{!c.doInit}" />
+    
+    <aura:registerEvent name="targetEvent" type="c:UploadMultiSelectTargetEvent"/>  
+    
+    <div class="slds-card slds-p-around_medium" > 
+        
+        <!-- Paste Window -->
+        <div class="absolutePaste">
+            <div class="originalSize" aura:id="togglePaste" onblur="{!c.togglePaste}">
+                <div class="slds-box slds-is-relative " style="box-shadow:2px 2px 6px 1px rgba(0,0,0,.3);margin:.2rem;width:100%:">
+                    
+                    <div class="slds-text-body_medium">Add Targets by Searching by Name or Pasting IDs/UPCs</div> 
+                    
+                    <div class="slds-grid">
+                        <div class="slds-button slds-grid slds-button_neutral oh-btn" aura:id="searchWidth" style="text-align:left;width:100%;"  >
+                            <div class="slds-p-top_small slds-p-bottom_x-small" style="text-align:left;" onclick="{!c.toggleSearch}">
+                                <i class="fa fa-search slds-m-right_x-small" aria-hidden="true"></i><span>Toggle Search</span>
+                            </div>
+                            
+                            <div aura:id="searchContainer" class="slds-hide slds-m-around_small" style="flex:1;width:100%;">              
+                                
+                                <lightning:select aura:id="targetType"                                       
+                                                  name="TargetTypes" 
+                                                  label="Select Target Type"  
+                                                  value="{!v.selectedTargetType}" 
+                                                  onchange="{!c.onChangeTargetType}">
+                                    <aura:iteration items="{!v.targetTypes}" var="type">
+                                        <option value="{!type}">{!type}</option>
+                                    </aura:iteration>       
+                                </lightning:select>  
+                                
+                                <div class="slds-grid slds-grid_vertical slds-m-bottom_small" style="flex:1;width:100%;" >                                
+                                    <c:strike_multiLookup aura:id="searchText"           
+                                                          class="visibility"
+                                                          value="" 
+                                                          label="Search Targets" 
+                                                          object="{!v.ns + 'Target__c'}" 
+                                                          searchField="Name" 
+                                                          subtitleField="{!v.ns + 'UPC__c'}"
+                                                          order="Name" 
+                                                          filter="{!v.ns + 'Status__c = \'Active\' ' + ' and ' + v.ns + 'TargetType__c = \'' + v.selectedTargetType + '\' ' }" 
+                                                          placeholder="Enter Name of Target" 
+                                                          iconName="standard:account" 
+                                                          limit="5" 
+                                                          loadingMessage="Loading..." 
+                                                          errorMessage="Invalid input"
+                                                          />                                
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <lightning:textarea aura:id="pasteTargets" 
+                                        label="Paste Target IDs or UPCs" 
+                                        name="paste" class="slds-m-vertical_small" 
+                                        style="flex:1 auto;min-height:170px;" 
+                                        placeholder="Paste comma separated or single column list of ID or UPC #s" />                    
+                    
+                    
+                    <div class="slds-grid slds-grid_align-end">
+                        <div class="slds-m-right_small slds-p-horizontal_small">
+                            <lightning:button label="Clear" variant="Base" class="" 
+                                              onclick="{!c.clearFields}" /> 
+                        </div>
+                        <lightning:button label="Add Targets" 
+                                          variant="Success" class="oh-inverse" 
+                                          onclick="{!c.addTargetsHandler}"
+                                          />
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <!-- END Paste Window -->
+        
+    </div>
+    
+</aura:component>

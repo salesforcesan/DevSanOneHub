@@ -1,0 +1,35 @@
+<aura:component controller="LightningProjectController" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId">
+    <aura:attribute name="isClonable" type="Boolean" default="true" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute type="String" name="callbackresult" default="NONE"></aura:attribute>
+    <aura:attribute type="String" name="callbackmessage"></aura:attribute>
+    <aura:registerEvent name="refreshProject" type="c:EventProjectRefresh"/>    
+    <!-- test -->
+    <div style="height:100%;min-height:210px;display:flex;flex-direction:column;width:100%;position:relative;">
+        <div><lightning:spinner size="medium" variant="brand" aura:id="spinner" class="oh-margin slds-hide"/></div> 
+        <h1 id="title" class="slds-text-heading_medium title">Clone Project</h1>    
+        <hr class="slds-m-vertical_medium" style="margin-left:-2rem;margin-right:-2rem;"></hr> 
+        <p class="slds-text-body_regular slds-text-color_weak" style="margin-bottom:auto;"> 
+            <aura:if isTrue="{!v.callbackresult == 'SUCCESS' }">
+                <c:Notification aura:id="notification" class="no-flow" message="{!v.callbackmessage}" visible="true" hideCloseButton="True" type="success"/>
+            </aura:if>
+            <aura:if isTrue="{!v.callbackresult == 'ERROR' }">
+                <c:Notification aura:id="notification" class="no-flow" message="{!v.callbackmessage}" visible="true" hideCloseButton="True" type="error"/>
+            </aura:if>
+            <aura:if isTrue="{!v.callbackresult == 'NONE' }">
+                <div style="margin-left:-2rem;margin-right:-2rem;">
+                	<c:Notification aura:id="notification" class="no-flow" message="Are you sure you want to clone the project?" hideCloseButton="True" visible="true" type="warning"/>
+            	</div>
+            </aura:if>
+         </p>
+            <aura:if isTrue="{!v.callbackresult == 'NONE' }">   
+				<div class="slds-has-divider_top slds-m-top_medium oh-button-foot" style="margin-left:-2rem;margin-right:-2rem;margin-top:auto;">                 
+                    <div class="slds-p-vertical_medium slds-p-right_medium" style="width:100%;">
+                        <div class="slds-grid slds-grid_align-center">
+                            <ui:button aura:id="btnYes" class="slds-button slds-button_brand slds-p-horizontal_x-small" label="Clone Project" press="{!c.cloneButtonClicked}"/>   
+                        </div>
+                    </div>
+                </div>                  
+            </aura:if>
+	</div>
+</aura:component>

@@ -1,0 +1,9 @@
+<aura:component >
+   <aura:attribute name="field" type="object" default=""/>
+   <aura:registerEvent name="systemDataGridLinkCellClick" type="c:SimpleComponentEvent"/>
+    <td role="gridcell">
+      <div class="slds-truncate" title="{!v.field.__value}">
+        <a href="javascript:void(0);" onclick="{!c.onClick}">{!v.field.__value}</a>
+      </div>
+  </td>
+</aura:component>

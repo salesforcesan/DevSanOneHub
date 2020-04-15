@@ -1,0 +1,20 @@
+<apex:page controller="ScheduleLocationsModalController" showHeader="false" sidebar="false" action="{!submitSchedulingBatchJob}"  standardStylesheets="false" applyBodyTag="false">
+    <head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<apex:stylesheet value="{!URLFOR($Resource.SLDS091, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+</head>
+<body>
+<div class="slds">
+<apex:form id="frmScheduleModal" >
+<!-- shahin had to remove value="{confirmReserve}"  -->
+<apex:inputHidden id="hdnConfirmReserve" />
+<apex:outputPanel >
+<h3 class="slds-text-heading--medium slds-m-bottom--x-small">{!messageHead}</h3>
+<br/>
+{!messageBody}
+</apex:outputPanel>
+</apex:form>
+</div>
+</body>
+</apex:page>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Max100SplitValuePercentage</fullName>
+    <active>true</active>
+    <description>If the project has a split type of Percentage the max value that any project account can have is 100 %</description>
+    <errorConditionFormula>AND(TEXT(Project__r.SplitType__c) = &quot;Percentage (%)&quot;,  SplitValue__c &gt; 100)</errorConditionFormula>
+    <errorDisplayField>SplitValue__c</errorDisplayField>
+    <errorMessage>Max split value is 100%</errorMessage>
+</ValidationRule>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ParentProjectID__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>A search field that indicates the ID number of the parent project of the Project.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Select the ID number of the parent project of the project.</inlineHelpText>
+    <label>Parent Project ID</label>
+    <referenceTo>Project__c</referenceTo>
+    <relationshipLabel>Projects</relationshipLabel>
+    <relationshipName>Projects</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

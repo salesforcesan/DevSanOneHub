@@ -1,0 +1,51 @@
+<aura:component controller="LightningProjectController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="project" type="Object" default="{Name:'Testing..',Status:'',CancelReason:'',CancelReasonComment:'testing...'}"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />    
+      
+	<aura:handler event="c:EventConfirmModal" action="{!c.ConfirmCancelProject}"/>
+    <aura:attribute name="errormessage" type="Object" default=""/>     
+    <div class="slds-form--horizontal slds-m-top--medium slds-m-right--medium">		
+        <div class="slds-is-relative">
+		    <div class="slds-hide" style="min-height:100px" aura:id="displaySpinner">
+        		<lightning:spinner size="medium" variant="brand" />
+    		</div>
+		</div>
+
+        <div class="slds-form-element">
+            <label class="slds-form-element__label">Project Title</label>
+            <div class="slds-form-element__control">
+                <label class="slds-form-element__label"><b>{!v.project.Name}</b></label>
+            </div>
+        </div>
+        <c:Notification aura:id="notification" duration="5000" class="slds-m-bottom--small"/>
+        <div>
+            <center><abbr class="slds-required" title="required">{!v.errormessage}</abbr></center>           
+        </div>
+        <div class="slds-form-element">
+            <label class="slds-form-element__label">Project Status</label>
+            <div class="slds-form-element__control">
+                <label class="slds-form-element__label"><b>{!v.project.Status}</b></label>
+            </div>
+        </div>
+        <div class="slds-form-element">
+            <label class="slds-form-element__label"><abbr class="slds-required" title="required">*</abbr>Cancel Reason</label>
+            <div class="slds-form-element__control">
+                <div>
+                    <ui:inputSelect required="true" class="dynamic" value="{!v.project.CancelReason}" aura:id="projectCancelReason"/>                    
+                </div>
+            </div>            
+        </div>
+        <div class="slds-form-element">
+            <label class="slds-form-element__label">Cancel Reason Comment</label>
+            <div class="slds-form-element__control">
+                <ui:inputTextArea aura:id="cancelReasonComment" maxlength="255" placeholder="Enter comments" value="{!v.project.CancelReasonComment}" class="slds-textarea" rows="5"/>
+            </div>
+        </div>  
+        <hr style="margin:1rem -1rem 1rem -1rem;"></hr>
+        <div class="slds-grid slds-grid--align-end slds-m-bottom--medium">            	
+             <span class="slds-p-right--medium"><c:ModalConfirmButton project="{!v.project}" buttonLabel="Cancel Project"/></span>
+             <c:ModalCancelButton buttonLabel="Do not Cancel"/>
+        </div>
+    </div>
+</aura:component>

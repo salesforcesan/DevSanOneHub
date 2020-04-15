@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UnreserveLocations</fullName>
+    <availability>online</availability>
+    <displayType>massActionButton</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Unreserve Location(s)</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <requireRowSelection>true</requireRowSelection>
+    <url>{!REQUIRESCRIPT(&#39;/soap/ajax/26.0/connection.js&#39;)}
+{!REQUIRESCRIPT(&#39;/js/functions.js&#39;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/24.0/apex.js&quot;)}
+sforce.connection.sessionId = &#39;{!$Api.Session_ID}&#39;;
+{!REQUIRESCRIPT(&#39;//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js&#39;)}
+{!REQUIRESCRIPT(&#39;//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js&#39;)}
+
+requireCssFile(&#39;{!URLFOR(&quot;/resource/resources/jquery-ui.css?v=2&quot;)}&#39;);
+function requireCssFile(filename) {
+    var fileref = document.createElement(&#39;link&#39;);
+    fileref.setAttribute(&#39;rel&#39;, &#39;stylesheet&#39;);
+    fileref.setAttribute(&#39;type&#39;, &#39;text/css&#39;);
+    fileref.setAttribute(&#39;href&#39;, filename);
+    document.getElementsByTagName(&#39;head&#39;)[0].appendChild(fileref);
+}
+
+var records = {!GETRECORDIDS($ObjectType.ProjectLocation__c )};
+var iframeURL = &#39;{!URLFOR(&quot;/apex/UnreserveLocationsModal&quot;)}&#39;;
+iframeURL  += &#39;?locations=&#39;+ records;
+iframeURL  += &#39;&amp;core.apexpages.devmode.url=1&#39;;
+
+var j$ = jQuery.noConflict();
+
+var iframe_element = &#39;&lt;iframe id=&quot;iframeUnreserveLocationsModal&quot; src=&quot;&#39; + iframeURL + &#39;&quot; frameborder=&quot;0&quot; style=&quot;height: 65px;&quot; height=&quot;100%&quot; width=&quot;100%&quot; marginheight=&quot;0&quot; marginwidth=&quot;0&quot; scrolling=&quot;no&quot; /&gt;&#39;;
+var loading_div = &#39;&lt;div id=&quot;loading_div&quot; style=&quot;width:40px;height:28px;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto&quot;&gt;&lt;img src=&quot;/img/loading24.gif&quot; /&gt;&lt;/div&gt;&#39;;
+var j$modalDialog = j$(&#39;&lt;div id=&quot;modal_div&quot;&gt;&lt;/div&gt;&#39;)
+       .html(iframe_element + loading_div)
+       .dialog({
+            autoOpen: false,
+            title: &#39;Reserve Locations&#39;,
+            resizable: false,
+            width: 400,
+            minHeight: 75,
+            height: &quot;auto&quot;,
+            autoResize: false,
+            modal: true,
+            draggable: false,
+buttons: [{
+                text: &quot;Yes, Unreserve&quot;,
+id: &quot;btnUnreserveLoc&quot;,
+icons: {
+        primary: &quot;ui-icon-trash&quot;
+      },
+                tabIndex: -1,
+                click: function() {
+
+                    j$(this).dialog(&quot;destroy&quot;).remove();
+                    //document.location.reload(true);
+UnreserveLocationsJS(encodeURI(records));
+                }
+            }, {
+                text: &quot;Cancel&quot;,
+                tabIndex: -1,
+                click: function() {
+                    j$(this).dialog(&quot;destroy&quot;).remove();
+j$(&#39;#loading_div&#39;).remove();
+                }
+            }]
+});
+
+if(records == &#39;&#39;){
+j$(&#39;.ui-button:contains(&quot;Unreserve&quot;)&#39;).hide()
+}
+else{
+j$(&#39;.ui-button:contains(&quot;Unreserve&quot;)&#39;).show()
+}
+
+j$(&#39;#iframeUnreserveLocationsModal&#39;).on(&quot;load&quot;, function(){
+   j$(&#39;#loading_div&#39;).remove();
+});
+
+
+j$modalDialog.dialog(&#39;open&#39;);
+j$(&#39;.ui-dialog :button&#39;).blur();</url>
+</WebLink>

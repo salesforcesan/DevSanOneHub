@@ -1,0 +1,80 @@
+.THIS .oh-card-title {
+    font-weight:300; 
+    font-size:.875rem; 
+    color:#0070D2;
+  }
+.THIS .oh-card-title:hover {
+    text-decoration:underline;
+    cursor:pointer;
+}
+
+.THIS .bold {
+    font-weight:bold;
+}
+
+.THIS .delete {
+    padding: 0;
+    border:1px transparent #FFF;
+    opacity:0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-in-out, padding .3s ease-in-out, opacity .8s ease-in-out; 
+}
+/*
+.THIS .slds-grid .slds-item {
+    width:30%;
+}*/
+
+.THIS .oh-badge {
+    z-index: 2;
+  	position:absolute;
+    top: 10px;
+    right: 10px;    
+}
+
+.THIS .edit-button {
+    z-index: 4;
+  	position:absolute;
+    top: 0;
+    right: 30px;    
+}
+
+
+.THIS .oh-close {
+    opacity:1;
+    overflow:visible;
+    max-height: 400px;
+    transition: all 0.4s ease-in-out;
+    
+}
+
+.THIS .oh-icon-button {
+    border:0;
+    box-shadow:0;
+    outline:0;
+    background-color:transparent;
+}
+
+.THIS .slds-item {
+	margin-right:.5rem;
+    min-width:150px;
+}
+
+.THIS .img-container {
+    vertical-align:middle;
+    text-align:center;
+    font-size:3rem;
+    line-height:3rem;
+    min-width:60px;
+    width:90px;
+    max-width:90px;
+    max-height: 60px;
+    overflow: hidden;
+    height:100%;
+    color:grey;
+}
+
+.THIS .errorAccount {
+    background: #C23934;
+    color:white;
+}

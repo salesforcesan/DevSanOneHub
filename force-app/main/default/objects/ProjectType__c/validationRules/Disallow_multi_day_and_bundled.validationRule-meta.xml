@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disallow_multi_day_and_bundled</fullName>
+    <active>true</active>
+    <description>Multi day projects not allowed when a project is bundled.</description>
+    <errorConditionFormula>AND ( AllowBundlingOfServices__c == true,  AllowMultidays__c == true)</errorConditionFormula>
+    <errorDisplayField>AllowMultidays__c</errorDisplayField>
+    <errorMessage>Multi Day projects are not allowed on a project that allows bundling of services.</errorMessage>
+</ValidationRule>

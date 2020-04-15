@@ -1,0 +1,19 @@
+# Salesforce Design System 
+# Version: v0.3.5
+Salesforce Design System
+
+Contents:
+
+assets/
+  fonts/ - the Salesforce Sans font
+  icons/ - PNG, SVG and SVG spritemap versions of icons
+  images/ - including spinners
+  styles/ - pre-built regular and namespaced CSS
+
+examples/ - example code
+
+scss/ - the Sass source for the Salesforce Design System CSS
+
+LICENSE.md
+
+

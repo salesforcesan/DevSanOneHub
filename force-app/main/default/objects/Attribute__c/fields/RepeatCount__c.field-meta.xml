@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RepeatCount__c</fullName>
+    <description>A field with a value that determines whether or not the Attribute is a repeatable. 0 indicates that it is a non-repeatable Attribute. A number higher than 0 determines the recurring number.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Enter the number of times that this attribute can be repeated.</inlineHelpText>
+    <label>Repeat Count</label>
+    <precision>2</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

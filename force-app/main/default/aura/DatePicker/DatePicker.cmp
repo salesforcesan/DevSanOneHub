@@ -1,0 +1,126 @@
+<aura:component >
+  <aura:attribute name="class" type="String" default=""/>
+  <aura:attribute name="showTodayLink" type="Boolean" default="true"/>
+  <aura:attribute name="isMultipleSelection" type="Boolean" default="false"/>
+  <aura:attribute name="yearRange" type="Integer" default="20"/>
+  <aura:attribute name="startDate" type="Date" default=""/>
+  <aura:attribute name="endDate" type="Date" default=""/>
+  <aura:attribute name="value" type="Object" default="" description="selected date or date list"/>
+  <aura:attribute name="years" type="List" default="[]" access="private"/>
+  <aura:attribute name="year" type="Integer" default="0" access="private" description="selected year"/>
+  <aura:attribute name="date" type="Integer" default="0" access="private" description="selected date"/>
+  <aura:attribute name="month" type="Integer" default="0" access="private" description="selected month"/>
+  <aura:attribute name="monthName" type="String" default="" access="private" description="selected month label"/>
+  <aura:attribute name="row0" type="Object" default="" access="private"/>
+  <aura:attribute name="row0Cells" type="List" default="[]" access="private"/>
+  <aura:attribute name="row1" type="Object" default="" access="private"/>
+  <aura:attribute name="row1Cells" type="List" default="[]" access="private"/>
+  <aura:attribute name="row2" type="Object" default="" access="private"/>
+  <aura:attribute name="row2Cells" type="List" default="[]" access="private"/>
+  <aura:attribute name="row3" type="Object" default="" access="private"/>
+  <aura:attribute name="row3Cells" type="List" default="[]" access="private"/>
+  <aura:attribute name="row4" type="Object" default="" access="private"/>
+  <aura:attribute name="row4Cells" type="List" default="[]" access="private"/>
+  <aura:attribute name="row5" type="Object" default="" access="private"/>
+  <aura:attribute name="row5Cells" type="List" default="[]" access="private"/>
+  <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+  <aura:handler name="change" value="{!v.value}" action="{!c.onValueChanged}"/>
+  <aura:registerEvent name="datePickerDateSelectedEvent" type="c:SimpleComponentEvent"/>
+  <div class="{!join(' ','slds-datepicker datepicker',v.class)}" aria-hidden="false">
+    <div class="slds-datepicker__filter slds-grid">
+      <div class="slds-datepicker__filter--month slds-grid slds-grid--align-spread slds-grow">
+        <div class="slds-align-middle">
+          <lightning:buttonIcon onclick="{!c.onPrevious}" variant="bare" iconName="utility:left" alternativeText="Previous Month"/>
+        </div>
+        <h2 id="month" class="slds-align-middle" aria-live="assertive" aria-atomic="true">{!v.monthName}</h2>
+        <div class="slds-align-middle">
+          <lightning:buttonIcon onclick="{!c.onNext}"  variant="bare" class="slds-button--icon-bare" iconName="utility:right" alternativeText="Next Month"/>
+        </div>
+      </div>
+      <div class="slds-shrink-none">
+        <label class="slds-assistive-text" for="select-01">Pick a Year</label>
+        <lightning:select value="{!v.year}" onchange="{!c.onChangeYear}" name="selYear" label="Pick a Year" aura:id="selYear" class="no-label-container">
+            <aura:iteration items="{!v.years}" var="item">
+              <option value="{!item}">{!item}</option>
+            </aura:iteration>
+        </lightning:select>
+      </div>
+    </div>
+    <table class="slds-datepicker__month" role="grid" aria-labelledby="month">
+      <thead>
+        <tr id="weekdays">
+          <th id="Sunday" scope="col">
+            <abbr title="Sunday">Sun</abbr>
+          </th>
+          <th id="Monday" scope="col">
+            <abbr title="Monday">Mon</abbr>
+          </th>
+          <th id="Tuesday" scope="col">
+            <abbr title="Tuesday">Tue</abbr>
+          </th>
+          <th id="Wednesday" scope="col">
+            <abbr title="Wednesday">Wed</abbr>
+          </th>
+          <th id="Thursday" scope="col">
+            <abbr title="Thursday">Thu</abbr>
+          </th>
+          <th id="Friday" scope="col">
+            <abbr title="Friday">Fri</abbr>
+          </th>
+          <th id="Saturday" scope="col">
+            <abbr title="Saturday">Sat</abbr>
+          </th>
+        </tr>
+      </thead>
+       <tbody>
+          <tr class="{!v.row0}">
+            <aura:iteration items="{!v.row0Cells}" var="row">
+              <td class="{!row.class}" headers="{!row.header}" role="gridcell" aria-disabled="{!row.ariaDisabled}" aria-selected="{!row.ariaSelected}">
+                <a href="javascript:void(0)" data-id="{!join(':',0,row.id)}" onclick="{!c.onSelectDate}" class="slds-day">{!row.value}</a>
+              </td>
+            </aura:iteration>
+          </tr>
+          <tr class="{!v.row1}">
+            <aura:iteration items="{!v.row1Cells}" var="row">
+              <td class="{!row.class}" headers="{!row.header}" role="gridcell" aria-disabled="{!row.ariaDisabled}" aria-selected="{!row.ariaSelected}">
+                <a href="javascript:void(0)" data-id="{!join(':',1,row.id)}" onclick="{!c.onSelectDate}" class="slds-day">{!row.value}</a>
+              </td>
+            </aura:iteration>
+          </tr>
+          <tr class="{!v.row2}">
+            <aura:iteration items="{!v.row2Cells}" var="row">
+              <td class="{!row.class}" headers="{!row.header}" role="gridcell" aria-disabled="{!row.ariaDisabled}" aria-selected="{!row.ariaSelected}">
+                <a href="javascript:void(0)" data-id="{!join(':',2,row.id)}" onclick="{!c.onSelectDate}" class="slds-day">{!row.value}</a>
+              </td>
+            </aura:iteration>
+          </tr>
+          <tr class="{!v.row3}">
+            <aura:iteration items="{!v.row3Cells}" var="row">
+              <td class="{!row.class}" headers="{!row.header}" role="gridcell" aria-disabled="{!row.ariaDisabled}" aria-selected="{!row.ariaSelected}">
+                <a href="javascript:void(0)" data-id="{!join(':',3,row.id)}" onclick="{!c.onSelectDate}" class="slds-day">{!row.value}</a>
+              </td>
+            </aura:iteration>
+          </tr>
+          <tr class="{!v.row4}">
+            <aura:iteration items="{!v.row4Cells}" var="row">
+              <td class="{!row.class}" headers="{!row.header}" role="gridcell" aria-disabled="{!row.ariaDisabled}" aria-selected="{!row.ariaSelected}">
+                <a href="javascript:void(0)" data-id="{!join(':',4,row.id)}" onclick="{!c.onSelectDate}" class="slds-day">{!row.value}</a>
+              </td>
+            </aura:iteration>
+          </tr>
+          <tr class="{!v.row5}">
+            <aura:iteration items="{!v.row5Cells}" var="row">
+              <td class="{!row.class}" headers="{!row.header}" role="gridcell" aria-disabled="{!row.ariaDisabled}" aria-selected="{!row.ariaSelected}">
+                <a href="javascript:void(0)" data-id="{!join(':',5,row.id)}" onclick="{!c.onSelectDate}" class="slds-day">{!row.value}</a>
+              </td>
+            </aura:iteration>
+          </tr>
+          <aura:if isTrue="{!v.showTodayLink}">
+          <tr>
+            <td colspan="7" role="gridcell"><a href="javascript:void(0);" onclick="{!c.onSelectToday}" class="slds-show--inline-block slds-p-bottom--x-small">Today</a></td>
+          </tr>
+        </aura:if>
+      </tbody>
+    </table>
+  </div>
+</aura:component>

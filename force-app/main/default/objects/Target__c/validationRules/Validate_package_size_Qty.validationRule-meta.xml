@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_package_size_Qty</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISBLANK(PackageSizeQty__c)</errorConditionFormula>
+    <errorMessage>Invalid Package Size Qty</errorMessage>
+</ValidationRule>

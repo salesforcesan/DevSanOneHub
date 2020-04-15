@@ -1,0 +1,11 @@
+Dear {!JobAttemptWorker__c.SupervisorFirstName__c} {!JobAttemptWorker__c.SupervisorLastName__c},
+
+{!JobAttemptWorker__c.WorkerFirstName__c} {!JobAttemptWorker__c.WorkerLastName__c} [EmployeeId: {!JobAttemptWorker__c.WorkerEmployeeId__c}] at Store {!JobAttemptWorker__c.LocationName__c}/{!JobAttemptWorker__c.LocationNumber__c}/{!JobAttemptWorker__c.LocationCity__c}/{!JobAttemptWorker__c.LocationState__c} did not show up for {!JobAttemptWorker__c.ProjectTitle__c} with an estimated time of {!JobAttemptWorker__c.EstimatedMinutes__c} minutes on {!JobAttemptWorker__c.ScheduledDate__c}.  Please assist in replacing or finding employee and communicate the update to {!JobAttemptWorker__c.TeamLeadFirstName__c} {!JobAttemptWorker__c.TeamLeadLastName__c}.
+
+Thank you,
+
+{!JobAttemptWorker__c.TeamLeadFirstName__c} {!JobAttemptWorker__c.TeamLeadLastName__c} 
+ {!JobAttemptWorker__c.TeamLeadPhone__c} at 
+ {!JobAttemptWorker__c.LocationName__c} 
+ {!JobAttemptWorker__c.LocationNumber__c} for 
+ {!JobAttemptWorker__c.ProjectTitle__c}

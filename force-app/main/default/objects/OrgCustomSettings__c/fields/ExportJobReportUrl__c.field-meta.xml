@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExportJobReportUrl__c</fullName>
+    <description>https://onehub--devmurali.lightning.force.com/one/one.app#/sObject/00O11000000Gbi8EAC/view?t=1492800857517&amp;fv0={projectNumber__c}</description>
+    <externalId>false</externalId>
+    <label>Export Job Report Url</label>
+    <length>255</length>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

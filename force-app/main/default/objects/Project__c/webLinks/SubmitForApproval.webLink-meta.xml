@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SubmitForApproval</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Submit For Approval</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&#39;/soap/ajax/26.0/connection.js&#39;)}
+{!REQUIRESCRIPT(&#39;/js/functions.js&#39;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/24.0/apex.js&quot;)}
+sforce.connection.sessionId = &#39;{!$Api.Session_ID}&#39;;
+{!REQUIRESCRIPT(&#39;//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js&#39;)}
+{!REQUIRESCRIPT(&#39;/resource/resources/jquery.browser.min.js&#39;)}
+{!REQUIRESCRIPT(&#39;//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js&#39;)}
+{!REQUIRESCRIPT(&#39;/resource/resources/jquery.ba-postmessage.js&#39;)}
+{!REQUIRESCRIPT(&#39;/resource/resources/jquery.ba-bbq.min.js&#39;)}
+
+requireCssFile(&#39;{!URLFOR(&quot;/resource/resources/jquery-ui.css?v=2&quot;)}&#39;);
+function requireCssFile(filename) {
+    var fileref = document.createElement(&#39;link&#39;);
+    fileref.setAttribute(&#39;rel&#39;, &#39;stylesheet&#39;);
+    fileref.setAttribute(&#39;type&#39;, &#39;text/css&#39;);
+    fileref.setAttribute(&#39;href&#39;, filename);
+    document.getElementsByTagName(&#39;head&#39;)[0].appendChild(fileref);
+}
+
+var j$ = jQuery.noConflict();
+
+var iframeURL = &#39;{!URLFOR(&quot;/apex/SubmitProject?Id=&quot;+ Project__c.Id )}&#39;;
+
+var child_domain = iframeURL.substring(0, iframeURL.indexOf(&#39;/&#39;, 9));
+var parent_domain = window.location.protocol + &#39;//&#39; + window.location.host;
+
+iframeURL  += &#39;&amp;parent_domain=&#39; + parent_domain;
+iframeURL  += &#39;&amp;core.apexpages.devmode.url=1&#39;;
+
+/*
+j$.receiveMessage(
+    function(e){
+        var cross_result = j$.deparam(e.data);
+        if (cross_result.action == &#39;close_modal_dialog&#39;) {
+            j$modalDialog.dialog(&#39;close&#39;);
+        }
+    },
+    child_domain
+);*/
+ var iframe_element = &#39;&lt;iframe id=&quot;iframeScheduleLocationsModal&quot; src=&quot;&#39; + iframeURL + &#39;&quot; frameborder=&quot;0&quot; style=&quot;height: 100px;&quot; height=&quot;100%&quot; width=&quot;100%&quot; marginheight=&quot;0&quot; marginwidth=&quot;0&quot; scrolling=&quot;no&quot; /&gt;&#39;;
+var loading_div = &#39;&lt;div id=&quot;loading_div&quot; style=&quot;width:40px;height:28px;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto&quot;&gt;&lt;img src=&quot;/img/loading24.gif&quot; /&gt;&lt;/div&gt;&#39;;
+var j$modalDialog = j$(&#39;&lt;div id=&quot;modal_div&quot;&gt;&lt;/div&gt;&#39;)
+       .html(iframe_element + loading_div)
+       .dialog({
+            autoOpen: false,
+            title: &#39;Reserve Locations&#39;,
+            resizable: false,
+            width: 400,
+            minHeight: 120,
+            height: &quot;auto&quot;,
+            autoResize: false,
+            modal: true,
+            draggable: false,
+buttons: [
+    {
+      text: &quot;Close&quot;,
+      icons: {
+        primary: &quot;ui-icon-refresh&quot;
+      },
+      click: function() {
+        j$(this).dialog(&quot;destroy&quot;).remove();
+	document.location.reload(true);
+      }
+     }
+  ]
+});
+
+j$modalDialog.on( &quot;dialogclose&quot;, function( event, ui ) {
+	j$(this).dialog(&quot;destroy&quot;).remove();
+	document.location.reload(true);
+} );
+
+j$(document).ready(function(){
+   j$(&#39;#iframeScheduleLocationsModal&#39;).on(&quot;load&quot;, function(){
+       j$(&#39;#loading_div&#39;).remove();
+   });
+});
+
+(function() {
+    function receive(e) {
+        var cross_result = j$.deparam(e.data);
+        if (cross_result.action == &#39;close_modal_dialog&#39;) {
+            j$modalDialog.dialog(&#39;destroy&#39;).remove();
+        }
+    }
+    window.addEventListener(&quot;message&quot;, receive, false);
+}());
+
+j$modalDialog.dialog(&#39;open&#39;);
+j$(&#39;.ui-dialog :button&#39;).blur();</url>
+</WebLink>

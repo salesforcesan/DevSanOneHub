@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="Event template">
+    <!--pass the updated project -->   
+    <aura:attribute name="message" type="String"/>
+</aura:event>

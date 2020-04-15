@@ -1,0 +1,33 @@
+<apex:component >
+  <apex:attribute name="iconUrl" type="String" required="false" description="page header icon"/>
+  <apex:attribute name="title" type="String" required="true" description="page title"/>
+  <apex:attribute name="recordType" type="String" required="true" description="record type"/>
+  <apex:attribute name="recordId" type="String" required="true"  description="record id"/>
+  <div class="slds-page-header" role="banner">
+  <div class="slds-grid">
+    <div class="slds-col slds-has-flexi-truncate">
+      <div class="slds-media slds-no-space slds-grow">
+        <div class="slds-media__figure">
+        <a href="/{!recordId}" title="Return to {!recordType}">
+          <svg aria-hidden="true" class="slds-icon slds-icon-standard-user">
+            <use xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+              xlink:href="{!URLFOR($Resource.slds_203, iconUrl)}"></use>
+          </svg>
+          </a>    
+        </div>
+        <div class="slds-media__body">
+          <p class="slds-text-title--caps slds-line-height--reset">{!recordType}</p>
+          <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" 
+            title="{!title}"><a href="/{!recordId}" title="Return to {!recordType}">{!title}</a></h1>
+        </div>
+      </div>
+    </div>
+    <div class="slds-col slds-has-flexi-truncate slds-text-align--right">
+      <div class="cm-photo-count">
+        <h2 id="photoCount">...</h2>
+        <p>photos</p>
+      </div>
+    </div>
+  </div>
+</div>
+</apex:component>

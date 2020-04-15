@@ -1,0 +1,158 @@
+<div ng-controller="ProjectController" class="container" id="masterContainer">
+    <!--
+<header role="banner"
+class="slds-p-top--medium slds-p-bottom--medium cm-page-header">
+<div class="slds-grid slds-grid--align-spread">
+  <div class="slds-col slds-align-middle">
+    <h1 class="slds-text-heading--medium">Project Viewer</h1>
+  </div>
+</div>
+</header>
+-->
+    <div class="main ng-cloak" role="main">
+        <!-- page header -->
+        <section class="slds-page-header" role="banner" id="pageHeader">
+            <div class="slds-grid">
+                <div class="slds-col slds-has-flexi-truncate">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <svg aria-hidden="true" class="slds-icon slds-icon--large slds-icon-custom-28">
+                                <use ng-href="{{resourcePath}}assets/icons/standard-sprite/svg/symbols.svg#record" xlink:href=""></use>
+                            </svg>
+                        </div>
+                        <div class="slds-media__body">
+                            <p class="slds-text-heading--label">Project</p>
+                            <div class="slds-grid">
+                                <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Project Title">{{projectViewModel.project.title}}</h1>
+                                <div class="slds-col slds-shrink-none">
+                                    <button class="slds-button slds-button--neutral slds-not-selected" aria-live="assertive">
+                                        <span class="slds-text-not-selected">
+                    <svg aria-hidden="true" class="slds-button__icon--stateful slds-button__icon--left">
+                     <use ng-href="{{resourcePath}}assets/icons/utility-sprite/svg/symbols.svg#add" xlink:href=""></use>
+                    </svg>Follow</span>
+                                        <span class="slds-text-selected">
+                      <svg aria-hidden="true" class="slds-button__icon--stateful slds-button__icon--left">
+                        <use ng-href="{{resourcePath}}assets/icons/utility-sprite/svg/symbols.svg#check" xlink:href=""></use>
+                      </svg>Following</span>
+                                        <span class="slds-text-selected-focus">
+                        <svg aria-hidden="true" class="slds-button__icon--stateful slds-button__icon--left">
+                          <use ng-href="{{resourcePath}}assets/icons/utility-sprite/svg/symbols.svg#close" xlink:href=""></use>
+                        </svg>Unfollow</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-no-flex slds-align-bottom">
+                    <div class="slds-button-group" role="group">
+                        <button class="slds-button slds-button--neutral" ng-click="editProject()">
+                            <span>
+                    <svg aria-hidden="true" class="slds-button__icon--stateful slds-button__icon--left">
+                      <use ng-href="{{resourcePath}}assets/icons/utility-sprite/svg/symbols.svg#edit" xlink:href=""></use>
+                    </svg>Edit</span>
+                        </button>
+
+                        <button class="slds-button slds-button--neutral" ng-click="submitProject()">
+                            <span>
+                      <svg aria-hidden="true" class="slds-button__icon--stateful slds-button__icon--left">
+                        <use ng-href="{{resourcePath}}assets/icons/utility-sprite/svg/symbols.svg#upload" xlink:href=""></use>
+                      </svg>Submit</span>
+                        </button>
+                        <button class="slds-button slds-button--neutral" ng-click="cancelProject()">
+                            <span>
+                        <svg aria-hidden="true" class="slds-button__icon--stateful slds-button__icon--left">
+                          <use ng-href="{{resourcePath}}assets/icons/utility-sprite/svg/symbols.svg#undo" xlink:href=""></use>
+                        </svg>Cancel</span>
+                        </button>
+                        <!--button class="slds-button--last slds-button--neutral">
+                            <span>
+                          <svg aria-hidden="true" class="slds-button__icon--stateful slds-button__icon--left">
+                            <use ng-href="{{resourcePath}}assets/icons/utility-sprite/svg/symbols.svg#copy" xlink:href=""></use>
+                          </svg>Clone</span>
+                        </button-->
+                    </div>
+                </div>
+            </div>
+            <div class="slds-grid slds-page-header__detail-row">
+                <div class="slds-col--padded slds-size--1-of-4">
+                    <dl>
+                        <dt>
+                          <p class="slds-truncate" title="Field 1">Supplier</p>
+                        </dt>
+                        <dd>
+                            <p class="slds-text-body--regular slds-truncate" title="Supplier">{{projectViewModel.project.supplier}}</p>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="slds-col--padded slds-size--1-of-4">
+                    <dl>
+                        <dt>
+                          <p class="slds-text-heading--label slds-truncate" title="Type">Project Type
+                          </p>
+                        </dt>
+                        <dd>
+                            <p class="slds-text-body--regular">{{projectViewModel.project.type}}</p>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="slds-col--padded slds-size--1-of-4">
+                    <dl>
+                        <dt>
+                          <p class="slds-text-heading--label slds-truncate" title="Status">Status</p>
+                        </dt>
+                        <dd><span class="slds-badge {{projectViewModel.statusCSS}}">{{projectViewModel.project.status}}</span></dd>
+                    </dl>
+                </div>
+                <div class="slds-col--padded slds-size--1-of-4">
+                    <dl>
+                        <dt>
+                          <p class="slds-text-heading--label slds-truncate" title="Execution Date Range">Execution Date Range</p>
+                        </dt>
+                        <dd>
+                            <p>
+                                <span>{{projectViewModel.project.executeDateRange}}</span>
+                            </p>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </section>
+        <!-- page body -->
+        <section aria-labelledby="pageBody">
+            <div id="pageBody">
+                <div class="slds-grid cm-row slds-wrap">
+                    <div class="slds-col slds-size--12-of-12 slds-small-size--1-of-1 slds-medium-size--6-of-6 slds-large-size--12-of-12">
+                        <div class="slds-tabs--default">
+                            <ul class="slds-tabs--default__nav" role="tablist">
+                                <li class="slds-tabs__item slds-text-heading--label" ng-class='{"slds-active": projectViewModel.selDetail}' title="Detail" role="presentation">
+                                    <a href="#" ng-click="tabClicked('detail', $event)" role="tab" tabindex="0" aria-selected="{{projectViewModel.selDetail}}" aria-controls="tab-default-1">Detail</a>
+                                </li>
+                                <li class="slds-tabs__item slds-text-heading--label" ng-class='{"slds-active": projectViewModel.selServices}' title="Services" role="presentation">
+                                    <a href="#" role="tab" ng-click="tabClicked('services', $event)" tabindex="-1" aria-selected="{{projectViewModel.selServices}}" aria-controls="tab-default-1">
+                      Services&nbsp;<span class="slds-badge slds-theme--warning">{{projectViewModel.project.serviceCount}}</span></a></li>
+                                <li class="slds-tabs__item slds-text-heading--label" ng-class='{"slds-active": projectViewModel.selLocations}' title="Locations" role="presentation">
+                                    <a href="#" role="tab" ng-click="tabClicked('locations', $event)" tabindex="-1" aria-selected="{{projectViewModel.selLocations}}" aria-controls="tab-default-1">
+                      Locations&nbsp;<span class="slds-badge slds-theme--alt-inverse">{{projectViewModel.project.locationCount}}</span></a></li>
+                                <li class="slds-tabs__item slds-text-heading--label" ng-class='{"slds-active": projectViewModel.selJobs}' title="Jobs" role="presentation">
+                                    <a href="#" role="tab" ng-click="tabClicked('jobs', $event)" tabindex="-1" aria-selected="{{projectViewModel.selJobs}}" aria-controls="tab-default-1">
+                      Jobs&nbsp;<span class="slds-badge slds-theme--success">{{projectViewModel.project.jobCount}}</span></a></li>
+                            </ul>
+                            <div id="tab-default-1" class="slds-tabs__content slds-show" role="tabpanel">
+                                <ui-view class="cm-ui-view" ng-cloak></ui-view>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+        </section>
+        </div>
+        <div cmk-dialog=1 model="dialogModel">
+            <div id="spinner" class="slds-container--center">
+                <div class="slds-spinner--medium" style="margin: 0 auto;"><img src="{{resourcePath}}assets/images/spinners/slds_spinner_brand.gif" alt="Loading..." /></div>
+            </div>
+            <div id="submitPrjectDialogWrapper">
+            </div>
+
+        </div>

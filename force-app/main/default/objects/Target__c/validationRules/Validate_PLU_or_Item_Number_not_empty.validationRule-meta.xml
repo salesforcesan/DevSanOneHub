@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_PLU_or_Item_Number_not_empty</fullName>
+    <active>true</active>
+    <description>Ensures Item Number or UPC field are populated.</description>
+    <errorConditionFormula>AND(
+ISBLANK(StockCode__c),
+ISBLANK(UPC__c))</errorConditionFormula>
+    <errorMessage>To move forward please provide either a Stock Code or a UPC</errorMessage>
+</ValidationRule>

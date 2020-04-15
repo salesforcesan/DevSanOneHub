@@ -1,0 +1,64 @@
+<aura:component >
+ <ltng:require styles="{!$Resource.font_awesome +'/font-awesome/css/font-awesome.min.css'}"/>
+<aura:attribute name="id" type="String" default="" required="true" description="unique identifier"/>
+<aura:attribute name="data" type="List" default="[]"/>
+<aura:attribute name="columns" type="List" default="[]"/>
+<aura:attribute name="value" type="List" default="[]"/>
+<aura:attribute name="height" type="Integer" default="0"/>
+<aura:attribute name="canSelectAll" type="Boolean" default="false"/>
+<aura:attribute name="style" type="String" default="" access="private"/>
+<aura:attribute name="html" type="String" default="" access="private"/>
+<aura:attribute name="skipRender" type="Boolean" default="boolean" access="private"/>
+<aura:attribute name="fields" type="List" default="[]" access="private"/>
+<aura:attribute name="dataStore" type="List" default="[]" access="private"/>
+<aura:registerEvent name="dataTableRendered" type="c:SimpleComponentEvent"/>
+<aura:handler name="change" value="{!v.data}" action="{!c.onDataChange}"/>
+<aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+<aura:method name="showSpinner" action="{!c.showSpinner}"/>
+<aura:method name="hideSpinner" action="{!c.hideSpinner}"/>
+<aura:method name="assignSelectedValue" action="{!c.assignSelectedValue}"/>
+<div class="datatable-container" aura:id="datatableContainer">
+<c:Spinner aura:id="spinner" type="modal" size="medium">
+  <div style="{!v.style}" class="slds-scrollable">
+    <div class="slds-scrollable--y">
+       <div class="table slds-table">
+          <div class="thead" data-toggled="0">
+            <div class="tr">
+              <aura:if isTrue="{!v.canSelectAll}">
+                <div class="th slds-text-title--caps align-center" style="width:50px;">
+                  <a aura:id="chkSelectAll" onclick="{!c.onClickSelectAll}" class="checkbox" href="javascript:void(0);">
+                    <i class="fa fa-icon fa-check"></i>
+                  </a>
+                </div>
+              </aura:if>
+              <aura:iteration items="{!v.fields}" var="field">
+                <aura:if isTrue="{!field.id != 'selectRow'}">
+                <div style="{!field.__extend.style}" focusable="true" class="th slds-is-sortable slds-text-title--caps" scope="col">
+                  <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0" data-id="{!field.__extend.id}" onclick="{!c.onSort}">
+                    <span class="slds-assistive-text">{!field.name}</span>
+                    <span class="slds-truncate small-right-gap" title="{!field.name}">{!field.__extend.header}</span>
+                    <aura:if isTrue="{!field.__extend.canSort}">
+                      <div class="slds-icon_container">
+                        <span class="{!field.__extend.sorted? 'show' : 'hide'}">
+                        <c:svg class="slds-icon slds-icon--x-small slds-icon-text-default slds-is-sortable__icon" xlinkHref="{!join('',$Resource.slds213, '/assets/icons/utility-sprite/svg/symbols.svg#arrowup')}" ariaHidden="true"/>
+                        </span>
+                        <span class="{!field.__extend.sorted?'hide':'show'}">
+                        <c:svg class="slds-icon slds-icon--x-small slds-icon-text-default slds-is-sortable__icon" xlinkHref="{!join('',$Resource.slds213, '/assets/icons/utility-sprite/svg/symbols.svg#arrowdown')}" ariaHidden="true"/>
+                        </span>
+                      </div>
+                    </aura:if>
+                  </a>
+                </div>
+              </aura:if>
+              </aura:iteration>
+            </div>
+          </div>
+          <div class="tbody" aura:id="tbody" onclick="{!c.onCheckboxChange}">
+            <aura:unescapedHtml value="{!v.html}"/>
+          </div>
+        </div>
+    </div>
+  </div>
+</c:Spinner>
+</div>
+</aura:component>

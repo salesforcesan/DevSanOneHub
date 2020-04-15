@@ -1,0 +1,35 @@
+.THIS .slds-picklist__input {
+  width: 100% !important;
+  flex: 1;
+}
+
+.THIS .slds-input-has-icon--right .slds-input__icon {
+  right: 2%;
+}
+
+.THIS .slds-dropdown {
+  max-width: 100% !important;
+  min-width: 100% !important;
+}
+
+.THIS .sd-check {
+  margin-right: 10px;
+  font-weight: 300;
+  font-size: 11px;
+  color: #1589ee;
+}
+
+.THIS .sd-default {
+  opacity: 0;
+}
+
+.THIS .sd-select {
+  opacity: 1;
+}
+
+.THIS .slds-dropdown__list li a:focus,
+.THIS .slds-dropdown__list li a:visited,
+.THIS .slds-dropdown__list li a:hover,
+.THIS .slds-dropdown__list li a:active {
+  text-decoration: none;
+}

@@ -1,0 +1,144 @@
+.THIS {
+    width:100%;
+}
+
+.THIS div.modal-container.slds-modal__container {
+        width: 75% !important;
+        max-width: 75% !important;
+        min-width: 75% !important;
+    }
+.THIS h1.title {
+    color:#0070D2;
+    font-weight:300;
+    text-align:center;
+    margin:auto;
+}
+
+.THIS .selectAll {
+    background:rgba(100,120,100,.1);
+    border-top:1px solid #DDD;
+    padding-left:6px;
+    border-left:1px solid #DDD;
+    display:table-cell;
+    text-align:center;
+    max-width:30px;
+    min-width:30px;
+    width:30px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.THIS .selectAll:first-child {
+    padding-left:6px;
+    width:45px;
+    display:table-cell;
+    font-size:12px;
+    font-weight:300;
+    white-space:nowrap;
+    overflow:hidden;
+    max-width:0px;
+    text-overflow:ellipsis;
+    border-left:1px solid #DDD;
+}
+.THIS .selectAll:last-child {
+    border-right:1px solid #DDD;
+}
+
+.THIS .table-header-rotated .checkbox-column {
+	max-width:30px;
+    padding:4px;
+    padding-left:6px;
+    margin:0;
+    
+}
+
+.THIS p {
+   text-align:center;
+   flex:1;
+}
+
+.THIS .oh-margin {
+    margin-top:-1rem;
+    margin-left:-2rem;
+    margin-right:-2rem;
+    padding-bottom:2rem;
+}
+
+.THIS .table-header-rotated {
+  border-collapse: collapse;
+}
+ 
+.THIS .table-header-rotated tbody tr:nth-of-type(even) > td,
+.THIS .table-header-rotated tbody tr:nth-of-type(even) > td {
+     background-color: #f4f6f9;
+}
+
+.THIS .table-header-rotated td {
+  /*width: 30px;*/
+    max-width:20px;
+}
+.THIS .table-header-rotated th {
+  padding: 0px 0px;
+}
+
+.THIS .table-header-rotated th.selectAll {
+  padding-left: 6px;
+}
+.THIS .table-header-rotated td {
+  text-align: center;
+  padding: 5px 4px 5px 6px;
+  border: 1px solid #DDD;
+}
+.THIS .table-header-rotated th.rotate {
+  height: 110px;
+  /*display: table-cell;*/
+  white-space: nowrap;
+
+}
+
+
+.THIS .table-header-rotated th.rotate > div {
+  -webkit-transform: translate(13px, 36px) rotate(305deg);
+          transform: translate(13px, 36px) rotate(305deg);
+  width: 30px;
+}
+
+.THIS .slds-table th {
+    position: static;
+}
+.THIS .uiInput--checkbox input[type=checkbox]:checked, .THIS input.uiInput--checkbox[type=checkbox]:checked {
+    box-shadow:0 0 0;
+}
+
+.THIS .table-header-rotated th.rotate > div > span {
+  border-bottom: 1px solid #DDD;
+  padding: 5px 10px;
+  font-weight:400;
+}
+
+ .THIS .table-header-rotated td.row-header {
+  text-align:left;
+  padding: 0 5px;
+  width:200px;
+  min-width:150px;
+    font-size:12px;
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  max-width:0;
+  border-bottom: 1px solid #ccc;
+}
+
+@media (min-width: 49em) {
+    .THIS .slds-modal__container {
+        min-width:100% !important;
+        max-width:100% !important;
+        width:100% !important;
+    }
+    
+    .THIS div.modal-container.slds-modal__container {
+        width: 75% !important;
+        max-width: 80rem !important;
+        min-width: 60rem !important;
+    }
+}

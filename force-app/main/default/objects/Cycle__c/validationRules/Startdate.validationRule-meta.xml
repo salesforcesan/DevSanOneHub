@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Startdate</fullName>
+    <active>true</active>
+    <errorConditionFormula>CycleStartDate__c  &gt;  CycleEndDate__c</errorConditionFormula>
+    <errorDisplayField>CycleStartDate__c</errorDisplayField>
+    <errorMessage>Start date cannot come after the end date</errorMessage>
+</ValidationRule>

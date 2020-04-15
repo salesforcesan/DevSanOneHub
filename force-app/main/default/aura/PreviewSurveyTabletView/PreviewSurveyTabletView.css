@@ -1,0 +1,55 @@
+.THIS .slds-button__left {
+    float: left;
+}
+.THIS .slds-button__right {
+    float: right;
+}
+.THIS .slds-button__center {
+    margin: auto;
+    width: 50%;
+    padding: 5px;
+}
+.THIS .slds-button__direction-nav {
+    font-size: 3em;
+}
+.THIS .slds-button__submit {
+    font-size: 1.2em;
+}
+.THIS .slds-modal__content {
+    Height: 100%;
+}
+.THIS .survey-header {
+    background: #54698D;
+    color: #ffffff;
+    padding: 16px 30px 20px 30px;
+}
+.THIS .survey-header-title {
+	font-size: 1.3em;
+    text-transform: uppercase;
+}
+.THIS .survey-header-subtitle {
+	font-size: 1.3em;
+}
+.THIS .survey-content {
+    padding: 42px 30px 0 30px;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -193px;
+}
+.THIS .survey-footer {
+    height: 193px;
+} 
+.THIS .survey-push {
+    height: 193px;
+}
+.THIS .survey-button-container {
+    padding: 0 30px 0 30px;
+}
+.THIS .survey-endtext__big {
+    font-size: 1.3em;
+    text-align: center;
+}
+.THIS .survey-endtext__regular {
+    text-align: center;
+}

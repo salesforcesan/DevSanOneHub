@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MaxProjectsPerWakeup__c</fullName>
+    <description>The maximum number of projects to handle per schedule wake up</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The maximum number of projects to handle per schedule wake up</inlineHelpText>
+    <label>MaxProjectsPerWakeup</label>
+    <precision>4</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

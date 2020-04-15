@@ -1,0 +1,242 @@
+<apex:page controller="ProjectDashboardController" sidebar="false"  standardStylesheets="false" tabStyle="Upload_Products__tab">
+<head>
+    <style>
+        .activeTab {
+            background-image: none;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 7px 12px;
+        }
+        
+        .inactiveTab {
+            background-color: #ddd;
+            color: black;
+            background-image: none;
+            cursor: pointer;
+            padding: 6px 12px;
+        }
+        
+        .loading-gif {
+            position: fixed;
+            z-index: 999;
+            margin: auto;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            padding: 12px 55px;
+            background-color: #FFF;
+            box-shadow: 0 0px 3px #ccc;
+            border-radius: 2px;
+        }
+        .rich-tabpanel-content  {
+            font-size:12px;
+        }
+        .ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled{
+            opacity: 0;
+            filter: Alpha(Opacity=0);
+        }
+
+        .ui-widget-header {
+            border: none;
+            background: transparent;
+        }
+    </style>
+</head>
+    <apex:sectionHeader title="Dashboard" subtitle="Projects"/>
+    <apex:form >
+        <apex:actionStatus id="loadingStatus">
+            <apex:facet name="start">
+                <img class="loading-gif" src="/img/loading24.gif" width="24" height="24"  />
+            </apex:facet>
+        </apex:actionStatus>
+        <div style="text-align:center;margin-top:-20px;margin-bottom:10px" >
+            <apex:commandButton value="Create New Project" id="btnCreateNew" action="{!URLFOR($Action.Project__c.New)}" rendered="{!$ObjectType.Project__c.createable}" title="Create New Project" />
+        </div>
+        <apex:tabPanel id="tabpanel" tabClass="activeTab" inactiveTabClass="inactiveTab">
+        
+           
+            <apex:tab title="My Projects" label="My Projects  ({!IF(myProjects.size = 1000, '1000+', myProjects.size)})" reRender="tabpanel" switchType="ajax" status="loadingStatus">
+                <apex:pageBlock mode="maindetail" >   
+                    <apex:pageBlockTable value="{!myProjects}" var="a" id="myProjectsTable">   
+                                <apex:column styleClass="actionColumn">
+                                <apex:commandlink value="Edit" action="{!URLFOR($Action.Project__c.Edit,a.id)}" styleClass="actionLink" rendered="{!OR(a.Status__c == 'Planning',a.Status__c == 'Booked',a.Status__c == 'Finished', a.Status__c == 'Rejected')}" />
+                                </apex:column>
+                                <apex:column headerValue="Project Id">
+                                    <!--<apex:commandLink id="myProject" action="{!URLFOR($Action.Project__c.View,a.id)}" value="{!a.ProjectNumber__c}" />
+                                    <a href="{!a.id}"> {!a.ProjectNumber__c} </a>-->
+                                    <apex:outputLink value="/{!a.id}">{!a.ProjectNumber__c}</apex:outputLink>
+                                </apex:column>
+                                <apex:column value="{!a.Name}" HeaderValue="Project Title" headerClass="headerRow" />
+                                <!--<apex:column value="{!a.IsDeleted__c}" HeaderValue="is Deleted" />                        -->
+                                <apex:column value="{!a.ProjectType__c}" HeaderValue="Project Type" headerClass="headerRow" />
+                                <apex:column value="{!a.LocationTotalCount__c}" headerValue="# of Locations" />
+                                <apex:column value="{!a.Owner.Name}" headerValue="Owner" headerClass="headerRow" />
+                                <apex:column value="{!a.StartDate__c} - {!a.EndDate__c}" HeaderValue="Execution Dates" />
+                                <apex:column value="{!a.Status__c}" headerValue="Status" headerClass="headerRow" />
+                    </apex:pageBlockTable>    
+                </apex:pageBlock>  
+            </apex:tab>
+            
+            
+            <apex:tab title="In Planning" label="Planning ({!IF(draftProjects.size = 1000, '1000+', draftProjects.size)})"  reRender="tabpanel" switchType="ajax" status="loadingStatus">
+                <apex:pageblock mode="maindetail">
+                    <apex:pageblocktable value="{!draftProjects}" var="a" id="draftProjectsTable" rendered="{!draftProjects.size>0}" >
+                        <apex:column styleClass="actionColumn">
+                            <apex:commandLink value="Edit" action="{!URLFOR($Action.Project__c.Edit,a.id)}" styleClass="actionLink" />
+                        </apex:column>
+                        <apex:column headerValue="Project Id">
+                            <apex:outputLink value="/{!a.id}">{!a.ProjectNumber__c}</apex:outputLink>
+                        </apex:column>
+                        <apex:column value="{!a.Name}" HeaderValue="Project Title" />
+                        <apex:column value="{!a.ProjectType__c}" headerValue="Project Type" headerClass="headerRow" />                        
+                        <apex:column value="{!a.LocationTotalCount__c}" headerValue="# of Locations" />
+                        <apex:column value="{!a.Owner.Name}" headerValue="Owner" />
+                        <apex:column value="{!a.StartDate__c} - {!a.EndDate__c}" HeaderValue="Execution Dates" />
+                        <apex:column value="{!a.Status__c}" headerValue="Status" headerClass="headerRow" /> 
+                    </apex:pageblocktable>
+                    <apex:outputText rendered="{draftProjects.size=0}">There are no projects in planning!</apex:outputText>
+                </apex:pageblock>
+            </apex:tab>
+
+            <apex:tab label="Booked ({!IF(scheduledProjects.size = 1000, '1000+', scheduledProjects.size)})" reRender="tabpanel" switchType="ajax" status="loadingStatus">
+                <apex:pageblock mode="maindetail">
+                    <apex:pageblocktable value="{!scheduledProjects}" var="a" id="scheduledProjectsTable" rendered="{!scheduledProjects.size>0}" >
+                        <apex:column styleClass="actionColumn">
+                            <apex:commandLink value="Edit" action="{!URLFOR($Action.Project__c.Edit,a.id)}" styleClass="actionLink" />
+                        </apex:column>
+                        <apex:column headerValue="Project Id">
+                            <apex:outputLink value="/{!a.id}">{!a.ProjectNumber__c}</apex:outputLink>
+                        </apex:column>                              
+                        <apex:column value="{!a.name}" />
+                        <apex:column value="{!a.ProjectType__c}" headerValue="Project Type" headerClass="headerRow" />                        
+                        <apex:column value="{!a.LocationTotalCount__c}" headerValue="# of Locations" />
+                        <apex:column value="{!a.Owner.Name}" headerValue="Owner" />
+                        <apex:column value="{!a.StartDate__c} - {!a.EndDate__c}" HeaderValue="Execution Dates" />
+                        <apex:column value="{!a.Status__c}" headerValue="Status" headerClass="headerRow" />                        
+                    </apex:pageblocktable>
+                    <apex:outputText rendered="{!scheduledProjects.size==0}">There are no Booked projects!</apex:outputText>
+                </apex:pageblock>
+            </apex:tab>
+
+
+
+            <apex:tab label="Launched ({!IF(launchedProjects.size = 1000, '1000+', launchedProjects.size)})" reRender="tabpanel" switchType="ajax" status="loadingStatus">
+                <apex:pageblock mode="maindetail">
+                    <apex:pageblocktable value="{!launchedProjects}" var="a" id="launchedProjectsTable" rendered="{!launchedProjects.size>0}" >
+                        <apex:column styleClass="actionColumn">
+                            <apex:commandLink value="Edit" action="{!URLFOR($Action.Project__c.Edit,a.id)}" styleClass="actionLink" />
+                        </apex:column>
+                        <apex:column headerValue="Project Id">
+                            <apex:outputLink value="/{!a.id}">{!a.ProjectNumber__c}</apex:outputLink>
+                        </apex:column>                              
+                        <apex:column value="{!a.name}" />
+                        <apex:column value="{!a.ProjectType__c}" headerValue="Project Type" headerClass="headerRow" />                        
+                        <apex:column value="{!a.LocationTotalCount__c}" headerValue="# of Locations" />
+                        <apex:column value="{!a.Owner.Name}" headerValue="Owner" />
+                        <apex:column value="{!a.StartDate__c} - {!a.EndDate__c}" HeaderValue="Execution Dates" />
+                        <apex:column value="{!a.Status__c}" headerValue="Status" headerClass="headerRow" />                        
+                    </apex:pageblocktable>
+                    <apex:outputText rendered="{!launchedProjects.size==0}">There are no launched projects!</apex:outputText>
+                    <apex:outputText rendered="{!launchedProjects.size==0}">There are no Launched projects!</apex:outputText>
+                </apex:pageblock>
+            </apex:tab>
+            
+            
+            <apex:tab label="In Progress ({!IF(inProgressProjects.size = 1000, '1000+', inProgressProjects.size)})" reRender="tabpanel" switchType="ajax" status="loadingStatus">
+                <apex:pageblock mode="maindetail">
+                    <apex:pageblocktable value="{!inProgressProjects}" var="a" id="inProgressProjectsTable" rendered="{!inProgressProjects.size>0}" >
+                        <apex:column styleClass="actionColumn">
+                            <apex:commandLink value="Edit" action="{!URLFOR($Action.Project__c.Edit,a.id)}" styleClass="actionLink" />
+                        </apex:column>
+                         <apex:column headerValue="Project Id">
+                           <apex:outputLink value="/{!a.id}">{!a.ProjectNumber__c}</apex:outputLink>
+                        </apex:column>        
+                        <apex:column value="{!a.Name}" HeaderValue="Project Title" />
+                        <apex:column value="{!a.ProjectType__c}" headerValue="Project Type" headerClass="headerRow" />                        
+                        <apex:column value="{!a.LocationTotalCount__c}" headerValue="# of Locations" />
+                        <apex:column value="{!a.Owner.Name}" headerValue="Owner" />
+                        <apex:column value="{!a.StartDate__c} - {!a.EndDate__c}" HeaderValue="Execution Dates" />
+                        <apex:column value="{!a.Status__c}" headerValue="Status" headerClass="headerRow" />                        
+                    </apex:pageblocktable>
+                    <apex:outputText rendered="{!inProgressProjects.size==0}">There are no projects in progress!</apex:outputText>
+                </apex:pageblock>
+            </apex:tab>
+            
+            <apex:tab label="Ended ({!IF(executedProjects.size = 1000, '1000+', executedProjects.size)})" reRender="tabpanel" switchType="ajax" status="loadingStatus">
+                <apex:pageblock mode="maindetail">
+                    <apex:pageblocktable value="{!executedProjects}" var="a" id="executedProjectsTable" rendered="{!executedProjects.size>0}" >
+                       <apex:column styleClass="actionColumn">
+                            <apex:commandLink value="Edit" action="{!URLFOR($Action.Project__c.Edit,a.id)}" styleClass="actionLink" />
+                        </apex:column>
+                        <apex:column headerValue="Project Id">
+                           <apex:outputLink value="/{!a.id}">{!a.ProjectNumber__c}</apex:outputLink>
+                        </apex:column>
+                        <apex:column value="{!a.Name}" HeaderValue="Project Title" />
+                        <apex:column value="{!a.ProjectType__c}" headerValue="Project Type" headerClass="headerRow" />                        
+                        <apex:column value="{!a.LocationTotalCount__c}" headerValue="# of Locations" />
+                        <apex:column value="{!a.Owner.Name}" headerValue="Owner" />
+                        <apex:column value="{!a.StartDate__c} - {!a.EndDate__c}" HeaderValue="Execution Dates" />
+                        <apex:column value="{!a.Status__c}" headerValue="Status" headerClass="headerRow" />                                                
+                    </apex:pageblocktable>
+                    <apex:outputText rendered="{!executedProjects.size==0}">There are no projects in Ended Status!</apex:outputText>
+                </apex:pageblock>
+            </apex:tab>
+
+            <apex:tab label="Canceled ({!IF(canceledProjects.size = 1000, '1000+', canceledProjects.size)})" reRender="tabpanel" switchType="ajax" status="loadingStatus">
+                <apex:pageblock mode="maindetail">
+                    <apex:pageblocktable value="{!canceledProjects}" var="a" id="canceledProjectsTable" rendered="{!canceledProjects.size>0}">
+                        <apex:column headerValue="Project Id">
+                           <apex:outputLink value="/{!a.id}">{!a.ProjectNumber__c}</apex:outputLink>
+                        </apex:column>
+                        <apex:column value="{!a.Name}" HeaderValue="Project Title" />
+                        <apex:column value="{!a.ProjectType__c}" headerValue="Project Type" headerClass="headerRow" />                        
+                        <apex:column value="{!a.LocationTotalCount__c}" headerValue="# of Locations" />
+                        <apex:column value="{!a.Owner.Name}" headerValue="Owner" />
+                        <apex:column value="{!a.StartDate__c} - {!a.EndDate__c}" HeaderValue="Execution Dates" />
+                        <apex:column value="{!a.Status__c}" headerValue="Status" headerClass="headerRow" />                        
+                    </apex:pageblocktable>
+                    <apex:outputText rendered="{!canceledProjects.size==0}">There are no Canceled projects!</apex:outputText>
+                </apex:pageblock>
+            </apex:tab>
+
+            <apex:tab label="Closed  ({!IF(RejectedProjects.size = 1000, '1000+', RejectedProjects.size)})" reRender="tabpanel" switchType="ajax" status="loadingStatus">
+                <apex:pageblock mode="maindetail">
+                    <apex:pageblocktable value="{!RejectedProjects}" var="a" id="RejectedProjectsTable" rendered="{!RejectedProjects.size>0}" >
+                        <apex:column headerValue="Project Id">
+                           <apex:outputLink value="/{!a.id}">{!a.ProjectNumber__c}</apex:outputLink>
+                        </apex:column>
+                        <apex:column value="{!a.Name}" HeaderValue="Project Title" />
+                        <apex:column value="{!a.ProjectType__c}" headerValue="Project Type" headerClass="headerRow" />                        
+                        <apex:column value="{!a.LocationTotalCount__c}" headerValue="# of Locations" />
+                        <apex:column value="{!a.Owner.Name}" headerValue="Owner" />
+                        <apex:column value="{!a.StartDate__c} - {!a.EndDate__c}" HeaderValue="Execution Dates" />
+                        <apex:column value="{!a.Status__c}" headerValue="Status" headerClass="headerRow" />                        
+                    </apex:pageblocktable>
+                    <apex:outputText rendered="{!RejectedProjects.size==0}">There are no Closed projects!</apex:outputText>
+                </apex:pageblock>
+            </apex:tab>
+            
+             <apex:tab label="Deleted  ({!IF(DeletedProjects.size = 1000, '1000+', DeletedProjects.size)})" reRender="tabpanel" switchType="ajax" status="loadingStatus">
+                <apex:pageblock mode="maindetail">
+                    <apex:pageblocktable value="{!DeletedProjects}" var="a" id="DeletedProjectsTable" rendered="{!DeletedProjects.size>0}" >
+                        <apex:column headerValue="Project Id">
+                           <apex:outputLink value="/{!a.id}">{!a.ProjectNumber__c}</apex:outputLink>
+                        </apex:column>      
+                        <apex:column value="{!a.Name}" HeaderValue="Project Title" />
+                        <apex:column value="{!a.ProjectType__c}" headerValue="Project Type" headerClass="headerRow" />                        
+                        <apex:column value="{!a.LocationTotalCount__c}" headerValue="# of Locations" />
+                        <apex:column value="{!a.Owner.Name}" headerValue="Owner" />
+                        <apex:column value="{!a.StartDate__c} - {!a.EndDate__c}" HeaderValue="Execution Dates" />
+                        <apex:column value="{!a.Status__c}" headerValue="Status" headerClass="headerRow" />                        
+                    </apex:pageblocktable>
+                    <apex:outputText rendered="{!DeletedProjects.size==0}">There are no Deleted projects!</apex:outputText>
+                    <apex:outputText rendered="{!RejectedProjects.size==0}">There are no Deleted projects!</apex:outputText>
+                </apex:pageblock>
+            </apex:tab>
+            
+        </apex:tabPanel>
+    </apex:form>
+
+    
+</apex:page>

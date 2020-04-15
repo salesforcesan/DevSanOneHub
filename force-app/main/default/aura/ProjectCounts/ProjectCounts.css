@@ -1,0 +1,91 @@
+.THIS.psbar-panel {
+    padding:0;
+    /*border-bottom: 2px solid #D8DDE6;*/
+	margin: 0;  
+}
+.THIS .psbar-buttonbox {
+    display: table;
+}
+
+.THIS .psbar-myProjects {
+    font-family: "Salesforce Sans";
+    font-size: 13px;
+}
+.THIS .psbar-statusFilters { 
+}
+
+.THIS .psbar-button {
+    margin: 0.25rem;
+    color: #16325c;
+}
+.THIS .psbar-button_contents {
+    line-height: 2em;  
+    min-width: 64px;
+    height: 53px;
+}
+
+.THIS .psbar-button {
+    border: 0 !important;
+}
+
+.THIS .slds-button:focus {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important; }
+
+.THIS .slds-button:active {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important; }
+
+.THIS .psbar-count {
+    color: #0070D2;
+    font-size: 1.3em;
+}
+.THIS .psbar-button_on {
+    background-color:#0070D2;
+    color:#FFFFFF !important;
+    outline: 0;
+    box-shadow:0;
+    /*box-shadow: 0 0 3px #0070D2;*/ 
+}
+
+.THIS .psbar-button_on span{
+    color:#FFFFFF !important;
+}
+
+.THIS button.psbar-button_newproject {
+    margin: 0.25rem;
+    line-height: 2em;
+    background-color: #0D78D5;
+    color: #fff;
+    min-width: 64px;
+    height: 53px;
+}
+.THIS button.psbar-button_newproject:hover {
+    background-color: #0D78D5;
+    color: #fff;
+}
+.THIS .psbar-button_symbol {
+    font-size: 1.3em;
+    color: #fff;
+}
+.THIS .psbar-myProjectsCircle {
+    height: 50px;
+    width: 50px;
+    background: #E0E5EE;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    float: left;
+    text-align: center;
+    padding-top: 8px;
+    font-size: 24px;
+    color: #16325C;
+}
+.THIS .psbar-myProjectsLabel {
+	white-space: nowrap;
+    float: left;
+    margin-right: 10px;
+    color: #54698d;
+}

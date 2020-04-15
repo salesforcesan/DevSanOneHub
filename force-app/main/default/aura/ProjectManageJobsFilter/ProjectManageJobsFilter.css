@@ -1,0 +1,97 @@
+.THIS .hide {
+  display: none;
+}
+
+.THIS {
+    position:absolute;
+    z-index:400;
+    right:3;
+    top:-15;
+    width:100%;
+    margin:0;
+    padding:0;
+}
+
+.THIS .button-toggle {
+    position:absolute;
+    z-index:500;
+    right:10;
+    top:-10;
+}
+
+.THIS .originalSize {
+    max-height:0rem;
+    height:0;
+    overflow:hidden;
+   transition:all .1s ease;
+    background:white;
+    border-radius:4px;
+    box-shadow:0 0 0 rgba(0,0,0,.4);
+
+}
+
+.THIS .toggleFilters {
+    max-height:27rem;
+    height:100%;
+    box-shadow: 0 0 10px rgba(0,0,0,.3);
+    transition:all .5s ease;
+}
+
+.THIS .toggleFilters::-webkit-scrollbar {
+    display:none;
+}
+
+.THIS .container textarea {
+ min-height: 6.2rem;
+}
+
+.THIS .container .header {
+  border-bottom: 1px solid #ddd;
+}
+
+.THIS .container .header > h2 {
+  display: inline-block;
+}
+
+.THIS .container .footer {
+  border-top: 1px solid #ddd;
+}
+
+.THIS .container .icon-filter-small {
+  bottom: 12px !important;
+  top: auto !important;
+}
+
+.THIS .container .icon-filter-small svg {
+  width: 1rem !important;
+  height: 1rem !important;
+}
+
+.THIS .half-width {
+  width: 50%;
+  min-width: 8rem;
+}
+
+.THIS .third-width {
+  width: 33%;
+  min-width: 10rem;
+}
+
+
+.THIS ::-webkit-scrollbar { 
+    display:none !important;
+}
+
+.THIS .changeText:before {
+    content:'show advanced';
+    transition: all .4s ease;
+}
+
+.THIS .hideAdv:before {
+    content: 'hide advanced';
+    transition: all .4s ease;
+}
+
+.THIS .slds-input {
+	border:1px solid rgb(221, 219, 218);
+}

@@ -1,0 +1,79 @@
+<apex:page controller="importexportdataController" showHeader="true" sidebar="true" >
+    <head>
+        <style>
+            .activeTab {
+            background-image: none;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 7px 12px;
+            }
+            .inactiveTab {
+            background-color: #ddd;
+            color: black;
+            background-image: none;
+            cursor: pointer;
+            padding: 6px 12px;
+            }
+        </style>
+    </head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <apex:form >
+        <apex:sectionHeader title="JSON DATA" subtitle="Export/Import Services" />
+        <apex:pageMessages showDetail="false" escape="false" />
+        <apex:tabPanel switchType="client" id="theTabPanel" tabClass="activeTab" inactiveTabClass="inactiveTab">
+            <apex:tab label="Export Services" name="name1" id="tabOne">
+                <apex:pageBlock mode="detail" title="Select Services to Export"  >
+                    <apex:pageBlockButtons >
+                        <apex:commandButton value="Export Services" action="{!processSelected}" onclick="return selectIds();" />
+                    </apex:pageBlockButtons>
+                    <apex:pageBlockTable value="{!services}" var="c" id="table">
+                        <apex:column >
+                            <input type="checkbox" data-id="{!c.Id}" class="checkBox"/>
+                        </apex:column>
+                        <apex:column value="{!c.Name}" />
+                    </apex:pageBlockTable>
+                </apex:pageBlock>
+                <div style="font-family:'courier new';font-size:14px;background: #fff;padding: 1.6em;border: 1px solid #dadada;" id='selectable' onclick="selectText('selectable')">
+                    <apex:outputText id="output">{!jsonData}</apex:outputText>
+                </div>
+                <apex:inputHidden value="{!selectedIds}" id="selIds" />
+            </apex:tab>
+            <apex:tab label="Import Services" name="name2" id="tabTwo">
+                <apex:pageBlock mode="detail" title="Paste Services to Import"  >
+                    <apex:pageBlockButtons >
+                        <apex:commandButton value="Import Services" action="{!processImport}"  />
+                    </apex:pageBlockButtons>
+                    <div style="font-family:'courier new';font-size:14px;">
+                        <apex:inputTextarea id="jsonImportData" value="{!importServiceJSON}" style="font-family:'courier new';font-size:14px;width: 100%;min-height: 500px;" />
+                    </div>
+                </apex:pageBlock>
+            </apex:tab>
+        </apex:tabPanel>
+    </apex:form>
+    <script type="text/javascript">
+        var j$ = jQuery.noConflict();   
+        function selectIds(){
+        var ids= [];
+        j$(".checkBox:checked").each(function(){
+        ids.push(j$(this).attr('data-id'));   
+        });
+        j$('[id$=selIds]').val(ids.join(','));
+        return true;
+        }
+    
+        function selectText(containerid) {
+            var node = document.getElementById( containerid );
+
+        if ( document.selection ) {
+            var range = document.body.createTextRange();
+            range.moveToElementText( node  );
+            range.select();
+        } else if ( window.getSelection ) {
+            var range = document.createRange();
+            range.selectNodeContents( node );
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange( range );
+        }
+        }
+    </script>
+</apex:page>

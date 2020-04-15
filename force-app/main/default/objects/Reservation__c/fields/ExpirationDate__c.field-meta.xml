@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExpirationDate__c</fullName>
+    <description>Expiration date defines a date where the Reservation will be moved to the Expired status if it has not move to the reserved state.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This date defines when the reservation will automatically expire if the reservation doesn&#39;t get approved/reserved.</inlineHelpText>
+    <label>Expiration Date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

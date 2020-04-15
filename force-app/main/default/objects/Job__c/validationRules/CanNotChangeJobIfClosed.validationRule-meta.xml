@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CanNotChangeJobIfClosed</fullName>
+    <active>true</active>
+    <description>A Job in a CLOSED status cannot have further actions performed.</description>
+    <errorConditionFormula>LOWER(PRIORVALUE(JobStatus__c)) == &#39;closed&#39;</errorConditionFormula>
+    <errorMessage>A Job in a CLOSED status cannot have further actions performed.</errorMessage>
+</ValidationRule>

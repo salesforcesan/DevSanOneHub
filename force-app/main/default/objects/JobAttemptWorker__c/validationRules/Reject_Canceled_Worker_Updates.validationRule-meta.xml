@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reject_Canceled_Worker_Updates</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(UPPER(TEXT(PRIORVALUE(Status__c))) == &#39;CANCELED&#39;, UPPER(TEXT(Status__c)) != &#39;CANCELED&#39;)</errorConditionFormula>
+    <errorMessage>This worker has already been canceled. Cannot accept updates.</errorMessage>
+</ValidationRule>

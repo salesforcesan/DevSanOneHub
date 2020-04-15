@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disallow_keep_asng_for_bundled_projects</fullName>
+    <active>true</active>
+    <description>Keep Assignment cannot be different from location in case of bundled projects.</description>
+    <errorConditionFormula>AND( Project__r.BundleServices__c, UPPER(TEXT(KeepAssignmentOverride__c)) !=  &#39;NO OVERRIDE&#39;, NOT ISBLANK(TEXT(KeepAssignmentOverride__c)))</errorConditionFormula>
+    <errorMessage>Keep Assignment cannot be overridden for bundled projects.</errorMessage>
+</ValidationRule>

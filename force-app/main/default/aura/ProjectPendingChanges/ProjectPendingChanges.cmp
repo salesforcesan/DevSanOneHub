@@ -1,0 +1,56 @@
+<aura:component controller="LightningProjectController" implements="force:lightningQuickActionWithoutHeader">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute type="String" name="callbackresult" default="NONE"></aura:attribute>
+    <aura:attribute type="String" name="callbackmessage"></aura:attribute>
+	<aura:attribute type="String" name="projectId" access="global"></aura:attribute>    
+    
+    <aura:registerEvent name="refreshProject" type="c:EventProjectRefresh"/>    
+    
+    
+    <aura:attribute name="isOpen" type="boolean" default="true"/>
+    <div style="padding:0;margin:0;">
+    <!--Use "slds-m-around- -xx-large" class to add standard Large padding to the component--> 
+    <div class="" style="width:100%;position:relative;">
+        <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->   
+        <aura:if isTrue="{!v.isOpen}">
+            
+            <!--###### MODAL BOX Start From Here ######--> 
+            <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open ">
+                <div class="slds-modal__container">
+                    <!-- ###### MODAL BOX HEADER Part Start From Here ######-->
+                    <div class="slds-modal__header">
+                        <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.closeModal}">
+                            X
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="header99" class="slds-text-heading--medium">Release Pending Project Changes</h2>
+                    </div>
+                    <div><lightning:spinner size="medium" variant="brand" aura:id="spinner" class="oh-margin slds-hide"/></div> 
+                    <aura:if isTrue="{!v.callbackresult == 'SUCCESS' }">
+                        <c:Notification aura:id="notification" class="no-flow" message="{!v.callbackmessage}" visible="true" hideCloseButton="True" type="success"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.callbackresult == 'ERROR' }">
+                        <c:Notification aura:id="notification" class="no-flow" message="{!v.callbackmessage}" visible="true" hideCloseButton="True" type="error"/>
+                    </aura:if>
+
+                    <!--###### MODAL BOX BODY Part Start From Here ######-->
+                    <div class="slds-modal__content slds-p-around--medium">
+                        <p><b>Are you sure you want to release the pending project changes?
+                            </b>
+                        </p>
+                    </div>
+                    <!--###### MODAL BOX FOOTER Part Start From Here ######-->
+                    <div class="slds-modal__footer">
+                        <button class="slds-button slds-button--neutral" onclick="{!c.closeModal}" >Cancel</button>
+                        <button class="slds-button slds-button--brand" onclick="{!c.releaseChanges}">Release Changes</button>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop--open"></div>
+            <!--###### MODAL BOX Part END Here ######-->
+            
+        </aura:if>
+    </div>
+        </div>
+</aura:component>

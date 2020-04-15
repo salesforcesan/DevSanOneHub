@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsStartedOnTime__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF($Setup.OneHubCustomSetting__c.StoreStartTimeGrace__c &gt;= StartTimeDelay__c , True, False)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Is Started On Time</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

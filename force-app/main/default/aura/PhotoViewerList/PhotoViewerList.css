@@ -1,0 +1,54 @@
+.THIS.photo-viewer-list-container {
+    width: 100%;
+    background-color: #fff;    
+    border-radius: 5px;
+    padding: 16px;
+    overflow: hidden;
+}
+
+.THIS .oh-body {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    padding:0;
+}
+
+.THIS .oh-body .oh-showmore-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.THIS .oh-body .oh-showmore-container .oh-col {
+    flex-grow: 1;
+}
+
+.THIS .oh-body .oh-showmore-container .oh-col-shrink {
+    flex-grow: 0;
+    flex-shrink: 1;
+    padding: 0 16px;
+}
+
+.THIS .oh-body .oh-showmore-container .oh-divider {
+    height: 1px;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+}
+.THIS .oh-body .oh-not-show-count {
+    margin: 10px 0;
+    background-color: #ffb75d;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.THIS .oh-export-spinner-container {
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+}

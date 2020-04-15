@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Repeatable__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>A checkbox that indicates whether or not this Attribute can be repeated.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Select this box if the attribute can be repeated.</inlineHelpText>
+    <label>Repeatable</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

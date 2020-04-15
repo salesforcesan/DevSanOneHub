@@ -1,0 +1,72 @@
+<aura:component >
+    <aura:attribute name="dialogId" type="String" default=""/>
+    <aura:attribute name="projectId" type="String" default=""/>
+    <aura:attribute name="showSchedule" type="Boolean" default="false" />
+    <aura:attribute name="pasteList" type="Boolean" default="true" />
+    <aura:attribute name="searchByOneHubId" type="Boolean" default="true"/>
+    <aura:attribute name="rowCount" type="Integer" default="0" access="private"/>
+     <aura:attribute name="useGuidOptions" type="List" default="[
+    {'label': 'Use Location Number', 'value': '0'},
+    {'label': 'Use Location ID', 'value': '1'}
+    ]"/>
+    <aura:attribute name="useGuid" type="String" default=""/>
+    <aura:attribute name="guidSelectorDisabled" type="Boolean" default="false" />
+    <aura:registerEvent name="closeDialogEvent" type="c:SimpleComponentEvent"/>
+    <aura:registerEvent name="onRemoteRequest" type="c:RemoteActionRequestEvent"/>
+    <aura:handler event="c:ActionResponseSuccessAppEvent" action="{!c.onSuccess}"/>
+    <aura:handler event="c:ActionResponseErrorAppEvent" action="{!c.onError}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <article class="paste-list-container slds-is-relative">
+        <c:Notification aura:id="notification" class="no-flow"/>
+        <c:Spinner aura:id="busyIndicator" type="modal" size="medium">
+            <div>
+                <header>
+                    <aura:if isTrue="{!v.pasteList}">
+                    <h2>Paste a list of locations you would like to add to this project.</h2>
+                        <aura:set attribute="else">
+                        	<h2>Review the list of pasted locations</h2>    
+                        </aura:set>
+                    </aura:if>
+                </header>
+                <div class="paste-list-body">
+                    <div class="slds-grid">
+                        <aura:if isTrue="{!v.pasteList}">
+                            <div class="slds-p-horizontal_small slds-size--1-of-1 ">
+                                      <lightning:layout horizontalAlign="start">
+                                            <lightning:layoutItem flexibility="auto" padding="around-small">
+                                                <label>Paste List</label>
+                                            </lightning:layoutItem>
+                                            <lightning:layoutItem flexibility="auto" padding="around-small">
+                                                <c:RadioBoxGroup 
+                                                    aura:id="guidSelector"
+                                                    disabled="{! v.guidSelectorDisabled}"
+                                                    options="{! v.useGuidOptions}"
+                                                    value="{! v.useGuid}"
+                                                    tooltip="A Retailer Account must be selected on Project Details to use Location Number."
+                                                    class="oh-radio-group" />
+                                            </lightning:layoutItem>
+                                        </lightning:layout>
+                                <lightning:textarea name="locations" label="loctions" placeholder="{!join(' ', 'Paste a list of comma-delimited ','OneHub Location Identifier and Scheduled Date Or OneHub Location Identifier in a single column without any punctuation. The supported date formats are YYYY-MM-dd and MM/dd/YYYY.')}" class="textarea" aura:id="locationList"/>
+                            </div>
+                        </aura:if>
+                         <div class="slds-p-horizontal_small slds-size--1-of-1">
+                             <label>{!v.rowCount} results</label>
+                             <c:DataTable aura:id="dataTable" height="300"/>
+                         </div>
+                    </div>
+                </div>
+                <footer>
+                    <aura:if isTrue="{!v.pasteList}">
+                        <lightning:button label="Close" name="btnCancel" variant="neutral" onclick="{!c.cancel}"/>
+                    	<lightning:button label="Add" name="btnAdd" variant="brand" onclick="{!c.add}"/>
+                        <aura:set attribute="else">
+                            <lightning:buttonIcon iconName="utility:back" variant="inverse" alternativeText="Back" onclick="{!c.goBack}"/>
+                    		<lightning:button label="Close" name="btnCancel" variant="neutral" onclick="{!c.cancel}"/>
+                        	<lightning:button label="Export Pasted Locations" name="btnExport" variant="success" onclick="{!c.export}" class="slds-m-left_medium"/>
+                        </aura:set>
+                    </aura:if>
+                </footer>
+            </div>
+        </c:Spinner>
+    </article>
+</aura:component>

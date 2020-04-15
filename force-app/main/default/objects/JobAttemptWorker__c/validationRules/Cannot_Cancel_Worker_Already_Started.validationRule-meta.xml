@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cannot_Cancel_Worker_Already_Started</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISCHANGED(Status__c),UPPER(TEXT(Status__c)) == &#39;CANCELED&#39;,IsCheckedIn__c == True)</errorConditionFormula>
+    <errorMessage>Cannot cancel worker who has already checked in and started the work.</errorMessage>
+</ValidationRule>

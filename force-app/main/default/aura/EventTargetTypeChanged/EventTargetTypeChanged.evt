@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION">
+	<aura:attribute name="targetType" type="String"/>
+    <aura:attribute name="numberOfTargets" type="Integer"/>
+</aura:event>

@@ -1,0 +1,37 @@
+<aura:component >
+    <!-- properties -->
+    <aura:attribute name="id" type="String" description="photo id"/>
+    <aura:attribute name="photo" type="Object" access="private" description="photo object"/>
+    <aura:attribute name="usage" type="String" default=""/>
+    <aura:attribute name="isSuperuser" type="boolean" default="false" access="private"/>
+    <!-- event -->
+    <aura:registerEvent name="onClosePhotoDetail" type="c:SimpleComponentEvent"/>
+    <aura:registerEvent name="onPhotoDetailPeerCloseNotified" type="c:PhotoDetailPeerCloseNotification"/>
+    <aura:handler event="c:PhotoDetailPeerCloseNotification"
+        action="{! c.onPeerCloseNotified }"/>
+    <aura:handler name="change" value="{! v.id }" action="{! c.onIdChanged }"/>
+    <aura:handler name="init" value="{! this }" action="{! c.onInit }" />
+
+    <!-- html template -->
+    <div class="oh-detail-container">
+        <div class="oh-detail-close">
+            <a href="javascript:void(0)" onclick="{! c.onClose }" title="close">
+                <lightning:icon variant="inverse" iconName="utility:close" size="small"/>
+            </a>
+        </div>
+        <lightning:tabset class="oh-tabset" aura:id="photoTabset">
+            <lightning:tab onactive="{! c.onSelectTab }" class="oh-tab" id="photoDetail" label="PHOTO DETAIL">
+                <c:PhotoViewerListRowDetailPhoto 
+                    usage="{! v.usage }"
+                    aura:id="photoDetail"></c:PhotoViewerListRowDetailPhoto>
+            </lightning:tab>
+            <aura:if isTrue="{! v.isSuperuser}">
+           <lightning:tab class="oh-tab" onactive="{! c.onSelectTab }" id="photoChatter" label="CHATTER">
+                <!-- <c:PhotoViewerListRowDetailAnalyzer aura:id="photoAnalyzer"></c:PhotoViewerListRowDetailAnalyzer> -->
+               <c:PhotoViewerListRowDetailPhotoChatter usage="{! v.usage }" aura:id="photoChatter">
+               </c:PhotoViewerListRowDetailPhotoChatter>
+            </lightning:tab>
+        </aura:if>
+        </lightning:tabset>
+    </div>
+</aura:component>

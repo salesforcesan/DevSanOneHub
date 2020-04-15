@@ -1,0 +1,775 @@
+/* crossmark planning solution stylesheet */
+
+body {
+  min-width: 620px;
+  background-color: #fff;
+  overflow-y: scroll;
+}
+
+.cm-btn-float-right {
+  margin-right: -1rem;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  border-right: none;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.cm-theme-lighter {
+  background-color: #eee;
+  color: #888;
+}
+
+.cm-theme-dark {
+  background-color: #888;
+  color: #eee;
+}
+
+.cm-page-header h1 {
+  color: #2679b5;
+  font-weight: lighter;
+}
+
+.cm-bg-lightest {
+  background-color: #fefefe;
+}
+
+.cm-bg-lighter {
+  background-color: #eee;
+}
+
+.cm-bg-light {
+  background-color: #ccc;
+}
+
+.cm-bg-dark {
+  background-color: #888;
+}
+
+.cm-bg-darker {
+  background-color: #444;
+}
+
+.cm-bg-darkest j {
+  background-color: #000;
+}
+
+.cm-fg-blue-light {
+  color: #2679b5;
+}
+
+.cm-fg-light {
+  color: #cccccc;
+}
+
+.cm-fg-lighter {
+  color: #dddddd;
+}
+
+.container-fluid {
+  padding: 0 1rem;
+}
+
+.cm-btn-icon-no-border {
+  border-width: 0;
+}
+
+cmk-picklist,
+cmk-lookup,
+div[cmk-picklist],
+div[cmk-lookup] {
+  display: inline-block;
+  padding: 0;
+}
+
+.cm-picklist-options {
+  position: absolute !important;
+  margin-top: -0.2rem;
+  width: 100%;
+  left: auto;
+  top: auto;
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.16);
+  z-index: 999;
+  min-width: 100px;
+  max-width: 500px;
+}
+
+.cm-picklist-options-left-5 {
+  margin-left: -5.5rem;
+}
+
+.cm-lookup {
+  padding: 0 !important;
+}
+
+.cm-lookup-menu {
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.16);
+  width: auto;
+}
+
+.cm-label-10 {
+  width: 10rem;
+}
+
+.cm-label-15 {
+  width: 15rem;
+}
+
+.cm-label-20 {
+  width: 20rem;
+}
+
+.cm-label-25 {
+  width: 25rem;
+}
+
+.cm-label-30 {
+  width: 30rem;
+}
+
+.cm-label-40 {
+  width: 40rem;
+}
+
+#pageBody {
+  width: 100%;
+  padding-top: 20px;
+}
+
+.cm-col-container {
+  border: 1px solid #dedede;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #FFFFFF;
+}
+
+.cm-col-right {
+  margin-left: 0;
+  margin-top: 20px;
+}
+
+.cm-col-right-0 {
+  margin-left: 0;
+  margin-top: 0;
+}
+
+.cm-row {
+  margin-bottom: 20px;
+}
+
+.cm-row-top-up20 {
+  margin-top: -20px;
+}
+
+.cm-article {
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.cm-article header {
+  border-bottom: 1px solid #eee;
+  margin-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.cm-widget-hdr-button {
+  padding: 4px;
+  width: auto;
+  height: auto;
+}
+
+.cm-widget-hdr-group {
+  display: inline;
+  padding-right: 2px;
+}
+
+.cm-article-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2679b5;
+  line-height: 1.6rem;
+  /* text-transform: none; */
+}
+
+.cm-article-title > small {
+  font-size: 0.7rem;
+  color: #777;
+  font-weight: normal;
+  line-height: 1;
+  margin-left: 5px;
+  text-transform: none;
+}
+
+.cm-article-body {
+  width: 100%;
+  height: 100%;
+}
+
+.cm-article-footer {
+  border-top: 1px solid #eee;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-top: 20px;
+  margin-bottom: 4px;
+  padding-top: 10px;
+}
+
+.cm-article-footer .float-left span {
+  font-weight: 300;
+}
+
+.table tr > th:first-child,
+.table tr > td:first-child {
+  padding-left: 4px;
+}
+
+.table tr > td {
+  max-height: 1.5rem;
+}
+
+ul.cm-pagination {
+  display: inline;
+  margin: 2px 0;
+  white-space: nowrap;
+  padding-left: 0;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+
+ul.cm-pagination > li {
+  display: inline;
+}
+
+ul.cm-pagination > li > a {
+  padding: 4px 6px;
+  border: 1px solid #ddd;
+  border-left: 0;
+}
+
+ul.cm-pagination > li:first-child > a {
+  border-left: 1px solid #ddd;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+ul.cm-pagination > li:last-child > a {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+ul.cm-pagination > li > a:hover {
+  text-decoration: none;
+  background-color: #eee;
+}
+
+.cm-error-container {
+  border: 1px solid red;
+  padding: 20px 10px;
+  color: red;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+.cm-icon {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 0.25rem;
+  fill: #aaa;
+}
+
+.cm-hide,
+.cm-close {
+  display: none;
+  margin-bottom: 0;
+}
+
+.table th {
+  font-weight: bold;
+}
+
+.cm-height-300 {
+  height: 300px;
+}
+
+.cm-height-400 {
+  height: 400px;
+}
+
+.cm-height-450 {
+  height: 450px;
+}
+
+.cm-height-500 {
+  height: 500px;
+}
+
+.cm-chart-svg {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  width: 100%;
+}
+
+.cm-list-item-disabled {
+  padding-left: 10px;
+}
+
+.cm-form-wizard {
+  margin-top: 20px;
+}
+
+.cm-form {
+  border: 1px solid #ddd;
+  padding: 0;
+  border-top: 0;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.cm-form-body {
+  padding: 20px;
+}
+
+.cm-form-label {
+  text-align: right;
+}
+
+.cm-form-footer {
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f5f5f5;
+}
+
+.cm-disabled {
+  border-color: #ddd;
+  background-color: #eee;
+}
+
+.cm-form-element-tips {
+  font-weight: normal;
+  color: #888;
+}
+
+.form-element__label {
+  font-weight: 500;
+}
+
+.cm-form-wizard .form-element__help {
+  color: #ddd;
+  display: none !important;
+}
+
+.cm-form-wizard .has-error .form-element__help {
+  display: block !important;
+  color: #c23934;
+}
+
+.cm-input-lookup {
+  border: 0;
+}
+
+.cm-input-icon {
+  top: 18px !important;
+}
+
+ul > li {
+  padding: 0;
+  margin: 0;
+}
+
+.cm-lookup-list > li {
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px dashed #eee;
+}
+
+.cm-lookup-list > li:first-child {
+  border-top: 1px dashed #eee;
+}
+
+.cm-lookup-list {
+  max-height: auto;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.cm-lookup-ul,
+.cm-lookup-table {
+  padding-right: 14px;
+  padding-left: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  min-width: 250px;
+  max-width: 500px;
+}
+
+.cm-lookup-table table {
+  max-width: 400px;
+}
+
+.cm-table-border-no-top {
+  border-top: 0;
+}
+
+.cm-lookup-table thead th {
+  background-color: #eee;
+}
+
+.cm-lookup-table thead th:hover {
+  background-color: #eee !important;
+}
+
+.cm-lookup-table tbody tr:hover {
+  cursor: pointer;
+}
+
+.cm-row-even {
+  background-color: #f9f9f9;
+}
+
+.cm-container-no-margin {
+  width: 480px;
+  height: 100%;
+  z-index: 99999;
+  margin: 0;
+  position: fixed;
+  right: 0;
+  border: 0;
+  border-left: 1px solid #ddd;
+  background-color: #eee;
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.16);
+}
+
+.cm-dropdown {
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.32);
+}
+
+.cm-dropdown-left {
+  left: 0.75rem;
+}
+
+.cm-dropdown-menu {
+  margin-top: 5px;
+}
+
+.cm-dropdown-area {
+  padding: 20px;
+}
+
+.cm-is-selected .button {
+  visibility: visible !important;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.cm-widget-search {
+  border: 1px solid #ddd;
+  margin-right: 10px;
+  border-radius: 45px;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  background-color: #eee;
+  width: 8rem;
+}
+
+.cm-body-full-screen {
+  overflow: hidden;
+}
+
+.cm-widget-full-screen {
+  z-index: 10000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  margin: 0;
+}
+
+.cm-card {
+  margin: 0;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.cm-card:last-child {
+  border-bottom-width: 0;
+}
+
+.cm-card > header {
+  margin: 0;
+  margin-right: 10px;
+  border: 0;
+}
+
+.cm-card > section {
+  margin-left: 10px;
+}
+
+.cm-card > section label {
+  text-align: right;
+}
+
+.cm-card > section span {
+  font-weight: 300;
+}
+
+.cm-card > section .grid .col span {
+  text-align: left;
+}
+
+.cm-card svg {
+  width: 1rem;
+  height: 0.8rem;
+}
+
+.cm-card-title {
+  display: inline-block;
+  font-weight: 600;
+}
+
+.cm-card-title .truncate:first-child {
+  width: 20rem !important;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
+.cm-card-title > small {
+  padding-left: 10px;
+  font-weight: 300;
+}
+
+.ui-widget-content {
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.16);
+  border-color: #ddd;
+  padding: 10px;
+}
+
+.ui-datepicker {
+  margin-top: 4px;
+}
+
+.ui-datepicker-month,
+.ui-datepicker-year {
+  background-color: #FFF;
+  color: #16325C;
+  border: 1px solid #D8DDE6;
+  border-radius: 0.25rem;
+  font-weight: 300;
+  font-size: 1.25rem;
+  width: 100%;
+  padding: 4px 10px;
+  transition: border 0.1s linear 0s, background-color 0.1s linear 0s;
+}
+
+.ui-widget-header {
+  border: 0;
+  background: #ffffff;
+}
+
+.ui-datepicker .ui-datepicker-title {
+  margin: 0;
+}
+
+.ui-datepicker .ui-datepicker-title select:first-child {
+  float: left !important;
+  text-align: center;
+}
+
+.ui-datepicker .ui-datepicker-title select:last-child {
+  float: right !important;
+  text-align: center;
+}
+
+.ui-datepicker .ui-datepicker-title select:first-child option {
+  padding-left: 8px;
+  text-align: left;
+  border-right: 1px solid #444;
+}
+
+.ui-datepicker .ui-datepicker-title select:last-child option {
+  padding-left: 8px;
+  text-align: left;
+}
+
+.ui-widget select {
+  font-weight: 400;
+  color: #54698D;
+  font: 100%/1.5 "Salesforce Sans", Arial, sans-serif;
+  font-size: 0.75rem !important;
+}
+
+.ui-datepicker th {
+  font-weight: 400;
+  color: #54698D;
+}
+
+.ui-datepicker-header > a {
+  display: none;
+}
+
+.ui-datepicker-calendar thead th {
+  font-size: 0.75rem;
+}
+
+.ui-datepicker-calendar tbody td {
+  text-align: center;
+  padding: 5px;
+  font-size: 0.75rem;
+}
+
+.ui-datepicker-calendar tbody td > a {
+  color: #16325C !important;
+  border: 0 !important;
+  background: #fff !important;
+  text-align: center;
+  padding: 4px;
+}
+
+.ui-datepicker-calendar tbody td > a.ui-state-active {
+  background: #005FB2 none repeat scroll 0% 0% !important;
+  background-color: #005FB2 !important;
+  background-image: none !important;
+  background-repeat: repeat !important;
+  background-attachment: scroll !important;
+  background-position: 0% 0% !important;
+  background-clip: border-box !important;
+  background-origin: padding-box !important;
+  background-size: auto auto !important;
+  color: #FFF !important;
+  border-radius: 50px;
+}
+
+.ui-datepicker-calendar tbody td > a.ui-state-highlight,
+.ui-datepicker-calendar tbody td > a:hover {
+  background: #eee none repeat scroll 0% 0% !important;
+  background-color: #eee important;
+  background-image: none !important;
+  background-repeat: repeat !important;
+  background-attachment: scroll !important;
+  background-position: 0% 0% !important;
+  background-clip: border-box !important;
+  background-origin: padding-box !important;
+  background-size: auto auto !important;
+  color: #444 !important;
+  border-radius: 45px;
+}
+
+.ui-datepicker-calendar tbody td.ui-state-disabled span {
+  color: #aaa !important;
+  border: 0 !important;
+  background: #fff !important;
+  text-align: center;
+}
+
+.cm-heatmap {
+  width: 230px;
+  padding: 0 10px;
+  display: inline;
+}
+
+.cm-full-cal {
+  position: absolute;
+  display: inline-block;
+}
+
+@media (max-width: 640px) {
+  body {
+    overflow-y: auto;
+  }
+  .cm-heatmap {
+    width: 100%;
+    padding: 0 180px;
+    display: block;
+  }
+  .cm-full-cal {
+    position: relative;
+    display: block;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+  }
+}
+
+@media (min-width: 61.25em) {
+  .cm-col-right {
+    margin-left: 20px;
+    margin-top: 0;
+  }
+  .cm-col-right-0 {
+    margin-left: 0;
+  }
+  .cm-widget-full-screen {
+    z-index: 10060;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    margin: 0;
+    border: 0;
+  }
+}
+
+.cm-article .ui-grid-header-cell {
+  border-right: 0;
+  border-color: #fff;
+}
+
+.cm-article .ui-grid-top-panel {
+  background: none;
+}
+
+.cm-article .ui-grid {
+  border: 0;
+  border-top: 1px solid #d8dde6;
+  border-bottom: 1px solid #d8dde6;
+}
+
+.cm-article .ui-grid-cell {
+  border-right: 0;
+  border-bottom: 1px solid #d8dde6;
+  height: auto !important;
+}
+
+.cm-article .ui-grid-cell-contents,
+.cm-cell {
+  padding: 0.5rem;
+}
+.cm-article .ui-grid-viewport .ui-grid-row:hover .ui-grid-cell {
+  background-color: #ddd;
+}
+
+.cm-article .ui-grid-row:nth-child(even) .ui-grid-cell {
+  background-color: #fff;
+}
+
+.cm-grid {
+  width: 100%;
+  height: auto !important;
+}
+
+.cm-float-right {
+  padding-right: 1px;
+}
+
+.cm-ui-view {
+  overflow: hidden;
+}
+
+.cm-truncate {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

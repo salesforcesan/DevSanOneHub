@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <frameHeight>900</frameHeight>
+    <hasSidebar>false</hasSidebar>
+    <label>Job Calendar</label>
+    <motif>Custom93: Shopping Cart</motif>
+    <url>https://shopperevents--c.na24.visual.force.com/apex/LocationReport?isdtp=mn&amp;sfdc.tabName=01r1a0000001bAd#/jobs-table-viewer</url>
+    <urlEncodingKey>UTF-8</urlEncodingKey>
+</CustomTab>

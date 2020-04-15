@@ -1,0 +1,25 @@
+.THIS.slds-modal .slds-modal__header .slds-modal__close svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.THIS.slds-modal {
+  transform: scale(0.9);
+  transition: transform 0.1s;
+}
+
+.THIS.slds-fade-in-open {
+  transform: scale(1);
+  opacity: 1;
+  transition: transform 0.1s;
+}
+
+.THIS.fade-out-close {
+  transform: scale(0.8);
+  opacity: 0;
+  transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+}
+
+.THIS .msgbox-hide {
+  display: none;
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PrimaryAccount__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The primary account that is responsible for the reservation.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The primary account that is responsible for the reservation.</inlineHelpText>
+    <label>Primary Account</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Reservations</relationshipLabel>
+    <relationshipName>Reservations</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

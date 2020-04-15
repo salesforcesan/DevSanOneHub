@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TotalBillableBreakTime__c</fullName>
+    <externalId>false</externalId>
+    <label>Total Billable Break Time</label>
+    <summarizedField>JobAttemptWorkerTimeEntry__c.Duration__c</summarizedField>
+    <summaryFilterItems>
+        <field>JobAttemptWorkerTimeEntry__c.TimeEntryType__c</field>
+        <operation>equals</operation>
+        <value>Break</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>JobAttemptWorkerTimeEntry__c.IsBillable__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryForeignKey>JobAttemptWorkerTimeEntry__c.JobAttemptWorker__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

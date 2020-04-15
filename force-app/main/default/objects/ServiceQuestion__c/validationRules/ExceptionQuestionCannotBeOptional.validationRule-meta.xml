@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExceptionQuestionCannotBeOptional</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(Question__r.ExceptionQuestion__c,Optional__c)</errorConditionFormula>
+    <errorMessage>Exception Question cannot be optional</errorMessage>
+</ValidationRule>

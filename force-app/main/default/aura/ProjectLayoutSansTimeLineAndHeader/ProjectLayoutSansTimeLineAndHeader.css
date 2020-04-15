@@ -1,0 +1,16 @@
+.THIS {
+}
+
+.THIS .left-nav {
+    float: left;
+}
+.THIS .oh-main-content {
+  	width:100%;
+    margin:0 auto;
+    overflow: auto;
+}
+.THIS .spinner {
+    z-index: 10001;
+}
+
+/*rgba(185, 182, 180, 1)--grey color for possible bg--*/

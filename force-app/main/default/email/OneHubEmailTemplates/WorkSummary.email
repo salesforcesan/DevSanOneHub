@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Email Communication</title>
+    <style type="text/css">
+      /* CLIENT-SPECIFIC STYLES */
+      			 .ExternalClass{width:100%;}
+      			.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;}
+      			/* ========== Page Styles ========== */
+    </style>
+  </head>
+  <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;margin:0;padding:0;background-color:#DEE0E2;height:100% !important;width:100% !important;-webkit-text-size-adjust:none !important;">
+    <center>
+      <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;margin:0;padding:0;background-color:#DEE0E2;border-collapse:collapse !important;-webkit-text-size-adjust:none !important;height:100% !important;width:100% !important;">
+        <tr>
+          <td align="center" valign="top" id="bodyCell" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;margin:0;padding:0;-webkit-text-size-adjust:none !important;height:100% !important;width:100% !important;">
+            <table border="0" cellpadding="0" cellspacing="0" id="container" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;border:1px solid #CCCCCC;border-collapse:collapse !important;-webkit-text-size-adjust:none !important;max-width:600px !important;width:100% !important;">
+              <tr>
+                <td align="center" valign="top" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;-webkit-text-size-adjust:none !important;margin:auto;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" id="header" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#16325C;min-height:50px;border-bottom:1px solid #CCCCCC;display:inline-block;border-collapse:collapse !important;-webkit-text-size-adjust:none !important;">
+                    <tr>
+                      <td valign="top" class="headerContent" align="center" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;color:white;font-family:Helvetica;font-size:18px;font-weight:bold;line-height:100%;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;text-align:left;vertical-align:middle;-webkit-text-size-adjust:none !important;width:20%;padding:10px;text-align:center;">
+                      Worker Summary
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" valign="top" class="borderBottom" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#FFFFFF;border-bottom:1px solid #CCCCCC;-webkit-text-size-adjust:none !important;padding:10px;width:100%;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;border-collapse:collapse !important;-webkit-text-size-adjust:none !important;">
+                    <tr>
+                      <td valign="top" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;color:#505050;font-family:Helvetica;font-size:14px;line-height:110%;-webkit-text-size-adjust:none !important;width:50%;text-align:left;" class="contactContent">
+                        <span style="color:#0070D2;font-size:1.2rem;line-height:110%;font-weight:300;margin-right:10px;">{!JobAttemptWorker__c.ContactFirstName__c}&nbsp;{!JobAttemptWorker__c.ContactLastName__c} -- {!JobAttemptWorker__c.IsVerified__c}</span><span style="color:grey;font-size:14px;font-weight:300;"><br/>(ID# {!JobAttemptWorker__c.ContactEmployeeId__c})</span>
+                      </td>
+                      <td valign="top" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;color:#505050;font-family:Helvetica;font-size:14px;line-height:110%;-webkit-text-size-adjust:none !important;width:50%;text-align:left;" class="contactContent">
+                        <span style="color:grey;font-size:14px;font-weight:300;">{!JobAttemptWorker__c.ScheduledDate__c}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td valign="top" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;color:#505050;font-family:Helvetica;font-size:14px;line-height:110%;-webkit-text-size-adjust:none !important;width:80%;text-align:left;padding-top:5px;" class="contactContent">
+                        <span style="color:grey;font-size:14px;line-height:100%;font-weight:300;">{!JobAttempt__r.AttemptResponsibleExecutionCompany__c}</span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" valign="top" class="borderBottom" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#FFFFFF;border-bottom:1px solid #CCCCCC;-webkit-text-size-adjust:none !important;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;border-collapse:collapse !important;-webkit-text-size-adjust:none !important;">
+                    <tr>
+                      <td valign="top" class="bodyContent" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;color:#505050;font-family:Helvetica;font-size:14px;line-height:125%;padding-top:15px;vertical-align:middle;padding-bottom:15px;padding-left:10px;text-align:center;-webkit-text-size-adjust:none !important;width:31px;">
+                                            </td>
+                      <td valign="top" class="bodyContent" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;color:#505050;font-family:Helvetica;font-size:14px;line-height:125%;padding-top:15px;vertical-align:middle;padding-bottom:15px;padding-left:10px;text-align:center;-webkit-text-size-adjust:none !important;width:40%;text-align:left;">
+                        <span class="h3" style="display:block;font-family:Helvetica;font-size:16px;font-weight:normal;line-height:100%;letter-spacing:normal;margin-top:0;margin-right:0;margin-left:0;text-align:left;color:#606060 !important;">Check-In</span>
+                      </td>
+                      <td valign="top" class="bodyContent sizeWidth" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;width:25%;color:#505050;font-family:Helvetica;font-size:14px;line-height:125%;padding-top:15px;vertical-align:middle;padding-bottom:15px;padding-left:10px;text-align:center;-webkit-text-size-adjust:none !important;">
+                        {!JobAttemptWorker__c.CheckinTime__c}
+                                            </td>
+                      <td valign="top" class="bodyContent sizeWidth" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;width:25%;color:#505050;font-family:Helvetica;font-size:14px;line-height:125%;padding-top:15px;vertical-align:middle;padding-bottom:15px;padding-left:10px;text-align:center;-webkit-text-size-adjust:none !important;">
+                        &nbsp;
+                                            </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" valign="top" class="borderBottom" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#FFFFFF;border-bottom:1px solid #CCCCCC;-webkit-text-size-adjust:none !important;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;border-collapse:collapse !important;-webkit-text-size-adjust:none !important;">
+                    <tr>
+                      <td valign="top" class="bodyContent" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;color:#505050;font-family:Helvetica;font-size:14px;line-height:125%;padding-top:15px;vertical-align:middle;padding-bottom:15px;padding-left:10px;text-align:center;-webkit-text-size-adjust:none !important;width:31px;">
+                                            </td>
+                      <td valign="top" class="bodyContent" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;color:#505050;font-family:Helvetica;font-size:14px;line-height:125%;padding-top:15px;vertical-align:middle;padding-bottom:15px;padding-left:10px;text-align:center;-webkit-text-size-adjust:none !important;width:40%;text-align:left;">
+                        <span class="h3" style="display:block;font-family:Helvetica;font-size:16px;font-weight:normal;line-height:100%;letter-spacing:normal;margin-top:0;margin-right:0;margin-left:0;text-align:left;color:#606060 !important;">Check-Out</span>
+                      </td>
+                      <td valign="top" class="bodyContent sizeWidth" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;width:25%;color:#505050;font-family:Helvetica;font-size:14px;line-height:125%;padding-top:15px;vertical-align:middle;padding-bottom:15px;padding-left:10px;text-align:center;-webkit-text-size-adjust:none !important;">
+                       {!JobAttemptWorker__c.CheckoutTime__c} 
+                                            </td>
+                      <td valign="top" class="bodyContent sizeWidth" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;width:25%;color:#505050;font-family:Helvetica;font-size:14px;line-height:125%;padding-top:15px;vertical-align:middle;padding-bottom:15px;padding-left:10px;text-align:center;-webkit-text-size-adjust:none !important;">
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" valign="top" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;-webkit-text-size-adjust:none !important;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;border-collapse:collapse !important;-webkit-text-size-adjust:none !important;">
+                    <tr>
+                      <td valign="top" class="barTotal" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#44A144;min-height:50px;color:white;-webkit-text-size-adjust:none !important;text-align:center;font-family:helvetica;font-size:15px;font-weight:300;text-transform:uppercase;padding:5px;line-height:100%;">
+                        Total Time Worked (minutes)
+                                            </td>
+                    </tr>
+                    <tr>
+                      <td valign="top" class="barTotal" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#44A144;min-height:50px;color:white;-webkit-text-size-adjust:none !important;text-align:center;font-family:helvetica;font-size:28px;font-weight:300;text-transform:uppercase;line-height:100%;padding-bottom:5px;">
+                        {!JobAttemptWorker__c.TotalInStoreBillableTime__c}
+                                            </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" valign="top" class="barNonpaid" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#54698D;min-height:50px;color:white;-webkit-text-size-adjust:none !important;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;border-collapse:collapse !important;-webkit-text-size-adjust:none !important;">
+                    <tr>
+                      <td valign="top" class="barNonpaid" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#54698D;min-height:50px;color:white;-webkit-text-size-adjust:none !important;width:50%;text-align:right;font-family:helvetica;font-size:15px;font-weight:300;text-transform:uppercase;padding:10px;line-height:100%;">
+                        Non-paid Break (minutes)
+                                            </td>
+                      <td valign="top" class="barNonpaid" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#54698D;min-height:50px;color:white;-webkit-text-size-adjust:none !important;width:50%;text-align:left;font-family:helvetica;font-size:15px;font-weight:300;text-transform:uppercase;padding:10px;padding-left:30px;line-height:100%;">
+                        {!JobAttemptWorker__c.TotalInStoreNonBillableTime__c}
+                                            </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" valign="top" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;-webkit-text-size-adjust:none !important;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;border-collapse:collapse !important;-webkit-text-size-adjust:none !important;">
+                    <tr>
+                      <td valign="top" class="barPaid" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#8b98b2;min-height:50px;color:white;-webkit-text-size-adjust:none !important;width:50%;text-align:right;font-family:helvetica;font-size:15px;font-weight:300;text-transform:uppercase;padding:10px;line-height:100%;">
+                        Total Time In-Store (minutes)
+                                            </td>
+                      <td valign="top" class="barPaid" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#8b98b2;min-height:50px;color:white;-webkit-text-size-adjust:none !important;width:50%;text-align:left;font-family:helvetica;font-size:15px;font-weight:300;text-transform:uppercase;padding:10px;padding-left:30px;line-height:100%;">
+                       {!JobAttemptWorker__c.TotalInStoreTime__c}
+                                            </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" valign="top" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;-webkit-text-size-adjust:none !important;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" id="footer" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#F4F4F4;border-collapse:collapse !important;-webkit-text-size-adjust:none !important;">
+                    <tr>
+                      <td valign="top" class="footerContent" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;color:#999999;font-family:Helvetica;font-size:11px;line-height:120%;padding-top:20px;padding-right:20px;padding-bottom:20px;padding-left:20px;text-align:center;-webkit-text-size-adjust:none !important;padding-top:0;">
+                        <br/>  
+                                              Copyright &copy; 2018 CROSSMARK, inc All rights reserved.
+                                                <br/>
+                                            </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </center>
+  </body>
+</html>

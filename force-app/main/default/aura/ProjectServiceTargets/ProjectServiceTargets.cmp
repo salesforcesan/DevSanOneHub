@@ -1,0 +1,320 @@
+<aura:component extends="c:UISecurity" controller="LightningProjectServiceTargetsController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="recordId" type="Id" />  
+    <aura:attribute name="projectId" type="Id" /> 
+    <aura:attribute name="projectTypeName" type="String" />
+    <aura:attribute name="isProjectAccountMandatory" type="Boolean" />
+    <aura:attribute name="service" type="Object" />
+    <aura:attribute name="ns" type="String" default="" />
+    <aura:attribute name="targetsLoaded" type="Boolean" default="false" />
+    <!--TARGETS ADDED-->
+    
+    <aura:attribute name="mapTargets" type="List" default="[]"/>
+    <aura:attribute name="targets" type="List" default="[]"/> 
+    <aura:attribute name="targetIds" type="List" default="[]"/> 
+    <aura:attribute name="targetsKeys" type="List" default="[]"/> 
+    <aura:attribute name="editMode" type="Boolean"  default="false" />
+    <aura:attribute name="selectedTargets" type="List" />
+    <aura:attribute name="selectAll" type="Boolean" />
+    <aura:attribute name="errors" type="List" />
+    <aura:attribute name="deleteAnim" type="String" default='' />
+    
+    <!--FIELDS FOR FILTERS-->
+    <aura:attribute name="targetsToAdd" type="List" />
+    <aura:attribute name="selectedUseType" type="String" default="Primary" />
+    <aura:attribute name="selectedUseTypeUpdate" type="String" default="" />
+    <aura:attribute name="selectedAccount" type="String" />
+    <aura:attribute name="selectedAccountUpdate" type="String" />
+    <aura:attribute name="selectedTargetType" type="String" />
+    <aura:attribute name="searchIds" type="String" />
+    <aura:attribute name="projectAccounts" type="List" />
+    <aura:attribute name="targetUseTypes" type="List"  />
+    <aura:attribute name="targetTypes" type="List"  default="Product" />
+    
+    <!--ACCORDION-->
+    <aura:attribute name="activeSections" type="List" default="[]" />
+    <aura:attribute name="activeSectionsMessage" type="String" default="" />
+    <aura:attribute name="primaryTargets" type="List" default="[]"/> 
+    <aura:attribute name="secondaryTargets" type="List" default="[]"/> 
+    <aura:attribute name="ingredientTargets" type="List" default="[]"/> 
+    <aura:attribute name="reportingTargets" type="List" default="[]"/>
+    
+    <!--ICON FONTS-->
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <ltng:require styles="{!$Resource.oh_tools + '/oh-tools-style.css'}" />
+    
+    <!--EVENT HANDLERS-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="force:refreshView" action="{!c.doInit}" />
+    <!--<aura:handler action="{!c.onTargetsChanged}" event="c:ProjectServiceTargetChange" /> -->  
+    <aura:handler name="messageBoxEvent" event="c:SimpleComponentEvent" action="{!c.onMessageBoxEvent}"/>
+    <c:MessageBox aura:id="messageBox"/>
+    <span>
+        <div class="slds-is-relative slds-size_1-of-1 pad-right slds-grid" style="overflow:hidden;min-height:900px;">
+            <c:Notification aura:id="ProjectServiceTargetNotification" class="no-flow"/>
+            
+            <div class="slds-card slds-size_8-of-12 slds-p-around_medium" style="margin-right:12px;"> 
+                <div class=""  aura:id="projectTargetSpinner" >
+                    <lightning:spinner size="medium" variant="brand" />
+                </div> 
+                <div class="slds-m-bottom_small">
+                    <c:SectionHeaderProject Title="Service Targets" iconClass="fa-bullseye" />
+                </div>  
+                <p>Review and select the targets required for this service</p>       
+                <section class="slds-p-vertical_medium">
+                    <div aura:id="ProjectTarget__c.Add" class="hide">
+                        <div class="oh-btn-box slds-grid" style="align-items:center;" onclick="{!c.togglePaste}" aura:id="pasteButton" disabled="">
+                            <div class="slds-m-horizontal_x-small">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </div>
+                            <div class="slds-text-body_medium">Add Targets By Paste or Search</div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Paste Window -->
+                <div class="absolutePaste">
+                    <div class="originalSize" aura:id="togglePaste" onblur="{!c.togglePaste}">
+                        <div class="slds-box slds-is-relative " style="box-shadow:2px 2px 6px 1px rgba(0,0,0,.3);margin:.2rem;width:100%:">
+                            <div class="button-toggle">
+                                <lightning:buttonIcon iconName="utility:close" 
+                                                      variant="bare" 
+                                                      size="large" 
+                                                      alternativeText="paste" iconClass="" 
+                                                      onclick="{!c.togglePaste}" />
+                            </div>
+                            <h2 class="slds-border_bottom slds-m-bottom_small slds-text-heading_small">Add Targets by Searching by Name or Pasting IDs/UPCs</h2> 
+                            <div class="slds-grid">
+                                <div class="slds-button slds-grid slds-button_neutral oh-btn" aura:id="searchWidth" style="text-align:left;"  >
+                                    <div class="slds-p-top_small slds-p-bottom_x-small" onclick="{!c.toggleSearch}">
+                                        <i class="fa fa-search slds-m-right_x-small" aria-hidden="true"></i><span>Toggle Search</span>
+                                    </div>
+                                    <div aura:id="searchContainer" class="slds-hide slds-m-around_small" style="flex:1;width:100%;">              
+                                        <lightning:select aura:id="targetType"                                       
+                                                          name="TargetTypes" 
+                                                          label="Select Target Type"  
+                                                          value="{!v.selectedTargetType}" 
+                                                          onchange="{!c.onChangeTargetType}">
+                                            <aura:iteration items="{!v.targetTypes}" var="type">
+                                                <option value="{!type}">{!type}</option>
+                                            </aura:iteration>       
+                                        </lightning:select>           
+                                        <div class="slds-grid slds-grid_vertical slds-m-bottom_small" style="flex:1;width:100%;" >
+                                            <aura:if isTrue="{!v.targetsLoaded}">
+                                                <c:strike_multiLookup aura:id="searchText"           
+                                                                      class="visibility"
+                                                                      value="" 
+                                                                      label="Search Targets" 
+                                                                      object="{!v.ns + 'Target__c'}" 
+                                                                      searchField="Name" 
+                                                                      subtitleField="{!v.ns + 'UPC__c'}"
+                                                                      order="Name" 
+                                                                      filter="{!v.ns + 'Status__c = \'Active\' ' + ' and ' + v.ns + 'TargetType__c = \'' + v.selectedTargetType + '\' '}" 
+                                                                      placeholder="Enter Name of Target" 
+                                                                      iconName="standard:account" 
+                                                                      limit="5" 
+                                                                      loadingMessage="Loading..." 
+                                                                      errorMessage="Invalid input"
+                                                                      />
+                                            </aura:if>
+                                            
+                                        </div><!-- ' and Id not in :' + v.targetIds"-->
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                            <lightning:textarea aura:id="pasteTargets" 
+                                                label="Paste Target IDs or UPCs" 
+                                                name="paste" class="slds-m-vertical_small" 
+                                                style="flex:1 auto;min-height:170px;" 
+                                                placeholder="Paste comma separated or single column list of ID or UPC #s" />                    
+                            <div class="slds-grid slds-grid_align-center slds-p-bottom_small">
+                                <div style="width:49%;"> 
+                                    <aura:if isTrue="{!v.projectAccounts.length > 0}">
+                                        <lightning:select aura:id="projectAccounts" 
+                                                          name="projectAccounts" 
+                                                          label="Select Account"  
+                                                          value="{!v.selectedAccount}" 
+                                                          onchange="{!c.onChangeAccount}"
+                                                          required = "{!v.isProjectAccountMandatory}"
+                                                          >
+                                            <!--<aura:if  isTrue="{!and(v.projectAccounts.length > 1, v.isProjectAccountMandatory!=true)}" >    -->  
+                                            <aura:if isTrue="{!v.projectAccounts.length > 1}">                                         
+                                                <option value="">Assign Account...</option>
+                                            </aura:if>
+                                            <aura:iteration items="{!v.projectAccounts}" var="accs">
+                                                <option value="{!accs.Id}">{!accs.AccountName}</option>
+                                            </aura:iteration> 
+                                        </lightning:select> 
+                                    </aura:if>
+                                </div>
+                                
+                                
+                                
+                                <div style="width:49%;margin-left:1rem;"> 
+                                    <aura:if isTrue="{!v.targetUseTypes.length > 0}">
+                                        <aura:if isTrue="{!v.targets.length == 0}">
+                                            <lightning:select aura:id="targetUseType"                                       
+                                                              name="TargetUseTypes" 
+                                                              label="Select Target Use Type"  
+                                                              value="{!v.selectedUseType}" 
+                                                              onchange="{!c.onChangeTargetUseType}">
+                                                <option value="Primary">Primary</option>      
+                                            </lightning:select> 
+                                            <aura:set attribute="else">
+                                                <lightning:select aura:id="targetUseType"                                       
+                                                                  name="TargetUseTypes" 
+                                                                  label="Select Target Use Type"  
+                                                                  value="{!v.selectedUseType}" 
+                                                                  onchange="{!c.onChangeTargetUseType}">
+                                                    <aura:iteration items="{!v.targetUseTypes}" var="tu">
+                                                        <option value="{!tu}">{!tu}</option>
+                                                    </aura:iteration>       
+                                                </lightning:select> 
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+                                </div>
+                            </div>
+                            
+                            <div class="slds-grid slds-grid_align-end">
+                                <div class="slds-m-right_small slds-p-horizontal_small">
+                                    <lightning:button label="Clear" variant="Base" class="" 
+                                                      onclick="{!c.clearFields}" /> 
+                                </div>
+                                <lightning:button label="Add Targets" 
+                                                  variant="Success" class="oh-inverse" 
+                                                  onclick="{!c.addTargetsHandler}"
+                                                  />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END Paste Window -->
+                <aura:if isTrue="{!and(not(empty(v.targets)),v.targetsLoaded)}" >
+                    <section class="slds-clearfix slds-m-bottom_medium">
+                        <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-end slds-m-top_x-small">
+                            <div>
+                                <p>
+                                    Total targets added: {!v.targets.length}
+                                </p>
+                                <div class="slds-m-right_x-small">
+                                    <lightning:input type="checkbox" class="checkboxes" aura:id="selectAll" name="selectAll" id="selectAll"
+                                                     label="Select All"
+                                                     checked="{!v.selectAll ? true : false}" 
+                                                     value="selectAll" 
+                                                     onchange="{!c.updateChecked}" />
+                                </div>
+                            </div>
+                            <div>
+                                <aura:if isTrue="{!v.editMode}">
+                                    
+                                    <div class="slds-box" >
+                                        <lightning:button label="Cancel" iconName="utility:close" variant="neutral" 
+                                                          class="slds-m-right_small" 
+                                                          onclick="{!c.cancelEdit}"/>
+                                        <lightning:button label="Save Selected Targets" iconName="utility:save" variant="brand" 
+                                                          class="slds-m-right_small"
+                                                          disabled="{!or(not(empty(v.selectedAccountUpdate)),(not(empty(v.selectedUseTypeUpdate)))) ? false : true}"
+                                                          onclick="{!c.saveTargetsUpdate}"/>
+                                        <aura:if isTrue="{v.projectTypeName == 'CMK Events'}"></aura:if> 
+                                        <aura:if isTrue="{!v.projectAccounts.length > 0}">
+                                            <lightning:select aura:id="projectAccountsUpdate" 
+                                                              name="projectAccount" 
+                                                              label="Select Account"  
+                                                              onchange="{!c.onChangeAccountUpdate}"
+                                                              class="slds-m-top_small"
+                                                              >
+                                                <option value="">Update Account...</option>
+                                                <aura:iteration items="{!v.projectAccounts}" var="accs">
+                                                    
+                                                    <option value="{!accs.Id}">{!accs.AccountName}</option>
+                                                </aura:iteration> 
+                                            </lightning:select> 
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.targetUseTypes.length > 1}">
+                                            <lightning:select aura:id="targetUseType"                                       
+                                                              name="TargetUseTypes" 
+                                                              label="Select Target Use Type"  
+                                                              value="{!v.selectedUseTypeUpdate}" 
+                                                              onchange="{!c.onChangeTargetUseTypeUpdate}"
+                                                              class="slds-m-top_small">
+                                                <option value="">Update Use Type...</option>
+                                                <aura:iteration items="{!v.targetUseTypes}" var="tu">
+                                                    <option value="{!tu}">{!tu}</option>
+                                                </aura:iteration>       
+                                            </lightning:select> 
+                                        </aura:if>
+                                    </div>
+                                    <aura:set attribute="else">
+                                        <span aura:id="ProjectTarget__c.Add" >
+                                            <lightning:button label="Update Selected Targets" disabled="{!empty(v.selectedTargets)}" 
+                                                              iconName="utility:edit" variant="neutral" 
+                                                              class="slds-m-right_small" 
+                                                              onclick="{!c.showEditMode}"/>
+                                            <lightning:button label="Remove Selected" disabled="{!empty(v.selectedTargets)}" 
+                                                              iconName="utility:dash" variant="destructive" 
+                                                              class="slds-m-right_small" 
+                                                              onclick="{!c.removeSelectedHandler}"/>
+                                        </span>
+                                    </aura:set> 
+                                    
+                                </aura:if>                     
+                            </div>
+                        </div>
+                    </section>
+                </aura:if>
+                <!--activeSectionName="{!v.mapTargets[0]}"-->
+                
+                <aura:if isTrue="{!and(not(empty(v.targets)),not(empty(v.mapTargets)))}">
+                    <lightning:accordion allowMultipleSectionsOpen="true" activeSectionName="Primary">
+                        <aura:iteration items="{!v.mapTargets}" var="maptargetKey" indexVar="index">             
+                            <lightning:accordionSection name="{!maptargetKey}" label="{!maptargetKey}">
+                                <aura:set attribute="body">
+                                    
+                                    <div class="slds-grid slds-wrap" style="width:100%;align-items:stretch;">
+                                        
+                                        <aura:iteration items="{!v.targets}" var="target">
+                                            <aura:if isTrue="{! (target.TargetUse == maptargetKey)}" >
+                                                
+                                                <div class="slds-p-around_xx-small slds-is-relative slds-wrap" id="{!join('card' + target.ProjectServiceTargetId)}" style="width:100%;">
+                                                    <div class="slds-m-right_x-small oh-check-absolute">
+                                                        <lightning:input type="checkbox" class="checkboxes" aura:id="checkboxes" name="selected"
+                                                                         
+                                                                         checked="{!v.selectAll ? true : false}" 
+                                                                         value="{!target.ProjectServiceTargetId}" 
+                                                                         onchange="{!c.updateChecked}" />
+                                                    </div>
+                                                    <c:ProjectServiceTargetsCard projectServiceTarget="{!target}" 
+                                                                                 projectAccounts="{!v.projectAccounts}" 
+                                                                                 editMode="{!v.editMode}"
+                                                                                 deleteAnim="{v.deleteAnim}"
+                                                                                 projectTypeName="{!v.projectTypeName}"
+                                                                                 /> 
+                                                </div>
+                                            </aura:if>
+                                            
+                                        </aura:iteration>
+                                        
+                                    </div>
+                                </aura:set>
+                            </lightning:accordionSection>
+                            
+                            
+                        </aura:iteration>
+                    </lightning:accordion>
+                </aura:if>
+                
+            </div>
+            <div class="slds-size_4-of-12 slds-card slds-p-around_medium" style="margin-top:0;">
+                <div class="slds-p-bottom_medium">
+                    <c:SectionHeaderProject Title="Chatter" iconClass="fa-commenting-o" />
+                </div>
+                <div class="slds-p-horizontal_small">
+                    <forceChatter:publisher context="RECORD" recordId="{!v.projectId}" />
+                    <forceChatter:feed type="Record" subjectId="{!v.projectId}"/>
+                </div>
+            </div>          
+        </div>
+    </span>
+</aura:component>

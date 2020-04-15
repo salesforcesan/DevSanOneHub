@@ -1,0 +1,8 @@
+<aura:component >
+	<aura:attribute name="timelineEntryList" type="TimelineEntryWrapper[]" access="Global" description="It is a property of TimelineWrapper apex class to receive and store array of TimelineEntry. Each TimelineEntry is depicting a unique event of Project lifecycle"/>
+    <aura:attribute name="timelineTitle" type="String" access="Global" description="It is a property of TimelineWrapper apex class to receive and store Timeline Title. This is set to current system date"/> 
+    <div class="timeline-sec">
+        <h3 class="slds-text-heading--small">{!v.timelineTitle}</h3>
+        <c:TimelineEntry timelineEntryList="{!v.timelineEntryList}"/>
+   </div>     
+</aura:component>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JobDateOriginallyReported__c</fullName>
+    <description>The field that indicates the date and time a Job was originally reported.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The date and time the job was originally reported</inlineHelpText>
+    <label>Date Originally Reported</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

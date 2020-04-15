@@ -1,0 +1,20 @@
+<aura:component extensible="true" controller="LightningUISecurityController" implements="force:hasRecordId" access="global">
+<aura:attribute name="hiddenelements" type="Map" access="global" />
+<aura:attribute name="editableelements" type="Map" access="global" />
+<aura:attribute name="projectelements" type="Map" access="global" />
+<aura:attribute name="securityelements" type="String" access="global" />
+<aura:attribute name="uisecuritymessage" type="String" access="global" />
+<aura:attribute name="pendingchanges" type="Boolean" access="global" />
+<aura:attribute name="releasependingchangesrequest" type="Boolean" access="global" />
+<aura:attribute name="oocfchanges" type="Boolean" access="global" />
+<aura:attribute name="oocfchangesrequest" type="Boolean" access="global" />
+<aura:attribute name="loaded" type="Boolean" default="false" access="private"/>
+<aura:attribute name="projecttitle" type="String" access="global" />    
+<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    
+<aura:registerEvent name="refreshProject" type="c:EventProjectRefresh"/>        
+    
+    
+{!v.body}
+</aura:component>

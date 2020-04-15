@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>standard</fullName>
+    <fields>Name</fields>
+    <fields>TotalProjectInvoiceAmountCalculated__c</fields>
+    <fields>InvoiceBalance__c</fields>
+    <fields>Project__c</fields>
+    <fields>Type__c</fields>
+    <fields>Account__c</fields>
+    <label>standard</label>
+</CompactLayout>

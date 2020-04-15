@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disallow_multi_workers_for_bundled_proje</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(NumberOfWorkers__c &gt; 1,   Project__r.BundleServices__c )</errorConditionFormula>
+    <errorDisplayField>NumberOfWorkers__c</errorDisplayField>
+    <errorMessage>Number of workers cannot be more than 1 for bundled projects.</errorMessage>
+</ValidationRule>

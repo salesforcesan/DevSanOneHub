@@ -1,0 +1,78 @@
+<aura:component extends="c:UISecurity" controller="LightningProjectServiceController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:dependency resource="markup://force:navigateToSObject" type="EVENT"/>
+    <aura:dependency resource="markup://c:AddProjectServicesModal"/>
+    <ltng:require styles="{!$Resource.font_awesome + '/font-awesome/css/font-awesome.min.css'}" />
+    <aura:attribute name="projectId" type="Id" access="global" />
+    <aura:attribute name="services" type="Object" access="global" default="{}" />
+    <aura:attribute name="dragTargetId" type="string"/>
+    <aura:attribute name="dragTargetParentId" type="string"/>
+    <aura:attribute name="maxServiceCount" type="Decimal"/>
+    <aura:attribute name="maxServicesReached" type="Boolean"/>
+    
+    <!--PUBLISHER -->
+    
+    <!--EVENT LISTENER -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler action="{!c.refreshServices}" event="c:ProjectServicesChangeEvent" />
+    
+    <c:ModalDialogContainer aura:id="modalDialog" title="Add A Service Dialog" size="medium"/>
+     <div class="slds-is-relative slds-size_1-of-1 slds-grid" style="overflow:hidden;" >
+        <div class="slds-card slds-size_12-of-12 slds-p-around_medium">
+            <c:Notification aura:id="projectServicesNotification" class="no-flow"/>
+            <div class=""  aura:id="projectServicesSpinner" >
+                <lightning:spinner size="medium" variant="brand" />
+            </div>
+            <!--<div class="oh-component-spinner-wrap"  aura:id="projectServicesSpinner" > 
+                <lightning:spinner size="medium" variant="brand" />
+            </div>-->
+            <div class="slds-p-bottom_medium">
+                <c:SectionHeaderProject Title="Services" iconClass="fa-handshake-o" />
+                <div class="slds-p-left_medium">
+                    <aura:if isTrue="{!v.services[0]}" >    
+                        <div class="slds-text-body_regular slds-text-color_weak slds-p-around_small drag-instructions">
+                            <p>Click the up arrows to reorder the service priority</p>
+                        </div>
+                    </aura:if>
+                <aura:if isTrue="{!v.maxServicesReached}" >
+                    <div class="slds-text-body_regular slds-text-color_weak slds-p-left_x-small">
+                        <p>Maximum allowed services reached for this project.</p>
+                    </div>
+                    <aura:set attribute="else">
+                        <div aura:id="ProjectService__c.Add" class="hide slds-p-left_small">
+                            <section class="slds-size_1-of-1">
+                            	<button class="slds-box oh-plus-button add-button" onclick="{!c.openAddServicesModal}">
+                                    <span class="slds-media slds-p-horizontal_small" >
+                                        <span class="slds-grid slds-grid_align-center oh-plus-text">+</span>
+                                    </span>
+                             	</button>
+                            </section>
+                        </div>
+                    </aura:set>   
+                </aura:if>
+                </div>
+            </div>
+            
+            <div id="serviceList">
+                <aura:iteration items="{!v.services}" var="service">
+                    <div id="{!'div' + service.ServiceRank}" class="{!'div' + service.ServiceRank}">
+                        <div class="slds-grid">
+                            <div class="slds-grid--vertical slds-media__figure oh-arrow-reorder">
+                                <aura:if isTrue="{!service.IsFirstService == false}">
+                                    <div aura:id="ProjectService__c.Rank" class="hide"><button class="slds-button" onclick="{!c.upRank}" id="{!service.Id}"><i class="fa fa-caret-up fa-lg" aria-hidden="true"></i></button></div>
+                                </aura:if>
+                                <div class="slds-text-align--center slds-m-around--none">{!service.ServiceRank}</div>
+                                <aura:if isTrue="{!service.IsLastService == false}">
+                                	<div aura:id="ProjectService__c.Rank" class="hide"><button class="slds-button" onclick="{!c.downRank}" id="{!service.Id}"><i class="fa fa-caret-down fa-lg" aria-hidden="true"></i></button></div>
+                                </aura:if>
+                            </div>
+                            <div class="card-container">
+                                <c:ProjectServiceCard service="{!service}" />
+                            </div>
+                            
+                        </div>
+                    </div>
+                </aura:iteration>
+            </div>
+        </div>
+    </div>
+</aura:component>

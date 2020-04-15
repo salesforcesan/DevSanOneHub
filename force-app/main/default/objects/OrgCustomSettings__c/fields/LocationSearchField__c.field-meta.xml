@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LocationSearchField__c</fullName>
+    <description>The value is used to determine if the search location is based on location number or onehub location Id (location unique id)</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The valid values are LocationNumber__c and OneHubLocationId__c</inlineHelpText>
+    <label>SearchLocationField</label>
+    <length>50</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
