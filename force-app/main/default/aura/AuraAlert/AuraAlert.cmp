@@ -6,7 +6,7 @@
   <aura:attribute name="object" type="String"  access="global"/>
   <aura:attribute name="rule" type="String"  access="global"/>
 	<aura:handler name="init" value="{!this}" action="{!c.onInit}" />
-
+		Hello All!	
 	  <aura:if isTrue="{!v.isShown}">
 	  <div class="slds-box slds-box_xx-small" style="background: #ffb75d;">
       <lightning:layout verticalAlign="center">
